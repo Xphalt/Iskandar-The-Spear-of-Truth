@@ -257,7 +257,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e4dfd60c33c12134bbab626bdba022bf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -765,6 +765,13 @@ MonoBehaviour:
   swordObject: {fileID: 1534772812}
   swordEmpty: {fileID: 1685947107}
   swordDefaultPosition: {fileID: 1054063952}
+  canBeDamaged: 1
+  canAttack: 1
+  dashCooldown: 1
+  attackCooldownAfterDash: 0.5
+  invincibilityFramesAfterDash: 0
+  dashForce: 500
+  dashAnalogueReq: 0.5
   timeToThrowSword: 0.4
 --- !u!114 &1497515275
 MonoBehaviour:
@@ -780,11 +787,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwTimeBeforeSpinInPlace: 1
   throwTimeSpinningInPlace: 0.5
-  throwSpeed: 6
+  throwSpeed: 13
   throwSwordDamageRate: 0.25
-  throwReturnSpeed: 15
+  throwReturnSpeed: 25
   attackDamage: 1
   attackCooldown: 0.3
+  health: 4
 --- !u!1 &1534772812
 GameObject:
   m_ObjectHideFlags: 0

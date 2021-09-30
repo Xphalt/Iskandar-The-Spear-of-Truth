@@ -12,6 +12,8 @@ public class PlayerStats_Jerzy : MonoBehaviour
     public float attackDamage;
     public float attackCooldown;
 
+    public int health;
+
     void Start()
     {
         
