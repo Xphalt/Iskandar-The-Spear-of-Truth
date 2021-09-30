@@ -14,6 +14,6 @@ public class ArmorObject_Sal : ItemObject_Sal
 
     public override void Use()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Armor used/Equipped");
     }
 }

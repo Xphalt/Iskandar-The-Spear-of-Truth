@@ -3,25 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
-
 public class InventoryObject_Sal : ScriptableObject
 {
     public List<InventorySlot> Storage = new List<InventorySlot>();
     public void AddItem(ItemObject_Sal p_item, int p_amount)
-    {
-        bool hasItem = false;
+    { 
         for (int i = 0; i < Storage.Count; i++)
         {
             if(Storage[i].item == p_item)   //check if item is already in the inventory
             {
-                Storage[i].AddAmount(p_amount);
-                hasItem = true;
-                break;
+                Storage[i].AddAmount(p_amount); 
+                return;
             }
-        }
-        if(!hasItem)
+        } 
+       
+        Storage.Add(new InventorySlot(p_item, p_amount));
+    }
+    public void RemoveItem(ItemObject_Sal p_item, int p_amount)
+    {
+        for (int i = 0; i < Storage.Count; i++)
         {
-            Storage.Add(new InventorySlot(p_item, p_amount));
+            if (Storage[i].item == p_item && Storage[i].amount > 1)   //check if item is already in the inventory
+            {
+                Storage[i].AddAmount(p_amount);
+                return;
+            }
+            else
+            {
+                Storage.RemoveAt(i);
+                return;
+            }
         }
     }
 }

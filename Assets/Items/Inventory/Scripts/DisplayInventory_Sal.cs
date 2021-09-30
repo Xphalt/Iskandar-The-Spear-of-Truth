@@ -8,8 +8,6 @@ public class DisplayInventory_Sal : MonoBehaviour
     public InventoryObject_Sal inventory;
     public Transform container;
 
-    Dictionary<InventorySlot, GameObject> itemDisplayed = new Dictionary<InventorySlot, GameObject>();
-
     void Start()
     {
         gameObject.SetActive(false);

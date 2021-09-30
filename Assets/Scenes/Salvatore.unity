@@ -519,9 +519,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 676977634}
-  - component: {fileID: 676977633}
   - component: {fileID: 676977631}
   - component: {fileID: 676977632}
+  - component: {fileID: 676977633}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -567,11 +567,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 676977630}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c57927a73d4d0940922357037518aec, type: 3}
+  m_Script: {fileID: 11500000, guid: 1732c4a6cc31c6f4ca660091a77821ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: 26754aa56798a1244bc66bcb0018782c, type: 2}
+  ItemEquipped:
+    item: {fileID: 0}
+    amount: 0
   UIinventory: {fileID: 1724727870}
+  isRunning: 0
 --- !u!4 &676977634
 Transform:
   m_ObjectHideFlags: 0
