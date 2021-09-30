@@ -4,10 +4,10 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 
-public class InventoryObject : ScriptableObject
+public class InventoryObject_Sal : ScriptableObject
 {
     public List<InventorySlot> Storage = new List<InventorySlot>();
-    public void AddItem(ItemObject p_item, int p_amount)
+    public void AddItem(ItemObject_Sal p_item, int p_amount)
     {
         bool hasItem = false;
         for (int i = 0; i < Storage.Count; i++)
@@ -30,11 +30,11 @@ public class InventoryObject : ScriptableObject
 [System.Serializable]
 public class InventorySlot
 {
-    public ItemObject item;
+    public ItemObject_Sal item;
     public int amount;
     
     //Init
-    public InventorySlot(ItemObject p_item, int p_amount)
+    public InventorySlot(ItemObject_Sal p_item, int p_amount)
     {
         item = p_item;
         amount = p_amount;

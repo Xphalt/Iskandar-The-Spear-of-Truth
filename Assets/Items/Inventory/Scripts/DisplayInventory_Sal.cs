@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class DisplayInventory : MonoBehaviour
+public class DisplayInventory_Sal : MonoBehaviour
 {
-    public InventoryObject inventory;
+    public InventoryObject_Sal inventory;
     public Transform container;
 
     Dictionary<InventorySlot, GameObject> itemDisplayed = new Dictionary<InventorySlot, GameObject>();
 
     void Start()
     {
+        gameObject.SetActive(false);
         CreateDisplay();
     }
 
     void Update()
     {
-        CreateDisplay();
+        
     }
 
     public void CreateDisplay()

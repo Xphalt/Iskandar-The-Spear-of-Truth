@@ -8,9 +8,11 @@ public enum ItemTyoe
     Armor
 }
 
-public abstract class ItemObject : ScriptableObject
+public abstract class ItemObject_Sal : ScriptableObject
 {
     public GameObject prefabDisplay;
     public ItemTyoe type;
     public string description;
+
+    public abstract void Use();
 }
