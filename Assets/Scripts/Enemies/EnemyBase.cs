@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    Transform curTarget;
+    protected Transform curTarget;
     public float moveSpeed;
 
     public enum EnemyStates
@@ -17,9 +17,9 @@ public class EnemyBase : MonoBehaviour
         Attacking
     };
     EnemyStates curState;
-    private float attackTimer;
-    public static float attackInterval;
-    private bool canAttack;
+    protected float attackTimer;
+    public float attackInterval;
+    protected bool canAttack;
 
     public float findDelay;
     
@@ -33,8 +33,6 @@ public class EnemyBase : MonoBehaviour
     [HideInInspector]
     public List<Transform> visibleTargets = new List<Transform>();
 
-
-
     private void Start()
     {
         StartCoroutine("FindTargetsWithDelay", findDelay);
@@ -43,7 +41,7 @@ public class EnemyBase : MonoBehaviour
         curState = EnemyStates.Patrolling;
     }
 
-    private void Update()
+    public virtual void Update()
     {
         switch (curState)
         {
@@ -54,6 +52,7 @@ public class EnemyBase : MonoBehaviour
             case EnemyStates.Chasing:
                 //seek player position and go to it
                 transform.position = Vector3.MoveTowards(transform.position, curTarget.position, moveSpeed);
+                transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
                 break;
             case EnemyStates.Attacking:
                 //
@@ -112,7 +111,7 @@ public class EnemyBase : MonoBehaviour
 
 
     //will be called by other scripts
-    public void Attack ()
+    public virtual void Attack ()
     {
         if(canAttack)
         {

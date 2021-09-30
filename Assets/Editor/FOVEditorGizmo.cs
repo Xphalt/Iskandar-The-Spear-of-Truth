@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor (typeof (EnemyBase))]
+[CustomEditor(typeof(EnemyBase))]
 public class FOVEditorGizmo : Editor
 {
 
