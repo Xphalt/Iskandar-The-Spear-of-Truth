@@ -51,20 +51,32 @@ public class EnemyBase : MonoBehaviour
                 break;
             case EnemyStates.Chasing:
                 //seek player position and go to it
-                transform.position = Vector3.MoveTowards(transform.position, curTarget.position, moveSpeed);
+                transform.position = Vector3.MoveTowards(transform.position, curTarget.position, moveSpeed * Time.deltaTime);
                 transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
                 break;
             case EnemyStates.Attacking:
                 //
                 break;
-            default: Debug.Log("Error in EnemyBase script, Current State switch statement");
+            default:
+                Debug.Log("Error in EnemyBase script, Current State switch statement");
                 break;
         }
 
+        AttackCooldown();
+    }
+
+    private void AttackCooldown()
+    {
         //attack timer
-        attackTimer += Time.deltaTime;
-        if (attackTimer >= attackInterval)
-            canAttack = true;
+        if (curState == EnemyStates.Attacking)
+        {
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= attackInterval)
+            {
+                canAttack = true;
+                curState = EnemyStates.Patrolling;
+            }
+        }
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
@@ -72,7 +84,7 @@ public class EnemyBase : MonoBehaviour
         while(true)
         {
             yield return new WaitForSeconds(delay);
-            FindVisibleTargets();
+            if (curState != EnemyStates.Attacking) FindVisibleTargets();
         }
     }
 
