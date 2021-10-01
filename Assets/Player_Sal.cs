@@ -53,7 +53,7 @@ public class Player_Sal : MonoBehaviour
             Destroy(other.gameObject);
 
             //TEST (equip item)
-            //inventory.Storage[0].item.Use();
+            //WeaponObject_Sal fsd = (WeaponObject_Sal)inventory.Storage[0].item;
         }
     }
 
