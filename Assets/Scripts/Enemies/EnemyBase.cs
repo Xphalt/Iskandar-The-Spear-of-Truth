@@ -5,10 +5,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public class EnemyBase : Patrol
 {
     protected Transform curTarget;
-    public float moveSpeed;
+    public float chaseSpeed;
 
     public enum EnemyStates
     {
@@ -33,25 +33,31 @@ public class EnemyBase : MonoBehaviour
     [HideInInspector]
     public List<Transform> visibleTargets = new List<Transform>();
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
+
         StartCoroutine("FindTargetsWithDelay", findDelay);
         attackTimer = 0;
         canAttack = true;
         curState = EnemyStates.Patrolling;
     }
 
-    public virtual void Update()
+    public override void Update()
     {
+        base.Update();
+
+        Patrolling = curState == EnemyStates.Patrolling;
+
         switch (curState)
         {
-            case EnemyStates.Patrolling:
-                //move a bit to a random direction, based off of "Link's Awakening" enemy behaviour
+            //case EnemyStates.Patrolling:
+            //    //move a bit to a random direction, based off of "Link's Awakening" enemy behaviour
 
-                break;
+                //break;
             case EnemyStates.Chasing:
                 //seek player position and go to it
-                transform.position = Vector3.MoveTowards(transform.position, curTarget.position, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, curTarget.position, chaseSpeed * Time.deltaTime);
                 transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
                 break;
             case EnemyStates.Attacking:
