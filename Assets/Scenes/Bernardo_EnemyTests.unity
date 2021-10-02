@@ -616,12 +616,26 @@ MonoBehaviour:
   - {fileID: 670391801}
   - {fileID: 57741744}
   - {fileID: 17481535}
-  speed: 5
+  speed: 1
   nodeTag: Node
-  chaseSpeed: 8
-  attackInterval: 0.5
+  defaultToZero: 0
+  chaseSpeed: 3
+  availableAttacks: 0101
+  attackDamages:
+  - 0
+  - 0
+  attackRanges:
+  - 2
+  - 5
+  attackDurations:
+  - 0.5
+  - 0.5
+  attackCooldowns:
+  - 1
+  - 2
+  chargeSpeed: 10
   findDelay: 0.2
-  viewRadius: 5
+  chaseRadius: 5
   viewAngle: 360
   targetMask:
     serializedVersion: 2
@@ -630,9 +644,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   visibleTargets: []
-  meleeDamage: 0
-  meleeRange: 1
-  attackSound: 
 --- !u!136 &1085316445
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -10,12 +10,14 @@ public class Patrol : MonoBehaviour
     protected bool Patrolling;
     int currentNode;
 
-    Rigidbody MyRigid;
+    protected Rigidbody MyRigid;
 
     Vector3 direction;
 
     [SerializeField]
     private string nodeTag;
+
+    public bool defaultToZero = true;
 
     public virtual void Start()
     {
@@ -33,8 +35,9 @@ public class Patrol : MonoBehaviour
             direction = (nodes[currentNode].position - transform.position).normalized;
 
             MyRigid.velocity = direction * speed;
+            transform.rotation = Quaternion.LookRotation(MyRigid.velocity);
         }
-        else
+        else if (defaultToZero)
         {
             MyRigid.velocity = Vector3.zero;
         }
@@ -46,7 +49,6 @@ public class Patrol : MonoBehaviour
         {
             currentNode++;
             currentNode %= nodes.Length;
-            print("MOTHER FUCKER");
         }
     }
 }

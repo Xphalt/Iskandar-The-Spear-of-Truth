@@ -10,6 +10,40 @@ public class EnemyBase : Patrol
     protected Transform curTarget;
     public float chaseSpeed;
 
+    public enum AttackTypes
+    { 
+        Melee,
+        Charge,
+        AttackTypesCount
+    };
+
+    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    public bool[] availableAttacks = new bool[(int)AttackTypes.AttackTypesCount];
+
+    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    public float[] attackDamages = new float[(int)AttackTypes.AttackTypesCount];
+
+    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    public float[] attackRanges = new float[(int)AttackTypes.AttackTypesCount];
+
+    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    public float[] attackDurations = new float[(int)AttackTypes.AttackTypesCount];
+
+    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    public float[] attackCooldowns = new float[(int)AttackTypes.AttackTypesCount];
+
+    private float[] attackTimers = new float[(int)AttackTypes.AttackTypesCount];
+
+    private float curAttackTimer = 0;
+
+    private AttackTypes curAttack = AttackTypes.AttackTypesCount;
+
+    protected bool MeleeAvailable => availableAttacks[(int)AttackTypes.Melee] && 
+        (attackTimers[(int)AttackTypes.Melee] >= attackCooldowns[(int)AttackTypes.Melee]);
+    protected bool ChargeAvailable => availableAttacks[(int)AttackTypes.Charge] && 
+        (attackTimers[(int)AttackTypes.Charge] >= attackCooldowns[(int)AttackTypes.Charge]);
+    protected bool AttackEnded => (curAttack != AttackTypes.AttackTypesCount) ? attackTimers[(int)curAttack] > attackDurations[(int)curAttack] : true;
+
     public enum EnemyStates
     {
         Patrolling,
@@ -17,13 +51,16 @@ public class EnemyBase : Patrol
         Attacking
     };
     EnemyStates curState;
-    protected float attackTimer;
-    public float attackInterval;
-    protected bool canAttack;
+    protected bool charging = false;
+    private bool attackUsed = false;
+
+    public float chargeSpeed;
+    private float chargeDistance;
+    private Vector3 chargePoint;
 
     public float findDelay;
     
-    public float viewRadius;
+    public float chaseRadius;
     [Range(0,360)]
     public float viewAngle;
 
@@ -38,8 +75,7 @@ public class EnemyBase : Patrol
         base.Start();
 
         StartCoroutine("FindTargetsWithDelay", findDelay);
-        attackTimer = 0;
-        canAttack = true;
+        for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
         curState = EnemyStates.Patrolling;
     }
 
@@ -47,42 +83,63 @@ public class EnemyBase : Patrol
     {
         base.Update();
 
-        Patrolling = curState == EnemyStates.Patrolling;
+        Patrolling = curState == EnemyStates.Patrolling && !charging;
 
-        switch (curState)
+        if (!charging)
         {
-            //case EnemyStates.Patrolling:
-            //    //move a bit to a random direction, based off of "Link's Awakening" enemy behaviour
+            switch (curState)
+            {
+                //case EnemyStates.Patrolling:
+                //    //move a bit to a random direction, based off of "Link's Awakening" enemy behaviour
 
                 //break;
-            case EnemyStates.Chasing:
-                //seek player position and go to it
-                transform.position = Vector3.MoveTowards(transform.position, curTarget.position, chaseSpeed * Time.deltaTime);
-                transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
-                break;
-            case EnemyStates.Attacking:
-                //
-                break;
-            default:
-                Debug.Log("Error in EnemyBase script, Current State switch statement");
-                break;
+                case EnemyStates.Chasing:
+                    //seek player position and go to it
+                    transform.position = Vector3.MoveTowards(transform.position, curTarget.position, chaseSpeed * Time.deltaTime); //Use velocity?
+                    transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
+                    break;
+                case EnemyStates.Attacking:
+                    //
+                    break;
+                default:
+                    Debug.Log("Error in EnemyBase script, Current State switch statement");
+                    break;
+            }
         }
 
+        else if ((transform.position - chargePoint).magnitude >= chargeDistance) EndCharge();
+
+        Attack();
+        AttackEnd();
         AttackCooldown();
+    }
+
+    private void AttackEnd()
+    {
+        //attack timer
+        if (!AttackEnded && curAttack != AttackTypes.AttackTypesCount)
+        {
+            curAttackTimer += Time.deltaTime;
+            if (curAttackTimer >= attackDurations[(int)curAttack])
+            {
+                if (charging) EndCharge();
+                curState = EnemyStates.Chasing;
+            }
+        }
     }
 
     private void AttackCooldown()
     {
-        //attack timer
-        if (curState == EnemyStates.Attacking)
+        for (int a = 0; a < attackCooldowns.Length; a++)
         {
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= attackInterval)
-            {
-                canAttack = true;
-                curState = EnemyStates.Patrolling;
-            }
+            attackTimers[a] += Time.deltaTime;
         }
+    }
+
+    private void EndCharge()
+    {
+        charging = false;
+        MyRigid.velocity = Vector3.zero;
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
@@ -90,11 +147,11 @@ public class EnemyBase : Patrol
         while(true)
         {
             yield return new WaitForSeconds(delay);
-            if (curState != EnemyStates.Attacking) FindVisibleTargets();
+            if (curState != EnemyStates.Attacking) FindVisibleTargets(chaseRadius);
         }
     }
 
-    void FindVisibleTargets()
+    void FindVisibleTargets(float viewRadius)
     {
         visibleTargets.Clear();
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
@@ -103,6 +160,7 @@ public class EnemyBase : Patrol
         {
             Transform target = targetsInViewRadius[i].transform;
             Vector3 dirToTarget = (target.position - transform.position).normalized;
+
             if(Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
             {
                 float distance = Vector3.Distance(transform.position, target.position);
@@ -116,6 +174,8 @@ public class EnemyBase : Patrol
                 }
             }
         }
+
+        if (curState == EnemyStates.Chasing && visibleTargets.Count == 0) curState = EnemyStates.Patrolling;
     }
 
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
@@ -125,20 +185,67 @@ public class EnemyBase : Patrol
 
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
-   
 
+    public bool MeleeRangeCheck()
+    {
+        foreach (RaycastHit targetScan in Physics.RaycastAll(transform.position, transform.forward, attackRanges[(int)AttackTypes.Melee]))
+        {
+            if (targetScan.transform == curTarget) return true;
+        }
+
+        return false;
+    }
 
     //will be called by other scripts
     public virtual void Attack ()
     {
-        if(canAttack)
+        if(AttackEnded)
         {
-            //change state to Attacking
-            curState = EnemyStates.Attacking;
-            //reset cooldown so Enemy can attack again
-            canAttack = false;
-            attackTimer = 0;
+            attackUsed = false;
+
+            if (MeleeAvailable)
+            {
+                MeleeAttack();
+            }
+
+            if (!attackUsed && ChargeAvailable && curState == EnemyStates.Chasing)
+            {
+                ChargeAttack();
+            }
+
+            if (attackUsed)
+            {
+                //change state to Attacking
+                curState = EnemyStates.Attacking;
+                //reset cooldown so Enemy can attack again
+                attackTimers[(int)curAttack] = 0;
+                curAttackTimer = 0;
+            }
         }
     }
 
+    private void ChargeAttack()
+    {
+        if ((curTarget.position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge])
+        {
+            MyRigid.velocity = (curTarget.position - transform.position).normalized * chargeSpeed;
+            chargeDistance = (curTarget.position - transform.position).magnitude;
+            chargePoint = transform.position;
+            attackDurations[(int)AttackTypes.Charge] = chargeDistance / chargeSpeed;
+            attackUsed = true;
+            curAttack = AttackTypes.Charge;
+            charging = true;
+            print("charge");
+        }
+    }
+
+    private void MeleeAttack()
+    {
+        if (MeleeRangeCheck())
+        {
+            print("Melee Attack");
+            attackUsed = true;
+            curAttack = AttackTypes.Melee;
+        }
+    }
 }

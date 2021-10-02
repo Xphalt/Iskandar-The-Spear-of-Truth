@@ -14,12 +14,12 @@ public class FOVEditorGizmo : Editor
     {
         EnemyBase enemy = (EnemyBase)target;
         Handles.color = Color.green;
-        Handles.DrawWireArc(enemy.transform.position, Vector3.up, Vector3.forward, 360, enemy.viewRadius);
+        Handles.DrawWireArc(enemy.transform.position, Vector3.up, Vector3.forward, 360, enemy.chaseRadius);
         Vector3 viewAngleA = enemy.DirFromAngle(-enemy.viewAngle/2, false);
         Vector3 viewAngleB = enemy.DirFromAngle(enemy.viewAngle / 2, false);
 
-        Handles.DrawLine(enemy.transform.position, enemy.transform.position + viewAngleA * enemy.viewRadius);
-        Handles.DrawLine(enemy.transform.position, enemy.transform.position + viewAngleB * enemy.viewRadius);
+        Handles.DrawLine(enemy.transform.position, enemy.transform.position + viewAngleA * enemy.chaseRadius);
+        Handles.DrawLine(enemy.transform.position, enemy.transform.position + viewAngleB * enemy.chaseRadius);
 
         Handles.color = Color.yellow;
         foreach(Transform visibleTarget in enemy.visibleTargets)
