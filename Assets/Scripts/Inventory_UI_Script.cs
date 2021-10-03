@@ -22,21 +22,33 @@ public class Inventory_UI_Script : MonoBehaviour
         // Canvas = GetComponent<Canvas>();
 
         InventoryGO = GetComponent<GameObject>();
-        inventorySlots = inventoryParent.GetComponentsInChildren<GameObject>();
+        //inventorySlots = inventoryParent.GetComponentsInChildren<GameObject>();
 
         //Need to get item count of children through foreach loop in hierachy
     }
 
     void Update()
     {
+        //if (Input.GetKeyDown(KeyCode.I))
+        //{
+        //    InventoryGO = GameObject.Find("Canvas/Inventory (Parent GO)");
+
+        //    if (InventoryGO.activeInHierarchy)
+        //        InventoryGO.SetActive(false);
+        //    else
+        //        InventoryGO.SetActive(true);
+        //}
+
+         InventoryGO = GameObject.Find("Canvas/Inventory (Parent GO)");
         if (Input.GetKeyDown(KeyCode.I))
         {
-            InventoryGO = GameObject.Find("Canvas/Inventory (Parent GO)");
-
-            if (InventoryGO.activeInHierarchy)
+            if (InventoryGO.activeSelf)
                 InventoryGO.SetActive(false);
             else
+            {
+
                 InventoryGO.SetActive(true);
+            }
         }
     }
 

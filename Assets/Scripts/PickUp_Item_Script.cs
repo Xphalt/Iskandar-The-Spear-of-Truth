@@ -6,17 +6,7 @@ public class PickUp_Item_Script : MonoBehaviour
 {
     [HideInInspector]
     public string chosenObject;
-
-    void Start()
-    {
-        
-    }
-
- 
-    void Update()
-    {
-        
-    }
+    public ItemObject item;
 
     /* __________________________________________________________________________________________________________
     Detecting item with mouse click.
@@ -32,16 +22,19 @@ public class PickUp_Item_Script : MonoBehaviour
             if (hit.transform.CompareTag("redCube"))
             {
                 chosenObject = "red";
+                Inventory_Script.instance.Add(item);
                 Destroy(gameObject);
             }
             if (hit.transform.CompareTag("greenCube"))
             {
                 chosenObject = "green";
+                Inventory_Script.instance.Add(item);
                 Destroy(gameObject);
             }
             if (hit.transform.CompareTag("blueCube"))
             {
                 chosenObject = "blue";
+                Inventory_Script.instance.Add(item);
                 Destroy(gameObject);
             }
             print(chosenObject);
