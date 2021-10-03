@@ -15,12 +15,12 @@ public class SoundPlayer : MonoBehaviour
         aSource = GetComponent<AudioSource>();
     }            
 
-
     //When calling, make sure the correct soundType is set beforehand, then call PlayAudio
     public void PlayAudio()
     {
         Debug.Log(soundType + " " + SoundLibrary.instance.SoundLib[soundType].Count);
         aSource.clip = SoundLibrary.instance.SoundLib[soundType][Random.Range(0, SoundLibrary.instance.SoundLib[soundType].Count)];
         aSource.Play();
-    }
+        UIManager.instance.UpdateHealthBar(-1);
+    }       
 }
