@@ -1085,7 +1085,7 @@ GameObject:
   - component: {fileID: 1497515275}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1139,12 +1139,17 @@ MonoBehaviour:
   swordObject: {fileID: 1534772812}
   swordEmpty: {fileID: 1685947107}
   swordDefaultPosition: {fileID: 1054063952}
+  throwTimeBeforeSpinInPlace: 0.8
+  throwTimeSpinningInPlace: 0.5
+  throwSpeed: 20
+  throwReturnSpeed: 28
+  interactCooldown: 0.4
   interactableIcon: {fileID: 1203934960}
   canBeDamaged: 1
   canAttack: 1
   dashCooldown: 1
   attackCooldownAfterDash: 0.5
-  invincibilityFramesAfterDash: 0
+  invincibilityFramesAfterDash: 0.3
   dashForce: 500
   dashAnalogueReq: 0.5
   timeToThrowSword: 0.4
@@ -1157,17 +1162,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1497515271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2c79db50d9cdb346ac126fe488d551a, type: 3}
+  m_Script: {fileID: 11500000, guid: 553981dbaf6452a458667fa8ccc7c7d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwTimeBeforeSpinInPlace: 1
-  throwTimeSpinningInPlace: 0.5
-  throwSpeed: 13
-  throwSwordDamageRate: 0.25
-  throwReturnSpeed: 25
-  attackDamage: 1
-  attackCooldown: 0.3
   health: 4
+  attackDamage: 0
 --- !u!1 &1534772812
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,7 +1231,7 @@ GameObject:
   - component: {fileID: 1685947109}
   m_Layer: 0
   m_Name: EmptySword
-  m_TagString: Untagged
+  m_TagString: playerSword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

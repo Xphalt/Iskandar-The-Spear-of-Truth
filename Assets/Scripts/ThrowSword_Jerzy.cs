@@ -24,10 +24,10 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     void Start()
     {
-        throwTimeBeforeSpinInPlace = player.GetComponent<PlayerStats_Jerzy>().throwTimeBeforeSpinInPlace;
-        throwTimeSpinningInPlace = player.GetComponent<PlayerStats_Jerzy>().throwTimeSpinningInPlace;
-        throwSpeed = player.GetComponent<PlayerStats_Jerzy>().throwSpeed;
-        returningSpeed = player.GetComponent<PlayerStats_Jerzy>().throwReturnSpeed;
+        throwTimeBeforeSpinInPlace = player.GetComponent<PlayerMovement_Jerzy>().throwTimeBeforeSpinInPlace;
+        throwTimeSpinningInPlace = player.GetComponent<PlayerMovement_Jerzy>().throwTimeSpinningInPlace;
+        throwSpeed = player.GetComponent<PlayerMovement_Jerzy>().throwSpeed;
+        returningSpeed = player.GetComponent<PlayerMovement_Jerzy>().throwReturnSpeed;
 
     }
 

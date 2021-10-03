@@ -14,13 +14,18 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     List<GameObject> listOfInteractablesWithinRange;
     GameObject closestInteractable;
 
+    public float throwTimeBeforeSpinInPlace;
+    public float throwTimeSpinningInPlace;
+    public float throwSpeed;
+    public float throwReturnSpeed;
+
+    public float interactCooldown;
+
     public GameObject interactableIcon;
 
     bool canInteract = false;
 
     float timeSinceLastInteract;
-
-    float interactCooldown;
 
     public bool canBeDamaged = true;
     public bool canAttack = true;
@@ -46,7 +51,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         swordAnimator = swordObject.GetComponent<Animator>();
-        interactCooldown = GetComponent<PlayerStats_Jerzy>().attackCooldown;
         listOfInteractablesWithinRange = new List<GameObject>();
     }
 
@@ -221,18 +225,5 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int amt)
-    {
-        if(canBeDamaged)
-        {
-            GetComponent<PlayerStats_Jerzy>().health -= amt;
-            // anything that happens to the player when taking damage happens here
-
-            if(GetComponent<PlayerStats_Jerzy>().health <= 0)
-            {
-                // player dies
-            }
-        }
-    }
 
 }
