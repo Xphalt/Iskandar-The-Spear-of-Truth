@@ -9,10 +9,8 @@ public class UIManager : MonoBehaviour
 {
     #region Health Bar
 
-    // :'( Bork 
-
     //////////////////////////////////////////////
-    // To use the Health Bar UI Updater simply use 'UIManager.healthChange = -1;' with '-1' as an example of taking 1 hp of damage
+    // To use the Health Bar UI Updater simply use 'UIManager.UpdateHealthBar(-1);' with '-1' as an example of taking 1 hp of damage
     //////////////////////////////////////////////
 
     [Tooltip("Health Bar Slider Parent Prefab")]
