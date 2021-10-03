@@ -1,33 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Item_Slot_Script : MonoBehaviour
 {
-    #region
+    #region Variables
 
     public Image itemIcon, removeIcon;
     public Button itemButton, removeButton;
     public GameObject pickUpScript;
 
+    ItemObject myItem;
+
     private string chosenItem;
 
     #endregion
-
-    void Start()
-    {
-        
-    }
-
 
     void Update()
     {
        // AddItem();
     }
 
-    void AddItem()
+    public void AddItem(ItemObject  newItem)
     {
+        myItem = newItem;
+        itemIcon.sprite = myItem.icon;
+
         //Re-enable item icon settings.
         itemButton.interactable = true;
         itemIcon.enabled = true;
@@ -60,5 +57,17 @@ public class Item_Slot_Script : MonoBehaviour
         removeButton.interactable = true;
         removeIcon.enabled = true;
 
+    }
+
+    public void RemoveItem()
+    {
+        myItem = null;
+
+        itemIcon.sprite = null;
+        itemIcon.enabled = false;
+        itemButton.interactable = false;
+
+        removeButton.interactable = false;
+        removeIcon.enabled = false;
     }
 }

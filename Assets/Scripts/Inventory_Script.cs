@@ -4,9 +4,22 @@ using UnityEngine;
 
 public class Inventory_Script : MonoBehaviour
 {
+    #region Variables
     //A static inventory instance means that there'll only be 1 inventory (no duplicates)
     public static Inventory_Script instance;
     public List<ItemObject> myItems = new List<ItemObject>();
+
+    /*__________________________________________________________________________________
+    * All objects containing the delegate method will be updated automatically.
+    * Methods can subscribe to this event.
+    * __________________________________________________________________________________*/
+    public delegate void OnItemChanged(); 
+    public OnItemChanged onItemChangedCallback;
+    //__________________________________________________________________________________
+
+    public int space = 18;
+
+    #endregion
 
     #region Singleton 
     private void Awake()
@@ -21,19 +34,38 @@ public class Inventory_Script : MonoBehaviour
     }
     #endregion
 
-    public void Add(ItemObject item)
+    public bool Add(ItemObject item)
     {
         //If item is not immediatly equipped, add to inventory.
         if (!item.isEquipped)
         {
+            if (myItems.Count >= space)
+            {
+                print("Inventory full!");
+                return false;
+            }
             myItems.Add(item);
+
+            if (onItemChangedCallback != null)
+            {
+                //This triggers the callback event.
+                onItemChangedCallback.Invoke();
+            }
         }
-        
+        return true;
     }
 
     public void Remove(ItemObject item)
     {
         myItems.Remove(item);
+
+        if (onItemChangedCallback != null)
+        {
+            //This triggers the callback event.
+            onItemChangedCallback.Invoke();
+        }
     }
+
+
 
 }

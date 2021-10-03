@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory_UI_Script : MonoBehaviour
@@ -7,11 +5,12 @@ public class Inventory_UI_Script : MonoBehaviour
     #region
 
     //public Canvas Canvas;//
-    //private GameObject InventoryGO;
-    public int items;
-    public Transform inventoryParent;
-    public GameObject InventoryGO;
-    private GameObject[] inventorySlots;
+   //  public GameObject inventoryGO;
+
+    public Transform itemsSlotParent;
+    Item_Slot_Script[] inventorySlots;
+
+    Inventory_Script inventory;
 
 
     #endregion
@@ -19,47 +18,56 @@ public class Inventory_UI_Script : MonoBehaviour
 
     void Start()
     {
-        // Canvas = GetComponent<Canvas>();
+        //Caching inventory instance 
+        inventory = Inventory_Script.instance;
+        //This event is triggered whenever we update the inventory.
+        inventory.onItemChangedCallback += UpdateInventory;
 
-        InventoryGO = GetComponent<GameObject>();
+        inventorySlots = itemsSlotParent.GetComponentsInChildren<Item_Slot_Script>();
+
+       // inventoryGO = GetComponent<GameObject>();
+
         //inventorySlots = inventoryParent.GetComponentsInChildren<GameObject>();
-
+        // Canvas = GetComponent<Canvas>();
         //Need to get item count of children through foreach loop in hierachy
     }
 
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.I))
-        //{
-        //    InventoryGO = GameObject.Find("Canvas/Inventory (Parent GO)");
+    //void Update()
+    //{
+    //    //if (Input.GetKeyDown(KeyCode.I))
+    //    //{
+    //    //    InventoryGO = GameObject.Find("Canvas/Inventory (Parent GO)");
 
-        //    if (InventoryGO.activeInHierarchy)
-        //        InventoryGO.SetActive(false);
-        //    else
-        //        InventoryGO.SetActive(true);
-        //}
+    //    //    if (InventoryGO.activeInHierarchy)
+    //    //        InventoryGO.SetActive(false);
+    //    //    else
+    //    //        InventoryGO.SetActive(true);
+    //    //}
 
-         InventoryGO = GameObject.Find("Canvas/Inventory (Parent GO)");
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            if (InventoryGO.activeSelf)
-                InventoryGO.SetActive(false);
-            else
-            {
+    //     inventoryGO = GameObject.Find("Canvas/Inventory (Parent GO)");
+    //    if (Input.GetKeyDown(KeyCode.I))
+    //    {
+    //        if (inventoryGO.activeSelf)
+    //            inventoryGO.SetActive(false);
+    //        else
+    //        {
 
-                InventoryGO.SetActive(true);
-            }
-        }
-    }
+    //            inventoryGO.SetActive(true);
+    //        }
+    //    }
+    //}
 
     void UpdateInventory()
     {
         for (int i = 0; i < inventorySlots.Length; i++)
         {
-            if (i < items)
+            if (i < inventory.myItems.Count)
             {
-             //   inventorySlots[i].ad
+                inventorySlots[i].AddItem(inventory.myItems[i]);
             }
+            else
+                inventorySlots[i].RemoveItem();
         }
+     
     }
 }

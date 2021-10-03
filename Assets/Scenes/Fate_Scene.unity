@@ -2189,9 +2189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71378d4e76848c2419586be8c653533f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items: 10
-  inventoryParent: {fileID: 1024598921}
-  InventoryGO: {fileID: 1024598920}
+  itemsSlotParent: {fileID: 50570742}
 --- !u!222 &1024598923
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3498,9 +3496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71378d4e76848c2419586be8c653533f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items: 0
-  inventoryParent: {fileID: 0}
-  InventoryGO: {fileID: 1024598920}
+  itemsSlotParent: {fileID: 0}
 --- !u!4 &1951084490
 Transform:
   m_ObjectHideFlags: 0
@@ -3542,6 +3538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myItems: []
+  space: 18
 --- !u!1 &1961444914
 GameObject:
   m_ObjectHideFlags: 0
@@ -3941,6 +3938,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4185234301859153405, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4185234301859153407, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
       propertyPath: m_Interactable
       value: 0
@@ -3959,7 +3960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4185234301929909641, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
