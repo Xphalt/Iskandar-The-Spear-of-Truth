@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* __________________________________________________________________________________________________________
+This script controls the inventory functionality such as adding and removing items.
+_____________________________________________________________________________________________________________*/
+
 public class Inventory_Script : MonoBehaviour
 {
     #region Variables

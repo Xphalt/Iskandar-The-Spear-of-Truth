@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* __________________________________________________________________________________________________________
+This script allows the player to click on an object and add it to the inventory.
+_____________________________________________________________________________________________________________*/
+
 public class PickUp_Item_Script : MonoBehaviour
 {
     [HideInInspector]

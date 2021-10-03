@@ -1,17 +1,18 @@
 using UnityEngine;
 
+/* __________________________________________________________________________________________________________
+This script controls the UI for the inventory menu.
+_____________________________________________________________________________________________________________*/
+
 public class Inventory_UI_Script : MonoBehaviour
 {
     #region
 
-    //public Canvas Canvas;//
-   //  public GameObject inventoryGO;
-
     public Transform itemsSlotParent;
+    public GameObject inventoryUI;
     Item_Slot_Script[] inventorySlots;
 
     Inventory_Script inventory;
-
 
     #endregion
 
@@ -24,38 +25,16 @@ public class Inventory_UI_Script : MonoBehaviour
         inventory.onItemChangedCallback += UpdateInventory;
 
         inventorySlots = itemsSlotParent.GetComponentsInChildren<Item_Slot_Script>();
-
-       // inventoryGO = GetComponent<GameObject>();
-
-        //inventorySlots = inventoryParent.GetComponentsInChildren<GameObject>();
-        // Canvas = GetComponent<Canvas>();
-        //Need to get item count of children through foreach loop in hierachy
     }
 
-    //void Update()
-    //{
-    //    //if (Input.GetKeyDown(KeyCode.I))
-    //    //{
-    //    //    InventoryGO = GameObject.Find("Canvas/Inventory (Parent GO)");
-
-    //    //    if (InventoryGO.activeInHierarchy)
-    //    //        InventoryGO.SetActive(false);
-    //    //    else
-    //    //        InventoryGO.SetActive(true);
-    //    //}
-
-    //     inventoryGO = GameObject.Find("Canvas/Inventory (Parent GO)");
-    //    if (Input.GetKeyDown(KeyCode.I))
-    //    {
-    //        if (inventoryGO.activeSelf)
-    //            inventoryGO.SetActive(false);
-    //        else
-    //        {
-
-    //            inventoryGO.SetActive(true);
-    //        }
-    //    }
-    //}
+    private void Update()
+    {
+        //------------------Open/close inventory with key "I"----------------------//
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            inventoryUI.SetActive(!inventoryUI.activeSelf);
+        }
+    }
 
     void UpdateInventory()
     {
@@ -68,6 +47,5 @@ public class Inventory_UI_Script : MonoBehaviour
             else
                 inventorySlots[i].RemoveItem();
         }
-     
     }
 }

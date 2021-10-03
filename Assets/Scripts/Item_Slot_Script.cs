@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/* __________________________________________________________________________________________________________
+This script is given to each individual item and controls their UI.
+_____________________________________________________________________________________________________________*/
+
 public class Item_Slot_Script : MonoBehaviour
 {
     #region Variables
@@ -9,48 +13,21 @@ public class Item_Slot_Script : MonoBehaviour
     public Button itemButton, removeButton;
     public GameObject pickUpScript;
 
-    ItemObject myItem;
-
-    private string chosenItem;
+    ItemObject thisItem;
 
     #endregion
 
-    void Update()
-    {
-       // AddItem();
-    }
-
     public void AddItem(ItemObject  newItem)
     {
-        myItem = newItem;
-        itemIcon.sprite = myItem.icon;
+        /*_________________________________________________________________________
+         * This sets the inventory icon to the object being picked up.
+         * ________________________________________________________________________*/
+        thisItem = newItem;
+        itemIcon.sprite = thisItem.icon;
 
         //Re-enable item icon settings.
         itemButton.interactable = true;
         itemIcon.enabled = true;
-
-        /*__________________________________________________________________________
-         * Change item icon image to new image from assets.
-         * _________________________________________________________________________*/
-        //Find the chosen item in the PickUp_Items_Script
-        chosenItem = pickUpScript.GetComponent<PickUp_Item_Script>().chosenObject;
-
-        if (chosenItem == "red")
-        {
-            itemIcon.sprite = Resources.Load<Sprite>("Assets/Images/Red_Cube_Img.png"); // <---- THIS NOT WORKING
-            itemIcon.color = Color.red;
-            //icon.sprite = Resources.Load("Assets/Images/Red_Cube_Img") as Sprite;
-            print("RED");
-        }
-        if (chosenItem == "blue")
-        {
-            itemIcon.color = Color.blue;
-        }
-        if (chosenItem == "green")
-        {
-            itemIcon.color = Color.green;
-        }
-
         //_________________________________________________________________________
 
         //Re-enable remove icon settings.
@@ -59,9 +36,9 @@ public class Item_Slot_Script : MonoBehaviour
 
     }
 
-    public void RemoveItem()
+    public void ClearSlot()
     {
-        myItem = null;
+        thisItem = null;
 
         itemIcon.sprite = null;
         itemIcon.enabled = false;
@@ -69,5 +46,18 @@ public class Item_Slot_Script : MonoBehaviour
 
         removeButton.interactable = false;
         removeIcon.enabled = false;
+    }
+
+    public void RemoveItem()
+    {
+        Inventory_Script.instance.Remove(thisItem);
+    }
+
+    public void UseItem()
+    {
+        if (thisItem != null)
+        {
+            thisItem.Use();
+        }
     }
 }
