@@ -71,29 +71,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         if(_playerTargetingScript.IsTargeting())
         {
-            /////       v1      /////
-            // Move relative to targeted object
-            //Quaternion targetRotation = _targetedTransform.localRotation;
-
-            //if(m_Input.x >= 0)
-            //{
-            //    m_Input += targetRotation * Vector3.right;
-            //}
-            //else
-            //{
-            //    m_Input += targetRotation * Vector3.left;
-            //}
-
-            //m_Input.Normalize();
-
-            ////Vector3 offset = transform.position - _targetedTransform.position;
-
-            //m_Rigidbody.MovePosition(transform.position + m_Input * Time.deltaTime * m_Speed);
-
-
-
-
-
             // Set player rotation to look at targeted object
             Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
                                 0.0f,
@@ -102,59 +79,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
 
 
-
-
-
             /////       v2      /////
-            Vector3 direction = transform.TransformDirection(m_Input);
+            Vector3 direction = playerModel.transform.TransformDirection(m_Input);
             direction.Normalize();
 
             m_Rigidbody.MovePosition(m_Rigidbody.position + direction * Time.deltaTime * m_Speed);
-
-
-
-
-
-            /////       v3      /////
-            //Vector3 direction =  transform.right * m_Input.x;
-            //direction += transform.forward * m_Input.z;
-
-            //direction.Normalize();
-
-            //m_Rigidbody.MovePosition(transform.position + direction * Time.deltaTime * m_Speed);
-
-
-
-
-
-            /////      v4      /////
-            //Vector3 direction = transform.InverseTransformDirection(m_Input);
-            //direction.Normalize();
-
-            //m_Rigidbody.MovePosition(m_Rigidbody.position + m_Input * Time.deltaTime * m_Speed);
-
-
-
-
-            /////       v5      /////
-            //Vector3 localRightVec = transform.TransformDirection(transform.right);
-            //print("localRightVec = " + localRightVec);
-            //Vector3 localForwardVec = transform.TransformDirection(transform.forward);
-            //print("localForwardVec = " + localForwardVec);
-
-            //m_Input.Normalize();
-
-            //localRightVec *= m_Input.x;
-            //localForwardVec *= m_Input.z;
-
-            //Vector3 direction = localForwardVec + localRightVec;
-            //direction.Normalize();
-
-            //print(direction);
-
-            //m_Rigidbody.MovePosition(transform.position + direction * Time.deltaTime * m_Speed);
-
-
 		}
         else
         {
