@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Sets the players targeted object
 public class Player_Targeting_Jack : MonoBehaviour
 {
+    public Transform playerModelTransform;
+
     private Transform _targetedTransform = null;
     private bool _targetableObjectHit = false;
     private const int TARGETABLE_LAYERMASK = 1 << 7;
@@ -27,10 +30,6 @@ public class Player_Targeting_Jack : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X)) //temporary until input system setup
         {
-            if(IsTargeting())
-            {
-
-			}
             TargetObject();
             if(IsTargeting())
             {
@@ -45,11 +44,14 @@ public class Player_Targeting_Jack : MonoBehaviour
 		}
     }
 
+    // Returns true if the player is currently targeting an object
     public bool IsTargeting()
     {
         return _targetedTransform;
 	}
 
+    // If already targeting an object calling this method will untarget the object.
+    // Otherwise, it will target the nearest targetable object in front of the player if any are within range
     public void TargetObject()
     {
         if(IsTargeting())
@@ -60,7 +62,7 @@ public class Player_Targeting_Jack : MonoBehaviour
         {
             _targetableObjectHit = Physics.BoxCast(transform.position,
                                             _boxCastHalfDimensions,
-                                            transform.forward,
+                                            playerModelTransform.forward,
                                             out _targetRaycastHit,
                                             transform.rotation,
                                             _boxCastMaxDistance,
