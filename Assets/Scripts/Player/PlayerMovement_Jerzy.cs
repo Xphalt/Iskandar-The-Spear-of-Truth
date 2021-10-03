@@ -39,11 +39,17 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public float timeToThrowSword;
     private bool isAttacking = false;
 
+
+
+    private Player_Targeting_Jack _playerTargetingScript;
+    private Transform _targetedTransform = null;
+
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         swordAnimator = swordObject.GetComponent<Animator>();
         attackCooldown = GetComponent<PlayerStats_Jerzy>().attackCooldown;
+        _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
     }
 
 
@@ -62,37 +68,131 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         // basic player movement using input system
         Vector3 m_Input = new Vector3 (Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-        m_Input.Normalize();
-        m_Rigidbody.MovePosition(transform.position + m_Input * Time.deltaTime * m_Speed);
 
-        if(timeSinceLastDash >= attackCooldownAfterDash)
+        if(_playerTargetingScript.IsTargeting())
         {
-            canAttack = true;
-        }
-        if(timeSinceLastDash >= invincibilityFramesAfterDash)
-        {
-            canBeDamaged = true;
-        }
+            /////       v1      /////
+            // Move relative to targeted object
+            //Quaternion targetRotation = _targetedTransform.localRotation;
 
-        if (Input.GetAxis("Dash") > 0 && timeSinceLastDash >= dashCooldown)
+            //if(m_Input.x >= 0)
+            //{
+            //    m_Input += targetRotation * Vector3.right;
+            //}
+            //else
+            //{
+            //    m_Input += targetRotation * Vector3.left;
+            //}
+
+            //m_Input.Normalize();
+
+            ////Vector3 offset = transform.position - _targetedTransform.position;
+
+            //m_Rigidbody.MovePosition(transform.position + m_Input * Time.deltaTime * m_Speed);
+
+
+
+
+
+            // Set player rotation to look at targeted object
+            Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
+                                0.0f,
+                                _targetedTransform.position.z - transform.position.z);
+
+            playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
+
+
+
+
+
+            /////       v2      /////
+            Vector3 direction = transform.TransformDirection(m_Input);
+            direction.Normalize();
+
+            m_Rigidbody.MovePosition(m_Rigidbody.position + direction * Time.deltaTime * m_Speed);
+
+
+
+
+
+            /////       v3      /////
+            //Vector3 direction =  transform.right * m_Input.x;
+            //direction += transform.forward * m_Input.z;
+
+            //direction.Normalize();
+
+            //m_Rigidbody.MovePosition(transform.position + direction * Time.deltaTime * m_Speed);
+
+
+
+
+
+            /////      v4      /////
+            //Vector3 direction = transform.InverseTransformDirection(m_Input);
+            //direction.Normalize();
+
+            //m_Rigidbody.MovePosition(m_Rigidbody.position + m_Input * Time.deltaTime * m_Speed);
+
+
+
+
+            /////       v5      /////
+            //Vector3 localRightVec = transform.TransformDirection(transform.right);
+            //print("localRightVec = " + localRightVec);
+            //Vector3 localForwardVec = transform.TransformDirection(transform.forward);
+            //print("localForwardVec = " + localForwardVec);
+
+            //m_Input.Normalize();
+
+            //localRightVec *= m_Input.x;
+            //localForwardVec *= m_Input.z;
+
+            //Vector3 direction = localForwardVec + localRightVec;
+            //direction.Normalize();
+
+            //print(direction);
+
+            //m_Rigidbody.MovePosition(transform.position + direction * Time.deltaTime * m_Speed);
+
+
+		}
+        else
         {
-            if( Mathf.Abs(m_Input.x) > dashAnalogueReq || Mathf.Abs(m_Input.z) > dashAnalogueReq)
+            // Move normally
+            m_Input.Normalize();
+
+            m_Rigidbody.MovePosition(transform.position + m_Input * Time.deltaTime * m_Speed);
+
+            if (timeSinceLastDash >= attackCooldownAfterDash)
             {
-                // dash
-                canAttack = false;
-                canBeDamaged = false;
-                m_Rigidbody.AddForce(m_Input * dashForce);
-                timeSinceLastDash = 0;
+                canAttack = true;
+            }
+            if (timeSinceLastDash >= invincibilityFramesAfterDash)
+            {
+                canBeDamaged = true;
             }
 
-        }
+            if (Input.GetAxis("Dash") > 0 && timeSinceLastDash >= dashCooldown)
+            {
+                if (Mathf.Abs(m_Input.x) > dashAnalogueReq || Mathf.Abs(m_Input.z) > dashAnalogueReq)
+                {
+                    // dash
+                    canAttack = false;
+                    canBeDamaged = false;
+                    m_Rigidbody.AddForce(m_Input * dashForce);
+                    timeSinceLastDash = 0;
+                }
 
-        // set the player to look in the same direction as an analogue stick is pointing
-        Quaternion targetRotation = Quaternion.LookRotation(m_Input);
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical")!=0)
-        {
-            playerModel.transform.rotation = targetRotation;
-            swordLookRotation = targetRotation;
+            }
+
+            // set the player to look in the same direction as an analogue stick is pointing
+            Quaternion targetRotation = Quaternion.LookRotation(m_Input);
+            if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+            {
+                playerModel.transform.rotation = targetRotation;
+                swordLookRotation = targetRotation;
+            }
+
         }
 
         // canAttack also includes interacting
@@ -176,4 +276,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
     }
 
+    public void SetTargetedTransform(Transform newTargetedTransform)
+    {
+        _targetedTransform = newTargetedTransform;
+	}
 }
