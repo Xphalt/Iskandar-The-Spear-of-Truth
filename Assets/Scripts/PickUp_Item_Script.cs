@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PickUp_Item_Script : MonoBehaviour
 {
-  
+    [HideInInspector]
+    public string chosenObject;
+
     void Start()
     {
         
@@ -14,13 +16,6 @@ public class PickUp_Item_Script : MonoBehaviour
     void Update()
     {
         
-    }
-
-    void PickUp()
-    {
-        //destroy gameobject in scene
-        //change image of inventory iten to object from empty
-        //turn the delete item interactable button on
     }
 
     /* __________________________________________________________________________________________________________
@@ -33,10 +28,23 @@ public class PickUp_Item_Script : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.transform.name.Contains("Cube"))
+            // if (hit.transform.name.Contains("Cube"))
+            if (hit.transform.CompareTag("redCube"))
             {
-                print("hit");
+                chosenObject = "red";
+                Destroy(gameObject);
             }
+            if (hit.transform.CompareTag("greenCube"))
+            {
+                chosenObject = "green";
+                Destroy(gameObject);
+            }
+            if (hit.transform.CompareTag("blueCube"))
+            {
+                chosenObject = "blue";
+                Destroy(gameObject);
+            }
+            print(chosenObject);
         }
     }
 }

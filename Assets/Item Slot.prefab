@@ -26,16 +26,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4185234301125713093}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.099999994, y: 0.39999998, z: 1}
   m_Children: []
-  m_Father: {fileID: 4185234301859153402}
+  m_Father: {fileID: 4185234301409706789}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.75201416, y: -8.835999}
+  m_AnchoredPosition: {x: 0.51732844, y: -2.6442723}
   m_SizeDelta: {x: 201.50201, y: 49.561005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4185234301125713097
@@ -129,6 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4185234301409706789}
+  - component: {fileID: 1678858866}
   m_Layer: 5
   m_Name: Item Slot
   m_TagString: Untagged
@@ -148,6 +149,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4185234301859153402}
+  - {fileID: 4185234301125713092}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -156,6 +158,23 @@ RectTransform:
   m_AnchoredPosition: {x: 42.55786, y: -42.89013}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1678858866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4185234301409706786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e643b08d9aa156e44a4f6f56fe9648ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemIcon: {fileID: 4185234301929909641}
+  removeIcon: {fileID: 4185234301125713094}
+  itemButton: {fileID: 4185234301859153407}
+  removeButton: {fileID: 4185234301125713095}
+  pickUpScript: {fileID: 0}
 --- !u!1 &4185234301859153403
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +206,6 @@ RectTransform:
   m_LocalScale: {x: 0.1, y: 0.4, z: 1}
   m_Children:
   - {fileID: 4185234301929909638}
-  - {fileID: 4185234301125713092}
   m_Father: {fileID: 4185234301409706789}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -336,7 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5, g: 0.16745284, b: 0.45735508, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
