@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class ScrDoor1 : MonoBehaviour
 {
-
+    //note this is a hitbox for the door opening animation,
     void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
             //insert door open animation here
-            print("success");
+            //print("test_success");
         }
     }
 }
