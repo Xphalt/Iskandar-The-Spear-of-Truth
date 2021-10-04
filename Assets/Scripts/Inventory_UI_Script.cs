@@ -6,7 +6,7 @@ ________________________________________________________________________________
 
 public class Inventory_UI_Script : MonoBehaviour
 {
-    #region
+    #region Variables
 
     public Transform itemsSlotParent;
     public GameObject inventoryUI;
@@ -42,10 +42,11 @@ public class Inventory_UI_Script : MonoBehaviour
         {
             if (i < inventory.myItems.Count)
             {
-                inventorySlots[i].AddItem(inventory.myItems[i]);
+                inventorySlots[i].UpdateSlotIcon(inventory.myItems[i]);
             }
             else
-                inventorySlots[i].RemoveItem();
+                inventorySlots[i].ClearSlot();
+
         }
     }
 }

@@ -2148,7 +2148,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1024598921}
   - component: {fileID: 1024598923}
-  - component: {fileID: 1024598922}
   m_Layer: 5
   m_Name: Inventory (Parent GO)
   m_TagString: Untagged
@@ -2177,20 +2176,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 521}
   m_SizeDelta: {x: 660, y: 174}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1024598922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1024598920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71378d4e76848c2419586be8c653533f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemsSlotParent: {fileID: 50570742}
-  inventoryUI: {fileID: 0}
 --- !u!222 &1024598923
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3475,9 +3460,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1951084490}
-  - component: {fileID: 1951084489}
-  - component: {fileID: 1951084491}
   - component: {fileID: 1951084492}
+  - component: {fileID: 1951084489}
   m_Layer: 0
   m_Name: Inventory Script Holder
   m_TagString: Untagged
@@ -3492,13 +3476,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1951084488}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71378d4e76848c2419586be8c653533f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemsSlotParent: {fileID: 0}
-  inventoryUI: {fileID: 0}
+  itemsSlotParent: {fileID: 50570742}
+  inventoryUI: {fileID: 1024598920}
 --- !u!4 &1951084490
 Transform:
   m_ObjectHideFlags: 0
@@ -3513,20 +3497,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1951084491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1951084488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2db4c32f790b5254f9ab0be32cb2be71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chosenObject: 
-  item: {fileID: 11400000, guid: d5c22a4e3a1d3d74cbac9ddcdc7f994f, type: 2}
 --- !u!114 &1951084492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3848,10 +3818,6 @@ PrefabInstance:
       propertyPath: pickUpScript
       value: 
       objectReference: {fileID: 1951084488}
-    - target: {fileID: 4185234301125713094, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4185234301409706786, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
       propertyPath: m_Name
       value: Item Slot
@@ -3938,30 +3904,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4185234301409706789, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4185234301859153405, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4185234301859153407, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
-      propertyPath: m_Interactable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4185234301929909641, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4185234301929909641, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4185234301929909641, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4185234301929909641, guid: e333e11787cd8d84ba023efb35709f84, type: 3}
-      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

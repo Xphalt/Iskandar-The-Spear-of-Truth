@@ -17,7 +17,7 @@ public class Item_Slot_Script : MonoBehaviour
 
     #endregion
 
-    public void AddItem(ItemObject  newItem)
+    public void UpdateSlotIcon(ItemObject  newItem)
     {
         /*_________________________________________________________________________
          * This sets the inventory icon to the object being picked up.
@@ -33,24 +33,23 @@ public class Item_Slot_Script : MonoBehaviour
         //Re-enable remove icon settings.
         removeButton.interactable = true;
         removeIcon.enabled = true;
-
     }
 
     public void ClearSlot()
     {
-        thisItem = null;
-
         itemIcon.sprite = null;
         itemIcon.enabled = false;
         itemButton.interactable = false;
 
         removeButton.interactable = false;
         removeIcon.enabled = false;
+
     }
 
     public void RemoveItem()
     {
-        Inventory_Script.instance.Remove(thisItem);
+        Inventory_Script.instance.RemoveItem(thisItem);
+        thisItem = null;
     }
 
     public void UseItem()
