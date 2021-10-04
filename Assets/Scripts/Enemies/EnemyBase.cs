@@ -76,7 +76,7 @@ public class EnemyBase : Patrol
     public override void Start()
     {
         base.Start();
-
+        defaultToZero = false;
         stats = GetComponent<CharacterStats>();
         StartCoroutine("FindTargetsWithDelay", findDelay);
         for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
@@ -110,8 +110,6 @@ public class EnemyBase : Patrol
                     break;
             }
         }
-
-        else if ((transform.position - chargePoint).magnitude >= chargeDistance) EndCharge();
 
         Attack();
         AttackEnd();
@@ -194,7 +192,7 @@ public class EnemyBase : Patrol
     {
         foreach (RaycastHit targetScan in Physics.RaycastAll(transform.position, transform.forward, attackRanges[(int)AttackTypes.Melee]))
         {
-            if (targetScan.transform == curTarget) return true;
+            if (targetScan.collider.transform == curTarget) return true;
         }
 
         return false;
@@ -234,12 +232,11 @@ public class EnemyBase : Patrol
         {
             MyRigid.velocity = (curTarget.position - transform.position).normalized * chargeSpeed;
             chargeDistance = (curTarget.position - transform.position).magnitude;
-            chargePoint = transform.position;
             attackDurations[(int)AttackTypes.Charge] = chargeDistance / chargeSpeed;
+
             attackUsed = true;
             curAttack = AttackTypes.Charge;
             charging = true;
-            print("charge");
         }
     }
 
@@ -247,14 +244,15 @@ public class EnemyBase : Patrol
     {
         if (MeleeRangeCheck())
         {
-            stats.DealDamage(curTarget.gameObject/*, attackDamages[(int)AttackTypes.Melee]*/);
+            stats.DealDamage(curTarget.gameObject, attackDamages[(int)AttackTypes.Melee]);
             attackUsed = true;
             curAttack = AttackTypes.Melee;
+
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform == curTarget && charging) stats.DealDamage(curTarget.gameObject/*, attackDamages[(int)AttackTypes.Charge]*/);
+        if (collision.collider.transform == curTarget && charging) stats.DealDamage(curTarget.gameObject, attackDamages[(int)AttackTypes.Charge]);
     }
 }

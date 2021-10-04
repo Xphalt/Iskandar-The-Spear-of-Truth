@@ -21,12 +21,19 @@ public class CharacterStats : MonoBehaviour
         // anything that happens when taking damage happens 
         if (health <= 0)
         {
-            // death
+            if (!_isPlayer) gameObject.SetActive(false);
         }     
     }
 
-    public void DealDamage(GameObject character)
+    public void DealDamage(GameObject character, int amt = 0)
     {
-        character.GetComponent<CharacterStats>().TakeDamage(attackDamage);
+        if (amt == 0) amt = attackDamage;
+        character.GetComponent<CharacterStats>().TakeDamage(amt);
+    }
+
+    public void DealDamage(GameObject character, float amt = 0)
+    {
+        if (amt == 0) amt = (float)attackDamage;
+        character.GetComponent<CharacterStats>().TakeDamage((int)amt);
     }
 }

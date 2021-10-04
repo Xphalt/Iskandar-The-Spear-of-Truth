@@ -737,6 +737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   attackDamage: 0
+  _isPlayer: 0
 --- !u!54 &1085316450
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -853,6 +854,7 @@ GameObject:
   - component: {fileID: 1556699424}
   - component: {fileID: 1556699423}
   - component: {fileID: 1556699422}
+  - component: {fileID: 1556699426}
   m_Layer: 3
   m_Name: player
   m_TagString: Player
@@ -937,6 +939,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1556699426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556699421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553981dbaf6452a458667fa8ccc7c7d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  attackDamage: 0
+  _isPlayer: 1
 --- !u!1001 &1937021354
 PrefabInstance:
   m_ObjectHideFlags: 0
