@@ -8,7 +8,7 @@ public class Player_Interaction_Jack : MonoBehaviour
     [SerializeField]
     private float _interactionRadius = 5.0f;
 
-    private const int INTERACTABLE_LAYERMASK = 1 << 6;
+    private const int INTERACTABLE_LAYERMASK = 1 << 8;
 
     private Collider[] _interactableColliders;
 
