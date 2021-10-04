@@ -5,10 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterStats))]
+
 public class EnemyBase : Patrol
 {
     protected Transform curTarget;
     public float chaseSpeed;
+    private CharacterStats stats;
 
     public enum AttackTypes
     { 
@@ -74,6 +77,7 @@ public class EnemyBase : Patrol
     {
         base.Start();
 
+        stats = GetComponent<CharacterStats>();
         StartCoroutine("FindTargetsWithDelay", findDelay);
         for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
         curState = EnemyStates.Patrolling;
@@ -243,9 +247,14 @@ public class EnemyBase : Patrol
     {
         if (MeleeRangeCheck())
         {
-            print("Melee Attack");
+            stats.DealDamage(curTarget.gameObject/*, attackDamages[(int)AttackTypes.Melee]*/);
             attackUsed = true;
             curAttack = AttackTypes.Melee;
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform == curTarget && charging) stats.DealDamage(curTarget.gameObject/*, attackDamages[(int)AttackTypes.Charge]*/);
     }
 }
