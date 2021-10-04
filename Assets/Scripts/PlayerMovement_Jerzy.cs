@@ -47,18 +47,17 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public float timeToThrowSword;
     private bool isAttacking = false;
 
+    private Player_Targeting_Jack _playerTargetingScript;
+    private Transform _targetedTransform = null;
+
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         swordAnimator = swordObject.GetComponent<Animator>();
         listOfInteractablesWithinRange = new List<GameObject>();
+        _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
     }
 
-
-    void Update()
-    {
-        
-    }
 
     void FixedUpdate()
     {
@@ -72,38 +71,62 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         // basic player movement using input system
         Vector3 m_Input = new Vector3 (Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-        m_Input.Normalize();
-        m_Rigidbody.MovePosition(transform.position + m_Input * Time.deltaTime * m_Speed);
+        if (_playerTargetingScript.IsTargeting())
+        {
+            // Set player rotation to look at targeted object
+            Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
+                                0.0f,
+                                _targetedTransform.position.z - transform.position.z);
 
-        if(timeSinceLastDash >= attackCooldownAfterDash)
-        {
-            canAttack = true;
-        }
-        if(timeSinceLastDash >= invincibilityFramesAfterDash)
-        {
-            canBeDamaged = true;
-        }
+            playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
 
-        if (Input.GetAxis("Dash") > 0 && timeSinceLastDash >= dashCooldown)
+            print(playerToTargetVector.magnitude);
+
+
+
+            Vector3 direction = playerModel.transform.TransformDirection(m_Input);
+            direction.Normalize();
+
+            m_Rigidbody.MovePosition(m_Rigidbody.position + direction * Time.deltaTime * m_Speed);
+
+
+        }
+        else
         {
-            if( Mathf.Abs(m_Input.x) > dashAnalogueReq || Mathf.Abs(m_Input.z) > dashAnalogueReq)
+            m_Input.Normalize();
+            m_Rigidbody.MovePosition(transform.position + m_Input * Time.deltaTime * m_Speed);
+
+            if (timeSinceLastDash >= attackCooldownAfterDash)
             {
-                // dash
-                canAttack = false;
-                canBeDamaged = false;
-                m_Rigidbody.AddForce(m_Input * dashForce);
-                timeSinceLastDash = 0;
+                canAttack = true;
+            }
+            if (timeSinceLastDash >= invincibilityFramesAfterDash)
+            {
+                canBeDamaged = true;
             }
 
-        }
+            if (Input.GetAxis("Dash") > 0 && timeSinceLastDash >= dashCooldown)
+            {
+                if (Mathf.Abs(m_Input.x) > dashAnalogueReq || Mathf.Abs(m_Input.z) > dashAnalogueReq)
+                {
+                    // dash
+                    canAttack = false;
+                    canBeDamaged = false;
+                    m_Rigidbody.AddForce(m_Input * dashForce);
+                    timeSinceLastDash = 0;
+                }
 
-        // set the player to look in the same direction as an analogue stick is pointing
-        Quaternion targetRotation = Quaternion.LookRotation(m_Input);
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical")!=0)
-        {
-            playerModel.transform.rotation = targetRotation;
-            swordLookRotation = targetRotation;
+            }
+
+            // set the player to look in the same direction as an analogue stick is pointing
+            Quaternion targetRotation = Quaternion.LookRotation(m_Input);
+            if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+            {
+                playerModel.transform.rotation = targetRotation;
+                swordLookRotation = targetRotation;
+            }
         }
+       
 
         // determines whether player will interact or attack
         if (listOfInteractablesWithinRange.Count > 0)
@@ -225,5 +248,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
     }
 
-
+    public void SetTargetedTransform(Transform newTargetedTransform)
+    {
+        _targetedTransform = newTargetedTransform;
+    }
 }

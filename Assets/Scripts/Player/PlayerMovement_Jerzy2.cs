@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement_Jerzy : MonoBehaviour
+public class PlayerMovement_Jerzy2 : MonoBehaviour
 {
     Rigidbody m_Rigidbody;
     public GameObject playerModel;
@@ -41,15 +41,13 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
 
 
-    private Player_Targeting_Jack _playerTargetingScript;
-    private Transform _targetedTransform = null;
+
 
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         swordAnimator = swordObject.GetComponent<Animator>();
         attackCooldown = GetComponent<PlayerStats_Jerzy>().attackCooldown;
-        _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
     }
 
 
@@ -69,27 +67,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         // basic player movement using input system
         Vector3 m_Input = new Vector3 (Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
-        if(_playerTargetingScript.IsTargeting())
-        {
-			// Set player rotation to look at targeted object
-			Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
-								0.0f,
-								_targetedTransform.position.z - transform.position.z);
-
-			playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
-
-			print(playerToTargetVector.magnitude);
-
-
-
-			Vector3 direction = playerModel.transform.TransformDirection(m_Input);
-			direction.Normalize();
-
-			m_Rigidbody.MovePosition(m_Rigidbody.position + direction * Time.deltaTime * m_Speed);
-
-
-		}
-        else
+        
+        if(true)
         {
             // Move normally
             m_Input.Normalize();
@@ -195,22 +174,4 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int amt)
-    {
-        if(canBeDamaged)
-        {
-            GetComponent<PlayerStats_Jerzy>().health -= amt;
-            // anything that happens to the player when taking damage happens here
-
-            if(GetComponent<PlayerStats_Jerzy>().health <= 0)
-            {
-                // player dies
-            }
-        }
-    }
-
-    public void SetTargetedTransform(Transform newTargetedTransform)
-    {
-        _targetedTransform = newTargetedTransform;
-	}
 }

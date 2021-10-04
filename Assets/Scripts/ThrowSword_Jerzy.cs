@@ -11,7 +11,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
     public GameObject swordModelBlade;
     Rigidbody swordRigidBody;
 
-
+    PlayerMovement_Jerzy moveScript;
 
     float throwTimeBeforeSpinInPlace;
     float throwTimeSpinningInPlace;
@@ -24,10 +24,11 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     void Start()
     {
-        throwTimeBeforeSpinInPlace = player.GetComponent<PlayerMovement_Jerzy>().throwTimeBeforeSpinInPlace;
-        throwTimeSpinningInPlace = player.GetComponent<PlayerMovement_Jerzy>().throwTimeSpinningInPlace;
-        throwSpeed = player.GetComponent<PlayerMovement_Jerzy>().throwSpeed;
-        returningSpeed = player.GetComponent<PlayerMovement_Jerzy>().throwReturnSpeed;
+        moveScript = player.GetComponent<PlayerMovement_Jerzy>();
+        throwTimeBeforeSpinInPlace = moveScript.throwTimeBeforeSpinInPlace;
+        throwTimeSpinningInPlace = moveScript.throwTimeSpinningInPlace;
+        throwSpeed = moveScript.throwSpeed;
+        returningSpeed = moveScript.throwReturnSpeed;
 
     }
 
