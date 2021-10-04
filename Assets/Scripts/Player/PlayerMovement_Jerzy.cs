@@ -55,7 +55,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 
     void FixedUpdate()
@@ -71,19 +71,23 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         if(_playerTargetingScript.IsTargeting())
         {
-            // Set player rotation to look at targeted object
-            Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
-                                0.0f,
-                                _targetedTransform.position.z - transform.position.z);
+			// Set player rotation to look at targeted object
+			Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
+								0.0f,
+								_targetedTransform.position.z - transform.position.z);
 
-            playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
+			playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
+
+			print(playerToTargetVector.magnitude);
 
 
-            /////       v2      /////
-            Vector3 direction = playerModel.transform.TransformDirection(m_Input);
-            direction.Normalize();
 
-            m_Rigidbody.MovePosition(m_Rigidbody.position + direction * Time.deltaTime * m_Speed);
+			Vector3 direction = playerModel.transform.TransformDirection(m_Input);
+			direction.Normalize();
+
+			m_Rigidbody.MovePosition(m_Rigidbody.position + direction * Time.deltaTime * m_Speed);
+
+
 		}
         else
         {
