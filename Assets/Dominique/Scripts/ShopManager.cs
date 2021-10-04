@@ -47,15 +47,8 @@ public class ShopManager : MonoBehaviour
     }
 
     // Pass in an integer that corresponds to the SHOP_TYPE enum
-    public void OpenShop(int shopTypeInt)
+    public void OpenShop(SHOP_TYPE shopType)
     {
-        // OnClick() doesn't take in enums so we have to cast the int to an enum - make sure we have a valid int
-        if (shopTypeInt < 0 || shopTypeInt >= (int)SHOP_TYPE.NUM_SHOP_TYPES)
-        {
-            Debug.LogError("Trying to open shop with a value out of enum range");
-        }
-        SHOP_TYPE shopType = (SHOP_TYPE)shopTypeInt;
-
         // Get the goods for the type of shop
         for (int i = 0; i < shops.Length; i++)
         {

@@ -6,6 +6,9 @@ public class CameraMove : MonoBehaviour
 {
     private float Row, Line;
     private Rigidbody rigi;
+
+
+
     void Start()
     {
         rigi = GetComponent<Rigidbody>(); 

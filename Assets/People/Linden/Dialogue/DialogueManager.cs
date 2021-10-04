@@ -57,6 +57,6 @@ public class DialogueManager : MonoBehaviour
     private void EndDialogue()
     {
         DialoguePanel.SetActive(false);
-        DialogueTrigger.SetActive(true);
+        //DialogueTrigger.SetActive(true);
     }
 }

@@ -7,22 +7,36 @@ public class Interactable_Object_Jack : MonoBehaviour
 {
     private enum InteractableType
     {
-        NPC,
+        NPC_Dialogue,
+        Seller,
         LootChest,
         Item,
     }
 
+    private DialogueTrigger _npcDialogueTrigger;
+    private ShopManager _shopManager;
+
     [SerializeField]
     InteractableType type;
 
-    // Runs the logic corresponding with the InteractableType of the object
-    public void Interact()
+	private void Start()
+	{
+        _shopManager = FindObjectOfType<ShopManager>();
+	}
+
+	// Runs the logic corresponding with the InteractableType of the object
+	public void Interact()
     {
         switch(type)
         {
-            case InteractableType.NPC:
+            case InteractableType.NPC_Dialogue:
                 // NPC interaction logic
-                print("NPC");
+                _npcDialogueTrigger = GetComponent<DialogueTrigger>();
+                _npcDialogueTrigger.TriggerDialogue();
+                break;
+
+            case InteractableType.Seller:
+                _shopManager.OpenShop(SHOP_TYPE.POTION_SELLER);
                 break;
 
             case InteractableType.LootChest:
