@@ -59,7 +59,7 @@ public class Inventory_Script : MonoBehaviour
         return true;
     }
 
-    public void Remove(ItemObject item)
+    public void RemoveItem(ItemObject item)
     {
         myItems.Remove(item);
 
@@ -69,7 +69,5 @@ public class Inventory_Script : MonoBehaviour
             onItemChangedCallback.Invoke();
         }
     }
-
-
 
 }
