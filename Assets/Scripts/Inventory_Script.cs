@@ -21,7 +21,8 @@ public class Inventory_Script : MonoBehaviour
     public OnItemChanged onItemChangedCallback;
     //__________________________________________________________________________________
 
-    public int space = 18;
+    //Change this value in inspector
+    public int inventorySpace = 18;
 
     #endregion
 
@@ -38,12 +39,15 @@ public class Inventory_Script : MonoBehaviour
     }
     #endregion
 
+    /*_________________________________________________________________________
+    * This method adds the chosen item into the inventory.
+    * ________________________________________________________________________*/
     public bool Add(ItemObject item)
     {
         //If item is not immediatly equipped, add to inventory.
         if (!item.isEquipped)
         {
-            if (myItems.Count >= space)
+            if (myItems.Count >= inventorySpace)
             {
                 print("Inventory full!");
                 return false;

@@ -36,6 +36,10 @@ public class Inventory_UI_Script : MonoBehaviour
         }
     }
 
+ /*_________________________________________________________________________
+ * This appends the item into the item list.
+ * Else, it clears the slot's UI if it's empty of values.
+ * ________________________________________________________________________*/
     void UpdateInventory()
     {
         for (int i = 0; i < inventorySlots.Length; i++)

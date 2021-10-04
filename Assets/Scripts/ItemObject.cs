@@ -12,6 +12,9 @@ public class ItemObject : ScriptableObject
     public Sprite icon = null;
     public bool isEquipped = false;
 
+    /*_________________________________________________________________________
+    * This is a virtual method, that can is called when an item is picked up.
+    * ________________________________________________________________________*/
     public virtual void Use()
     {
         //Using item code
