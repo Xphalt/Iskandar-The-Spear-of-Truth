@@ -35,6 +35,9 @@ public class Item_Slot_Script : MonoBehaviour
         removeIcon.enabled = true;
     }
 
+    /*_________________________________________________________________________
+     * This method updates the UI of the individual inventory slot.
+     * ________________________________________________________________________*/
     public void ClearSlot()
     {
         itemIcon.sprite = null;
@@ -43,9 +46,10 @@ public class Item_Slot_Script : MonoBehaviour
 
         removeButton.interactable = false;
         removeIcon.enabled = false;
-
     }
-
+    /*_________________________________________________________________________
+     * This method removes the item from the inventory programatically.
+     * ________________________________________________________________________*/
     public void RemoveItem()
     {
         Inventory_Script.instance.RemoveItem(thisItem);

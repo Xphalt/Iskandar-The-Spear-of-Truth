@@ -22,7 +22,10 @@ public class PickUp_Item_Script : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            // if (hit.transform.name.Contains("Cube"))
+            /*_________________________________________________________________________
+            * This just prints some testing values. Update this depending on the items.
+            * ________________________________________________________________________*/
+            
             if (hit.transform.CompareTag("redCube"))
             {
                 chosenObject = "red";
@@ -42,12 +45,16 @@ public class PickUp_Item_Script : MonoBehaviour
         }
     }
 
+    /*_________________________________________________________________________
+     * This method destroys the item that's clicked in the scene.
+     * ________________________________________________________________________*/
     void PickUp()
     {
         /* ______________________________________________________________________________________________
         * Method is a bool to ensure that object is not Destroyed if inventory's full.
         * ______________________________________________________________________________________________*/
         bool wasPickedUp = Inventory_Script.instance.Add(item);
+
         if (wasPickedUp)
         {
             Destroy(gameObject);
