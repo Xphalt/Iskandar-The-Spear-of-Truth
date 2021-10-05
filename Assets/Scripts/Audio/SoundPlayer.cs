@@ -21,6 +21,5 @@ public class SoundPlayer : MonoBehaviour
         Debug.Log(soundType + " " + SoundLibrary.instance.SoundLib[soundType].Count);
         aSource.clip = SoundLibrary.instance.SoundLib[soundType][Random.Range(0, SoundLibrary.instance.SoundLib[soundType].Count)];
         aSource.Play();
-        UIManager.instance.UpdateHealthBar(-1);
     }       
 }

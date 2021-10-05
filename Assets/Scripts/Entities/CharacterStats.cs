@@ -7,13 +7,22 @@ public class CharacterStats : MonoBehaviour
 
     public float health;
     public int attackDamage;
+
+    private SoundPlayer sfx;
+
     [SerializeField]
     private bool _isPlayer = false;
+
+    private void Start()
+    {
+        sfx = GetComponentInParent<SoundPlayer>();
+    }
 
     public void TakeDamage(int amt)
     {
         health -= amt;
-        if(_isPlayer)
+        sfx.PlayAudio();
+        if (_isPlayer)
         {
             UIManager.instance.UpdateHealthBar(-amt);
         }
