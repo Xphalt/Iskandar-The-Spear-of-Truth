@@ -15,6 +15,7 @@ public class Interactable_Object_Jack : MonoBehaviour
 
     private DialogueTrigger _npcDialogueTrigger;
     private ShopManager _shopManager;
+    private LootChest_Jerzy _lootChest;
 
     [SerializeField]
     InteractableType type;
@@ -41,6 +42,7 @@ public class Interactable_Object_Jack : MonoBehaviour
 
             case InteractableType.LootChest:
                 // Loot chest interaction logic
+                _lootChest.Interact();
                 print("loot chest");
                 break;
 

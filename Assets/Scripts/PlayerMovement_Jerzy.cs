@@ -107,6 +107,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             if (Input.GetAxis("Dash") > 0 && timeSinceLastDash >= dashCooldown)
             {
+                print("dash");
                 if (Mathf.Abs(m_Input.x) > dashAnalogueReq || Mathf.Abs(m_Input.z) > dashAnalogueReq)
                 {
                     // dash
