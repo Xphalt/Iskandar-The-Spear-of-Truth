@@ -87,7 +87,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             Vector3 direction = playerModel.transform.TransformDirection(m_Input);
             direction.Normalize();
 
-            m_Rigidbody.MovePosition(m_Rigidbody.position + direction * Time.deltaTime * m_Speed);
+            m_Rigidbody.velocity = (direction * m_Speed);
 
             // this line fixes the thrown sword direction when locked onto an enemy
             swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
@@ -96,7 +96,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         else
         {
             m_Input.Normalize();
-            m_Rigidbody.MovePosition(transform.position + m_Input * Time.deltaTime * m_Speed);
+            m_Rigidbody.velocity = ( m_Input * m_Speed);
 
             if (timeSinceLastDash >= attackCooldownAfterDash)
             {
