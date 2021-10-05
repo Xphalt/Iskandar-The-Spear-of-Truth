@@ -89,6 +89,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             m_Rigidbody.MovePosition(m_Rigidbody.position + direction * Time.deltaTime * m_Speed);
 
+            // this line fixes the thrown sword direction when locked onto an enemy
+            swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
 
         }
         else
