@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ArmorPiece
+{
+
+}
+
 [CreateAssetMenu(fileName = "New Armor Object", menuName = "Inventory System/Items/Armor")]
 public class ArmorObject_Sal : ItemObject_Sal
 {
@@ -9,7 +14,7 @@ public class ArmorObject_Sal : ItemObject_Sal
 
     public void Awake()
     {
-        type = ItemTyoe.Armor;
+        type = ItemType.Armor;
     }
 
     public override void Use()

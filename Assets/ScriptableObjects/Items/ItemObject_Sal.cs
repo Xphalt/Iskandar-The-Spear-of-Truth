@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemTyoe
+public enum ItemType
 {
     Weapon,
+    Shield,
     Armor
 }
 
 public abstract class ItemObject_Sal : ScriptableObject
 {
     public GameObject prefabDisplay;
-    public ItemTyoe type;
+    public ItemType type;
     public string description;
 
     public abstract void Use();

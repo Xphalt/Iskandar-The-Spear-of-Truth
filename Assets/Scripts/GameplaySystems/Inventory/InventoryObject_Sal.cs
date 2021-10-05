@@ -5,19 +5,29 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 public class InventoryObject_Sal : ScriptableObject
 {
+    public int maxCapacity;
     public List<InventorySlot> Storage = new List<InventorySlot>();
-    public void AddItem(ItemObject_Sal p_item, int p_amount)
+    public bool AddItem(ItemObject_Sal p_item, int p_amount)
     { 
         for (int i = 0; i < Storage.Count; i++)
         {
             if(Storage[i].item == p_item)   //check if item is already in the inventory
             {
                 Storage[i].AddAmount(p_amount); 
-                return;
+                return true;
             }
-        } 
-       
-        Storage.Add(new InventorySlot(p_item, p_amount));
+        }
+
+        if (Storage.Count >= maxCapacity)
+        {
+            Debug.Log("Full capacity reached on inventory: " + this.name);
+            return false;
+        }
+        else
+        {
+            Storage.Add(new InventorySlot(p_item, p_amount));
+            return true;
+        }
     }
     public void RemoveItem(ItemObject_Sal p_item, int p_amount)
     {
@@ -37,6 +47,13 @@ public class InventoryObject_Sal : ScriptableObject
     }
 }
 
+public enum slotType
+{
+    LeftHand,
+    rightHand,
+    Armor,
+    Default
+}
 
 [System.Serializable]
 public class InventorySlot
