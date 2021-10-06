@@ -1,6 +1,6 @@
 ﻿//Bernardo Mendes
 //AI Programming Dept.
-//Latest Rev: 29/09/2021
+//Latest Rev: 06/10/2021
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -87,7 +87,7 @@ public class EnemyBase : Patrol
     {
         base.Update();
 
-        agent.enabled = curState == EnemyStates.Patrolling;
+        //agent.enabled = curState == EnemyStates.Patrolling;
 
         if (!charging)
         {
@@ -100,8 +100,10 @@ public class EnemyBase : Patrol
                 case EnemyStates.Chasing:
                     //seek player position and go to it
                     //transform.position = Vector3.MoveTowards(transform.position, curTarget.position, chaseSpeed * Time.deltaTime); //Use velocity?
-                    MyRigid.velocity = transform.GetDistance(curTarget) > minChaseRadius ? (curTarget.position - transform.position).normalized * chaseSpeed : Vector3.zero;
-                    transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
+                    ////MyRigid.velocity = transform.GetDistance(curTarget) > minChaseRadius ? (curTarget.position - transform.position).normalized * chaseSpeed : Vector3.zero;
+                    ////transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
+                    if(agent.remainingDistance > agent.stoppingDistance)
+                        agent.destination = curTarget.transform.position;
                     break;
                 case EnemyStates.Attacking:
                     //
