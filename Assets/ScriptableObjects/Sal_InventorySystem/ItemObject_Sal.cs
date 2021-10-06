@@ -12,10 +12,23 @@ public enum ItemType
 public abstract class ItemObject_Sal : ScriptableObject
 {
     public int id;
-    public GameObject uiDisplay;
+    public Sprite uiDisplay;
     public ItemType type;
     [TextArea(10,15)]
     public string description;
 
     public abstract void Use();
+}
+
+[System.Serializable]
+public class Item
+{
+    public string name;
+    public int id;
+
+    public Item(ItemObject_Sal item)
+    {
+        name = item.name;
+        id = item.id;
+    }
 }

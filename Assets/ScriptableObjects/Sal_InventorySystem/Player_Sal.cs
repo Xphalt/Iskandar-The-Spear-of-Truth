@@ -5,8 +5,6 @@ using UnityEngine;
 public class Player_Sal : MonoBehaviour
 {
     public InventoryObject_Sal inventory;
-    public InventoryObject_Sal equippedStuff;
-
 
     public GameObject UIinventory;
 
@@ -45,52 +43,17 @@ public class Player_Sal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var item = other.GetComponent<ItemTest_Sal>();
+        var item = other.GetComponent<GroundItem>();
         if (item)
         {
-            inventory.AddItem(item.itemobj, 1);
+            inventory.AddItem(new Item(item.itemobj), 1);
             Destroy(other.gameObject);
         }
     }
 
     private void OnApplicationQuit()
     {
-        inventory.Storage.Clear();
-        equippedStuff.Storage.Clear();
-    }
-
-    public void EquipItem(ItemObject_Sal item, slotType whichSlot)
-    {
-        switch(whichSlot)
-        {
-            case slotType.LeftHand:
-                if (item.type != ItemType.Shield)
-                    Debug.Log("You can't equip this item in this slot.");
-                else
-                {
-                    equippedStuff.Storage[(int)ItemType.Shield].item = item;
-                    equippedStuff.Storage[(int)ItemType.Shield].amount = 1;
-                }
-                break;
-            case slotType.rightHand:
-                if (item.type != ItemType.Weapon)
-                    Debug.Log("You can't equip this item in this slot.");
-                else
-                {
-                    equippedStuff.Storage[(int)ItemType.Shield].item = item;
-                    equippedStuff.Storage[(int)ItemType.Shield].amount = 1;
-                }
-                break;
-            case slotType.Armor:
-                if (item.type != ItemType.Armor)
-                    Debug.Log("You can't equip this item in this slot.");
-                else
-                {
-                    equippedStuff.Storage[(int)ItemType.Shield].item = item;
-                    equippedStuff.Storage[(int)ItemType.Shield].amount = 1;
-                }
-                break;
-        }
-    }
+        inventory.Storage.items.Clear();
+    } 
 }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemTest_Sal : MonoBehaviour
+public class GroundItem : MonoBehaviour
 {
     public ItemObject_Sal itemobj;
 
