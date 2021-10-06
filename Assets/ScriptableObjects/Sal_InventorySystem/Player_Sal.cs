@@ -24,11 +24,7 @@ public class Player_Sal : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        for (int i = 0; i < equippedStuff.maxCapacity; i++)
-        {
-            equippedStuff.Storage.Add(new InventorySlot(null, 0));
-        }
+    { 
 
         HealthValue = MAX_HEALTH_VALUE;
         StaminaValue = MAX_STAMINA_VALUE;
@@ -37,14 +33,13 @@ public class Player_Sal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I) && UIinventory.activeSelf)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            UIinventory.SetActive(false);
+            inventory.Save();
         }
-        else if (Input.GetKeyDown(KeyCode.I) && !UIinventory.activeSelf)
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
-            UIinventory.GetComponent<DisplayInventory_Sal>().CreateDisplay();
-            UIinventory.SetActive(true);
+            inventory.Load();
         }
     }
 
@@ -53,8 +48,8 @@ public class Player_Sal : MonoBehaviour
         var item = other.GetComponent<ItemTest_Sal>();
         if (item)
         {
-            if(inventory.AddItem(item.itemobj, 1))
-                Destroy(other.gameObject);
+            inventory.AddItem(item.itemobj, 1);
+            Destroy(other.gameObject);
         }
     }
 
