@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Patrol : MonoBehaviour
 {
     private NavMeshAgent agent;
-    private float minRemainingDistance;
+    private float minRemainingDistance = 0.5f;
     public Transform[] nodes;
     public float speed;
 
