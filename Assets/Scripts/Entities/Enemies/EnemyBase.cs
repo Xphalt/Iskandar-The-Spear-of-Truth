@@ -63,7 +63,7 @@ public class EnemyBase : Patrol
 
     public float findDelay;
     
-    public float chaseRadius;
+    public float chaseRadius, minChaseRadius;
     [Range(0,360)]
     public float viewAngle;
 
@@ -76,7 +76,7 @@ public class EnemyBase : Patrol
     public override void Start()
     {
         base.Start();
-        defaultToZero = false;
+        //defaultToZero = false;
         stats = GetComponent<CharacterStats>();
         StartCoroutine("FindTargetsWithDelay", findDelay);
         for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
@@ -87,7 +87,7 @@ public class EnemyBase : Patrol
     {
         base.Update();
 
-        Patrolling = curState == EnemyStates.Patrolling && !charging;
+        agent.enabled = curState == EnemyStates.Patrolling;
 
         if (!charging)
         {
@@ -99,14 +99,15 @@ public class EnemyBase : Patrol
                 //break;
                 case EnemyStates.Chasing:
                     //seek player position and go to it
-                    transform.position = Vector3.MoveTowards(transform.position, curTarget.position, chaseSpeed * Time.deltaTime); //Use velocity?
+                    //transform.position = Vector3.MoveTowards(transform.position, curTarget.position, chaseSpeed * Time.deltaTime); //Use velocity?
+                    MyRigid.velocity = transform.GetDistance(curTarget) > minChaseRadius ? (curTarget.position - transform.position).normalized * chaseSpeed : Vector3.zero;
                     transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
                     break;
                 case EnemyStates.Attacking:
                     //
                     break;
                 default:
-                    Debug.Log("Error in EnemyBase script, Current State switch statement");
+                    //Debug.Log("Error in EnemyBase script, Current State switch statement");
                     break;
             }
         }
@@ -247,7 +248,7 @@ public class EnemyBase : Patrol
             stats.DealDamage(curTarget.gameObject, attackDamages[(int)AttackTypes.Melee]);
             attackUsed = true;
             curAttack = AttackTypes.Melee;
-
+            MyRigid.velocity = Vector2.zero;
         }
     }
 

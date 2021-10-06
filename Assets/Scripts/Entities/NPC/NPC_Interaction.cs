@@ -15,6 +15,6 @@ public class NPC_Interaction : Patrol
 
         Collider[] playerIsInReach = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
-        Patrolling = playerIsInReach.Length == 0;
+        //Patrolling = playerIsInReach.Length == 0;
     }
 }

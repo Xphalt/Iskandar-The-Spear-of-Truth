@@ -5,12 +5,12 @@ using UnityEngine.AI;
 
 public class Patrol : MonoBehaviour
 {
-    private NavMeshAgent agent;
+    protected NavMeshAgent agent;
     private float minRemainingDistance = 0.5f;
     public Transform[] nodes;
     public float speed;
 
-    protected bool Patrolling;
+    //protected bool Patrolling;
     int currentNode;
 
     protected Rigidbody MyRigid;
@@ -20,13 +20,11 @@ public class Patrol : MonoBehaviour
     [SerializeField]
     private string nodeTag;
 
-    public bool defaultToZero = true;
+    //public bool defaultToZero = true;
 
     public virtual void Start()
     {
         currentNode = 0;
-
-        Patrolling = true;
 
         MyRigid = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
@@ -36,7 +34,8 @@ public class Patrol : MonoBehaviour
 
     public virtual void Update()
     {
-        if(!agent.pathPending && agent.remainingDistance < minRemainingDistance)
+        
+        if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
         {
             GoToNextNode();
         }
