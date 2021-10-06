@@ -4,34 +4,24 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
-    private float Row, Line;
     private Rigidbody rigi;
-
-
+    private GameObject player;
 
     void Start()
     {
-        rigi = GetComponent<Rigidbody>(); 
+        rigi = GetComponent<Rigidbody>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
     {
-        Row = Input.GetAxis("Horizontal");
-        Line = Input.GetAxis("Vertical");
-        Vector3 MoveVec = new Vector3(Row, 0, Line);
-
-        if (MoveVec.magnitude > 1)
-        {
-            MoveVec = MoveVec.normalized;
-        }
-
-        rigi.velocity = MoveVec * 2;
+        //every frame, set location of camera to player's 
 
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Boundary"))
+        if (collision.collider.gameObject.tag == ("CameraWall"))
         {
             rigi.velocity = Vector3.zero;
         }
