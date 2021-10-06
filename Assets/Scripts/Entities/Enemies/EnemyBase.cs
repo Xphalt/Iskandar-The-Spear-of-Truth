@@ -102,8 +102,13 @@ public class EnemyBase : Patrol
                     //transform.position = Vector3.MoveTowards(transform.position, curTarget.position, chaseSpeed * Time.deltaTime); //Use velocity?
                     ////MyRigid.velocity = transform.GetDistance(curTarget) > minChaseRadius ? (curTarget.position - transform.position).normalized * chaseSpeed : Vector3.zero;
                     ////transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
-                    if(agent.remainingDistance > agent.stoppingDistance)
+                    if (agent.remainingDistance > minChaseRadius)
+                    {
+                        agent.isStopped = false;
                         agent.destination = curTarget.transform.position;
+                    }
+                    else
+                        agent.isStopped = true;
                     break;
                 case EnemyStates.Attacking:
                     //
