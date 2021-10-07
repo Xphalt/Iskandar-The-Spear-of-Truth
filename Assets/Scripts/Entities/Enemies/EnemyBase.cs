@@ -20,6 +20,7 @@ public class EnemyBase : Patrol
         AttackTypesCount
     };
 
+    #region Attack Info
     [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
     public bool[] availableAttacks = new bool[(int)AttackTypes.AttackTypesCount];
 
@@ -46,6 +47,7 @@ public class EnemyBase : Patrol
     protected bool ChargeAvailable => availableAttacks[(int)AttackTypes.Charge] && 
         (attackTimers[(int)AttackTypes.Charge] >= attackCooldowns[(int)AttackTypes.Charge]);
     protected bool AttackEnded => (curAttack != AttackTypes.AttackTypesCount) ? attackTimers[(int)curAttack] > attackDurations[(int)curAttack] : true;
+    #endregion
 
     public enum EnemyStates
     {
@@ -87,31 +89,27 @@ public class EnemyBase : Patrol
     {
         base.Update();
 
-        //agent.enabled = curState == EnemyStates.Patrolling;
+        agent.enabled = curState != EnemyStates.Attacking;
 
         if (!charging)
         {
             switch (curState)
             {
-                //case EnemyStates.Patrolling:
-                //    //move a bit to a random direction, based off of "Link's Awakening" enemy behaviour
+                case EnemyStates.Patrolling:
+                    agent.speed = patrolSpeed;
+                    agent.stoppingDistance = 0;
 
-                //break;
+                    break;
                 case EnemyStates.Chasing:
                     //seek player position and go to it
-                    //transform.position = Vector3.MoveTowards(transform.position, curTarget.position, chaseSpeed * Time.deltaTime); //Use velocity?
-                    ////MyRigid.velocity = transform.GetDistance(curTarget) > minChaseRadius ? (curTarget.position - transform.position).normalized * chaseSpeed : Vector3.zero;
-                    ////transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
-                    if (agent.remainingDistance > minChaseRadius)
-                    {
-                        agent.isStopped = false;
-                        agent.destination = curTarget.transform.position;
-                    }
-                    else
-                        agent.isStopped = true;
+                    transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
+                    agent.destination = curTarget.transform.position;
+                    agent.speed = agent.remainingDistance > minChaseRadius ? chaseSpeed : 0;
+                    agent.stoppingDistance = minChaseRadius;
+                    
                     break;
                 case EnemyStates.Attacking:
-                    //
+                    agent.speed = 0;
                     break;
                 default:
                     //Debug.Log("Error in EnemyBase script, Current State switch statement");

@@ -8,7 +8,7 @@ public class Patrol : MonoBehaviour
     protected NavMeshAgent agent;
     private float minRemainingDistance = 0.5f;
     public Transform[] nodes;
-    public float speed;
+    public float patrolSpeed;
 
     //protected bool Patrolling;
     int currentNode;
@@ -34,10 +34,12 @@ public class Patrol : MonoBehaviour
 
     public virtual void Update()
     {
-        
-        if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
+        if (agent.enabled)
         {
-            GoToNextNode();
+            if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
+            {
+                GoToNextNode();
+            }
         }
 
         //if (Patrolling)
