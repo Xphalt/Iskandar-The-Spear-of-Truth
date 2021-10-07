@@ -4,30 +4,52 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
-    private Rigidbody rigi;
-    private GameObject player;
+    public Transform UpBound;
+    public Transform DownBound;
+    public Transform LeftBound;
+    public Transform RightBound;
+    public Transform Target;
 
-    void Start()
+    public bool centred = true; 
+    private bool XFollowing, ZFollowing;
+
+    private Camera thisCamera;
+
+    public List<Transform> midGrounds;
+    public List<float> midGroundRatios;
+
+    private Vector3 Limits;   
+    public List<Vector3> midGroundStarts;
+
+
+
+    private void Awake()
     {
-        rigi = GetComponent<Rigidbody>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        thisCamera = GetComponent<Camera>();
+        Limits = thisCamera.ScreenToWorldPoint(new Vector3(Screen.width, 22.9f, Screen.height));
+        if (centred)    Limits -= transform.position;
+        foreach (Transform mg in midGrounds)    midGroundStarts.Add(mg.position);
     }
 
     void Update()
     {
-        //every frame, set location of camera to player's 
+        XFollowing = RightBound.position.x - LeftBound.position.x > Limits.x * 2;
+        ZFollowing = UpBound.position.z - DownBound.position.z > Limits.z * 2;
 
+        float Xmid = (RightBound.position.x + LeftBound.position.x) / 2;
+        float Zmid = (UpBound.position.z + DownBound.position.z) / 2;
+
+        float newX = XFollowing ? Mathf.Clamp(Target.position.x, LeftBound.position.x + Limits.x, RightBound.position.x - Limits.x) : Xmid;
+        float newZ = ZFollowing ? Mathf.Clamp(Target.position.z, DownBound.position.z + Limits.z, UpBound.position.z - Limits.z) : Zmid;
+
+        transform.position = new Vector3(newX, transform.position.y, newZ);
+
+        for (int m = 0; m < midGrounds.Count; m++)
+        {
+            Vector3 newMidGround = Vector3.Lerp(midGroundStarts[m], transform.position, midGroundRatios[m]);
+            midGrounds[m].position = new Vector3(newMidGround.x, midGrounds[m].position.y, newMidGround.z);
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.gameObject.tag == ("CameraWall"))
-        {
-            rigi.velocity = Vector3.zero;
-        }
-        else
-        {
-            Physics.IgnoreCollision(collision.transform.GetComponent<Collider>(), GetComponent<Collider>());
-        }
-    }
+    
 }
