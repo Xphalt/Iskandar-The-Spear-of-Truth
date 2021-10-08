@@ -13,6 +13,7 @@ public abstract class ItemObject_Sal : ScriptableObject
 {
     public int id;
     public Sprite uiDisplay;
+    public Mesh model;
     public ItemType type;
     [TextArea(10,15)]
     public string description;

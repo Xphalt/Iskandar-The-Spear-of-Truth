@@ -1,20 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class GroundItem : MonoBehaviour
+public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
 {
     public ItemObject_Sal itemobj;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public void OnAfterDeserialize()
+    { }
 
-    // Update is called once per frame
-    void Update()
+    public void OnBeforeSerialize()
     {
-        
+        GetComponentInChildren<MeshFilter>().mesh = itemobj.model;
+
+        //This let the editor know that something has changed on that object 
+        EditorUtility.SetDirty(GetComponentInChildren<MeshFilter>());
     }
 }
