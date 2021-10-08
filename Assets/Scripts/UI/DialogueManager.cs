@@ -11,6 +11,9 @@ public class DialogueManager : MonoBehaviour
     public Button ContinueText;
     public Text ButtonText;
 
+    public LocalisationTableReference nextString;
+    public LocalisationTableReference endString;
+
     public Queue<string> SentenceQueue;
 
     private void Start()
@@ -25,13 +28,15 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(Dialogue dialogue)
     {
         NameText.text = dialogue.NPC_Name;
-        ButtonText.text = "Next  >>";
+        // Dominique 08-10-2021, Use localised sentences
+        ButtonText.text = nextString.GetLocalisedString();
 
         SentenceQueue.Clear();
 
-        foreach(string sentence in dialogue.Sentences)
+        // Dominique 08-10-2021, Use localised sentences
+        foreach (LocalisationTableReference sentence in dialogue.Sentences)
         {
-            SentenceQueue.Enqueue(sentence);
+            SentenceQueue.Enqueue(sentence.GetLocalisedString());
         }
 
         DisplayNextSentence();
@@ -41,7 +46,8 @@ public class DialogueManager : MonoBehaviour
     {
         if (SentenceQueue.Count <= 1)
         {
-            ButtonText.text = "End";
+            // Dominique 08-10-2021, Use localised sentences
+            ButtonText.text = endString.GetLocalisedString();
         }
 
         if (SentenceQueue.Count == 0)

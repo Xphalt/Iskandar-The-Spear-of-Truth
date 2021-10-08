@@ -7,6 +7,6 @@ public class Dialogue
 {
     public string NPC_Name;
 
-    [TextArea(1, 10)]
-    public string[] Sentences;
+    // Dominique 08-10-2021, Use localised sentences
+    public LocalisationTableReference[] Sentences;
 }

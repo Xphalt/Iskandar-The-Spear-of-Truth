@@ -577,6 +577,12 @@ MonoBehaviour:
   DialogueText: {fileID: 1166402577}
   ContinueText: {fileID: 1409127965}
   ButtonText: {fileID: 126527518}
+  nextString:
+    tableReference: DialogueStrings
+    entryReference: Next
+  endString:
+    tableReference: DialogueStrings
+    entryReference: End
 --- !u!1 &81347151
 GameObject:
   m_ObjectHideFlags: 0
@@ -3233,7 +3239,8 @@ MonoBehaviour:
   Dialogue:
     NPC_Name: Harvey
     Sentences:
-    - YEAH BUT WHAT THE DOG DOIN'?
+    - tableReference: DialogueStrings
+      entryReference: DogDoin
 --- !u!114 &559429422
 MonoBehaviour:
   m_ObjectHideFlags: 0
