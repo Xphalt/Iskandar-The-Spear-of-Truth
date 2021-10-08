@@ -102,7 +102,7 @@ public class InventoryObject_Sal : ScriptableObject
     [ContextMenu("Clear")]
     public void Clear()
     {
-        Storage = new Inventory();
+        Storage.Clear();
     }
 }
 
@@ -110,11 +110,20 @@ public class InventoryObject_Sal : ScriptableObject
 public class Inventory
 {
     public InventorySlot[] items = new InventorySlot[30];
+    public void Clear()
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            items[i].UpdateSlot(-1, new Item(), 0);
+        }
+    }
 }
 
 [System.Serializable]
 public class InventorySlot
 {
+    public ItemType[] allowedItems = new ItemType[0];
+    public UserInterface_Sal parent;
     public int ID = -1;
     public Item item;
     public int amount;
@@ -144,5 +153,17 @@ public class InventorySlot
     public void AddAmount(int value)
     {
         amount += value;
+    }
+
+    public bool CanPlaceInSlot(ItemObject_Sal p_item)
+    {
+        if (allowedItems.Length <= 0)
+            return true;
+        for (int i = 0; i < allowedItems.Length; i++)
+        {
+            if (p_item.type == allowedItems[i]) //Can be equipped
+                return true;
+        }
+        return false;
     }
 }

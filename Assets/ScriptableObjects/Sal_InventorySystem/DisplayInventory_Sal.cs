@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using System;
+using TMPro; 
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
@@ -11,7 +10,6 @@ public class DisplayInventory_Sal : MonoBehaviour
 {
     public GameObject inventoryPrefab;
     public InventoryObject_Sal inventory;
-    public Transform container;
     public MouseItem mouseItem = new MouseItem();
 
     public int X_START;
@@ -138,14 +136,6 @@ public class DisplayInventory_Sal : MonoBehaviour
 
         Destroy(mouseItem.obj);
         mouseItem.item = null;
-    }
-    
+    } 
 }
 
-public class MouseItem
-{
-    public GameObject obj;
-    public GameObject hoverObj;
-    public InventorySlot item;
-    public InventorySlot hoverItem;
-}

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player_Sal : MonoBehaviour
 {
+    public MouseItem mouseItem = new MouseItem();
     public InventoryObject_Sal inventory;
 
     public GameObject UIinventory;

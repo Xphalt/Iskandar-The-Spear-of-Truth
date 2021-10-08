@@ -4,9 +4,12 @@ using UnityEngine;
 
 public enum ItemType
 {
+    Helmet,
+    Chest,
     Weapon,
     Shield,
-    Armor
+    Boots,
+    Default
 }
 
 public abstract class ItemObject_Sal : ScriptableObject
@@ -26,6 +29,12 @@ public class Item
 {
     public string name;
     public int id;
+
+    public Item()
+    {
+        name = "";
+        id = -1;
+    }
 
     public Item(ItemObject_Sal item)
     {
