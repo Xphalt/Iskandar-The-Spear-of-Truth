@@ -28,15 +28,6 @@ public class Player_Targeting_Jack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X)) //temporary until input system setup
-        {
-            TargetObject();
-            if(IsTargeting())
-            {
-                _playerMovementScript.SetTargetedTransform(_targetedTransform);
-			}
-        }
-
         if (_wasTargeting & !IsTargeting())
         {
             // Player was targeting an object last frame but is no longer targeting
@@ -72,9 +63,12 @@ public class Player_Targeting_Jack : MonoBehaviour
             {
                 _targetedTransform = _targetRaycastHit.transform;
                 _wasTargeting = true;
+                _playerMovementScript.SetTargetedTransform(_targetedTransform);
+
+                Debug.Log(_targetedTransform.name);
             }
         }
-	}
+    }
 
     private void UnTargetObject()
     {

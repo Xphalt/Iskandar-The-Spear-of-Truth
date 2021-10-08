@@ -27,19 +27,23 @@ public class Inventory_UI_Script : MonoBehaviour
         inventorySlots = itemsSlotParent.GetComponentsInChildren<Item_Slot_Script>();
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    //------------------Open/close inventory with key "I"----------------------//
+    //    if (Input.GetKeyDown(KeyCode.I))
+    //    {
+    //    }
+    //}
+
+    public void ToggleInventory()
     {
-        //------------------Open/close inventory with key "I"----------------------//
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            inventoryUI.SetActive(!inventoryUI.activeSelf);
-        }
+        inventoryUI.SetActive(!inventoryUI.activeSelf);
     }
 
- /*_________________________________________________________________________
- * This appends the item into the item list.
- * Else, it clears the slot's UI if it's empty of values.
- * ________________________________________________________________________*/
+    /*_________________________________________________________________________
+    * This appends the item into the item list.
+    * Else, it clears the slot's UI if it's empty of values.
+    * ________________________________________________________________________*/
     void UpdateInventory()
     {
         for (int i = 0; i < inventorySlots.Length; i++)

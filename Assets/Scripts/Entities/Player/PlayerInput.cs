@@ -9,6 +9,10 @@ public class PlayerInput : MonoBehaviour
     private PlayerActionsAsset _playerActionsAsset;
     private Rigidbody _playerRigidbody;
 
+    [Header("Scripts References")]
+    [SerializeField] private Player_Targeting_Jack _PlayerTargeting;
+    [SerializeField] private Inventory_UI_Script _inventoryUI;
+
     [Header("Movement Settings")]
     [SerializeField] private float _movementSpeed;
 
@@ -24,16 +28,18 @@ public class PlayerInput : MonoBehaviour
         _playerRigidbody = GetComponent<Rigidbody>();
 
         _playerActionsAsset.Player.Pause.performed += OnPause;
-        //_playerActionsAsset.Player.Dash.performed += OnDash;
+        _playerActionsAsset.Player.Target.performed += ctx => _PlayerTargeting.TargetObject();
+        _playerActionsAsset.Player.Inventory.performed += ctx => _inventoryUI.ToggleInventory();
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
+        _playerActionsAsset.UI.Inventory.performed += ctx => _inventoryUI.ToggleInventory();
+
     }
 
     private void FixedUpdate()
     {
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
-        Debug.Log(inputVector);
-        _playerRigidbody.AddForce(new Vector3(inputVector.x, 0.0f, inputVector.y) * _movementSpeed, ForceMode.Force);
+        _playerRigidbody.velocity = new Vector3(inputVector.x, 0.0f, inputVector.y) * _movementSpeed;
     }
 
     // Maybe OnDash() Function should call the Dash Function from some other script to keep it clean
