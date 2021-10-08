@@ -53,7 +53,7 @@ public class Player_Sal : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        inventory.Storage.items.Clear();
+        inventory.Storage.items = new InventorySlot[35];
     } 
 }
 
