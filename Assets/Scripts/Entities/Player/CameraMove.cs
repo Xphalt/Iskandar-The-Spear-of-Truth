@@ -11,23 +11,19 @@ public class CameraMove : MonoBehaviour
     public Transform Target;
 
     private bool XFollowing, ZFollowing;
-    public float Zoffset;
+    public float Yoffset = 10, Zoffset = 5;
 
-    private Camera thisCamera;
-
-    public Vector3 Limits;   
+    public Vector3 Limits = new Vector3(15, 0, 5);   
 
 
     private void Awake() //used to avoid reference errors
     {
-        thisCamera = GetComponent<Camera>();       
-        //Limits = new Vector3(0, thisCamera.transform.position.y, 0);
+        transform.position = new Vector3(Target.position.x, Yoffset, Zoffset);
     }
 
     void Update()
     {
-        
-        XFollowing = RightBound.position.x - LeftBound.position.x > Limits.x * 2;
+        XFollowing = RightBound.position.x - LeftBound.position.x > Limits.x * 2; //Can be done in awake if boundaries do not change mid-level
         ZFollowing = UpBound.position.z - DownBound.position.z > Limits.z * 2;
 
         float Xmid = (RightBound.position.x + LeftBound.position.x) / 2;
@@ -36,9 +32,6 @@ public class CameraMove : MonoBehaviour
         float newX = XFollowing ? Mathf.Clamp(Target.position.x, LeftBound.position.x + Limits.x, RightBound.position.x - Limits.x) : Xmid;
         float newZ = ZFollowing ? Mathf.Clamp(Target.position.z, DownBound.position.z + Limits.z, UpBound.position.z - Limits.z) : Zmid;
 
-        transform.position = new Vector3(newX, transform.position.y, (newZ - Zoffset));
-
-    }
-
-    
+        transform.position = new Vector3(newX, Yoffset, (newZ - Zoffset));
+    }    
 }
