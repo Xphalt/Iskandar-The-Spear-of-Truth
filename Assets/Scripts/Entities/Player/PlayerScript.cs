@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    public int HP;
+    public int HP, SI, MI, LI, maxHealth;
     private float Row, Line;
     private Rigidbody rigi;
     //this script is a placeholder, as the real one is unavailable
     void Start()
     {
         HP = 70;
+        SI = 20;
+        MI = 40;
+        LI = 60;
+        maxHealth = 100;
         rigi = GetComponent<Rigidbody>();
     }
 
@@ -32,18 +36,42 @@ public class PlayerScript : MonoBehaviour
         {
             Physics.IgnoreCollision(collide.transform.GetComponent<Collider>(), GetComponent<Collider>());
         }
-        if (collide.gameObject.tag == "HealthInstant")
+        if (collide.gameObject.tag == "SmallHealthInstant")
         {
-            if (HP <= 80)
+            if (HP <= (maxHealth - SI))
             {
-                HP += 20;
+                HP += SI;
             }
             else
             {
-                HP = 100;
+                HP = maxHealth;
             }
             Destroy(collide.gameObject);
         }
-        
+        else if (collide.gameObject.tag == "MediumHealthInstant")
+        {
+            if (HP <= (maxHealth - MI))
+            {
+                HP += MI;
+            }
+            else
+            {
+                HP = maxHealth;
+            }
+            Destroy(collide.gameObject);
+        }
+        else if (collide.gameObject.tag == "LargeHealthInstant")
+        {
+            if (HP <= (maxHealth - LI))
+            {
+                HP += LI;
+            }
+            else
+            {
+                HP = maxHealth;
+            }
+            Destroy(collide.gameObject);
+        }
+
     }
 }

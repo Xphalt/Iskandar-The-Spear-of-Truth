@@ -26,7 +26,7 @@ public class CameraMove : MonoBehaviour
     private void Awake()
     {
         thisCamera = GetComponent<Camera>();
-        Limits = thisCamera.ScreenToWorldPoint(new Vector3(Screen.width, 22.9f, Screen.height));
+        Limits = thisCamera.ScreenToWorldPoint(new Vector3(Screen.width, thisCamera.transform.position.y, Screen.height));
         if (centred)    Limits -= transform.position;
         foreach (Transform mg in midGrounds)    midGroundStarts.Add(mg.position);
     }
