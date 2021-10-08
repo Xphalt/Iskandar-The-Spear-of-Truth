@@ -22,7 +22,7 @@ public class Good : MonoBehaviour
         goodData = data;
 
         image.sprite = data.displaySprite;
-        displayName.text = data.displayName;
+        displayName.text = data.displayName.GetLocalisedString();
         buyValue.text = data.buyValue.ToString();
         sellValue.text = data.sellValue.ToString();
         // TODO: Get current number of items from inventory
@@ -44,7 +44,7 @@ public class Good : MonoBehaviour
 public struct GoodData
 {
     public GOOD_TYPE goodType;
-    public string displayName;
+    public LocalisationTableReference displayName;
     public Sprite displaySprite;
     public int sellValue;
     public int buyValue;
