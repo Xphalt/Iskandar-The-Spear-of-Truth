@@ -6,19 +6,19 @@ using UnityEngine;
 public class DatabaseObject : ScriptableObject, ISerializationCallbackReceiver
 {
     public ItemObject_Sal[] Items;
-    public Dictionary<int, ItemObject_Sal> GetItem = new Dictionary<int, ItemObject_Sal>();
+    //public Dictionary<int, ItemObject_Sal> GetItem = new Dictionary<int, ItemObject_Sal>();
 
     public void OnAfterDeserialize()
     {
         for (int i = 0; i < Items.Length; i++)
         {
-            Items[i].id = i;
-            GetItem.Add(i, Items[i]);
+            Items[i].data.id = i;
+            //GetItem.Add(i, Items[i]);
         }
     }
 
     public void OnBeforeSerialize()
     {
-        GetItem = new Dictionary<int, ItemObject_Sal>();
+        //GetItem = new Dictionary<int, ItemObject_Sal>();
     }
 }

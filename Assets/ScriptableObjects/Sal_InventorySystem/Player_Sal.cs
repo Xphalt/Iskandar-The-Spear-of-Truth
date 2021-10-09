@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Player_Sal : MonoBehaviour
 {
-    public MouseItem mouseItem = new MouseItem();
     public InventoryObject_Sal inventory;
+    public InventoryObject_Sal equipment;
 
     public GameObject UIinventory;
 
@@ -32,13 +32,17 @@ public class Player_Sal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position += new Vector3(-1, 0, 0) * Time.deltaTime;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             inventory.Save();
+            equipment.Save();
         }
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             inventory.Load();
+            equipment.Load();
         }
     }
 
@@ -47,14 +51,15 @@ public class Player_Sal : MonoBehaviour
         var item = other.GetComponent<GroundItem>();
         if (item)
         {
-            inventory.AddItem(new Item(item.itemobj), 1);
-            Destroy(other.gameObject);
+            if(inventory.AddItem(new Item(item.itemobj), 1))
+                Destroy(other.gameObject);  //Only if the item is picked up
         }
     }
 
     private void OnApplicationQuit()
     {
-        inventory.Storage.items = new InventorySlot[35];
+        inventory.Storage.Clear();
+        equipment.Storage.Clear();
     } 
 }
 

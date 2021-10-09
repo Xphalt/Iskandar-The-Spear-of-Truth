@@ -12,9 +12,10 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
 
     public void OnBeforeSerialize()
     {
+#if UNITY_EDITOR
         GetComponentInChildren<MeshFilter>().mesh = itemobj.model;
-
         //This let the editor know that something has changed on that object 
         EditorUtility.SetDirty(GetComponentInChildren<MeshFilter>());
+#endif
     }
 }

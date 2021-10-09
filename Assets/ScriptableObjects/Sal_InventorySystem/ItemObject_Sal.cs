@@ -13,13 +13,14 @@ public enum ItemType
 }
 
 public abstract class ItemObject_Sal : ScriptableObject
-{
-    public int id;
+{ 
     public Sprite uiDisplay;
     public Mesh model;
     public ItemType type;
     [TextArea(10,15)]
     public string description;
+    public bool stackable;
+    public Item data = new Item();
 
     public abstract void Use();
 }
@@ -28,7 +29,7 @@ public abstract class ItemObject_Sal : ScriptableObject
 public class Item
 {
     public string name;
-    public int id;
+    public int id = 1;
 
     public Item()
     {
@@ -39,6 +40,6 @@ public class Item
     public Item(ItemObject_Sal item)
     {
         name = item.name;
-        id = item.id;
+        id = item.data.id;
     }
 }

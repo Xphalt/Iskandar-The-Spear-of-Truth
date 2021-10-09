@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEditor;
 using System.Runtime.Serialization;
+using System;
 
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 public class InventoryObject_Sal : ScriptableObject
@@ -12,18 +13,45 @@ public class InventoryObject_Sal : ScriptableObject
     public string savePath;
     public DatabaseObject database;
     public Inventory Storage;
+    public int EmptySlotCount
+    {
+        get
+        {
+            int counter = 0;
+            for (int i = 0; i < Storage.items.Length; i++)
+            {
+                if (Storage.items[i].item.id <= -1)
+                    counter++;
+            }
+            return counter;
+        }
+    }
 
-    public void AddItem(Item p_item, int p_amount)
+    public bool AddItem(Item p_item, int p_amount)
+    {
+        if (EmptySlotCount <= 0)
+            return false;
+        
+        InventorySlot slot = FindItemOnInventory(p_item);
+        if(!database.Items[p_item.id].stackable || slot == null)
+        {
+            SetEmptySlot(p_item, p_amount);
+            return true;
+        }
+        slot.AddAmount(p_amount);
+        return true; 
+    }
+
+    private InventorySlot FindItemOnInventory(Item p_item)
     {
         for (int i = 0; i < Storage.items.Length; i++)
         {
-            if (Storage.items[i].ID == p_item.id)   //check if item is already in the inventory
+            if (Storage.items[i].item.id == p_item.id)
             {
-                Storage.items[i].AddAmount(p_amount);
-                return;
+                return Storage.items[i];
             }
         }
-        SetEmptySlot(p_item, p_amount);
+        return null;
     }
 
     public void RemoveItem(Item p_item)
@@ -32,25 +60,28 @@ public class InventoryObject_Sal : ScriptableObject
         {
             if(Storage.items[i].item == p_item)
             {
-                Storage.items[i].UpdateSlot(-1, null, 0);
+                Storage.items[i].UpdateSlot(null, 0);
             }
         }
     }
 
-    public void MoveItem(InventorySlot item1, InventorySlot item2)
+    public void SwapItem(InventorySlot item1, InventorySlot item2)
     {
-        InventorySlot temp = new InventorySlot(item2.ID, item2.item, item2.amount);
-        item2.UpdateSlot(item1.ID, item1.item, item1.amount);
-        item1.UpdateSlot(temp.ID, temp.item, temp.amount);
+        if (item2.CanPlaceInSlot(item1.ItemObject) && item1.CanPlaceInSlot(item2.ItemObject))
+        {
+            InventorySlot temp = new InventorySlot(item2.item, item2.amount);
+            item2.UpdateSlot(item1.item, item1.amount);
+            item1.UpdateSlot(temp.item, temp.amount);
+        }
     }
 
     public InventorySlot SetEmptySlot(Item p_item, int p_amount)
     {
         for (int i = 0; i < Storage.items.Length; i++)
         {
-            if(Storage.items[i].ID <= -1)
+            if(Storage.items[i].item.id <= -1)
             {
-                Storage.items[i].UpdateSlot(p_item.id, p_item, p_amount);
+                Storage.items[i].UpdateSlot(p_item, p_amount);
                 return Storage.items[i];
             }
         }
@@ -94,7 +125,7 @@ public class InventoryObject_Sal : ScriptableObject
             Inventory newStorage = (Inventory)formatter.Deserialize(stream);
             for (int i = 0; i < Storage.items.Length; i++)
             {
-                Storage.items[i].UpdateSlot(newStorage.items[i].ID, newStorage.items[i].item, newStorage.items[i].amount);
+                Storage.items[i].UpdateSlot(newStorage.items[i].item, newStorage.items[i].amount);
             }
             stream.Close();
         }
@@ -114,7 +145,7 @@ public class Inventory
     {
         for (int i = 0; i < items.Length; i++)
         {
-            items[i].UpdateSlot(-1, new Item(), 0);
+            items[i].RemoveItem();
         }
     }
 }
@@ -123,29 +154,38 @@ public class Inventory
 public class InventorySlot
 {
     public ItemType[] allowedItems = new ItemType[0];
-    public UserInterface_Sal parent;
-    public int ID = -1;
+    [System.NonSerialized] //Prevents the save system from trying to save this variable (cause scriptable objects can't be saved)
+    public UserInterface_Sal parent; 
     public Item item;
     public int amount;
 
+    public ItemObject_Sal ItemObject
+    {
+        get
+        {
+            if(item.id >= 0)
+            {
+                return parent.inventory.database.Items[item.id];
+            }
+            return null;
+        }
+    }
+
     //Init
     public InventorySlot()
-    {
-        ID = -1;
-        item = null;
+    { 
+        item = new Item();
         amount = 0;
     }
     
-    public InventorySlot(int p_id, Item p_item, int p_amount)
-    {
-        ID = p_id;
+    public InventorySlot(Item p_item, int p_amount)
+    { 
         item = p_item;
         amount = p_amount;
     }
 
-    public void UpdateSlot(int p_id, Item p_item, int p_amount)
-    {
-        ID = p_id;
+    public void UpdateSlot(Item p_item, int p_amount)
+    { 
         item = p_item;
         amount = p_amount;
     }
@@ -155,13 +195,19 @@ public class InventorySlot
         amount += value;
     }
 
-    public bool CanPlaceInSlot(ItemObject_Sal p_item)
+    internal void RemoveItem()
     {
-        if (allowedItems.Length <= 0)
+        item = new Item();
+        amount = 0;
+    }
+
+    public bool CanPlaceInSlot(ItemObject_Sal p_itemObj)
+    {
+        if (allowedItems.Length <= 0 || p_itemObj == null || p_itemObj.data.id < 0)
             return true;
         for (int i = 0; i < allowedItems.Length; i++)
         {
-            if (p_item.type == allowedItems[i]) //Can be equipped
+            if (p_itemObj.type == allowedItems[i]) //Can be equipped
                 return true;
         }
         return false;
