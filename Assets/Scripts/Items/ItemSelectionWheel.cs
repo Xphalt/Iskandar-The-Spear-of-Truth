@@ -34,19 +34,5 @@ public class ItemSelectionWheel : MonoBehaviour
         {
             anim.SetBool("OpenItemWheel", false);
         }
-
-        switch (itemID)
-        {
-            case 0: //nothing is selected;
-                selectedItem.sprite = noImage;
-                break;
-            case 1: //Sword
-                //Play sword equipping Sound Effect?!?!?!
-                Debug.Log("Sword");
-                break;
-        }
     }
-
-
-
 }
