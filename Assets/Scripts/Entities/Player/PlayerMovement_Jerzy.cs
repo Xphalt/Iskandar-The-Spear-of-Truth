@@ -7,45 +7,21 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     Rigidbody m_Rigidbody;
     public GameObject playerModel;
     public float m_Speed;
-    public GameObject swordObject;
-    public GameObject swordEmpty;
-    Animator swordAnimator;
-    public GameObject swordDefaultPosition;
-    List<GameObject> listOfInteractablesWithinRange;
-    GameObject closestInteractable;
 
-    public float throwTimeBeforeSpinInPlace;
-    public float throwTimeSpinningInPlace;
-    public float throwSpeed;
-    public float throwReturnSpeed;
 
-    public float interactCooldown;
-
-    public GameObject interactableIcon;
-
-    bool canInteract = false;
-
-    float timeSinceLastInteract;
+    public Quaternion swordLookRotation;
 
     public bool canBeDamaged = true;
-    public bool canAttack = true;
 
     public float dashCooldown;
-    public float attackCooldownAfterDash;
     public float invincibilityFramesAfterDash;
     public float dashForce;
     public float dashAnalogueReq;
 
     float timeSinceLastDash = 0;
 
-    Quaternion swordLookRotation;
-
-    bool returning;
-    bool thrown;
-
-    private float timeInteractHeld = 0f;
-    public float timeToThrowSword;
-    private bool isAttacking = false;
+    float timeInteractHeld = 0;
+    const float HELD_TIME_FOR_THROWN_ATTACK = 0.4f;
 
     private Player_Targeting_Jack _playerTargetingScript;
     private Transform _targetedTransform = null;
@@ -53,8 +29,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-        swordAnimator = swordObject.GetComponent<Animator>();
-        listOfInteractablesWithinRange = new List<GameObject>();
         _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
     }
 
@@ -62,11 +36,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     void FixedUpdate()
     {
 
-
-        returning = swordEmpty.GetComponent<ThrowSword_Jerzy>().returning;
-        thrown = swordEmpty.GetComponent<ThrowSword_Jerzy>().thrown;
-
-        timeSinceLastInteract += Time.deltaTime;
         timeSinceLastDash += Time.deltaTime;
 
         // basic player movement using input system
@@ -89,6 +58,13 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             m_Rigidbody.velocity = (direction * m_Speed);
 
+            if (Input.GetAxis("Dash") > 0 && timeSinceLastDash >= dashCooldown)
+            {
+
+                Dash(direction);
+
+            }
+
             // this line fixes the thrown sword direction when locked onto an enemy
             swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
 
@@ -98,10 +74,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             m_Input.Normalize();
             m_Rigidbody.velocity = ( m_Input * m_Speed);
 
-            if (timeSinceLastDash >= attackCooldownAfterDash)
-            {
-                canAttack = true;
-            }
             if (timeSinceLastDash >= invincibilityFramesAfterDash)
             {
                 canBeDamaged = true;
@@ -109,15 +81,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             if (Input.GetAxis("Dash") > 0 && timeSinceLastDash >= dashCooldown)
             {
-                print("dash");
-                if (Mathf.Abs(m_Input.x) > dashAnalogueReq || Mathf.Abs(m_Input.z) > dashAnalogueReq)
-                {
-                    // dash
-                    canAttack = false;
-                    canBeDamaged = false;
-                    m_Rigidbody.AddForce(m_Input * dashForce);
-                    timeSinceLastDash = 0;
-                }
+
+                Dash(m_Input);
 
             }
 
@@ -131,125 +96,41 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
        
 
-        // determines whether player will interact or attack
-        if (listOfInteractablesWithinRange.Count > 0)
-        {
-            canInteract = true;
-            interactableIcon.SetActive(true);
-        }
-        else
-        {
-            canInteract = false;
-            interactableIcon.SetActive(false);
-        }
 
-        // canAttack also includes interacting
-        if(canAttack)
+        // combat - interact key is [Controller X] / [Mouse 1]
+        if(Input.GetAxis("Interact") > 0)
         {
-            if (!canInteract)
+            timeInteractHeld += Time.deltaTime;
+        }
+        else if (timeInteractHeld > 0)
+        {
+            if (timeInteractHeld > HELD_TIME_FOR_THROWN_ATTACK)
             {
-                // if the interact button is held, begin counter to determine if melee or thrown attack
-                if (Input.GetAxis("Interact") > 0)
-                {
-                    if (timeSinceLastInteract >= interactCooldown)
-                    {
-                        isAttacking = true;
-                    }
-                    timeInteractHeld += Time.deltaTime;
-
-                }
-                // the interact button is no longer held
-                else
-                {
-                    if (isAttacking)
-                    {
-                        // if interact has been held long enough to do a throw attack, then throw the sword
-                        if (timeInteractHeld >= timeToThrowSword)
-                        {
-                            swordEmpty.GetComponent<ThrowSword_Jerzy>().ThrowSword(swordLookRotation);
-                        }
-                        // otherwise perform a simple swing attack
-                        else
-                        {
-                            swordAnimator.Play("PlayerSwordSwing");
-                            timeSinceLastInteract = 0;
-                        }
-                    }
-
-                    timeInteractHeld = 0;
-                    isAttacking = false;
-                }
-                // prevent player from attacking whilst the sword is mid-air
-                if (thrown)
-                {
-                    timeSinceLastInteract = 0;
-                }
+                GetComponent<PlayerCombat_Jerzy>().ThrowAttack();
             }
             else
             {
-                // for each interactable object within player range, determine which is closest
-                // only the closest object will be interacted with
-                float shortestDistanceBetweenInteractables = 0;
-                foreach (var interactableObject in listOfInteractablesWithinRange)
-                {
-                    float distanceBetweenObjects = Vector3.Distance(interactableObject.transform.position, transform.position);
-                    if (shortestDistanceBetweenInteractables == 0)
-                    {
-                        shortestDistanceBetweenInteractables = distanceBetweenObjects;
-                        closestInteractable = interactableObject;
-                    }
-                    else if (distanceBetweenObjects < shortestDistanceBetweenInteractables)
-                    {
-                        shortestDistanceBetweenInteractables = distanceBetweenObjects;
-                        closestInteractable = interactableObject;
-                    }
-                    interactableIcon.transform.position = closestInteractable.transform.position;
-                }
-                // placeholder line of code until there is a universal interact script written
-                if (Input.GetAxis("Interact") > 0)
-                {
-                  
-                    if (timeSinceLastInteract >= interactCooldown)
-                    {
-                        closestInteractable.GetComponent<LootChest_Jerzy>().Interact();
-                        timeSinceLastInteract = 0;
-                    }
-                    timeInteractHeld += Time.deltaTime;
-
-                }
-
-
+                GetComponent<PlayerCombat_Jerzy>().Attack();
             }
+
+            timeInteractHeld = 0;
         }
 
 
-       listOfInteractablesWithinRange.Clear();
-
     }
 
-    private void OnTriggerStay(Collider other)
+    void Dash(Vector3 dashDirection)
     {
-        // when the sword returns to the player
-        if (other.tag == "playerSword" && returning && thrown)
+        if (Mathf.Abs(dashDirection.x) > dashAnalogueReq || Mathf.Abs(dashDirection.z) > dashAnalogueReq)
         {
-            // end throw cycle, attach sword to player, set appropriate position and rotation for the sword
-            swordEmpty.GetComponent<ThrowSword_Jerzy>().EndThrowCycle();
-            swordEmpty.transform.parent = playerModel.transform;
-            swordEmpty.transform.position = swordDefaultPosition.transform.position;
-            swordEmpty.transform.rotation = swordDefaultPosition.transform.rotation;
-            timeSinceLastInteract = 0;
-        }
-        if(other.tag == "LootChest")
-        {
-            if (other.gameObject.GetComponent<LootChest_Jerzy>().isInteractable)
-            {
-                listOfInteractablesWithinRange.Add(other.gameObject);
-
-
-            }
+            canBeDamaged = false;
+            m_Rigidbody.AddForce(dashDirection * dashForce);
+            timeSinceLastDash = 0;
 
         }
     }
+
+
 
     public void SetTargetedTransform(Transform newTargetedTransform)
     {
