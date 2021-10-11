@@ -76,7 +76,7 @@ public class EnemyBase : Patrol
     public override void Start()
     {
         base.Start();
-        defaultToZero = false;
+        DefaultToZero = false;
         stats = GetComponent<CharacterStats>();
         StartCoroutine("FindTargetsWithDelay", findDelay);
         for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
