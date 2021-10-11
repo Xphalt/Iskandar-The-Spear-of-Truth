@@ -23,24 +23,13 @@ public class SettingsOptions : MonoBehaviour
         {
             qualityDropDown.ClearOptions();
 
-            if (new_locale.Code.Equals("en"))
+            LocalizedString localisedString = new LocalizedString();
+            localisedString.TableReference = qualitySettingsStringTable;
+            foreach (var name in QualitySettings.names)
             {
-                foreach (var name in QualitySettings.names)
-                {
-                    qualityDropDown.options.Add(new Dropdown.OptionData(name));
-                }
-            }
-            // Use the English quality names to get the codes from the French part of the QualitySettings table
-            else if (new_locale.Code.Equals("fr"))
-            {
-                LocalizedString localisedString = new LocalizedString();
-                localisedString.TableReference = qualitySettingsStringTable;
-                foreach (var name in QualitySettings.names)
-                {
-                    localisedString.TableEntryReference = name;
-                    string french_name = localisedString.GetLocalizedString();
-                    qualityDropDown.options.Add(new Dropdown.OptionData(french_name));
-                }
+                localisedString.TableEntryReference = name;
+                string localised_name = localisedString.GetLocalizedString();
+                qualityDropDown.options.Add(new Dropdown.OptionData(localised_name));
             }
 
             SetQuality(QualitySettings.GetQualityLevel());
