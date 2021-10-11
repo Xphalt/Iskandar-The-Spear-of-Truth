@@ -26,10 +26,16 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private Player_Targeting_Jack _playerTargetingScript;
     private Transform _targetedTransform = null;
 
+    float lastMagnitudeFromTarget = 0;
+
+
+    private Player_Interaction_Jack _playerInteractionScript;
+
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
+        _playerInteractionScript = GetComponent<Player_Interaction_Jack>();
     }
 
 
@@ -49,12 +55,25 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
 
-            print(playerToTargetVector.magnitude);
-
+            //print(playerToTargetVector.magnitude);
 
 
             Vector3 direction = playerModel.transform.TransformDirection(m_Input);
             direction.Normalize();
+
+
+            // this block of code ensures that the player does not spiral away from the targeted enemy
+            if (m_Input.x == 0)
+            {
+                lastMagnitudeFromTarget = playerToTargetVector.magnitude;
+            }
+            if(playerToTargetVector.magnitude > lastMagnitudeFromTarget)
+            {
+                m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed*5);
+            }
+
+            
+
 
             m_Rigidbody.velocity = (direction * m_Speed);
 
@@ -104,13 +123,23 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
         else if (timeInteractHeld > 0)
         {
-            if (timeInteractHeld > HELD_TIME_FOR_THROWN_ATTACK)
+            if(_playerInteractionScript.IsInteractionAvailable())
             {
-                GetComponent<PlayerCombat_Jerzy>().ThrowAttack();
+                _playerInteractionScript.Interact();
             }
+
             else
             {
-                GetComponent<PlayerCombat_Jerzy>().Attack();
+
+                if (timeInteractHeld > HELD_TIME_FOR_THROWN_ATTACK)
+                {
+                    GetComponent<PlayerCombat_Jerzy>().ThrowAttack();
+                }
+                else
+                {
+                    GetComponent<PlayerCombat_Jerzy>().Attack();
+                }
+
             }
 
             timeInteractHeld = 0;
