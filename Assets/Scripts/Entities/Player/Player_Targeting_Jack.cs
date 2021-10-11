@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player_Targeting_Jack : MonoBehaviour
 {
     public Transform playerModelTransform;
+    public Transform targetingIcon;
 
     private Transform _targetedTransform = null;
     private bool _targetableObjectHit = false;
@@ -42,6 +43,12 @@ public class Player_Targeting_Jack : MonoBehaviour
             // Player was targeting an object last frame but is no longer targeting
             UnTargetObject();
 		}
+        // Dominique 07-10-2021, Ensure the icon follows above the targeted object
+        else if (IsTargeting())
+        {
+            Vector3 new_pos = new Vector3(_targetedTransform.position.x, _targetedTransform.position.y + (1 * _targetedTransform.localScale.y), _targetedTransform.position.z);
+            targetingIcon.position = new_pos;
+        }
     }
 
     // Returns true if the player is currently targeting an object
@@ -72,12 +79,20 @@ public class Player_Targeting_Jack : MonoBehaviour
             {
                 _targetedTransform = _targetRaycastHit.transform;
                 _wasTargeting = true;
+
+                // Dominique 07-10-2021, Outline the targeted enemy and move the interactable icon to them
+                ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.yellow);
+                targetingIcon.gameObject.SetActive(true);
             }
         }
 	}
 
     private void UnTargetObject()
     {
+        // Dominique 07-10-2021, Clear enemy outline when no longer targeting and remove the interactable icon
+        ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.clear);
+        targetingIcon.gameObject.SetActive(false);
+
         _targetedTransform = null;
         _wasTargeting = false;
     }
