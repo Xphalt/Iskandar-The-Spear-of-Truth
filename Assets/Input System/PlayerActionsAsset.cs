@@ -65,6 +65,14 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ItemSelectionWheel"",
+                    ""type"": ""Button"",
+                    ""id"": ""47d267fe-3a0d-468d-8a4b-abb7cc09cea4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -276,6 +284,17 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a80031d4-ae3d-454f-9682-039cd29b5731"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemSelectionWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -364,6 +383,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_ItemSelectionWheel = m_Player.FindAction("ItemSelectionWheel", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -423,6 +443,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_ItemSelectionWheel;
     public struct PlayerActions
     {
         private @PlayerActionsAsset m_Wrapper;
@@ -433,6 +454,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @ItemSelectionWheel => m_Wrapper.m_Player_ItemSelectionWheel;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -460,6 +482,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @ItemSelectionWheel.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionWheel;
+                @ItemSelectionWheel.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionWheel;
+                @ItemSelectionWheel.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionWheel;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -482,6 +507,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @ItemSelectionWheel.started += instance.OnItemSelectionWheel;
+                @ItemSelectionWheel.performed += instance.OnItemSelectionWheel;
+                @ItemSelectionWheel.canceled += instance.OnItemSelectionWheel;
             }
         }
     }
@@ -553,6 +581,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnItemSelectionWheel(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

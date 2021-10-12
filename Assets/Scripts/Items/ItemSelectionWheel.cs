@@ -36,4 +36,10 @@ public class ItemSelectionWheel : MonoBehaviour
             anim.SetBool("OpenItemWheel", false);
         }
     }
+
+    public void ToggleItemSelectionWheel()
+    {
+        itemWheelSelected = !itemWheelSelected;
+    }
+        
 }
