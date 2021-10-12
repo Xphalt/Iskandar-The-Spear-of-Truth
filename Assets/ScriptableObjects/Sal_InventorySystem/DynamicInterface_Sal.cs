@@ -18,7 +18,7 @@ public class DynamicInterface_Sal : UserInterface_Sal
     public override void CreateSlots()
     {
         slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
-        for (int i = 0; i < inventory.Storage.items.Length; i++)
+        for (int i = 0; i < inventory.Storage.Slots.Length; i++)
         {
             var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
@@ -30,7 +30,10 @@ public class DynamicInterface_Sal : UserInterface_Sal
             AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
             AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
 
-            slotsOnInterface.Add(obj, inventory.Storage.items[i]);
+            //Storing the GameObject in the slot
+            inventory.GetSlots[i].slotDisplay = obj;
+
+            slotsOnInterface.Add(obj, inventory.Storage.Slots[i]);
         }
     }
     private Vector3 GetPosition(int i)

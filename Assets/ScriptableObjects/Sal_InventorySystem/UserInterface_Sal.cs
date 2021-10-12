@@ -12,12 +12,15 @@ public abstract class UserInterface_Sal : MonoBehaviour
     public InventoryObject_Sal inventory;  
     public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
 
+    public abstract void CreateSlots();
+    
     
     void Start()
     {
-        for (int i = 0; i < inventory.Storage.items.Length; i++)
+        for (int i = 0; i < inventory.GetSlots.Length; i++)
         {
-            inventory.Storage.items[i].parent = this;   //Sets the right interface parent to each slot (for dragging into another database)
+            inventory.GetSlots[i].parent = this;   //Sets the right interface parent to each slot (for dragging into another database)
+            inventory.GetSlots[i].OnAfterUpdate += OnSlotUpdate;    //Setting delegate method to update the UI
         }
         CreateSlots();
 
@@ -26,10 +29,26 @@ public abstract class UserInterface_Sal : MonoBehaviour
         AddEvent(this.gameObject, EventTriggerType.PointerExit, delegate { OnExitInterface(this.gameObject); });
     }
 
-    void Update()
+    private void OnSlotUpdate(InventorySlot slot)
     {
-        slotsOnInterface.UpdateSlotDisplay();
+        if (slot.item.id >= 0) //has item
+        {
+            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = slot.ItemObject.uiDisplay;
+            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
+            slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount == 1 ? "" : slot.amount.ToString("n0");
+        }
+        else //No item
+        {
+            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
+            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+            slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = "";
+        }
     }
+
+    //void Update()
+    //{
+    //    slotsOnInterface.UpdateSlotDisplay();
+    //}
 
 
     public void UpdateSlots()
@@ -51,7 +70,6 @@ public abstract class UserInterface_Sal : MonoBehaviour
         }
     }
 
-    public abstract void CreateSlots();
      
     //Events
     protected void AddEvent(GameObject obj, EventTriggerType type, UnityAction<BaseEventData> action)

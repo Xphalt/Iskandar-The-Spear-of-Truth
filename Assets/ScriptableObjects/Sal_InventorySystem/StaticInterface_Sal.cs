@@ -5,13 +5,12 @@ using UnityEngine.EventSystems;
 
 public class StaticInterface_Sal : UserInterface_Sal
 {
-
     public GameObject[] slots;
 
     public override void CreateSlots()
     {
         slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
-        for (int i = 0; i < inventory.Storage.items.Length; i++)
+        for (int i = 0; i < inventory.Storage.Slots.Length; i++)
         {
             var obj = slots[i];
 
@@ -22,8 +21,11 @@ public class StaticInterface_Sal : UserInterface_Sal
             AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
             AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
 
+            //Storing the GameObject in the slot
+            inventory.GetSlots[i].slotDisplay = obj;
+
             //Link database to that obj
-            slotsOnInterface.Add(obj, inventory.Storage.items[i]);
+            slotsOnInterface.Add(obj, inventory.Storage.Slots[i]);
         }
     } 
 }
