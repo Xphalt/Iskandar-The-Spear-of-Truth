@@ -11,12 +11,19 @@ public class SoundLibrary : MonoBehaviour
     {
         PlayerCollect,
         PlayerMovement,
-        PlayerDamage
+        PlayerDamage,
+        CombatSwordWhoosh,
+        CombatSwordHit,
+        CombatStab
     }
 
     public List<AudioClip> PlayerCollect = new List<AudioClip>();
     public List<AudioClip> PlayerMovement = new List<AudioClip>();
     public List<AudioClip> PlayerDamage = new List<AudioClip>();
+    public List<AudioClip> CombatSwordWhoosh = new List<AudioClip>();
+    public List<AudioClip> CombatSwordHit = new List<AudioClip>();
+    public List<AudioClip> CombatStab = new List<AudioClip>();
+
 
     internal Dictionary<SoundGroup, List<AudioClip>> SoundLib = new Dictionary<SoundGroup, List<AudioClip>>();
 
@@ -32,5 +39,8 @@ public class SoundLibrary : MonoBehaviour
         SoundLib.Add(SoundGroup.PlayerCollect, PlayerCollect);
         SoundLib.Add(SoundGroup.PlayerMovement, PlayerMovement);
         SoundLib.Add(SoundGroup.PlayerDamage, PlayerDamage);
+        SoundLib.Add(SoundGroup.CombatSwordWhoosh, CombatSwordWhoosh);
+        SoundLib.Add(SoundGroup.CombatSwordHit, CombatSwordHit);
+        SoundLib.Add(SoundGroup.CombatStab, CombatStab);
     }
 }
