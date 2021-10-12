@@ -8,7 +8,7 @@ public class MusicManager : MonoBehaviour
     private AudioSource fadeIn;
     private AudioSource fadeOut;
 
-    public AudioMixer mixer;
+    private AudioMixer mixer;
 
     private bool fadingInMusic = false;
 
@@ -24,15 +24,7 @@ public class MusicManager : MonoBehaviour
 
         music = gameObject.AddComponent<AudioSource>();
         music.outputAudioMixerGroup = mixer.FindMatchingGroups("Music")[0];
-        music.loop = true;
-        
-        fadeIn = gameObject.AddComponent<AudioSource>();
-        fadeIn.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade In")[0];
-        fadeIn.loop = true;
-
-        fadeOut = gameObject.AddComponent<AudioSource>();
-        fadeOut.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade Out")[0];
-        fadeOut.loop = true;
+        music.loop = true;       
         
         music.clip = startingMusic;
         music.Play();
@@ -53,6 +45,9 @@ public class MusicManager : MonoBehaviour
                 music.Play();
                 fadeIn.volume = 0f;
 
+                Destroy(fadeIn);
+                Destroy(fadeOut);
+
                 fadingInMusic = false;
             }
         }
@@ -60,13 +55,18 @@ public class MusicManager : MonoBehaviour
 
     public void FadeInMusic(AudioClip audioClip)
     {
-        fadeOut.volume = 0f;
+        fadeIn = gameObject.AddComponent<AudioSource>();
+        fadeIn.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade In")[0];
+        fadeIn.loop = true;
+
+        fadeOut = gameObject.AddComponent<AudioSource>();
+        fadeOut.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade Out")[0];
+        fadeOut.loop = true;
+
         fadeIn.volume = 0f;
 
         fadeOut.clip = music.clip;
         fadeOut.time = music.time;
-
-        fadeOut.volume = 1f;
 
         fadeOut.Play();
         music.Stop();
