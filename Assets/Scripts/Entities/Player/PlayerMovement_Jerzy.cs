@@ -58,7 +58,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
     }
 
-
+    
     void FixedUpdate()
     {
 
@@ -68,7 +68,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         timeSinceLastInteract += Time.deltaTime;
         timeSinceLastDash += Time.deltaTime;
-
+        
         // basic player movement using input system
         Vector3 m_Input = new Vector3 (Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         if (_playerTargetingScript.IsTargeting())
@@ -128,7 +128,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 playerModel.transform.rotation = targetRotation;
                 swordLookRotation = targetRotation;
             }
-        }
+        } 
        
 
         // determines whether player will interact or attack
@@ -225,7 +225,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
        listOfInteractablesWithinRange.Clear();
 
-    }
+    } 
 
     private void OnTriggerStay(Collider other)
     {

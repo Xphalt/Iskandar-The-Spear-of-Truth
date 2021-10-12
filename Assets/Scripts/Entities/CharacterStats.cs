@@ -63,9 +63,14 @@ public class CharacterStats : MonoBehaviour
         //load = true;
         //SaveManager.SavePlayerStatsf1(this.load);
         SaveData saveData = SaveManager.LoadPlayerStatsf1();
-        //SceneManager.LoadScene(saveData.scenename);
+        SceneManager.LoadScene(saveData.scenename);
         //print(saveData.scenename);
         health = saveData.health;
+    }
+
+    private void OnDestroy()
+    {
+        SaveStats();
     }
 
 }

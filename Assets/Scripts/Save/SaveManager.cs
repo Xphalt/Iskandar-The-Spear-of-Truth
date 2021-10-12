@@ -22,7 +22,7 @@ public static class SaveManager
 
     public static SaveData LoadPlayerStatsf1()
     {
-        string filePath = Application.persistentDataPath + "/player_statsf1.txt";
+        string filePath = Application.persistentDataPath + "/Player_statsf1.txt";
         if (File.Exists(filePath))
         {
             BinaryFormatter bf = new BinaryFormatter();
