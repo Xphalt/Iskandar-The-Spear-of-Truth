@@ -7,11 +7,18 @@ using UnityEditor;
 using System.Runtime.Serialization;
 using System;
 
+public enum InterfaceType
+{
+    Inventory,
+    Equipment    
+}
+
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 public class InventoryObject_Sal : ScriptableObject
 {
     public string savePath;
     public DatabaseObject database;
+    public InterfaceType type;
     public Inventory Storage;
     public InventorySlot[] GetSlots
     {

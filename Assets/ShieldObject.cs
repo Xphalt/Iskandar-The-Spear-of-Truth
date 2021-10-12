@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Defencevalues
 {
-    float physicalDef;
-    float fireDef;
-    float iceDef;
+    public float physicalDef;
+    public float fireDef;
+    public float iceDef;
 
     public Defencevalues()
     {
@@ -25,7 +26,7 @@ public class Defencevalues
 
 [CreateAssetMenu(fileName = "New Shield Object", menuName = "Inventory System/Items/Shield")]
 public class ShieldObject : ItemObject_Sal
-{
+{ 
     public Defencevalues defValues = new Defencevalues();
 
     public void Awake()
