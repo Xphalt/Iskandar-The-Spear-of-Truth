@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions; // Needed to have acess to the Interecations
+using UnityEngine.InputSystem.Interactions; // Needed to have acess to the Interecations (Hold and PRess interactions) 
 
 public class PlayerInput : MonoBehaviour
 {
@@ -28,8 +28,8 @@ public class PlayerInput : MonoBehaviour
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         _playerActionsAsset.Player.Pause.performed += OnPause;
-        _playerActionsAsset.Player.Target.performed += ctx => _playerTargeting.TargetObject();
-        _playerActionsAsset.Player.Inventory.performed += ctx => _inventoryUI.ToggleInventory();
+        _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
+        _playerActionsAsset.Player.Inventory.performed += _ => _inventoryUI.ToggleInventory();
 
         _playerActionsAsset.Player.Attack.performed += ctx =>
             {
@@ -42,7 +42,7 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
-        _playerActionsAsset.UI.Inventory.performed += ctx => _inventoryUI.ToggleInventory();
+        _playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();
         #endregion
     }
 
@@ -96,7 +96,10 @@ public class PlayerInput : MonoBehaviour
 
     private void Dash()
     {
-        Debug.Log("Dashing");
+        if (_playerRigidbody.velocity != Vector3.zero)
+        {
+            Debug.Log("Dashing");
+        }
     }
 
     private void OnEnable()
