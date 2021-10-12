@@ -129,29 +129,6 @@ public sealed class Recovery : State
     }
 }
 
-public sealed class Recovery : State
-{
-    public Recovery(FiniteStateMachine fsm)
-    {
-        owningFSM = fsm;
-    }
-
-    public override void Enter(Boss Entity)
-    {
-
-    }
-
-    public override void Execute(Boss Entity)
-    {
-        //check for position and if player is in melee range
-    }
-
-    public override void Exit(Boss Entity)
-    {
-
-    }
-}
-
 public sealed class LightAttack : State
 {
     public LightAttack(FiniteStateMachine fsm)
