@@ -80,10 +80,10 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments * 3;
+        //HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments * 3;
 
-        enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
-        enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
+        //enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
+        //enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
     }
 
 #if DEBUG // Dominique 07-10-2021, Use to test enemy health bar (make sure to SetupEnemyHealthBar first)
