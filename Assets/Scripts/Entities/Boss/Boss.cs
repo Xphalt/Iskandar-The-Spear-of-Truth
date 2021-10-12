@@ -7,16 +7,29 @@ public class Boss : MonoBehaviour
     public Transform returnSpot;
     public Transform playerPos;
     private FiniteStateMachine MyFSM;
-    public float health;
-    public float lightAtkDamage;
-    public float lightAtkRange;
-    public float heavyAtkDamage;
-    public float heavyAtkRange;
-    public float finalAtkDamage;
+    public int health;
+    public float moveSpeed;
+    public int lightAtkDamage;
+    public int lightAtkRange;
+    public int heavyAtkDamage;
+    public int heavyAtkRange;
+    public int finalAtkDamage;
 
     public float idleTime;
+    public float idleTimer;
     public float vulnTime;
-    public bool godMode=false;
+    public float vulnTimer;
+    public int vulnHits;
+    public int currVulnHits;
+    public bool isVuln = false;
+    /*For scripted story event*/
+    public bool godMode = false;
+
+    //Changes FSM's current state
+    public void ChangeState(State newState)
+    {
+        MyFSM.ChangeState(newState);
+    }
 
     public void Awake()
     {
@@ -25,36 +38,43 @@ public class Boss : MonoBehaviour
         MyFSM.SetStartState(new Idle(MyFSM));
     }
 
-    public void ChangeState(State newState)
-    {
-        MyFSM.ChangeState(newState);
-    }
 
     public void Update()
     {
-        MyFSM.Update();
+        //MyFSM.Update();
+        idleTimer += Time.deltaTime;
+        vulnTimer += Time.deltaTime;
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(int amount)
     {
-        if(!godMode)
+        //this is called when Boss is in 'Vulnerability' State
+        if((!godMode) && (isVuln))
         {
-
+            health -= amount;
+            currVulnHits++;
         }
     }
 
-    public void lightAttack()
+    public void ReturnToIdle()
     {
-
+        //moves the boss to its 'returnSpot', this is called when Boss is in 'Recovery' State
+        transform.position = Vector3.MoveTowards(transform.position,returnSpot.position,moveSpeed);
     }
 
-    public void heavyAttack()
+    //These virtual methods are to be overriden by the specific boss's script
+    public virtual bool LightAttack()
     {
-
+        return true;
     }
 
-    public void finalAttack()
+    public virtual bool HeavyAttack()
     {
+        return true;
+    }
 
+    public virtual bool FinalAttack()
+    {
+        return true;
     }
 }

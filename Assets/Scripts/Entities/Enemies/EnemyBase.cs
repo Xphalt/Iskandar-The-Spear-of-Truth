@@ -1,7 +1,4 @@
-﻿//Bernardo Mendes
-//AI Programming Dept.
-//Latest Rev: 06/10/2021
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
