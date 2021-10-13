@@ -39,18 +39,11 @@ public class ShopManager : MonoBehaviour
     GameObject shopPanel;
     GameObject shopContentPanel; 
 
-    int a = 0;
     private void Start()
     {
         shopPanel = GameObject.Find("ShopUI");
         shopContentPanel = GameObject.Find("ShopContentPanel");
         shopPanel.SetActive(false);
-    }
-    private void Update()
-    {
-        a++;
-        if (a == 100)
-            OpenShop(SHOP_TYPE.POTION_SELLER);
     }
 
     // Pass in an integer that corresponds to the SHOP_TYPE enum
