@@ -9,7 +9,7 @@ using UnityEngine;
 public class PlayerAnimationManager : MonoBehaviour
 {
     #region Variables
-    Animator animator;
+    [HideInInspector] public Animator animator;
 
     private int horiz, vert;
     #endregion

@@ -30,7 +30,7 @@ public class PlayerInput : MonoBehaviour
     #region Animation Variables
     public PlayerAnimationManager animationManager;
 
-    private float moveAmount;
+    public float moveAmount = 2;
     #endregion
 
     private void Awake()
@@ -75,13 +75,14 @@ public class PlayerInput : MonoBehaviour
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
 
         //Animation
-        moveAmount = Mathf.Clamp01(Mathf.Abs(inputVector.x) + Mathf.Abs(inputVector.y));
+        //_movementSpeed = Mathf.Clamp01(Mathf.Abs(inputVector.x) + Mathf.Abs(inputVector.y));
 
     }
 
     private void Update()
     {
-        animationManager.UpdateAnimatorValues(0, moveAmount);
+        //animationManager.UpdateAnimatorValues(0, _movementSpeed);
+        animationManager.animator.SetFloat("isRunning", moveAmount);
     }
 
     private void HandleRotation()

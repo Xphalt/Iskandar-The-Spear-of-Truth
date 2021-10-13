@@ -1158,6 +1158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d2dc0d255e7cd04483be31354e375d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!1 &188978172
 GameObject:
   m_ObjectHideFlags: 0
@@ -8565,7 +8566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1160312875}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5262655, y: -0.045799732, z: -9.49}
+  m_LocalPosition: {x: 0.5262655, y: -0.045799732, z: -11.85}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 186822797}
@@ -8594,7 +8595,8 @@ MonoBehaviour:
   _movementSpeed: 10
   _playerModel: {fileID: 186822798}
   _rotationSpeed: 10
-  animationManager: {fileID: 0}
+  animationManager: {fileID: 186822801}
+  moveAmount: 2
 --- !u!114 &1160312878
 MonoBehaviour:
   m_ObjectHideFlags: 0
