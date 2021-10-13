@@ -60,7 +60,7 @@ public class PlayerInput : MonoBehaviour
         //Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
         //_playerRigidbody.velocity = new Vector3(inputVector.x, 0.0f, inputVector.y) * _movementSpeed;
 
-        //HandleRotation();
+        HandleRotation();
 
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));

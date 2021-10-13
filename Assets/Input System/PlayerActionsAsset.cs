@@ -20,9 +20,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Movement"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""4f02be9e-6021-4ea6-bfbe-6e43f250b61a"",
-                    ""expectedControlType"": ""Stick"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -60,7 +60,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Attack"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""168d6629-6a01-4b3a-9001-152bd969d4d6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -101,7 +101,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""19ec4f23-ea2b-409d-ac4c-8a190c0d8fe9"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
