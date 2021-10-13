@@ -15,10 +15,11 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private Player_Targeting_Jack _playerTargeting;
     [SerializeField] private Player_Interaction_Jack _player_Interaction_Jack;
     [SerializeField] private PlayerCombat_Jerzy _playerCombat_Jerzy;
-    [SerializeField] private Inventory_UI_Script _inventoryUI;
+    //[SerializeField] private Inventory_UI_Script _inventoryUI;
     [SerializeField] private ItemSelectionWheel _itemSelectionWheel;
     [SerializeField] private ItemSelectionBar _itemSelectionBar;
     [SerializeField] private Player_Sal _player_sal;
+    [SerializeField] private PauseMenuManager _pauseMenuManager;
 
     [Header("Movement Settings")]
     [SerializeField] private float _movementSpeed;
@@ -35,7 +36,7 @@ public class PlayerInput : MonoBehaviour
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         _playerActionsAsset.Player.Pause.performed += OnPause;
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
-        _playerActionsAsset.Player.Inventory.performed += _ => _inventoryUI.ToggleInventory();
+        _playerActionsAsset.Player.Inventory.performed += _ => _pauseMenuManager.TogglePauseState();
 
         _playerActionsAsset.Player.Attack.performed += ctx =>
             {
@@ -57,7 +58,7 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset.Player.LoadInventory.performed += _ => _player_sal.LoadInventory();
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
-        _playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();
+        //_playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();
         #endregion
     }
 
