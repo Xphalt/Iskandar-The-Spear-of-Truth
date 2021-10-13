@@ -13,7 +13,9 @@ public enum ItemType
 }
 
 public abstract class ItemObject_Sal : ScriptableObject
-{ 
+{
+    public int BuyValue, SellValue;
+
     public Sprite uiDisplay;
     public Mesh model;
     public ItemType type;

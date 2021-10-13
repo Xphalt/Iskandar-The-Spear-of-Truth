@@ -27,7 +27,8 @@ public enum GOOD_TYPE
 
 public class ShopManager : MonoBehaviour
 {
-    public Shop[] shops;
+    public InventoryObject_Sal shop;
+     
     // The good prefab will set up the UI with the GoodData
     public GameObject goodPrefab;
     // Number of goods that fit on a row in the scrollable rect
@@ -36,42 +37,43 @@ public class ShopManager : MonoBehaviour
     public float prefabHeight = 360f;
 
     GameObject shopPanel;
-    GameObject shopContentPanel;
-    Shop currentShop;
+    GameObject shopContentPanel; 
 
+    int a = 0;
     private void Start()
     {
         shopPanel = GameObject.Find("ShopUI");
         shopContentPanel = GameObject.Find("ShopContentPanel");
         shopPanel.SetActive(false);
     }
+    private void Update()
+    {
+        a++;
+        if (a == 100)
+            OpenShop(SHOP_TYPE.POTION_SELLER);
+    }
 
     // Pass in an integer that corresponds to the SHOP_TYPE enum
     public void OpenShop(SHOP_TYPE shopType)
-    {
-        // Get the goods for the type of shop
-        for (int i = 0; i < shops.Length; i++)
-        {
-            if (shops[i].shopType == shopType)
-            {
-                currentShop = shops[i];
-                break;
-            }
-        }
-
+    {  
         // Populate shop with goods
-        for (int i = 0; i < currentShop.goodDatas.Length; i++)
+        int numGoods = 0;
+        for (int i = 0; i < shop.Storage.Slots.Length; i++)
         {
-            GoodData goodData = currentShop.goodDatas[i];
-            GameObject goodObject = Instantiate(goodPrefab, shopContentPanel.transform);
+            if (shop.Storage.Slots[i].item.id > -1)
+            {
+                //GoodData goodData = currentShop.goodDatas[i];
+                GameObject goodObject = Instantiate(goodPrefab, shopContentPanel.transform); 
 
-            goodObject.GetComponent<Good>().SetupGood(goodData);
+                goodObject.GetComponent<Good>().SetupGood(shop.database.ItemObjects[shop.Storage.Slots[i].item.id], shop);
+                ++numGoods;
+            }
         }
 
         // Set the size of the content panel so it fits the number of goods available
         shopPanel.SetActive(true);
         RectTransform contentRect = shopContentPanel.GetComponent<RectTransform>();
-        int numGoods = currentShop.goodDatas.Length;
+        
         if (numGoods % goodsPerRow == 1)
         {
             numGoods++;
@@ -90,11 +92,4 @@ public class ShopManager : MonoBehaviour
 
         shopPanel.SetActive(false);
     }
-}
-
-[System.Serializable]
-public struct Shop
-{
-    public SHOP_TYPE shopType;
-    public GoodData[] goodDatas;
-}
+} 

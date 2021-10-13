@@ -10,7 +10,8 @@ using System;
 public enum InterfaceType
 {
     Inventory,
-    Equipment    
+    Equipment,
+    Shop
 }
 
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
@@ -51,10 +52,11 @@ public class InventoryObject_Sal : ScriptableObject
             return true;
         }
         slot.AddAmount(p_amount);
+
         return true; 
     }
 
-    private InventorySlot FindItemOnInventory(Item p_item)
+    public InventorySlot FindItemOnInventory(Item p_item)
     {
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
@@ -64,13 +66,13 @@ public class InventoryObject_Sal : ScriptableObject
             }
         }
         return null;
-    }
+    } 
 
     public void RemoveItem(Item p_item)
     {
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
-            if(Storage.Slots[i].item == p_item)
+            if(Storage.Slots[i].item.id == p_item.id)
             {
                 Storage.Slots[i].UpdateSlot(null, 0);
             }

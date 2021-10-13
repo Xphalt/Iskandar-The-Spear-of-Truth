@@ -8,44 +8,64 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Good : MonoBehaviour
-{
-    private GoodData goodData;
+{  
+    private ItemObject_Sal objHolder; 
 
     public Image image;
     public Text displayName;
     public Text buyValue;
     public Text sellValue;
-    public Text amount;
+    public Text amount; public int howMany;
 
-    public void SetupGood(GoodData data)
-    {
-        goodData = data;
+    public void SetupGood(ItemObject_Sal item, InventoryObject_Sal inv)
+    { 
+        objHolder = item;
 
-        image.sprite = data.displaySprite;
-        displayName.text = data.displayName.GetLocalisedString();
-        buyValue.text = data.buyValue.ToString();
-        sellValue.text = data.sellValue.ToString();
-        // TODO: Get current number of items from inventory
-        amount.text = "0";
+        LocalisationTableReference localisationTableReference = new LocalisationTableReference();
+        localisationTableReference.tableReference = "ShopStrings";
+        localisationTableReference.entryReference = item.name;
+        displayName.text = localisationTableReference.GetLocalisedString();
+        
+        image.sprite = item.uiDisplay;
+        buyValue.text = item.BuyValue.ToString();
+        sellValue.text = item.SellValue.ToString();
+
+        amount.text = inv.FindItemOnInventory(item.data).amount.ToString();
+        howMany = int.Parse(amount.text.ToString());
     }
 
-    public void BuyGood()
-    {
-        // TODO: Add good to inventory and remove money 
+    public void BuyGood(InventoryObject_Sal destinationInvenotory)
+    { 
+        if (howMany > 0)
+        {
+            if (destinationInvenotory.AddItem(destinationInvenotory.database.ItemObjects[objHolder.data.id].data, 1))
+            {
+                //Reduce amount in the shop
+                GameObject.FindObjectOfType<ShopManager>().shop.FindItemOnInventory(objHolder.data).AddAmount(-1);
+                amount.text = (--howMany).ToString(); 
+
+                //TODO:pay
+            }
+        }
     }
 
-    public void SellGood()
+    public void SellGood(InventoryObject_Sal destinationInvenotory)
     {
-        // TODO: Remove good from inventory and add money
+        InventorySlot obj = destinationInvenotory.FindItemOnInventory(objHolder.data);
+        
+        if (obj == null) //No item in the inventory
+            return;
+        if (obj.amount > 0) //Player has item
+        {
+            //Remove 1 from player inventory
+            obj.AddAmount(-1);
+            //Add amount to the shop
+            GameObject.FindObjectOfType<ShopManager>().shop.FindItemOnInventory(objHolder.data).AddAmount(1);
+            amount.text = (++howMany).ToString();
+            
+            //TODO: pay
+        }
+        if(obj.amount == 0) //Remove item if all amount is sold
+            destinationInvenotory.RemoveItem(objHolder.data);
     }
-}
-
-[System.Serializable]
-public struct GoodData
-{
-    public GOOD_TYPE goodType;
-    public LocalisationTableReference displayName;
-    public Sprite displaySprite;
-    public int sellValue;
-    public int buyValue;
-}
+} 
