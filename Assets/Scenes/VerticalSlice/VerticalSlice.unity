@@ -7069,6 +7069,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 857964084}
   m_CullTransparentMesh: 1
+--- !u!1 &893299701 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1297919422531896933, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
+  m_PrefabInstance: {fileID: 1376811677}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &898936943
 GameObject:
   m_ObjectHideFlags: 0
@@ -7607,6 +7612,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934351956}
   m_CullTransparentMesh: 1
+--- !u!1 &948536169 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1297919424068681081, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
+  m_PrefabInstance: {fileID: 1376811677}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &951397095
 GameObject:
   m_ObjectHideFlags: 0
@@ -13289,6 +13299,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1494596635}
   m_CullTransparentMesh: 1
+--- !u!1 &1507150721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1297919423086019274, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
+  m_PrefabInstance: {fileID: 1376811677}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1522047165
 GameObject:
   m_ObjectHideFlags: 0
@@ -18905,6 +18920,29 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1297919422498899246, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
   m_PrefabInstance: {fileID: 1376811677}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1297919423875710900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297919423875710899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c452a0cfc96462649b07784b5cceba50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerModel: {fileID: 1297919422692377846}
+  throwTimeBeforeSpinInPlace: 1
+  throwTimeSpinningInPlace: 0.5
+  throwSpeed: 15
+  throwReturnSpeed: 20
+  canAttack: 1
+  timeToThrowSword: 0.4
+  swordObject: {fileID: 893299701}
+  swordEmpty: {fileID: 1507150721}
+  swordDefaultPosition: {fileID: 948536169}
+  attackCooldown: 0.8
 --- !u!114 &1297919423875710901 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4901670945278872760, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
@@ -18914,6 +18952,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa3204307fc31d748a1b660950d708c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1297919423875710902 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7338899279738636877, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
+  m_PrefabInstance: {fileID: 1376811677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297919423875710899}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02977b12e620d11439d57a988847dda7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1297919423875710903 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1297919422498899235, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
+  m_PrefabInstance: {fileID: 1376811677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297919423875710899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc3ff9cdc3d49dc4fbc841fd96d50150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1297919423875710904
@@ -18928,17 +18988,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e504058ddbfc24b8e27a1b5c7728ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerMovement_Jerzy: {fileID: 0}
+  _playerMovement_Jerzy: {fileID: 1297919423875710903}
   _playerTargeting: {fileID: 1297919423875710901}
-  _player_Interaction_Jack: {fileID: 0}
-  _playerCombat_Jerzy: {fileID: 0}
+  _player_Interaction_Jack: {fileID: 1297919423875710902}
+  _playerCombat_Jerzy: {fileID: 1297919423875710900}
   _inventoryUI: {fileID: 201902628}
   _itemSelectionWheel: {fileID: 982824946}
   _itemSelectionBar: {fileID: 65339569}
-  _player_sal: {fileID: 0}
+  _player_sal: {fileID: 1297919423875710906}
   _movementSpeed: 10
   _playerModel: {fileID: 1297919422692377846}
   _rotationSpeed: 10
+--- !u!114 &1297919423875710906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297919423875710899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1732c4a6cc31c6f4ca660091a77821ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 11400000, guid: 26754aa56798a1244bc66bcb0018782c, type: 2}
+  equipment: {fileID: 11400000, guid: 1404d5272f1fab045a59c4cb3f99e452, type: 2}
+  damage: 0
+  defence: 0
+  fireDefence: 0
+  iceDefence: 0
 --- !u!4 &1297919423875710909 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1297919422498899232, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
