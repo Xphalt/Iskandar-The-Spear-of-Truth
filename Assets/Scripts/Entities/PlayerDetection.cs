@@ -12,14 +12,13 @@ public class PlayerDetection : MonoBehaviour
     [Range(0, 360)]
     public float viewAngle;
 
-    public float findDelay;
+    public float detectionRadius;
 
-    public void FindVisibleTargets(float viewRadius)
+
+    public Transform FindVisibleTargets()
     {
         visibleTargets.Clear();
-        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
-
-        Transform targetTransform;
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, detectionRadius, targetMask);
 
         for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
@@ -34,21 +33,30 @@ public class PlayerDetection : MonoBehaviour
                 {
                     //found you
                     visibleTargets.Add(target);
-                    targetTransform = target.transform;
+                    return target;
                 }
             }
         }
 
+        return null;
+    }
+    public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
+    {
+        if (!angleIsGlobal)
+            angleInDegrees += transform.eulerAngles.y;
+
+        return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
 
-    private void MeleeAttack()
+    public bool MeleeRangeCheck(float attackrange, Transform target)
     {
-        if (MeleeRangeCheck())
+        foreach (RaycastHit targetScan in Physics.RaycastAll(transform.position, transform.forward, attackrange))
         {
-            stats.DealDamage(curTarget.GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
-            attackUsed = true;
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector2.zero;
+            if (targetScan.collider.transform == target) return true;
         }
+
+        return false;
     }
+
+
 }

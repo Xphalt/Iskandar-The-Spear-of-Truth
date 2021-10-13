@@ -146,9 +146,10 @@ GameObject:
   - component: {fileID: 23437426}
   - component: {fileID: 23437430}
   - component: {fileID: 23437429}
-  - component: {fileID: 23437428}
   - component: {fileID: 23437425}
   - component: {fileID: 23437431}
+  - component: {fileID: 23437433}
+  - component: {fileID: 23437432}
   m_Layer: 7
   m_Name: Bat
   m_TagString: Enemy
@@ -182,14 +183,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nodes:
+  _nodeTag: 
+  ListOfNodes:
   - {fileID: 478204421}
   - {fileID: 491249363}
   - {fileID: 1660720064}
   - {fileID: 401336572}
-  patrolSpeed: 5
-  nodeTag: Node
+  pauseTime: 0
   chaseSpeed: 10
+  findDelay: 0.2
   availableAttacks: 0100
   attackDamages:
   - 1
@@ -204,17 +206,7 @@ MonoBehaviour:
   - 1
   - 0
   chargeSpeed: 0
-  findDelay: 0.2
-  chaseRadius: 8
   minChaseRadius: 1.5
-  viewAngle: 360
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 8
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 512
-  visibleTargets: []
 --- !u!23 &23437426
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -264,21 +256,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23437423}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &23437428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 23437423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 553981dbaf6452a458667fa8ccc7c7d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 0
-  attackDamage: 0
-  _isPlayer: 0
 --- !u!54 &23437429
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -330,6 +307,40 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &23437432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23437423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8db4fed29405642964cafed0e1d47c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visibleTargets: []
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 512
+  viewAngle: 360
+  detectionRadius: 8
+--- !u!114 &23437433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23437423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 5
 --- !u!1 &23713075
 GameObject:
   m_ObjectHideFlags: 0
@@ -2869,7 +2880,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6808622070799585195, guid: 307e8ecd940101a4ca07f4b4db1441b2, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6808622070799585195, guid: 307e8ecd940101a4ca07f4b4db1441b2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3223,17 +3234,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b36088d4761aeb46b291cac9b5c663e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nodes:
+  _nodeTag: 
+  ListOfNodes:
   - {fileID: 11256149}
   - {fileID: 1367836062}
   - {fileID: 118426214}
   - {fileID: 796079095}
-  patrolSpeed: 0
-  nodeTag: Node
-  viewRadius: 2
-  targetMask:
+  pauseTime: 0
+  ViewRadius: 0
+  _targetMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
 --- !u!54 &559429418
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7968,7 +7979,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6808622070799585195, guid: 307e8ecd940101a4ca07f4b4db1441b2, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6808622070799585195, guid: 307e8ecd940101a4ca07f4b4db1441b2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8978,9 +8989,10 @@ GameObject:
   - component: {fileID: 1407409322}
   - component: {fileID: 1407409321}
   - component: {fileID: 1407409325}
-  - component: {fileID: 1407409326}
   - component: {fileID: 1407409324}
   - component: {fileID: 1407409327}
+  - component: {fileID: 1407409328}
+  - component: {fileID: 1407409326}
   m_Layer: 7
   m_Name: Boar
   m_TagString: Enemy
@@ -9077,14 +9089,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nodes:
+  _nodeTag: 
+  ListOfNodes:
   - {fileID: 1138709465}
   - {fileID: 2061596697}
   - {fileID: 1524634695}
   - {fileID: 21163509}
-  patrolSpeed: 2
-  nodeTag: Node
+  pauseTime: 0
   chaseSpeed: 3
+  findDelay: 0.2
   availableAttacks: 0101
   attackDamages:
   - 1
@@ -9099,17 +9112,7 @@ MonoBehaviour:
   - 1
   - 2
   chargeSpeed: 15
-  findDelay: 0.2
-  chaseRadius: 5
-  minChaseRadius: 0
-  viewAngle: 360
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 8
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 512
-  visibleTargets: []
+  minChaseRadius: 1
 --- !u!54 &1407409325
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9135,12 +9138,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1407409319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 553981dbaf6452a458667fa8ccc7c7d3, type: 3}
+  m_Script: {fileID: 11500000, guid: ad8db4fed29405642964cafed0e1d47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  attackDamage: 0
-  _isPlayer: 0
+  visibleTargets: []
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 512
+  viewAngle: 360
+  detectionRadius: 5
 --- !u!195 &1407409327
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -9163,6 +9172,19 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1407409328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407409319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 5
 --- !u!114 &1409127965 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4411731879688263892, guid: e70ae5ba9cd982143ac4e494eada4dc4, type: 3}
@@ -11767,8 +11789,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 478204421}
   - {fileID: 491249363}
+  - {fileID: 478204421}
   - {fileID: 1660720064}
   - {fileID: 401336572}
   m_Father: {fileID: 1311638579}
@@ -14134,8 +14156,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 4
-  attackDamage: 0
-  _isPlayer: 1
 --- !u!1 &1297919423875710899 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1297919422498899246, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}

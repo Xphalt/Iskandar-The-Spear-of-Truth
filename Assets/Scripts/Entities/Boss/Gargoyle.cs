@@ -11,7 +11,7 @@ public class Gargoyle : BossStats
         //and if the player gets inside it, the Gargoyle will jab at the
         //player, inflicting damage and a knockback effect
 
-        DealDamage()
+
 
         return true;
     }

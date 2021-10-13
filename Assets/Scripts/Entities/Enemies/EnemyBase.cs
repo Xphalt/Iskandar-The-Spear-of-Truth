@@ -10,6 +10,7 @@ public class EnemyBase : Patrol
     public float chaseSpeed;
     private EnemyStats stats;
     PlayerDetection detector;
+    public float findDelay;
 
     public enum AttackTypes
     { 
@@ -62,7 +63,7 @@ public class EnemyBase : Patrol
     private Vector3 chargePoint;
 
     
-    public float chaseRadius, minChaseRadius;
+    public float minChaseRadius;
 
 
     [HideInInspector]
@@ -75,6 +76,7 @@ public class EnemyBase : Patrol
         stats = GetComponent<EnemyStats>();
         for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
         curState = EnemyStates.Patrolling;
+        detector = GetComponent<PlayerDetection>();
     }
 
     public override void Update()
@@ -121,9 +123,9 @@ public class EnemyBase : Patrol
             yield return new WaitForSeconds(delay);
             if (curState != EnemyStates.Attacking)
             {
-                detector.FindVisibleTargets(chaseRadius);
-                if (curState == EnemyStates.Chasing && visibleTargets.Count == 0) curState = EnemyStates.Patrolling;
-                curState = EnemyStates.Chasing;
+                curTarget = detector.FindVisibleTargets();
+                if (curTarget == null) curState = EnemyStates.Patrolling;
+                else curState = EnemyStates.Chasing;
             }
         }
     }
@@ -184,13 +186,13 @@ public class EnemyBase : Patrol
     //    if (curState == EnemyStates.Chasing && visibleTargets.Count == 0) curState = EnemyStates.Patrolling;
     //}
 
-    public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
-    {
-        if(!angleIsGlobal)
-            angleInDegrees += transform.eulerAngles.y;
+    //public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
+    //{
+    //    if(!angleIsGlobal)
+    //        angleInDegrees += transform.eulerAngles.y;
 
-        return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
-    }
+    //    return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+    //}
 
     public bool MeleeRangeCheck()
     {
@@ -244,16 +246,16 @@ public class EnemyBase : Patrol
         }
     }
 
-    //private void MeleeAttack()
-    //{
-    //    if (MeleeRangeCheck())
-    //    {
-    //        stats.DealDamage(curTarget.GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
-    //        attackUsed = true;
-    //        curAttack = AttackTypes.Melee;
-    //        MyRigid.velocity = Vector2.zero;
-    //    }
-    //}
+    private void MeleeAttack()
+    {
+        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], curTarget))
+        {
+            stats.DealDamage(curTarget.GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
+            attackUsed = true;
+            curAttack = AttackTypes.Melee;
+            MyRigid.velocity = Vector2.zero;
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {

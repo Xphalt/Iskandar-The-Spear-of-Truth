@@ -6,25 +6,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(EnemyBase))]
+[CustomEditor(typeof(PlayerDetection))]
 public class FOVEditorGizmo : Editor
 {
 
     private void OnSceneGUI()
     {
-        EnemyBase enemy = (EnemyBase)target;
+        PlayerDetection detection = (PlayerDetection)target;
         Handles.color = Color.green;
-        Handles.DrawWireArc(enemy.transform.position, Vector3.up, Vector3.forward, 360, enemy.chaseRadius);
-        Vector3 viewAngleA = enemy.DirFromAngle(-enemy.viewAngle/2, false);
-        Vector3 viewAngleB = enemy.DirFromAngle(enemy.viewAngle / 2, false);
+        Handles.DrawWireArc(detection.transform.position, Vector3.up, Vector3.forward, 360, detection.detectionRadius);
+        Vector3 viewAngleA = detection.DirFromAngle(-detection.viewAngle/2, false);
+        Vector3 viewAngleB = detection.DirFromAngle(detection.viewAngle / 2, false);
 
-        Handles.DrawLine(enemy.transform.position, enemy.transform.position + viewAngleA * enemy.chaseRadius);
-        Handles.DrawLine(enemy.transform.position, enemy.transform.position + viewAngleB * enemy.chaseRadius);
+        Handles.DrawLine(detection.transform.position, detection.transform.position + viewAngleA * detection.detectionRadius);
+        Handles.DrawLine(detection.transform.position, detection.transform.position + viewAngleB * detection.detectionRadius);
 
         Handles.color = Color.yellow;
-        foreach(Transform visibleTarget in enemy.visibleTargets)
+        foreach(Transform visibleTarget in detection.visibleTargets)
         {
-            Handles.DrawLine(enemy.transform.position, visibleTarget.position);
+            Handles.DrawLine(detection.transform.position, visibleTarget.position);
         }
     
     }
