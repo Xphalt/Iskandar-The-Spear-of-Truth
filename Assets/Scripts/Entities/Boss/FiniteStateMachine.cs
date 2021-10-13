@@ -140,9 +140,10 @@ public sealed class Recovery : State
         //move back to returnSpot
         Entity.ReturnToIdle();
         //check for position and if player is in melee range
-        if (/*player inside range*/)
+//        if (/*player inside range*/)
             owningFSM.ChangeState(new LightAttack(owningFSM));
-        else if (Entity.transform.position == Entity.returnSpot.position)
+        //else 
+            if (Entity.transform.position == Entity.returnSpot.position)
             owningFSM.ChangeState(new Idle(owningFSM));
         
     }
