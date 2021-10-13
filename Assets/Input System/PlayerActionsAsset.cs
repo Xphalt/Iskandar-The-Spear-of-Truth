@@ -73,6 +73,14 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ItemSelectionBar"",
+                    ""type"": ""Button"",
+                    ""id"": ""e4e57a12-86b0-4380-a41f-c60f6c8e8951"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -295,6 +303,39 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""action"": ""ItemSelectionWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f9e9fcf-a656-438e-9f3e-c9f95169fb3c"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemSelectionBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd7ffb5f-945a-4e23-85e3-eb3b408d2443"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemSelectionBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e573098-fe0c-4637-8f4a-40e70428390a"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemSelectionBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -384,6 +425,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_ItemSelectionWheel = m_Player.FindAction("ItemSelectionWheel", throwIfNotFound: true);
+        m_Player_ItemSelectionBar = m_Player.FindAction("ItemSelectionBar", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -444,6 +486,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_ItemSelectionWheel;
+    private readonly InputAction m_Player_ItemSelectionBar;
     public struct PlayerActions
     {
         private @PlayerActionsAsset m_Wrapper;
@@ -455,6 +498,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @ItemSelectionWheel => m_Wrapper.m_Player_ItemSelectionWheel;
+        public InputAction @ItemSelectionBar => m_Wrapper.m_Player_ItemSelectionBar;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -485,6 +529,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @ItemSelectionWheel.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionWheel;
                 @ItemSelectionWheel.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionWheel;
                 @ItemSelectionWheel.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionWheel;
+                @ItemSelectionBar.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionBar;
+                @ItemSelectionBar.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionBar;
+                @ItemSelectionBar.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionBar;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -510,6 +557,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @ItemSelectionWheel.started += instance.OnItemSelectionWheel;
                 @ItemSelectionWheel.performed += instance.OnItemSelectionWheel;
                 @ItemSelectionWheel.canceled += instance.OnItemSelectionWheel;
+                @ItemSelectionBar.started += instance.OnItemSelectionBar;
+                @ItemSelectionBar.performed += instance.OnItemSelectionBar;
+                @ItemSelectionBar.canceled += instance.OnItemSelectionBar;
             }
         }
     }
@@ -582,6 +632,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnItemSelectionWheel(InputAction.CallbackContext context);
+        void OnItemSelectionBar(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

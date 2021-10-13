@@ -14,6 +14,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private Player_Targeting_Jack _playerTargeting;
     [SerializeField] private Inventory_UI_Script _inventoryUI;
     [SerializeField] private ItemSelectionWheel _itemSelectionWheel;
+    [SerializeField] private ItemSelectionBar _itemSelectionBar;
 
     [Header("Movement Settings")]
     [SerializeField] private float _movementSpeed;
@@ -43,6 +44,7 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
 
         _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
+        _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar();
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
         _playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();

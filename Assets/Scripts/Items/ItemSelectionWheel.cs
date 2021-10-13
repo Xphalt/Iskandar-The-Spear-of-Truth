@@ -21,11 +21,6 @@ public class ItemSelectionWheel : MonoBehaviour
 
     private void Update()
     {
-        // Need to use new input system
-        //if (Input.GetKeyDown(KeyCode.Tab))
-        //{
-        //    itemWheelSelected = !itemWheelSelected;
-        //}
 
         if (itemWheelSelected)
         {

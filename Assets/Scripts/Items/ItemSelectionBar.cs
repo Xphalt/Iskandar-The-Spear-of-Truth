@@ -16,13 +16,6 @@ public class ItemSelectionBar : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) || (Input.GetKeyDown(KeyCode.Alpha2) || (Input.GetKeyDown(KeyCode.Alpha3))))
-        {
-            countdown = countdownMax;
-            anim.SetBool("Hidden", false);
-            hidden = false;
-        }
-
         if (countdown > 0)
         {
             countdown -= Time.deltaTime;
@@ -37,5 +30,12 @@ public class ItemSelectionBar : MonoBehaviour
     {
         if (!hidden)
             countdown = countdownMax;
+    }
+
+    public void ShowHotbar()
+    {
+        countdown = countdownMax;
+        anim.SetBool("Hidden", false);
+        hidden = false;
     }
 }
