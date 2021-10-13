@@ -76,7 +76,7 @@ public class CharacterStats : MonoBehaviour
     public void LoadStatsf2()
     {
         SaveDataF2 saveDataf2 = SaveManager.LoadPlayerStatsf2();
-        health = saveDataf2.healthf2;
+        health = saveDataf2.health;
     }
 
     public void SaveStatsf3()
@@ -90,7 +90,7 @@ public class CharacterStats : MonoBehaviour
     public void LoadStatsf3()
     {
         SaveDataF3 saveDataf3 = SaveManager.LoadPlayerStatsf3();
-        health = saveDataf3.healthf3;
+        health = saveDataf3.health;
     }
 
     private void OnDestroy()

@@ -11,12 +11,12 @@ public class SaveDataF3
 {
     Scene m_Scene;
     public string scenename;
-    public float healthf3;
+    public float health;
     //public bool load;
 
     public SaveDataF3(CharacterStats playerstatsf3)
     {
-        healthf3 = playerstatsf3.health;
+        health = playerstatsf3.health;
         m_Scene = SceneManager.GetActiveScene();
         scenename = m_Scene.name;
     }

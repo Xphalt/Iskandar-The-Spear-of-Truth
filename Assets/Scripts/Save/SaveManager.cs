@@ -58,7 +58,7 @@ public static class SaveManager
 
     public static SaveDataF2 LoadPlayerStatsf2()
     {
-        string filePathF2 = Application.persistentDataPath + "/Player_statsf3.txt";
+        string filePathF2 = Application.persistentDataPath + "/Player_statsf2.txt";
         if (File.Exists(filePathF2))
         {
             BinaryFormatter bf = new BinaryFormatter();
@@ -92,7 +92,7 @@ public static class SaveManager
 
     public static SaveDataF3 LoadPlayerStatsf3()
     {
-        string filePathF3 = Application.persistentDataPath + "/Player_statsf2.txt";
+        string filePathF3 = Application.persistentDataPath + "/Player_statsf3.txt";
         if (File.Exists(filePathF3))
         {
             BinaryFormatter bf = new BinaryFormatter();
