@@ -23,7 +23,7 @@ public class WeaponObject_Sal : ItemObject_Sal
 
     public void Awake()
     {
-        type = ItemTyoe.Weapon;
+        type = ItemType.Weapon;
     }
 
     public override void Use()
