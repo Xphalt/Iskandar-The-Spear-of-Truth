@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions; // Needed to have acess to the Interecations (Hold and PRess interactions) 
 
+//Animations in this script were done by Fate. Please contact me if you have any questions.
+
 public class PlayerInput : MonoBehaviour
 {
     // Reference Variables
@@ -25,10 +27,17 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private GameObject _playerModel;
     [SerializeField] private float _rotationSpeed;
 
+    #region Animation Variables
+    public PlayerAnimationManager animationManager;
+
+    private float moveAmount;
+    #endregion
+
     private void Awake()
     {
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
+
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         _playerActionsAsset.Player.Pause.performed += OnPause;
@@ -64,6 +73,15 @@ public class PlayerInput : MonoBehaviour
 
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
+
+        //Animation
+        moveAmount = Mathf.Clamp01(Mathf.Abs(inputVector.x) + Mathf.Abs(inputVector.y));
+
+    }
+
+    private void Update()
+    {
+        animationManager.UpdateAnimatorValues(0, moveAmount);
     }
 
     private void HandleRotation()
