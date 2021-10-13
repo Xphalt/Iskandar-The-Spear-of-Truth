@@ -18,12 +18,12 @@ public class Player_Sal : MonoBehaviour
     public float defence;
     public float fireDefence;
     public float iceDefence;
-    #endregion 
-     
+    #endregion
+
 
     // Start is called before the first frame update
     void Start()
-    {  
+    {
         for (int i = 0; i < equipment.GetSlots.Length; i++)
         {
             equipment.GetSlots[i].OnBeforeUpdate += OnBeforeSlotUpdate;
@@ -36,7 +36,7 @@ public class Player_Sal : MonoBehaviour
         if (p_slot.ItemObject == null)
             return;
 
-        switch(p_slot.parent.inventory.type)
+        switch (p_slot.parent.inventory.type)
         {
             case InterfaceType.Inventory:
 
@@ -82,12 +82,12 @@ public class Player_Sal : MonoBehaviour
             case InterfaceType.Equipment:
                 print(string.Concat("Placed ", p_slot.ItemObject, " on ", p_slot.parent.inventory.type, ", Allowed Items: ", string.Join(", ", p_slot.allowedItems)));
 
-                if(p_slot.ItemObject != null)
+                if (p_slot.ItemObject != null)
                 {
                     ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
                     switch (p_slot.ItemObject.type)
                     {
-                        case ItemType.Weapon: 
+                        case ItemType.Weapon:
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             break;
                         case ItemType.Shield:
@@ -115,20 +115,17 @@ public class Player_Sal : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SaveInventory()
     {
-        // Needs new input system
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    inventory.Save();
-        //    equipment.Save();
-        //}
-        //if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        //{
-        //    inventory.Load();
-        //    equipment.Load();
-        //}
+        inventory.Save();
+        equipment.Save();
+
+    }
+    public void LoadInventory()
+    {
+        inventory.Load();
+        equipment.Load();
+
     }
 
     private void OnTriggerEnter(Collider other)

@@ -81,6 +81,22 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""SaveInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""40f9b2b5-b832-4c69-9238-031a24a98585"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""LoadInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""93a243f3-402e-4e05-b7e9-3b797b0b66bf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -336,6 +352,28 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""action"": ""ItemSelectionBar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9bd0f63c-f20c-4b67-8093-838c9cf88914"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SaveInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba4940c7-59e4-4bad-b065-9beb5c457013"",
+                    ""path"": ""<Keyboard>/f6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LoadInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -426,6 +464,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_ItemSelectionWheel = m_Player.FindAction("ItemSelectionWheel", throwIfNotFound: true);
         m_Player_ItemSelectionBar = m_Player.FindAction("ItemSelectionBar", throwIfNotFound: true);
+        m_Player_SaveInventory = m_Player.FindAction("SaveInventory", throwIfNotFound: true);
+        m_Player_LoadInventory = m_Player.FindAction("LoadInventory", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -487,6 +527,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_ItemSelectionWheel;
     private readonly InputAction m_Player_ItemSelectionBar;
+    private readonly InputAction m_Player_SaveInventory;
+    private readonly InputAction m_Player_LoadInventory;
     public struct PlayerActions
     {
         private @PlayerActionsAsset m_Wrapper;
@@ -499,6 +541,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @ItemSelectionWheel => m_Wrapper.m_Player_ItemSelectionWheel;
         public InputAction @ItemSelectionBar => m_Wrapper.m_Player_ItemSelectionBar;
+        public InputAction @SaveInventory => m_Wrapper.m_Player_SaveInventory;
+        public InputAction @LoadInventory => m_Wrapper.m_Player_LoadInventory;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -532,6 +576,12 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @ItemSelectionBar.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionBar;
                 @ItemSelectionBar.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionBar;
                 @ItemSelectionBar.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionBar;
+                @SaveInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveInventory;
+                @SaveInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveInventory;
+                @SaveInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveInventory;
+                @LoadInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadInventory;
+                @LoadInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadInventory;
+                @LoadInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadInventory;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -560,6 +610,12 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @ItemSelectionBar.started += instance.OnItemSelectionBar;
                 @ItemSelectionBar.performed += instance.OnItemSelectionBar;
                 @ItemSelectionBar.canceled += instance.OnItemSelectionBar;
+                @SaveInventory.started += instance.OnSaveInventory;
+                @SaveInventory.performed += instance.OnSaveInventory;
+                @SaveInventory.canceled += instance.OnSaveInventory;
+                @LoadInventory.started += instance.OnLoadInventory;
+                @LoadInventory.performed += instance.OnLoadInventory;
+                @LoadInventory.canceled += instance.OnLoadInventory;
             }
         }
     }
@@ -633,6 +689,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnItemSelectionWheel(InputAction.CallbackContext context);
         void OnItemSelectionBar(InputAction.CallbackContext context);
+        void OnSaveInventory(InputAction.CallbackContext context);
+        void OnLoadInventory(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

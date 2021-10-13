@@ -15,6 +15,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private Inventory_UI_Script _inventoryUI;
     [SerializeField] private ItemSelectionWheel _itemSelectionWheel;
     [SerializeField] private ItemSelectionBar _itemSelectionBar;
+    [SerializeField] private Player_Sal _player_sal;
 
     [Header("Movement Settings")]
     [SerializeField] private float _movementSpeed;
@@ -45,6 +46,9 @@ public class PlayerInput : MonoBehaviour
 
         _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
         _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar();
+
+        _playerActionsAsset.Player.SaveInventory.performed += _ => _player_sal.SaveInventory();
+        _playerActionsAsset.Player.LoadInventory.performed += _ => _player_sal.LoadInventory();
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
         _playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();
