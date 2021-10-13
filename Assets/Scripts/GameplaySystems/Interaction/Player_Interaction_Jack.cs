@@ -14,6 +14,9 @@ public class Player_Interaction_Jack : MonoBehaviour
     private Collider _nearestInteractableCollider = null;
     private Collider _lastNearestInteractableCollider = null;
 
+    public float interactCooldown;
+    float timeSinceLastInteract;
+
     // Update is called once per frame
     void Update()
     {

@@ -11,10 +11,14 @@ public class PlayerInput : MonoBehaviour
     private Rigidbody _playerRigidbody;
 
     [Header("Scripts References")]
+    [SerializeField] private PlayerMovement_Jerzy _playerMovement_Jerzy;
     [SerializeField] private Player_Targeting_Jack _playerTargeting;
+    [SerializeField] private Player_Interaction_Jack _player_Interaction_Jack;
+    [SerializeField] private PlayerCombat_Jerzy _playerCombat_Jerzy;
     [SerializeField] private Inventory_UI_Script _inventoryUI;
     [SerializeField] private ItemSelectionWheel _itemSelectionWheel;
     [SerializeField] private ItemSelectionBar _itemSelectionBar;
+    [SerializeField] private Player_Sal _player_sal;
 
     [Header("Movement Settings")]
     [SerializeField] private float _movementSpeed;
@@ -36,15 +40,21 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset.Player.Attack.performed += ctx =>
             {
                 if (ctx.interaction is HoldInteraction)
-                    ChargedAttack();
+                    _playerCombat_Jerzy.ThrowAttack();
                 else if (ctx.interaction is PressInteraction)
-                    Attack();
+                    if (_player_Interaction_Jack.IsInteractionAvailable())
+                        _player_Interaction_Jack.Interact();
+                    else
+                        _playerCombat_Jerzy.Attack();
             };
 
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
 
         _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
         _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar();
+
+        _playerActionsAsset.Player.SaveInventory.performed += _ => _player_sal.SaveInventory();
+        _playerActionsAsset.Player.LoadInventory.performed += _ => _player_sal.LoadInventory();
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
         _playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();
@@ -53,10 +63,13 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
-        _playerRigidbody.velocity = new Vector3(inputVector.x, 0.0f, inputVector.y) * _movementSpeed;
+        //Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
+        //_playerRigidbody.velocity = new Vector3(inputVector.x, 0.0f, inputVector.y) * _movementSpeed;
 
-        HandleRotation();
+        //HandleRotation();
+
+        Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
+        _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
     }
 
     private void HandleRotation()
@@ -103,7 +116,7 @@ public class PlayerInput : MonoBehaviour
     {
         if (_playerRigidbody.velocity != Vector3.zero)
         {
-            Debug.Log("Dashing");
+            _playerMovement_Jerzy.Dash(_playerRigidbody.velocity);
         }
     }
 
