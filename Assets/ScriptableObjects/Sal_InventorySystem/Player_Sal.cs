@@ -64,6 +64,7 @@ public class Player_Sal : MonoBehaviour
                         break;
                     default:
                         damage = BASE_DAMAGE;
+                        defence = BASE_DEFENCE;
                         break;
                 }
                 break;
@@ -103,6 +104,7 @@ public class Player_Sal : MonoBehaviour
                             break;
                         default:
                             damage = BASE_DAMAGE;
+                            defence = BASE_DEFENCE;
                             break;
                     }
                 }
