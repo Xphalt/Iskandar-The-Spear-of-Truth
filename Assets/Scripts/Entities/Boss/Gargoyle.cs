@@ -10,6 +10,9 @@ public class Gargoyle : BossStats
         //this attack needs to be tied to an active raidius around the Gargoyle 
         //and if the player gets inside it, the Gargoyle will jab at the
         //player, inflicting damage and a knockback effect
+
+        DealDamage()
+
         return true;
     }
 

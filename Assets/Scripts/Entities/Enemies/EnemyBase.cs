@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterStats))]
+[RequireComponent(typeof(EnemyStats))]
 
 public class EnemyBase : Patrol
 {
     protected Transform curTarget;
     public float chaseSpeed;
-    private CharacterStats stats;
+    private EnemyStats stats;
+    PlayerDetection detector;
 
     public enum AttackTypes
     { 
@@ -60,24 +61,18 @@ public class EnemyBase : Patrol
     private float chargeDistance;
     private Vector3 chargePoint;
 
-    public float findDelay;
     
     public float chaseRadius, minChaseRadius;
-    [Range(0,360)]
-    public float viewAngle;
 
-    public LayerMask targetMask;
-    public LayerMask obstacleMask;
 
     [HideInInspector]
-    public List<Transform> visibleTargets = new List<Transform>();
 
     public override void Start()
     {
         base.Start();
-        //defaultToZero = false;
-        stats = GetComponent<CharacterStats>();
         StartCoroutine("FindTargetsWithDelay", findDelay);
+        //defaultToZero = false;
+        stats = GetComponent<EnemyStats>();
         for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
         curState = EnemyStates.Patrolling;
     }
@@ -119,6 +114,20 @@ public class EnemyBase : Patrol
         AttackCooldown();
     }
 
+    IEnumerator FindTargetsWithDelay(float delay)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(delay);
+            if (curState != EnemyStates.Attacking)
+            {
+                detector.FindVisibleTargets(chaseRadius);
+                if (curState == EnemyStates.Chasing && visibleTargets.Count == 0) curState = EnemyStates.Patrolling;
+                curState = EnemyStates.Chasing;
+            }
+        }
+    }
+
     private void AttackEnd()
     {
         //attack timer
@@ -147,41 +156,33 @@ public class EnemyBase : Patrol
         MyRigid.velocity = Vector3.zero;
     }
 
-    IEnumerator FindTargetsWithDelay(float delay)
-    {
-        while(true)
-        {
-            yield return new WaitForSeconds(delay);
-            if (curState != EnemyStates.Attacking) FindVisibleTargets(chaseRadius);
-        }
-    }
 
-    void FindVisibleTargets(float viewRadius)
-    {
-        visibleTargets.Clear();
-        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+    //void FindVisibleTargets(float viewRadius)
+    //{
+    //    visibleTargets.Clear();
+    //    Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
-        for(int i = 0; i< targetsInViewRadius.Length; i++)
-        {
-            Transform target = targetsInViewRadius[i].transform;
-            Vector3 dirToTarget = (target.position - transform.position).normalized;
+    //    for(int i = 0; i< targetsInViewRadius.Length; i++)
+    //    {
+    //        Transform target = targetsInViewRadius[i].transform;
+    //        Vector3 dirToTarget = (target.position - transform.position).normalized;
 
-            if(Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
-            {
-                float distance = Vector3.Distance(transform.position, target.position);
+    //        if(Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
+    //        {
+    //            float distance = Vector3.Distance(transform.position, target.position);
 
-                if(!Physics.Raycast(transform.position, dirToTarget, distance, obstacleMask))
-                {
-                    //found you
-                    visibleTargets.Add(target);
-                    curTarget = target.transform;
-                    curState = EnemyStates.Chasing;
-                }
-            }
-        }
+    //            if(!Physics.Raycast(transform.position, dirToTarget, distance, obstacleMask))
+    //            {
+    //                //found you
+    //                visibleTargets.Add(target);
+    //                curTarget = target.transform;
+    //                curState = EnemyStates.Chasing;
+    //            }
+    //        }
+    //    }
 
-        if (curState == EnemyStates.Chasing && visibleTargets.Count == 0) curState = EnemyStates.Patrolling;
-    }
+    //    if (curState == EnemyStates.Chasing && visibleTargets.Count == 0) curState = EnemyStates.Patrolling;
+    //}
 
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
     {
@@ -243,19 +244,19 @@ public class EnemyBase : Patrol
         }
     }
 
-    private void MeleeAttack()
-    {
-        if (MeleeRangeCheck())
-        {
-            stats.DealDamage(curTarget.GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
-            attackUsed = true;
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector2.zero;
-        }
-    }
+    //private void MeleeAttack()
+    //{
+    //    if (MeleeRangeCheck())
+    //    {
+    //        stats.DealDamage(curTarget.GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
+    //        attackUsed = true;
+    //        curAttack = AttackTypes.Melee;
+    //        MyRigid.velocity = Vector2.zero;
+    //    }
+    //}
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.transform == curTarget && charging) stats.DealDamage(curTarget.gameObject, attackDamages[(int)AttackTypes.Charge]);
+        if (collision.collider.transform == curTarget && charging) stats.DealDamage(curTarget.GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
     }
 }
