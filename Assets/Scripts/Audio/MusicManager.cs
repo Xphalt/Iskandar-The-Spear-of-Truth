@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Audio;
 
 public class MusicManager : MonoBehaviour
@@ -12,10 +11,12 @@ public class MusicManager : MonoBehaviour
 
     private bool fadingInMusic = false;
 
-    public float fadingSpeed = 0.05f;
+    private float fadingSpeed = 0.005f;
 
     public AudioClip startingMusic;
     public AudioClip endingMusic;
+
+    private int fadingMusicStage = 0;
 
 
     void Start()
@@ -30,25 +31,42 @@ public class MusicManager : MonoBehaviour
         music.Play();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (fadingInMusic)
         {
-            fadeOut.volume -= fadingSpeed;
-            fadeIn.volume += fadingSpeed;
-
-            if (fadeOut.volume == 0f)
+            switch (fadingMusicStage)
             {
-                music.clip = fadeIn.clip;
-                music.time = fadeIn.time;
-                fadeIn.Stop();
-                music.Play();
-                fadeIn.volume = 0f;
+                case 0:
+                    if (fadeOut.volume <= 0)
+                    {
+                        fadingMusicStage++;
+                        break;
+                    }
+                    fadeOut.volume -= fadingSpeed;
+                    break;
 
-                Destroy(fadeIn);
-                Destroy(fadeOut);
+                case 1:
+                    if (fadeIn.volume >= 1)
+                    {
+                        fadingMusicStage++;
+                        break;
+                    }
+                    fadeIn.volume += fadingSpeed;
+                    break;
 
-                fadingInMusic = false;
+                case 2:
+                    music.clip = fadeIn.clip;
+                    music.time = fadeIn.time;
+                    music.Play();
+                    fadeIn.Stop();
+
+                    Destroy(fadeIn);
+                    Destroy(fadeOut);
+
+                    fadingMusicStage = 0;
+                    fadingInMusic = false;
+                    break;
             }
         }
     }
