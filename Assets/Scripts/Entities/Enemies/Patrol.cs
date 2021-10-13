@@ -1,84 +1,72 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Patrol : MonoBehaviour
 {
-    [Header("Node Infomation")]
-    [SerializeField] private string _nodeTag;
-    public Transform[] ListOfNodes;
-    private int _currentNode;
+    protected NavMeshAgent agent;
+    private float minRemainingDistance = 0.5f;
+    public Transform[] nodes;
+    public float patrolSpeed;
 
-    [Header("Timer Information")]
-    [SerializeField] private float _speed;
-    [SerializeField] private float _pauseTime;
-    [SerializeField] private float _lookSpeed;
+    //protected bool Patrolling;
+    int currentNode;
 
-    protected bool DefaultToZero = true;
-    protected bool Patrolling;
     protected Rigidbody MyRigid;
-    
-    private Vector3 _direction;
-        
+
+    Vector3 direction;
+
+    [SerializeField]
+    private string nodeTag;
+
+    //public bool defaultToZero = true;
+
     public virtual void Start()
     {
-        _currentNode = 0;
-
-        Patrolling = true;
+        currentNode = 0;
 
         MyRigid = GetComponent<Rigidbody>();
-
-        transform.LookAt(ListOfNodes[_currentNode].transform);
+        agent = GetComponent<NavMeshAgent>();
+        agent.autoBraking = false;
+        GoToNextNode();
     }
 
     public virtual void Update()
     {
-        if (Patrolling)
+        if (agent.enabled)
         {
-            _direction = (ListOfNodes[_currentNode].position - transform.position).normalized;
-            MyRigid.velocity = _direction * _speed;
+            if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
+            {
+                GoToNextNode();
+            }
         }
-        else if (DefaultToZero)
-        {
-            MyRigid.velocity = Vector3.zero;
-        }
+
+        //if (Patrolling)
+        //{
+        //    direction = (nodes[currentNode].position - transform.position).normalized;
+
+        //    MyRigid.velocity = direction * speed;
+        //    transform.rotation = Quaternion.LookRotation(MyRigid.velocity);
+        //}
+        //else if (defaultToZero)
+        //{
+        //    MyRigid.velocity = Vector3.zero;
+        //}
     }
 
-    private void OnTriggerEnter(Collider other)
+    void GoToNextNode()
     {
-        if (other.gameObject.tag == _nodeTag)
-        {
-            StartCoroutine(Pause(_pauseTime));
-            StartCoroutine(Look(_pauseTime));
-            _currentNode++;
-            _currentNode %= ListOfNodes.Length;
-        }
+        agent.destination = nodes[currentNode].position;
+        currentNode = (currentNode + 1) % nodes.Length;
     }
 
-    private IEnumerator Pause(float delay) // Temporarily stop the NPC's speed to allow for idle posing
-    {
-        float currentSpeed = _speed;
-
-        _speed = 0.0f;
-        yield return new WaitForSeconds(delay);
-        _speed = currentSpeed;
-    }
-
-    private IEnumerator Look(float delay) // During the NPC's pause turn to face the next node
-    {
-        float timer = 0.0f;
-
-        yield return new WaitForSeconds(delay / 2); // To allow the NPC an average looking time the pause time variable will be halved
-
-        while (timer < delay)
-        {
-            timer += Time.deltaTime;
-
-            Quaternion targetRotation = Quaternion.LookRotation(ListOfNodes[_currentNode].position - transform.position);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, timer);
-
-            yield return null;
-        }
-
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.tag == nodeTag)
+    //    {
+    //        currentNode++;
+    //        currentNode %= nodes.Length;
+    //    }
+    //}
 }
