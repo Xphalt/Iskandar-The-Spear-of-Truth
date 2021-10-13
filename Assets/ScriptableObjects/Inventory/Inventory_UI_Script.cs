@@ -8,53 +8,20 @@ public class Inventory_UI_Script : MonoBehaviour
 {
     #region Variables
 
-    public Transform itemsSlotParent;
     public GameObject inventoryUI;
-    Item_Slot_Script[] inventorySlots;
-
-    Inventory_Script inventory;
+    public GameObject equipmentUI;
 
     #endregion
 
-
-    void Start()
+    private void Start()
     {
-        //Caching inventory instance 
-        inventory = Inventory_Script.instance;
-        //This event is triggered whenever we update the inventory.
-        inventory.onItemChangedCallback += UpdateInventory;
-
-        inventorySlots = itemsSlotParent.GetComponentsInChildren<Item_Slot_Script>();
+        inventoryUI.SetActive(false);
+        equipmentUI.SetActive(false);
     }
-
-    //private void Update()
-    //{
-    //    //------------------Open/close inventory with key "I"----------------------//
-    //    if (Input.GetKeyDown(KeyCode.I))
-    //    {
-    //    }
-    //}
 
     public void ToggleInventory()
     {
         inventoryUI.SetActive(!inventoryUI.activeSelf);
-    }
-
-    /*_________________________________________________________________________
-    * This appends the item into the item list.
-    * Else, it clears the slot's UI if it's empty of values.
-    * ________________________________________________________________________*/
-    void UpdateInventory()
-    {
-        for (int i = 0; i < inventorySlots.Length; i++)
-        {
-            if (i < inventory.myItems.Count)
-            {
-                inventorySlots[i].UpdateSlotIcon(inventory.myItems[i]);
-            }
-            else
-                inventorySlots[i].ClearSlot();
-
-        }
+        equipmentUI.SetActive(!equipmentUI.activeSelf);
     }
 }
