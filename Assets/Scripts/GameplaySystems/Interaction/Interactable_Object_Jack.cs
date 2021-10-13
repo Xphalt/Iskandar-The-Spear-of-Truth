@@ -42,6 +42,7 @@ public class Interactable_Object_Jack : MonoBehaviour
 
             case InteractableType.LootChest:
                 // Loot chest interaction logic
+                _lootChest = GetComponent<LootChest_Jerzy>();
                 _lootChest.Interact();
                 print("loot chest");
                 break;

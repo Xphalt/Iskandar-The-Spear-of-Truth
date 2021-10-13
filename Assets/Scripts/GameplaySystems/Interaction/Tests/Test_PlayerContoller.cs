@@ -12,16 +12,18 @@ public class Test_PlayerContoller : MonoBehaviour
         playerInteractionScript = GetComponent<Player_Interaction_Jack>();
     }
 
-    // Update is called once per frame 
+    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            playerInteractionScript.Interact();
-		}
-        else if(Input.GetKeyDown(KeyCode.T))
-        {
-            print("interaction available = " + playerInteractionScript.IsInteractionAvailable());
-		}
-    } 
-}  
+        //  interaction is currently in PlayerMovement_Jerzy script until PlayerInput gets created
+
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    playerInteractionScript.Interact();
+		//}
+        //else if(Input.GetKeyDown(KeyCode.T))
+        //{
+        //    print("interaction available = " + playerInteractionScript.IsInteractionAvailable());
+		//}
+    }
+}
