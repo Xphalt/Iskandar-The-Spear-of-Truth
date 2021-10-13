@@ -118,18 +118,17 @@ public class Player_Sal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(-1, 0, 0) * Time.deltaTime;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            inventory.Save();
-            equipment.Save();
-        }
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            inventory.Load();
-            equipment.Load();
-        }
+        // Needs new input system
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    inventory.Save();
+        //    equipment.Save();
+        //}
+        //if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        //{
+        //    inventory.Load();
+        //    equipment.Load();
+        //}
     }
 
     private void OnTriggerEnter(Collider other)

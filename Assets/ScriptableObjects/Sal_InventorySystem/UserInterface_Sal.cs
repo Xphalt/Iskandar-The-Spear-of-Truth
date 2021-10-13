@@ -14,8 +14,8 @@ public abstract class UserInterface_Sal : MonoBehaviour
 
     public abstract void CreateSlots();
     
-    
-    void Start()
+    // Dominique 13-10-2021, Changed to Awake so it is called before the UI is hiddeb by Inventory_UI_Script in Start
+    void Awake()
     {
         for (int i = 0; i < inventory.GetSlots.Length; i++)
         {
