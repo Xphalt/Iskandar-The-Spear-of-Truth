@@ -25,10 +25,8 @@ public class TestMusicButton : Editor
         editor.OnInspectorGUI();
     }
 
-
     private void OnEnable()
     {
         musicManager = (MusicManager)target;
     }
-
 }
