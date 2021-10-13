@@ -6,32 +6,34 @@ using System.IO;
 
 public static class SaveManager
 {
-    public static void SavePlayerStatsf1(CharacterStats playerStats)
+
+    //FILE 1
+    public static void SavePlayerStatsf1(CharacterStats playerStatsf1)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        string filePath = Application.persistentDataPath + "/Player_statsf1.txt";
-        FileStream fs = new FileStream(filePath, FileMode.Create);
+        string filePathF1 = Application.persistentDataPath + "/Player_statsf1.txt";
+        FileStream fs = new FileStream(filePathF1, FileMode.Create);
 
-        SaveData saveData = new SaveData(playerStats);
+        SaveDataF1 saveDataf1 = new SaveDataF1(playerStatsf1);
 
-        bf.Serialize(fs, saveData);
+        bf.Serialize(fs, saveDataf1);
         fs.Close();
     }
 
 
-    public static SaveData LoadPlayerStatsf1()
+    public static SaveDataF1 LoadPlayerStatsf1()
     {
-        string filePath = Application.persistentDataPath + "/Player_statsf1.txt";
-        if (File.Exists(filePath))
+        string filePathF1 = Application.persistentDataPath + "/Player_statsf1.txt";
+        if (File.Exists(filePathF1))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = new FileStream(filePath, FileMode.Open);
+            FileStream fs = new FileStream(filePathF1, FileMode.Open);
 
-            SaveData saveData = bf.Deserialize(fs) as SaveData;
+            SaveDataF1 saveDataf1 = bf.Deserialize(fs) as SaveDataF1;
             fs.Close();
 
-            return saveData;
+            return saveDataf1;
         }
         else
         {
@@ -39,38 +41,73 @@ public static class SaveManager
         }
     }
 
-    //"PlayerStats_Jerzy" is a placeholder location
-
-    public static void SaveInventoryStatsf1(CharacterStats playerStats)
+    //FILE 2
+    public static void SavePlayerStatsf2(CharacterStats playerStatsf2)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        string filePath = Application.persistentDataPath + "/inventory_statsf1.txt";
-        FileStream fs = new FileStream(filePath, FileMode.Create);
+        string filePathF2 = Application.persistentDataPath + "/Player_statsf2.txt";
+        FileStream fs = new FileStream(filePathF2, FileMode.Create);
 
-        SaveData saveData = new SaveData(playerStats);
+        SaveDataF2 saveDataf2 = new SaveDataF2(playerStatsf2);
 
-        bf.Serialize(fs, saveData);
+        bf.Serialize(fs, saveDataf2);
         fs.Close();
     }
 
 
-    public static SaveData LoadInventoryStatsf1()
+    public static SaveDataF2 LoadPlayerStatsf2()
     {
-        string filePath = Application.persistentDataPath + "/inventory_statsf1.txt";
-        if (File.Exists(filePath))
+        string filePathF2 = Application.persistentDataPath + "/Player_statsf3.txt";
+        if (File.Exists(filePathF2))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = new FileStream(filePath, FileMode.Open);
+            FileStream fs = new FileStream(filePathF2, FileMode.Open);
 
-            SaveData saveData = bf.Deserialize(fs) as SaveData;
+            SaveDataF2 saveDataf2 = bf.Deserialize(fs) as SaveDataF2;
             fs.Close();
 
-            return saveData;
+            return saveDataf2;
         }
         else
         {
             return null;
         }
     }
+
+    //FILE 3
+    public static void SavePlayerStatsf3(CharacterStats playerStatsf3)
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+
+        string filePathF3 = Application.persistentDataPath + "/Player_statsf3.txt";
+        FileStream fs = new FileStream(filePathF3, FileMode.Create);
+
+        SaveDataF3 saveDataf3 = new SaveDataF3(playerStatsf3);
+
+        bf.Serialize(fs, saveDataf3);
+        fs.Close();
+    }
+
+
+    public static SaveDataF3 LoadPlayerStatsf3()
+    {
+        string filePathF3 = Application.persistentDataPath + "/Player_statsf2.txt";
+        if (File.Exists(filePathF3))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fs = new FileStream(filePathF3, FileMode.Open);
+
+            SaveDataF3 saveDataf3 = bf.Deserialize(fs) as SaveDataF3;
+            fs.Close();
+
+            return saveDataf3;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
 }

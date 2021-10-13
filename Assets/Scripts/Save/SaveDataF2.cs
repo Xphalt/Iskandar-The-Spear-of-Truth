@@ -7,19 +7,18 @@ using UnityEngine.SceneManagement;
 
 [System.Serializable]
 
-public class SaveData
+public class SaveDataF2
 {
     Scene m_Scene;
     public string scenename;
-    public float health;
+    public float healthf2;
     //public bool load;
 
-    public SaveData(CharacterStats playerstats)
+    public SaveDataF2(CharacterStats playerstatsf2)
     {
-        health = playerstats.health;
+        healthf2 = playerstatsf2.health;
         m_Scene = SceneManager.GetActiveScene();
         scenename = m_Scene.name;
-        //load = playerstats.load;
     }
 }
 

@@ -19,7 +19,7 @@ public class CharacterStats : MonoBehaviour
     private void Start()
     {
         sfx = GetComponentInParent<SoundPlayer>();
-        LoadStats();
+        LoadStatsf1();
     }
 
     public void TakeDamage(int amt)
@@ -51,7 +51,7 @@ public class CharacterStats : MonoBehaviour
     }
 
     //morgan's save features edit
-    public void SaveStats()
+    public void SaveStatsf1()
     {
         if (_isPlayer)
         {
@@ -59,19 +59,43 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    public void LoadStats()
+    public void LoadStatsf1()
     {
-        //load = true;
-        //SaveManager.SavePlayerStatsf1(this.load);
-        SaveData saveData = SaveManager.LoadPlayerStatsf1();
-       // SceneManager.LoadScene(saveData.scenename);
-        //print(saveData.scenename);
-        health = saveData.health;
+        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerStatsf1();
+        health = saveDataf1.healthf1;
+    }
+
+    public void SaveStatsf2()
+    {
+        if (_isPlayer)
+        {
+            SaveManager.SavePlayerStatsf2(this);
+        }
+    }
+
+    public void LoadStatsf2()
+    {
+        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerStatsf2();
+        health = saveDataf2.healthf2;
+    }
+
+    public void SaveStatsf3()
+    {
+        if (_isPlayer)
+        {
+            SaveManager.SavePlayerStatsf3(this);
+        }
+    }
+
+    public void LoadStatsf3()
+    {
+        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerStatsf3();
+        health = saveDataf3.healthf3;
     }
 
     private void OnDestroy()
     {
-        SaveStats();
+        SaveStatsf1();
     }
 
 }
