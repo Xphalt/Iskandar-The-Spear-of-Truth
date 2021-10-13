@@ -11353,7 +11353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1297919422498899235, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1297919422498899235, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
       propertyPath: interactableIcon
@@ -18905,24 +18905,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1297919422498899246, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
   m_PrefabInstance: {fileID: 1376811677}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1297919423875710900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1297919423875710899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1732c4a6cc31c6f4ca660091a77821ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventory: {fileID: 11400000, guid: 26754aa56798a1244bc66bcb0018782c, type: 2}
-  equipment: {fileID: 11400000, guid: 1404d5272f1fab045a59c4cb3f99e452, type: 2}
-  damage: 0
-  defence: 0
-  fireDefence: 0
-  iceDefence: 0
 --- !u!114 &1297919423875710901 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4901670945278872760, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
@@ -18946,11 +18928,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e504058ddbfc24b8e27a1b5c7728ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerMovement_Jerzy: {fileID: 0}
   _playerTargeting: {fileID: 1297919423875710901}
+  _player_Interaction_Jack: {fileID: 0}
+  _playerCombat_Jerzy: {fileID: 0}
   _inventoryUI: {fileID: 201902628}
   _itemSelectionWheel: {fileID: 982824946}
   _itemSelectionBar: {fileID: 65339569}
-  _player_sal: {fileID: 1297919423875710900}
+  _player_sal: {fileID: 0}
   _movementSpeed: 10
   _playerModel: {fileID: 1297919422692377846}
   _rotationSpeed: 10
