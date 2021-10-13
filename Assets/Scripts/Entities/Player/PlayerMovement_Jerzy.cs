@@ -20,32 +20,37 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     float timeSinceLastDash = 0;
 
-    float timeInteractHeld = 0;
-    const float HELD_TIME_FOR_THROWN_ATTACK = 0.4f;
-
     private Player_Targeting_Jack _playerTargetingScript;
     private Transform _targetedTransform = null;
 
     float lastMagnitudeFromTarget = 0;
 
 
-    private Player_Interaction_Jack _playerInteractionScript;
+    [SerializeField] private float _rotationSpeed;
 
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
-        _playerInteractionScript = GetComponent<Player_Interaction_Jack>();
     }
 
-
-    void FixedUpdate()
+    private void Update()
     {
-
         timeSinceLastDash += Time.deltaTime;
+    }
 
-        // basic player movement using input system
-        Vector3 m_Input = new Vector3 (Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+    public void Dash(Vector3 dashDirection)
+    {
+        if (timeSinceLastDash >= dashCooldown)
+        {
+            canBeDamaged = false;
+            m_Rigidbody.AddForce(dashDirection * dashForce);
+            timeSinceLastDash = 0;
+        }
+    }
+
+    public void Movement(Vector3 m_Input)
+    {
         if (_playerTargetingScript.IsTargeting())
         {
             // Set player rotation to look at targeted object
@@ -55,34 +60,19 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
 
-            //print(playerToTargetVector.magnitude);
-
-
             Vector3 direction = playerModel.transform.TransformDirection(m_Input);
-            direction.Normalize();
-
 
             // this block of code ensures that the player does not spiral away from the targeted enemy
             if (m_Input.x == 0)
             {
                 lastMagnitudeFromTarget = playerToTargetVector.magnitude;
             }
-            if(playerToTargetVector.magnitude > lastMagnitudeFromTarget)
+            if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
             {
-                m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed*5);
+                m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * 5); // What does this 5 means?
             }
-
-            
-
 
             m_Rigidbody.velocity = (direction * m_Speed);
-
-            if (Input.GetAxis("Dash") > 0 && timeSinceLastDash >= dashCooldown)
-            {
-
-                Dash(direction);
-
-            }
 
             // this line fixes the thrown sword direction when locked onto an enemy
             swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
@@ -90,75 +80,28 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
         else
         {
-            m_Input.Normalize();
-            m_Rigidbody.velocity = ( m_Input * m_Speed);
+            m_Rigidbody.velocity = (m_Input * m_Speed);
 
             if (timeSinceLastDash >= invincibilityFramesAfterDash)
             {
                 canBeDamaged = true;
             }
 
-            if (Input.GetAxis("Dash") > 0 && timeSinceLastDash >= dashCooldown)
-            {
-
-                Dash(m_Input);
-
-            }
-
-            // set the player to look in the same direction as an analogue stick is pointing
-            Quaternion targetRotation = Quaternion.LookRotation(m_Input);
-            if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-            {
-                playerModel.transform.rotation = targetRotation;
-                swordLookRotation = targetRotation;
-            }
+            Rotation(m_Input);
         }
-       
-
-
-        // combat - interact key is [Controller X] / [Mouse 1]
-        if(Input.GetAxis("Interact") > 0)
-        {
-            timeInteractHeld += Time.deltaTime;
-        }
-        else if (timeInteractHeld > 0)
-        {
-            if(_playerInteractionScript.IsInteractionAvailable())
-            {
-                _playerInteractionScript.Interact();
-            }
-
-            else
-            {
-
-                if (timeInteractHeld > HELD_TIME_FOR_THROWN_ATTACK)
-                {
-                    GetComponent<PlayerCombat_Jerzy>().ThrowAttack();
-                }
-                else
-                {
-                    GetComponent<PlayerCombat_Jerzy>().Attack();
-                }
-
-            }
-
-            timeInteractHeld = 0;
-        }
-
-
     }
 
-    void Dash(Vector3 dashDirection)
+    private void Rotation(Vector3 m_Input)
     {
-        if (Mathf.Abs(dashDirection.x) > dashAnalogueReq || Mathf.Abs(dashDirection.z) > dashAnalogueReq)
-        {
-            canBeDamaged = false;
-            m_Rigidbody.AddForce(dashDirection * dashForce);
-            timeSinceLastDash = 0;
 
+        if (m_Input != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(m_Input);
+            playerModel.transform.rotation = Quaternion.Lerp(playerModel.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+
+            swordLookRotation = playerModel.transform.rotation;
         }
     }
-
 
 
     public void SetTargetedTransform(Transform newTargetedTransform)
