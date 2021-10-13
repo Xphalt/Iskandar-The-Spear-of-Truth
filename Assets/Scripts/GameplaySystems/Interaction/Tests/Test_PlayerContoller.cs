@@ -12,7 +12,7 @@ public class Test_PlayerContoller : MonoBehaviour
         playerInteractionScript = GetComponent<Player_Interaction_Jack>();
     }
 
-    // Update is called once per frame
+    // Update is called once per frame 
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
@@ -23,5 +23,5 @@ public class Test_PlayerContoller : MonoBehaviour
         {
             print("interaction available = " + playerInteractionScript.IsInteractionAvailable());
 		}
-    }
-}
+    } 
+}  
