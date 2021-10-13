@@ -247,7 +247,7 @@ public class EnemyBase : Patrol
     {
         if (MeleeRangeCheck())
         {
-            stats.DealDamage(curTarget.gameObject, attackDamages[(int)AttackTypes.Melee]);
+            stats.DealDamage(curTarget.GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
             attackUsed = true;
             curAttack = AttackTypes.Melee;
             MyRigid.velocity = Vector2.zero;

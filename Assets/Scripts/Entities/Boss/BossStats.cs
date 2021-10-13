@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Boss : MonoBehaviour
+public class BossStats : StatsInterface
 {
     public Transform returnSpot;
     public Transform playerPos;
     private FiniteStateMachine MyFSM;
-    public int health;
+    //public int health;
     public float moveSpeed;
     public int lightAtkDamage;
     public int lightAtkRange;
@@ -47,14 +47,19 @@ public class Boss : MonoBehaviour
         vulnTimer += Time.deltaTime;
     }
 
-    public void TakeDamage(int amount)
+    public override void TakeDamage(float amount)
     {
         //this is called when Boss is in 'Vulnerability' State
         if((!godMode) && (isVuln))
         {
-            health -= amount;
+            //health -= amount;
             currVulnHits++;
         }
+    }
+
+    public override void DealDamage(StatsInterface target, float amount)
+    {
+        target.TakeDamage(amount);
     }
 
     public void ReturnToIdle()

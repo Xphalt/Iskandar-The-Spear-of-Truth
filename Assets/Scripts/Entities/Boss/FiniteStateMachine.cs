@@ -5,11 +5,11 @@ using UnityEngine;
 #region StateMachine
 public class FiniteStateMachine
 {
-    private Boss fsmOwner;
+    private BossStats fsmOwner;
 
     private State CurrentState = null;
 
-    public FiniteStateMachine(Boss fsmOwner)
+    public FiniteStateMachine(BossStats fsmOwner)
     {
         this.fsmOwner = fsmOwner;
     }
@@ -53,9 +53,9 @@ abstract public class State
 {
     protected FiniteStateMachine owningFSM;
 
-   abstract public void Enter(Boss Entity);
-   abstract public void Execute(Boss Entity);
-   abstract public void Exit(Boss Entity);
+   abstract public void Enter(BossStats Entity);
+   abstract public void Execute(BossStats Entity);
+   abstract public void Exit(BossStats Entity);
 }
 #endregion
 
@@ -67,15 +67,15 @@ public sealed class Idle : State
         owningFSM = fsm;
     }
 
-    public override void Enter(Boss Entity)
+    public override void Enter(BossStats Entity)
     {
        Entity.idleTimer = 0f;       //reset timer values, 
-                                   //idleTimer increases with Delta Time on Boss's Update
+                                   //idleTimer increases with Delta Time on BossStats's Update
     }
 
-    public override void Execute(Boss Entity)
+    public override void Execute(BossStats Entity)
     {
-        //check for boss HP
+        //check for BossStats HP
         if (Entity.health <= 10)
             owningFSM.ChangeState(new FinalAttack(owningFSM));
         //specified amount of time check
@@ -83,9 +83,9 @@ public sealed class Idle : State
             owningFSM.ChangeState(new HeavyAttack(owningFSM));
     }
 
-    public override void Exit(Boss Entity)
+    public override void Exit(BossStats Entity)
     {
-        Debug.Log("[BOSS]: Exiting Idle State...");
+        Debug.Log("[BossStats]: Exiting Idle State...");
     }
 }
 
@@ -96,17 +96,17 @@ public sealed class Vulnerability : State
         owningFSM = fsm;
     }
 
-    public override void Enter(Boss Entity)
+    public override void Enter(BossStats Entity)
     {
-        //Reset timer value, vulnTimer gets increased with Delta Time in Boss's Update.
+        //Reset timer value, vulnTimer gets increased with Delta Time in BossStats's Update.
         Entity.vulnTimer = 0f;
 
-        //Reset times boss can be hit while in vulnerable state, this value gets increased
-        //when damage is dealt to the boss.
+        //Reset times BossStats can be hit while in vulnerable state, this value gets increased
+        //when damage is dealt to the BossStats.
         Entity.currVulnHits = 0;
     }
 
-    public override void Execute(Boss Entity)
+    public override void Execute(BossStats Entity)
     {
         Entity.isVuln = true;
         //checks if vulntime has ended OR amount of hits have been dealt while vulnerable
@@ -117,9 +117,9 @@ public sealed class Vulnerability : State
         }
     }
 
-    public override void Exit(Boss Entity)
+    public override void Exit(BossStats Entity)
     {
-        Debug.Log("[BOSS]: Exiting Vulnerability State...");
+        Debug.Log("[BossStats]: Exiting Vulnerability State...");
     }
 }
 
@@ -130,12 +130,12 @@ public sealed class Recovery : State
         owningFSM = fsm;
     }
 
-    public override void Enter(Boss Entity)
+    public override void Enter(BossStats Entity)
     {
 
     }
 
-    public override void Execute(Boss Entity)
+    public override void Execute(BossStats Entity)
     {
         //move back to returnSpot
         Entity.ReturnToIdle();
@@ -148,9 +148,9 @@ public sealed class Recovery : State
         
     }
 
-    public override void Exit(Boss Entity)
+    public override void Exit(BossStats Entity)
     {
-        Debug.Log("[BOSS]: Exiting Recovery State...");
+        Debug.Log("[BossStats]: Exiting Recovery State...");
     }
 }
 
@@ -161,21 +161,21 @@ public sealed class LightAttack : State
         owningFSM = fsm;
     }
 
-    public override void Enter(Boss Entity)
+    public override void Enter(BossStats Entity)
     {
 
     }
 
-    public override void Execute(Boss Entity)
+    public override void Execute(BossStats Entity)
     {
         //deal damage and knockback
         if (Entity.LightAttack())
             owningFSM.ChangeState(new Recovery(owningFSM));
     }
 
-    public override void Exit(Boss Entity)
+    public override void Exit(BossStats Entity)
     {
-        Debug.Log("[BOSS]: Exiting Final Attack State...");
+        Debug.Log("[BossStats]: Exiting Final Attack State...");
     }
 }
 
@@ -186,12 +186,12 @@ public sealed class HeavyAttack : State
         owningFSM = fsm;
     }
 
-    public override void Enter(Boss Entity)
+    public override void Enter(BossStats Entity)
     {
 
     }
 
-    public override void Execute(Boss Entity)
+    public override void Execute(BossStats Entity)
     {
         //check if miss or hit, go to recovery if hit, go to vuln. if miss
         if (Entity.HeavyAttack())
@@ -200,9 +200,9 @@ public sealed class HeavyAttack : State
             owningFSM.ChangeState(new Vulnerability(owningFSM));
     }
 
-    public override void Exit(Boss Entity)
+    public override void Exit(BossStats Entity)
     {
-        Debug.Log("[BOSS]: Exiting Heavy Attack State...");
+        Debug.Log("[BossStats]: Exiting Heavy Attack State...");
     }
 }
 
@@ -213,20 +213,22 @@ public sealed class FinalAttack : State
         owningFSM = fsm;
     }
 
-    public override void Enter(Boss Entity)
+    public override void Enter(BossStats Entity)
     {
 
     }
 
-    public override void Execute(Boss Entity)
+    public override void Execute(BossStats Entity)
     {
         if (Entity.FinalAttack())
             owningFSM.ChangeState(new Recovery(owningFSM));
     }
 
-    public override void Exit(Boss Entity)
+    public override void Exit(BossStats Entity)
     {
-        Debug.Log("[BOSS]: Exiting Final Attack State...");
+        Debug.Log("[BossStats]: Exiting Final Attack State...");
     }
 }
 #endregion
+
+//Recovery Execute method wip

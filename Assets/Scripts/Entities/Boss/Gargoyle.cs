@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Gargoyle : Boss
+public class Gargoyle : BossStats
 {
     public override bool LightAttack()
     {
