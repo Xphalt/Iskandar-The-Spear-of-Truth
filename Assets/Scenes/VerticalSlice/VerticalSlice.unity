@@ -3027,7 +3027,7 @@ GameObject:
   - component: {fileID: 259124740}
   - component: {fileID: 259124739}
   m_Layer: 5
-  m_Name: ItemBar Group (KEYBOARD AND MOUSE)
+  m_Name: ItemBar Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3047,13 +3047,13 @@ RectTransform:
   - {fileID: 487215691}
   - {fileID: 910214397}
   - {fileID: 1513684152}
-  m_Father: {fileID: 1956194616}
-  m_RootOrder: 2
+  m_Father: {fileID: 1611163009}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.4, y: 0}
   m_AnchorMax: {x: 0.6, y: 0}
-  m_AnchoredPosition: {x: 0, y: 9.999993}
-  m_SizeDelta: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0.00004386902, y: -199.79626}
+  m_SizeDelta: {x: 164.7602, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &259124739
 MonoBehaviour:
@@ -3415,6 +3415,42 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262371084}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &264931862
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 264931863}
+  m_Layer: 5
+  m_Name: MobileOnlyUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &264931863
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264931862}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 353955831}
+  m_Father: {fileID: 1122327024}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &278242821
 GameObject:
   m_ObjectHideFlags: 0
@@ -4159,7 +4195,7 @@ GameObject:
   - component: {fileID: 353955833}
   - component: {fileID: 353955832}
   m_Layer: 5
-  m_Name: ItemWheel (MOBILE)
+  m_Name: ItemWheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4180,12 +4216,12 @@ RectTransform:
   - {fileID: 21062863}
   - {fileID: 1994155912}
   - {fileID: 94325772}
-  m_Father: {fileID: 1956194616}
-  m_RootOrder: 1
+  m_Father: {fileID: 264931863}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 411.90036, y: -209.79626}
   m_SizeDelta: {x: 153.6, y: 153.6}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &353955832
@@ -5806,6 +5842,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingMusic: {fileID: 8300000, guid: 430e055f07b1d5d4e8aacc401208ab9c, type: 3}
   endingMusic: {fileID: 8300000, guid: fd0d73e4fbacd814faf5ff979a029eee, type: 3}
+--- !u!1 &519435660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 519435661}
+  m_Layer: 5
+  m_Name: GamepadOnlyUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &519435661
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519435660}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1074245334}
+  m_Father: {fileID: 1122327024}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &542787144
 GameObject:
   m_ObjectHideFlags: 0
@@ -8054,6 +8126,30 @@ PrefabInstance:
       propertyPath: enemyHealthBarUI
       value: 
       objectReference: {fileID: 118589693}
+    - target: {fileID: 2741160275472645572, guid: 928acf18b03e6d949ad5846698421a88, type: 3}
+      propertyPath: mobileUIElements.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741160275472645572, guid: 928acf18b03e6d949ad5846698421a88, type: 3}
+      propertyPath: gamepadUIElements.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741160275472645572, guid: 928acf18b03e6d949ad5846698421a88, type: 3}
+      propertyPath: mobileUIElements.Array.data[0]
+      value: 
+      objectReference: {fileID: 264931862}
+    - target: {fileID: 2741160275472645572, guid: 928acf18b03e6d949ad5846698421a88, type: 3}
+      propertyPath: gamepadUIElements.Array.data[0]
+      value: 
+      objectReference: {fileID: 519435660}
+    - target: {fileID: 2741160275472645572, guid: 928acf18b03e6d949ad5846698421a88, type: 3}
+      propertyPath: keyboardMouseUIElements.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741160275472645572, guid: 928acf18b03e6d949ad5846698421a88, type: 3}
+      propertyPath: keyboardMouseUIElements.Array.data[0]
+      value: 
+      objectReference: {fileID: 1611163008}
     - target: {fileID: 2741160275472645573, guid: 928acf18b03e6d949ad5846698421a88, type: 3}
       propertyPath: m_Name
       value: UIManager
@@ -10883,7 +10979,7 @@ GameObject:
   - component: {fileID: 1074245336}
   - component: {fileID: 1074245335}
   m_Layer: 5
-  m_Name: ItemWheel (GAMEPAD)
+  m_Name: ItemWheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10904,8 +11000,8 @@ RectTransform:
   - {fileID: 1980228774}
   - {fileID: 205285450}
   - {fileID: 1366994526}
-  m_Father: {fileID: 1956194616}
-  m_RootOrder: 3
+  m_Father: {fileID: 519435661}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11505,6 +11601,9 @@ RectTransform:
   - {fileID: 118589694}
   - {fileID: 4517325124246145357}
   - {fileID: 852860320}
+  - {fileID: 264931863}
+  - {fileID: 1611163009}
+  - {fileID: 519435661}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15572,6 +15671,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1596002520}
   m_CullTransparentMesh: 1
+--- !u!1 &1611163008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1611163009}
+  m_Layer: 5
+  m_Name: KeyboardMouseOnlyUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1611163009
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611163008}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 259124738}
+  m_Father: {fileID: 1122327024}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1623247095
 GameObject:
   m_ObjectHideFlags: 0
@@ -15620,7 +15755,7 @@ GameObject:
   - component: {fileID: 1624258798}
   - component: {fileID: 1624258797}
   m_Layer: 5
-  m_Name: SelectedItem(FOR ITEM WHEEL MOBILE)
+  m_Name: SelectedItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17551,7 +17686,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1956194616}
   m_Layer: 5
-  m_Name: ITEMSELECTIONGROUP
+  m_Name: SharedInputUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17569,9 +17704,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1624258799}
-  - {fileID: 353955831}
-  - {fileID: 259124738}
-  - {fileID: 1074245334}
   m_Father: {fileID: 1122327024}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20392,7 +20524,7 @@ MonoBehaviour:
   _playerTargeting: {fileID: 1297919423875710901}
   _player_Interaction_Jack: {fileID: 1297919423875710902}
   _playerCombat_Jerzy: {fileID: 1297919423875710900}
-  _itemSelectionWheel: {fileID: 1074245338}
+  _itemSelectionWheel: {fileID: 353955835}
   _itemSelectionBar: {fileID: 259124739}
   _player_sal: {fileID: 1297919423875710906}
   _pauseMenuManager: {fileID: 6154020644529891346}

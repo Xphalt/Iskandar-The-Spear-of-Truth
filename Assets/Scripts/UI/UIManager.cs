@@ -72,6 +72,66 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    // Dominique 14-10-2021, Enables/disables UI so we have input specific objects in use
+    #region Input Specific UI
+    [SerializeField] private GameObject[] gamepadUIElements;
+    [SerializeField] private GameObject[] keyboardMouseUIElements;
+    [SerializeField] private GameObject[] mobileUIElements;
+
+    public enum INPUT_OPTIONS
+    {
+        GAMEPAD,
+        KEYBOAD_AND_MOUSE,
+        MOBILE,
+        NUM_OPTIONS,
+    };
+
+    private INPUT_OPTIONS current_input = INPUT_OPTIONS.NUM_OPTIONS;
+    public INPUT_OPTIONS getCurrentInput() { return current_input;  }
+
+    public void SetUIForInput(INPUT_OPTIONS input)
+    {
+        // Make sure we don't do all this unless we need to!
+        if (current_input != input)
+        {
+            current_input = input;
+
+            // Disable everything first so that shared elements will still be enabled
+            for (int i = 0; i < gamepadUIElements.Length; i++)
+            {
+                gamepadUIElements[i].SetActive(false);
+            }
+            for (int i = 0; i < keyboardMouseUIElements.Length; i++)
+            {
+                keyboardMouseUIElements[i].SetActive(false);
+            }
+            for (int i = 0; i < mobileUIElements.Length; i++)
+            {
+                mobileUIElements[i].SetActive(false);
+            }
+
+            // Now enable the correct objects for this UI
+            GameObject[] enableObjects = new GameObject[0];
+            switch (input)
+            {
+                case INPUT_OPTIONS.GAMEPAD:
+                    enableObjects = gamepadUIElements;
+                    break;
+                case INPUT_OPTIONS.KEYBOAD_AND_MOUSE:
+                    enableObjects = keyboardMouseUIElements;
+                    break;
+                case INPUT_OPTIONS.MOBILE:
+                    enableObjects = mobileUIElements;
+                    break;
+            }
+            for (int i = 0; i < enableObjects.Length; i++)
+            {
+                enableObjects[i].SetActive(true);
+            }
+        }
+    }
+    #endregion
+
     public static UIManager instance;
     private void Awake()
     {
@@ -84,6 +144,9 @@ public class UIManager : MonoBehaviour
 
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
+
+        // At the moment we're using keyboard and mouse to play the game
+        SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
     }
 
 #if DEBUG // Dominique 07-10-2021, Use to test enemy health bar (make sure to SetupEnemyHealthBar first)
