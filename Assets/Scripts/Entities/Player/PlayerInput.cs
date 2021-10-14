@@ -28,9 +28,9 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float _rotationSpeed;
 
     #region Animation Variables
-    public PlayerAnimationManager animationManager;
+    private PlayerAnimationManager animationManager;
 
-    public float moveAmount = 2;
+   // public float moveAmount = 2;
     #endregion
 
     private void Awake()
@@ -38,7 +38,7 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
 
-
+        animationManager = FindObjectOfType<PlayerAnimationManager>();
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         _playerActionsAsset.Player.Pause.performed += OnPause;
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
@@ -82,7 +82,7 @@ public class PlayerInput : MonoBehaviour
     private void Update()
     {
         //animationManager.UpdateAnimatorValues(0, _movementSpeed);
-        animationManager.animator.SetFloat("isRunning", moveAmount);
+        //animationManager.animator.SetFloat("isRunning", moveAmount);
     }
 
     private void HandleRotation()
@@ -113,16 +113,6 @@ public class PlayerInput : MonoBehaviour
             default:
                 break;
         }
-    }
-
-    private void Attack()
-    {
-        Debug.Log("Normal Attack");
-    }
-
-    private void ChargedAttack()
-    {
-        Debug.Log("Charged Attack");
     }
 
     private void Dash()

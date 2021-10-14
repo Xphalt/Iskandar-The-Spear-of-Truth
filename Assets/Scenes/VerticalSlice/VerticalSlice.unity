@@ -2564,12 +2564,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 406709718}
-  m_LocalRotation: {x: -0.49999857, y: -0.49999994, z: -0.50000006, w: 0.5000015}
-  m_LocalPosition: {x: -3.31201, y: 0.26400018, z: 1.6579285}
+  m_LocalRotation: {x: 0.49999857, y: 0.49999994, z: 0.50000006, w: 0.5000015}
+  m_LocalPosition: {x: -0.4079341, y: 3.312015, z: 1.8559892}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 186822797}
-  m_RootOrder: 2
+  m_Father: {fileID: 1559435788}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &406709720
 MonoBehaviour:
@@ -2586,7 +2586,7 @@ MonoBehaviour:
   player: {fileID: 186822798}
   thrown: 0
   returning: 0
-  swordModel: {fileID: 0}
+  swordModel: {fileID: 23437423}
   swordModelBlade: {fileID: 0}
 --- !u!1 &409759606
 GameObject:
@@ -8595,8 +8595,6 @@ MonoBehaviour:
   _movementSpeed: 10
   _playerModel: {fileID: 186822798}
   _rotationSpeed: 10
-  animationManager: {fileID: 186822801}
-  moveAmount: 2
 --- !u!114 &1160312878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8970,8 +8968,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1271860801}
   m_HandleRect: {fileID: 1271860800}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11875,12 +11873,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1559435787}
-  m_LocalRotation: {x: -0.49999857, y: -0.49999994, z: -0.50000006, w: 0.5000015}
-  m_LocalPosition: {x: -3.31201, y: 0.26400018, z: 1.6579285}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.155, z: 1.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 406709719}
   m_Father: {fileID: 186822797}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1580350254
 GameObject:

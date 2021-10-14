@@ -54,4 +54,17 @@ public class PlayerAnimationManager : MonoBehaviour
         //animator.SetFloat(horiz, verticalMovement, 0.1f, Time.deltaTime);
         //animator.SetFloat(vert, horizontalMovement, 0.1f, Time.deltaTime);
     }
+
+    public void SimpleAttack()
+    {
+        ResetAnimationStates();
+        animator.SetBool("isSimpleAttacking", true);
+    }
+
+    private void ResetAnimationStates()
+    {
+        animator.SetBool("isIdling", false);
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isSimpleAttacking", false);
+    }
 }
