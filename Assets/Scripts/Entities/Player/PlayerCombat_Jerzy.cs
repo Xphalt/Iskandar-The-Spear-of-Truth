@@ -46,7 +46,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void Attack()
     {
-        if(timeSinceLastAttack >= attackCooldown && canAttack)
+        if (timeSinceLastAttack >= attackCooldown && canAttack)
         {
             swordAnimator.Play("PlayerSwordSwing");
             playerAnimator.SimpleAttack();
@@ -54,7 +54,8 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
             print("attack");
         }
-
+        else
+            playerAnimator.ResetAnimationStates();
     }
 
     public void ThrowAttack()

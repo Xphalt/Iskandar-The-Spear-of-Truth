@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement_Jerzy : MonoBehaviour
 {
+    private PlayerAnimationManager playerAnim;
+
     Rigidbody m_Rigidbody;
     public GameObject playerModel;
     public float m_Speed;
-
 
     public Quaternion swordLookRotation;
 
@@ -27,6 +28,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
 
     [SerializeField] private float _rotationSpeed;
+
+    private void Awake()
+    {
+        playerAnim = FindObjectOfType<PlayerAnimationManager>();
+    }
 
     void Start()
     {
@@ -89,6 +95,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             Rotation(m_Input);
         }
+
+        playerAnim.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
     }
 
     private void Rotation(Vector3 m_Input)
