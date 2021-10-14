@@ -60,7 +60,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Attack"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""168d6629-6a01-4b3a-9001-152bd969d4d6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

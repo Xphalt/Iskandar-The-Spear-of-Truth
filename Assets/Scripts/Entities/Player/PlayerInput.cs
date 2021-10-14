@@ -69,8 +69,6 @@ public class PlayerInput : MonoBehaviour
         //Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
         //_playerRigidbody.velocity = new Vector3(inputVector.x, 0.0f, inputVector.y) * _movementSpeed;
 
-        HandleRotation();
-
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
 
@@ -85,14 +83,6 @@ public class PlayerInput : MonoBehaviour
         animationManager.animator.SetFloat("isRunning", moveAmount);
     }
 
-    private void HandleRotation()
-    {
-        if (_playerRigidbody.velocity != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(_playerRigidbody.velocity);
-            _playerModel.transform.rotation = Quaternion.Lerp(_playerModel.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-        }
-    }
 
     private void OnPause(InputAction.CallbackContext ctx)
     {
@@ -113,16 +103,6 @@ public class PlayerInput : MonoBehaviour
             default:
                 break;
         }
-    }
-
-    private void Attack()
-    {
-        Debug.Log("Normal Attack");
-    }
-
-    private void ChargedAttack()
-    {
-        Debug.Log("Charged Attack");
     }
 
     private void Dash()
