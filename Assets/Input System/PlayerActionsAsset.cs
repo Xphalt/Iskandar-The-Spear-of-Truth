@@ -315,7 +315,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & mouse"",
                     ""action"": ""ItemSelectionWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -326,7 +326,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & mouse"",
                     ""action"": ""ItemSelectionBar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -337,7 +337,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & mouse"",
                     ""action"": ""ItemSelectionBar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -348,7 +348,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & mouse"",
                     ""action"": ""ItemSelectionBar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -359,7 +359,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/f5"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & mouse"",
                     ""action"": ""SaveInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -370,7 +370,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/f6"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & mouse"",
                     ""action"": ""LoadInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

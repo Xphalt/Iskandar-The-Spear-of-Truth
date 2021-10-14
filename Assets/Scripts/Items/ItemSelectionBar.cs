@@ -34,8 +34,11 @@ public class ItemSelectionBar : MonoBehaviour
 
     public void ShowHotbar()
     {
-        countdown = countdownMax;
-        anim.SetBool("Hidden", false);
-        hidden = false;
+        if (UIManager.instance.getCurrentInput() == UIManager.INPUT_OPTIONS.KEYBOAD_AND_MOUSE)
+        {
+            countdown = countdownMax;
+            anim.SetBool("Hidden", false);
+            hidden = false;
+        }
     }
 }
