@@ -564,60 +564,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1297919422498899246, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
   m_PrefabInstance: {fileID: 1297919423694422057}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1352681779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352681778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84e504058ddbfc24b8e27a1b5c7728ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerMovement_Jerzy: {fileID: 1352681783}
-  _playerTargeting: {fileID: 1352681781}
-  _player_Interaction_Jack: {fileID: 1352681780}
-  _playerCombat_Jerzy: {fileID: 1352681786}
-  _inventoryUI: {fileID: 0}
-  _itemSelectionWheel: {fileID: 0}
-  _movementSpeed: 10
-  _playerModel: {fileID: 595581560}
-  _rotationSpeed: 15
---- !u!114 &1352681780 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7338899279738636877, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
-  m_PrefabInstance: {fileID: 1297919423694422057}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352681778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02977b12e620d11439d57a988847dda7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1352681781 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4901670945278872760, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
-  m_PrefabInstance: {fileID: 1297919423694422057}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352681778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3204307fc31d748a1b660950d708c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1352681783 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1297919422498899235, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
-  m_PrefabInstance: {fileID: 1297919423694422057}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352681778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc3ff9cdc3d49dc4fbc841fd96d50150, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1352681786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -759,6 +705,10 @@ PrefabInstance:
       value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 1297919422498899235, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1297919422498899235, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
       propertyPath: _rotationSpeed
       value: 15
       objectReference: {fileID: 0}
@@ -769,6 +719,14 @@ PrefabInstance:
     - target: {fileID: 1297919422498899246, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1297919423875710904, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
+      propertyPath: _playerCombat_Jerzy
+      value: 
+      objectReference: {fileID: 1352681786}
+    - target: {fileID: 7338899279738636877, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e919f0557f5fb924586c6f2a4b9c46ef, type: 3}
