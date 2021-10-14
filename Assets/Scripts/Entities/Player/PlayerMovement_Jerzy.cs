@@ -93,7 +93,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void Rotation(Vector3 m_Input)
     {
-
+        Debug.Log(m_Input);
         if (m_Input != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(m_Input);
