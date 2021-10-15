@@ -6,23 +6,27 @@ using UnityEngine.AI;
 public class BossStats : StatsInterface
 {
     public Transform returnSpot;
-    public Transform playerPos;
+    internal Rigidbody myRigid;
     private FiniteStateMachine MyFSM;
+    public PlayerDetection detector;
     //public int health;
     public float moveSpeed;
     public int lightAtkDamage;
-    public int lightAtkRange;
+    public float lightAtkCooldown;
+    public float lightAtkRange;
+    protected float lightAtkTimer;
     public int heavyAtkDamage;
-    public int heavyAtkRange;
     public int finalAtkDamage;
 
     public float idleTime;
-    public float idleTimer;
+    internal float idleTimer;
     public float vulnTime;
-    public float vulnTimer;
+    internal float vulnTimer;
     public int vulnHits;
-    public int currVulnHits;
+    internal int currVulnHits;
     public bool isVuln = false;
+    protected bool hasHitPlayer = false;
+    internal bool hasReturned;
     /*For scripted story event*/
     public bool godMode = false;
 
@@ -36,15 +40,19 @@ public class BossStats : StatsInterface
     {
         //Create a new State Machine and set its first State
         MyFSM = new FiniteStateMachine(this);
+        detector = GetComponent<PlayerDetection>();
+        myRigid = GetComponent<Rigidbody>();
         MyFSM.SetStartState(new Idle(MyFSM));
     }
 
 
     public void Update()
     {
-        //MyFSM.Update();
+        MyFSM.Update();
+        detector.FindVisibleTargets();
         idleTimer += Time.deltaTime;
         vulnTimer += Time.deltaTime;
+        lightAtkTimer += Time.deltaTime;
     }
 
     public override void TakeDamage(float amount)
@@ -65,22 +73,27 @@ public class BossStats : StatsInterface
     public void ReturnToIdle()
     {
         //moves the boss to its 'returnSpot', this is called when Boss is in 'Recovery' State
-        transform.position = Vector3.MoveTowards(transform.position,returnSpot.position,moveSpeed);
+        transform.position = Vector3.MoveTowards(transform.position,returnSpot.position,moveSpeed * Time.deltaTime);
     }
 
     //These virtual methods are to be overriden by the specific boss's script
-    public virtual bool LightAttack()
+    public virtual void LightAttack() { }
+
+    public virtual void HeavyAttack() { }
+
+    public virtual bool HeavyAttackFinished()
     {
         return true;
     }
 
-    public virtual bool HeavyAttack()
-    {
-        return true;
-    }
+    public virtual void FinalAttack() { }
 
-    public virtual bool FinalAttack()
+    public virtual bool HasFinalAttackFinished() { return true; }
+
+    public virtual void FinishFinalAttack() { }
+
+    public virtual bool GetHasHitPlayer()
     {
-        return true;
+        return hasHitPlayer;
     }
 }

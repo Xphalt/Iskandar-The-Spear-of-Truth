@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerDetection : MonoBehaviour
 {
-    public List<Transform> visibleTargets = new List<Transform>();
+    private Transform curTarget = null;
 
     public LayerMask targetMask;
     public LayerMask obstacleMask;
@@ -15,9 +15,9 @@ public class PlayerDetection : MonoBehaviour
     public float detectionRadius;
 
 
-    public Transform FindVisibleTargets()
+    public void FindVisibleTargets()
     {
-        visibleTargets.Clear();
+        curTarget = null;
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, detectionRadius, targetMask);
 
         for (int i = 0; i < targetsInViewRadius.Length; i++)
@@ -32,13 +32,11 @@ public class PlayerDetection : MonoBehaviour
                 if (!Physics.Raycast(transform.position, dirToTarget, distance, obstacleMask))
                 {
                     //found you
-                    visibleTargets.Add(target);
-                    return target;
+                    curTarget = target;
                 }
             }
         }
 
-        return null;
     }
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
     {
@@ -56,6 +54,11 @@ public class PlayerDetection : MonoBehaviour
         }
 
         return false;
+    }
+
+    public Transform GetCurTarget ()
+    {
+        return curTarget;
     }
 
 

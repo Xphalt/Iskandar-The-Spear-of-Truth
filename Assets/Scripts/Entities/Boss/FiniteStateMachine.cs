@@ -104,6 +104,9 @@ public sealed class Vulnerability : State
         //Reset times BossStats can be hit while in vulnerable state, this value gets increased
         //when damage is dealt to the BossStats.
         Entity.currVulnHits = 0;
+
+        //
+        Entity.myRigid.velocity = Vector3.zero;
     }
 
     public override void Execute(BossStats Entity)
@@ -132,7 +135,7 @@ public sealed class Recovery : State
 
     public override void Enter(BossStats Entity)
     {
-
+        Entity.myRigid.velocity = Vector3.zero;
     }
 
     public override void Execute(BossStats Entity)
@@ -140,16 +143,16 @@ public sealed class Recovery : State
         //move back to returnSpot
         Entity.ReturnToIdle();
         //check for position and if player is in melee range
-//        if (/*player inside range*/)
-            owningFSM.ChangeState(new LightAttack(owningFSM));
-        //else 
-            if (Entity.transform.position == Entity.returnSpot.position)
+         if (Entity.hasReturned)
             owningFSM.ChangeState(new Idle(owningFSM));
+        else if (Entity.detector.GetCurTarget() != null)
+            owningFSM.ChangeState(new LightAttack(owningFSM));
         
     }
 
     public override void Exit(BossStats Entity)
     {
+        Entity.hasReturned = false;
         Debug.Log("[BossStats]: Exiting Recovery State...");
     }
 }
@@ -169,13 +172,13 @@ public sealed class LightAttack : State
     public override void Execute(BossStats Entity)
     {
         //deal damage and knockback
-        if (Entity.LightAttack())
-            owningFSM.ChangeState(new Recovery(owningFSM));
+        Entity.LightAttack();
+        owningFSM.ChangeState(new Recovery(owningFSM));
     }
 
     public override void Exit(BossStats Entity)
     {
-        Debug.Log("[BossStats]: Exiting Final Attack State...");
+        Debug.Log("[BossStats]: Exiting Light Attack State...");
     }
 }
 
@@ -193,11 +196,16 @@ public sealed class HeavyAttack : State
 
     public override void Execute(BossStats Entity)
     {
+        Entity.HeavyAttack();
         //check if miss or hit, go to recovery if hit, go to vuln. if miss
-        if (Entity.HeavyAttack())
+        if (Entity.HeavyAttackFinished())
+        {
+        if (Entity.GetHasHitPlayer())
             owningFSM.ChangeState(new Recovery(owningFSM));
         else
             owningFSM.ChangeState(new Vulnerability(owningFSM));
+        }
+
     }
 
     public override void Exit(BossStats Entity)
@@ -220,12 +228,13 @@ public sealed class FinalAttack : State
 
     public override void Execute(BossStats Entity)
     {
-        if (Entity.FinalAttack())
-            owningFSM.ChangeState(new Recovery(owningFSM));
+        Entity.FinalAttack();
+        owningFSM.ChangeState(new Recovery(owningFSM));
     }
 
     public override void Exit(BossStats Entity)
     {
+        Entity.FinishFinalAttack();
         Debug.Log("[BossStats]: Exiting Final Attack State...");
     }
 }

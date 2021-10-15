@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class EnemyBase : Patrol
 {
-    protected Transform curTarget;
     public float chaseSpeed;
     private EnemyStats stats;
     PlayerDetection detector;
@@ -96,8 +95,8 @@ public class EnemyBase : Patrol
                     break;
                 case EnemyStates.Chasing:
                     //seek player position and go to it
-                    transform.rotation = Quaternion.LookRotation(curTarget.position - transform.position);
-                    agent.destination = curTarget.transform.position;
+                    transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
+                    agent.destination = detector.GetCurTarget().transform.position;
                     agent.speed = agent.remainingDistance > minChaseRadius ? chaseSpeed : 0;
                     agent.stoppingDistance = minChaseRadius;
                     
@@ -123,8 +122,8 @@ public class EnemyBase : Patrol
             yield return new WaitForSeconds(delay);
             if (curState != EnemyStates.Attacking)
             {
-                curTarget = detector.FindVisibleTargets();
-                if (curTarget == null) curState = EnemyStates.Patrolling;
+                detector.FindVisibleTargets();
+                if (detector.GetCurTarget() == null) curState = EnemyStates.Patrolling;
                 else curState = EnemyStates.Chasing;
             }
         }
@@ -158,34 +157,6 @@ public class EnemyBase : Patrol
         MyRigid.velocity = Vector3.zero;
     }
 
-
-    //void FindVisibleTargets(float viewRadius)
-    //{
-    //    visibleTargets.Clear();
-    //    Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
-
-    //    for(int i = 0; i< targetsInViewRadius.Length; i++)
-    //    {
-    //        Transform target = targetsInViewRadius[i].transform;
-    //        Vector3 dirToTarget = (target.position - transform.position).normalized;
-
-    //        if(Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
-    //        {
-    //            float distance = Vector3.Distance(transform.position, target.position);
-
-    //            if(!Physics.Raycast(transform.position, dirToTarget, distance, obstacleMask))
-    //            {
-    //                //found you
-    //                visibleTargets.Add(target);
-    //                curTarget = target.transform;
-    //                curState = EnemyStates.Chasing;
-    //            }
-    //        }
-    //    }
-
-    //    if (curState == EnemyStates.Chasing && visibleTargets.Count == 0) curState = EnemyStates.Patrolling;
-    //}
-
     //public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
     //{
     //    if(!angleIsGlobal)
@@ -194,15 +165,6 @@ public class EnemyBase : Patrol
     //    return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     //}
 
-    public bool MeleeRangeCheck()
-    {
-        foreach (RaycastHit targetScan in Physics.RaycastAll(transform.position, transform.forward, attackRanges[(int)AttackTypes.Melee]))
-        {
-            if (targetScan.collider.transform == curTarget) return true;
-        }
-
-        return false;
-    }
 
     //will be called by other scripts
     public virtual void Attack ()
@@ -234,10 +196,10 @@ public class EnemyBase : Patrol
 
     private void ChargeAttack()
     {
-        if ((curTarget.position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge])
+        if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge])
         {
-            MyRigid.velocity = (curTarget.position - transform.position).normalized * chargeSpeed;
-            chargeDistance = (curTarget.position - transform.position).magnitude;
+            MyRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
+            chargeDistance = (detector.GetCurTarget().position - transform.position).magnitude;
             attackDurations[(int)AttackTypes.Charge] = chargeDistance / chargeSpeed;
 
             attackUsed = true;
@@ -248,9 +210,9 @@ public class EnemyBase : Patrol
 
     private void MeleeAttack()
     {
-        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], curTarget))
+        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
         {
-            stats.DealDamage(curTarget.GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
+            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
             attackUsed = true;
             curAttack = AttackTypes.Melee;
             MyRigid.velocity = Vector2.zero;
@@ -259,6 +221,6 @@ public class EnemyBase : Patrol
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.transform == curTarget && charging) stats.DealDamage(curTarget.GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
+        if (collision.collider.transform == detector.GetCurTarget() && charging) stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
     }
 }
