@@ -14,5 +14,5 @@ public class NewDialogue : ScriptableObject
         public string[] NumOfSentences;
     }
 
-    public List<NextSentence> ListOfNewSentences = new List<NextSentence>();
+    public List<NextSentence> ListOfCharacterExchanges = new List<NextSentence>();
 }
