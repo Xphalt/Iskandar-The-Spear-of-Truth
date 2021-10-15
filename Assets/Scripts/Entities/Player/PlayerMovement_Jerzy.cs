@@ -97,6 +97,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
 
         playerAnim.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+   
     }
 
     private void Rotation(Vector3 m_Input)

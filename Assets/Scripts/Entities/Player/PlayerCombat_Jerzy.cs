@@ -51,11 +51,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             swordAnimator.Play("PlayerSwordSwing");
             playerAnimator.SimpleAttack();
             timeSinceLastAttack = 0;
-
-            print("attack");
         }
-        else
-            playerAnimator.ResetAnimationStates();
     }
 
     public void ThrowAttack()

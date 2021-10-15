@@ -12,6 +12,7 @@ public class PlayerAnimationManager : MonoBehaviour
     [HideInInspector] public Animator animator;
 
     private int horiz, vert;
+    private bool isAttacking = false;
     #endregion
 
     private void Awake()
@@ -25,12 +26,19 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void Running(float speed) { animator.SetFloat("isRunning", speed); }
 
+
     public void SimpleAttack()
     {
-        ResetAnimationStates();
-        animator.SetBool("isSimpleAttacking", true);
+        animator.SetTrigger("isSimpleAttacking");
     }
 
+
+    public void ResetAnimationStates()
+    {
+        
+        isAttacking = false;
+    } 
+    
     //public void UpdateAnimatorValues(float horizontalMovement, float verticalMovement)
     //{
     //    #region Snapped Movement
@@ -63,9 +71,4 @@ public class PlayerAnimationManager : MonoBehaviour
     //    //animator.SetFloat(vert, horizontalMovement, 0.1f, Time.deltaTime);
     //}
 
-    public void ResetAnimationStates()
-    {
-        animator.SetBool("isIdling", false);
-        animator.SetBool("isSimpleAttacking", false);
-    }
 }

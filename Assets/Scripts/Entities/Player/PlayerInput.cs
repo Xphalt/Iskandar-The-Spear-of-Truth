@@ -28,7 +28,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float _rotationSpeed;
 
     #region Animation Variables
-    private PlayerAnimationManager animationManager;
+    //private PlayerAnimationManager animationManager;
 
    // public float moveAmount = 2;
     #endregion
@@ -38,7 +38,8 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
 
-        animationManager = FindObjectOfType<PlayerAnimationManager>();
+        //animationManager = FindObjectOfType<PlayerAnimationManager>();
+
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         _playerActionsAsset.Player.Pause.performed += OnPause;
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
@@ -75,12 +76,6 @@ public class PlayerInput : MonoBehaviour
         //Animation
         //_movementSpeed = Mathf.Clamp01(Mathf.Abs(inputVector.x) + Mathf.Abs(inputVector.y));
 
-    }
-
-    private void Update()
-    {
-        //animationManager.UpdateAnimatorValues(0, _movementSpeed);
-        //animationManager.animator.SetFloat("isRunning", moveAmount);
     }
 
 
