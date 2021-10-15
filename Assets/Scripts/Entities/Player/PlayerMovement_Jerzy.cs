@@ -96,9 +96,17 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             Rotation(m_Input);
         }
 
-        playerAnim.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
-   
+        //   playerAnim.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+
+        
+
+        if (!playerAnim.isLongIdling)
+            playerAnim.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+        else if (playerAnim.isLongIdling) 
+            playerAnim.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
+
     }
+
 
     private void Rotation(Vector3 m_Input)
     {

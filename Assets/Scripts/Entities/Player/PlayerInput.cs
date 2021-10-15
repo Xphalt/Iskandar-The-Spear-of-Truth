@@ -27,18 +27,10 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private GameObject _playerModel;
     [SerializeField] private float _rotationSpeed;
 
-    #region Animation Variables
-    //private PlayerAnimationManager animationManager;
-
-   // public float moveAmount = 2;
-    #endregion
-
     private void Awake()
     {
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
-
-        //animationManager = FindObjectOfType<PlayerAnimationManager>();
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         _playerActionsAsset.Player.Pause.performed += OnPause;
@@ -67,15 +59,8 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
-        //_playerRigidbody.velocity = new Vector3(inputVector.x, 0.0f, inputVector.y) * _movementSpeed;
-
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
-
-        //Animation
-        //_movementSpeed = Mathf.Clamp01(Mathf.Abs(inputVector.x) + Mathf.Abs(inputVector.y));
-
     }
 
 

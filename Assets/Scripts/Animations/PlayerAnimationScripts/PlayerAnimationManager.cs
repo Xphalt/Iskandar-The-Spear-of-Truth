@@ -11,64 +11,47 @@ public class PlayerAnimationManager : MonoBehaviour
     #region Variables
     [HideInInspector] public Animator animator;
 
-    private int horiz, vert;
-    private bool isAttacking = false;
+    public bool isLongIdling = false;
+    private float time = 0; 
     #endregion
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+    }
 
-        //Reference to horizontal + vertical parameters in animator.
-        horiz = Animator.StringToHash("Horizontal");
-        vert = Animator.StringToHash("Vertical");
+    public void PlayerLongIdle(float playerVelocity)
+    {
+        float waitDuration = 4;
+
+        while ((time < waitDuration) && !isLongIdling)
+        {
+            time += Time.deltaTime;
+        }
+        if (time >= waitDuration)
+        {
+            animator.SetBool("isLongIdling", true);
+            isLongIdling = true;
+        }
+
+        if (playerVelocity >= 0)
+        {
+            time = 0;
+            isLongIdling = false;
+        }
+
     }
 
     public void Running(float speed) { animator.SetFloat("isRunning", speed); }
-
 
     public void SimpleAttack()
     {
         animator.SetTrigger("isSimpleAttacking");
     }
 
-
     public void ResetAnimationStates()
     {
-        
-        isAttacking = false;
     } 
     
-    //public void UpdateAnimatorValues(float horizontalMovement, float verticalMovement)
-    //{
-    //    #region Snapped Movement
-    //    /*_______________________________________________________________________
-    //     * Animation snapping like in Dark Souls.
-    //     * ______________________________________________________________________*/
-    //    float snappedHoriz, snappedVert;
-
-    //    //Horizontal
-    //    if (horizontalMovement > 0 && horizontalMovement < 0.55f)
-    //        snappedHoriz = 1f;
-    //    else if (horizontalMovement < -0.55f)
-    //        snappedHoriz = -1f;
-    //    else
-    //        snappedHoriz = 0;
-    //    //Vertical
-    //    if (verticalMovement > 0 && verticalMovement < 0.55f)
-    //        snappedVert = 1f;
-    //    else if (verticalMovement < -0.55f)
-    //        snappedVert = -1f;
-    //    else
-    //        snappedVert = 0;
-    //    //_______________________________________________________________________
-    //    #endregion
-
-    //    animator.SetFloat(horiz, snappedHoriz, 0.1f, Time.deltaTime);
-    //    animator.SetFloat(vert, snappedVert, 0.1f, Time.deltaTime);
-
-    //    //animator.SetFloat(horiz, verticalMovement, 0.1f, Time.deltaTime);
-    //    //animator.SetFloat(vert, horizontalMovement, 0.1f, Time.deltaTime);
-    //}
-
+ 
 }
