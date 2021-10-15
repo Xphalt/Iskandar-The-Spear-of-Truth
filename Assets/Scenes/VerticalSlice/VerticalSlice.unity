@@ -920,6 +920,7 @@ GameObject:
   - component: {fileID: 138515256}
   - component: {fileID: 138515255}
   - component: {fileID: 138515254}
+  - component: {fileID: 138515257}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -1003,6 +1004,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 138515252}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &138515257
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138515252}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 493b4206a97ded44d8114fe74b6995fd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &171782182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,12 +1227,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 5cd4e81cf5b3aec4c93d25b5f857490f, type: 2}
     - target: {fileID: 5866666021909216657, guid: 2a0b416b5d7f5d5478dc09f3586b8bea, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'Root'\n\tTransform 'Elbow_R'\n\tTransform
-        'Ball_L'\n\tTransform 'Ball_R'\n\tTransform 'Clavicle_L'\n\tTransform 'Neck'\n\tTransform
-        'Elbow_L'\n\tTransform 'Head'\n\tTransform 'UpperLeg_L'\n\tTransform 'UpperLeg_R'\n\tand
-        more ...\n\tFrom animation clip 'RunForward'"
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a0b416b5d7f5d5478dc09f3586b8bea, type: 3}
@@ -2678,7 +2693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57027c0899de352418c31d5d4e630861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 186822798}
+  player: {fileID: 1160312875}
   thrown: 0
   returning: 0
   swordModel: {fileID: 23437423}
@@ -8685,7 +8700,7 @@ MonoBehaviour:
   _playerMovement_Jerzy: {fileID: 1160312883}
   _playerTargeting: {fileID: 1160312882}
   _player_Interaction_Jack: {fileID: 1160312881}
-  _playerCombat_Jerzy: {fileID: 0}
+  _playerCombat_Jerzy: {fileID: 1160312886}
   _inventoryUI: {fileID: 201902628}
   _itemSelectionWheel: {fileID: 1042960025}
   _movementSpeed: 10
@@ -8819,7 +8834,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1160312875}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02977b12e620d11439d57a988847dda7, type: 3}
   m_Name: 
@@ -9087,7 +9102,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1271860801}
   m_HandleRect: {fileID: 1271860800}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
