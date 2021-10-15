@@ -74,6 +74,7 @@ public class UIManager : MonoBehaviour
 
     // Dominique 14-10-2021, Enables/disables UI so we have input specific objects in use
     #region Input Specific UI
+    [SerializeField] private GameObject[] sharedUIElements;
     [SerializeField] private GameObject[] gamepadUIElements;
     [SerializeField] private GameObject[] keyboardMouseUIElements;
     [SerializeField] private GameObject[] mobileUIElements;
@@ -97,6 +98,10 @@ public class UIManager : MonoBehaviour
             current_input = input;
 
             // Disable everything first so that shared elements will still be enabled
+            for (int i = 0; i < sharedUIElements.Length; i++)
+            {
+                sharedUIElements[i].SetActive(false);
+            }
             for (int i = 0; i < gamepadUIElements.Length; i++)
             {
                 gamepadUIElements[i].SetActive(false);
@@ -132,6 +137,15 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region Action Button Image Changing
+    [SerializeField] private ActionImageChanger actionImageChanger;
+
+    public void UpdateActionButtonImage(Interactable_Object_Jack.InteractableType interactableType)
+    {
+        actionImageChanger.SetInteractImage(interactableType);
+    }
+    #endregion
+
     public static UIManager instance;
     private void Awake()
     {
@@ -146,7 +160,7 @@ public class UIManager : MonoBehaviour
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
 
         // At the moment we're using keyboard and mouse to play the game
-        SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
+        SetUIForInput(INPUT_OPTIONS.MOBILE);
     }
 
 #if DEBUG // Dominique 07-10-2021, Use to test enemy health bar (make sure to SetupEnemyHealthBar first)

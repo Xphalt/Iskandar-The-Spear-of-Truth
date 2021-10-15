@@ -5,12 +5,14 @@ using UnityEngine;
 // Attached to any object that can be interacted with
 public class Interactable_Object_Jack : MonoBehaviour
 {
-    private enum InteractableType
+    public enum InteractableType
     {
         NPC_Dialogue,
         Seller,
         LootChest,
         Item,
+        // Dominique, We'll use this to determine that the attack image should be showing on the mobile UI action button
+        NUM_INTERACTABLE_TYPES,
     }
 
     private DialogueTrigger _npcDialogueTrigger;
@@ -19,6 +21,7 @@ public class Interactable_Object_Jack : MonoBehaviour
 
     [SerializeField]
     InteractableType type;
+    public InteractableType GetInteractableType() { return type; }
 
 	private void Start()
 	{

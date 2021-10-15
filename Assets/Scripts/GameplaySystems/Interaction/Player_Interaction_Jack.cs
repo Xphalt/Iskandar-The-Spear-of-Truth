@@ -56,7 +56,14 @@ public class Player_Interaction_Jack : MonoBehaviour
 
             if (_nearestInteractableCollider)
             {
+                // Dominique, change the action image on the action button to match the new type of interactable
+                UIManager.instance.UpdateActionButtonImage(_nearestInteractableCollider.GetComponent<Interactable_Object_Jack>().GetInteractableType());
                 ShaderHandler.instance.SetOutlineColor(_nearestInteractableCollider.gameObject, Color.red);
+            }
+            else
+            {
+                // Dominique, Set to attack key if there's no interactable in range
+                UIManager.instance.UpdateActionButtonImage(Interactable_Object_Jack.InteractableType.NUM_INTERACTABLE_TYPES);
             }
 		}
     }
