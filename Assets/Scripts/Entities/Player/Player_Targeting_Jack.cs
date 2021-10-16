@@ -87,4 +87,9 @@ public class Player_Targeting_Jack : MonoBehaviour
         _targetedTransform = null;
         _wasTargeting = false;
     }
+
+    public Transform GetTargetTransform()
+    {
+        return _targetedTransform;
+    }
 }

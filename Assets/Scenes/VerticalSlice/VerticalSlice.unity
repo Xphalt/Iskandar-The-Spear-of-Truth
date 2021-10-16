@@ -2691,7 +2691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &406709719
 Transform:
   m_ObjectHideFlags: 0
@@ -10333,6 +10333,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1350622443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350622439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57027c0899de352418c31d5d4e630861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1160312875}
+  thrown: 0
+  returning: 0
+  swordModel: {fileID: 23437423}
+  swordModelBlade: {fileID: 0}
 --- !u!1 &1352221248
 GameObject:
   m_ObjectHideFlags: 0
@@ -10978,8 +10995,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 0.42267376, b: 0, a: 0}
-  outlineWidth: 2
+  outlineColor: {r: 1, g: 0.35352287, b: 0.0141509175, a: 0}
+  outlineWidth: 2.8
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []

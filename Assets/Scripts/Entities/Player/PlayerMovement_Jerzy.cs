@@ -59,6 +59,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     {
         if (_playerTargetingScript.IsTargeting())
         {
+            Transform tempTransform = _playerTargetingScript.GetTargetTransform();
+            _targetedTransform = tempTransform;
+
             // Set player rotation to look at targeted object
             Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
                                 0.0f,
@@ -82,6 +85,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             // this line fixes the thrown sword direction when locked onto an enemy
             swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
+
 
         }
         else
