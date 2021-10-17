@@ -21,7 +21,8 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public GameObject swordDefaultPosition;
 
     Animator swordAnimator;
-    private PlayerAnimationManager playerAnimator;
+    private PlayerAnimationManager playerAnimation;
+    private PlayerMovement_Jerzy playerMovement;
 
     bool returning;
     bool thrown;
@@ -32,7 +33,8 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     void Start()
     {
         swordAnimator = swordObject.GetComponent<Animator>();
-        playerAnimator = FindObjectOfType<PlayerAnimationManager>();
+        playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+        playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
     }
 
     void FixedUpdate()
@@ -48,9 +50,9 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     {
         if (timeSinceLastAttack >= attackCooldown && canAttack)
         {
-           // swordAnimator.Play("PlayerSwordSwing");
-            playerAnimator.SimpleAttack();
+            playerAnimation.SimpleAttack();
             timeSinceLastAttack = 0;
+            playerMovement.LockPlayerMovement();
         }
     }
 

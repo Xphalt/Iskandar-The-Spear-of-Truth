@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement_Jerzy : MonoBehaviour
 {
-    private PlayerAnimationManager playerAnim;
+    private PlayerAnimationManager playerAnimation;
 
     Rigidbody m_Rigidbody;
     public GameObject playerModel;
@@ -31,7 +31,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void Awake()
     {
-        playerAnim = FindObjectOfType<PlayerAnimationManager>();
+        playerAnimation = FindObjectOfType<PlayerAnimationManager>();
     }
 
     void Start()
@@ -47,6 +47,16 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         timeSinceLastDash += Time.deltaTime;
     }
 
+    public float GetPlayerVelocity()
+    {
+        return m_Rigidbody.velocity.magnitude;
+    }
+
+    public void LockPlayerMovement()
+    {
+        m_Rigidbody.velocity = Vector3.zero;
+    }
+
     public void Dash(Vector3 dashDirection)
     {
         if (timeSinceLastDash >= dashCooldown)
@@ -59,57 +69,59 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public void Movement(Vector3 m_Input)
     {
-        if (_playerTargetingScript.IsTargeting())
+        //This prevents player from moving whilst attacking.
+        if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
+            (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("SwordThrow&Return")))
         {
-            Transform tempTransform = _playerTargetingScript.GetTargetTransform();
-            _targetedTransform = tempTransform;
-
-            // Set player rotation to look at targeted object
-            Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
-                                0.0f,
-                                _targetedTransform.position.z - transform.position.z);
-
-            playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
-
-            Vector3 direction = playerModel.transform.TransformDirection(m_Input);
-
-            // this block of code ensures that the player does not spiral away from the targeted enemy
-            if (m_Input.x == 0)
+            if (_playerTargetingScript.IsTargeting())
             {
-                lastMagnitudeFromTarget = playerToTargetVector.magnitude;
+                Transform tempTransform = _playerTargetingScript.GetTargetTransform();
+                _targetedTransform = tempTransform;
+
+                // Set player rotation to look at targeted object
+                Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
+                                    0.0f,
+                                    _targetedTransform.position.z - transform.position.z);
+
+                playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
+
+                Vector3 direction = playerModel.transform.TransformDirection(m_Input);
+
+                // this block of code ensures that the player does not spiral away from the targeted enemy
+                if (m_Input.x == 0)
+                {
+                    lastMagnitudeFromTarget = playerToTargetVector.magnitude;
+                }
+                if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
+                {
+                    m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * 5); // What does this 5 means?
+                }
+
+                m_Rigidbody.velocity = (direction * m_Speed);
+
+                // this line fixes the thrown sword direction when locked onto an enemy
+                swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
             }
-            if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
+            else
             {
-                m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * 5); // What does this 5 means?
+                m_Rigidbody.velocity = (m_Input * m_Speed);
+
+                if (timeSinceLastDash >= invincibilityFramesAfterDash)
+                {
+                    canBeDamaged = true;
+                }
+
+                Rotation(m_Input);
             }
-
-            m_Rigidbody.velocity = (direction * m_Speed);
-
-            // this line fixes the thrown sword direction when locked onto an enemy
-            swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
-
-
         }
-        else
-        {
-            m_Rigidbody.velocity = (m_Input * m_Speed);
-
-            if (timeSinceLastDash >= invincibilityFramesAfterDash)
-            {
-                canBeDamaged = true;
-            }
-
-            Rotation(m_Input);
-        }
-        
         /*_________________________________________________________________________
          * Player animation.
          * ________________________________________________________________________*/
-        if (!playerAnim.isLongIdling)
-            playerAnim.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+        if (!playerAnimation.isLongIdling)
+            playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
 
-        else if (playerAnim.isLongIdling) 
-            playerAnim.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
+        else if (playerAnimation.isLongIdling) 
+            playerAnimation.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
         //_________________________________________________________________________
     }
 

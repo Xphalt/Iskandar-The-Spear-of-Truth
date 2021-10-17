@@ -10,6 +10,7 @@ public class PlayerInput : MonoBehaviour
 {
     // Reference Variables
     private PlayerActionsAsset _playerActionsAsset;
+    private PlayerAnimationManager playerAnimation;
     private Rigidbody _playerRigidbody;
 
     [Header("Scripts References")]
@@ -30,6 +31,7 @@ public class PlayerInput : MonoBehaviour
     private void Awake()
     {
         _playerActionsAsset = new PlayerActionsAsset();
+        playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         _playerRigidbody = GetComponent<Rigidbody>();
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
@@ -60,7 +62,9 @@ public class PlayerInput : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
+
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
+
     }
 
 

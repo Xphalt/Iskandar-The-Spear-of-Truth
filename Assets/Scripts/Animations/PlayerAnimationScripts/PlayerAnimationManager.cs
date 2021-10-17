@@ -9,8 +9,10 @@ public class PlayerAnimationManager : MonoBehaviour
     #region Variables
     [HideInInspector] public Animator animator;
 
+ //   [HideInInspector] public bool isIdling = false;
     [HideInInspector] public bool isLongIdling = false;
     [HideInInspector] public bool isStrafing = false;
+    [HideInInspector] public bool isSimpleAttacking = false;
     [HideInInspector] public bool isSwordThrowing = false;
 
     private Vector2 input;
@@ -61,11 +63,15 @@ public class PlayerAnimationManager : MonoBehaviour
             animator.SetFloat("isRunning", speed); 
     }
 
-    public void SimpleAttack() { animator.SetTrigger("isSimpleAttacking"); }
+    public void SimpleAttack() 
+    {
+        isSimpleAttacking = true;
+        animator.SetTrigger("isSimpleAttacking");
+    }
 
     public void SwordThrowAttack()
     {
-        { animator.SetTrigger("isSwordThrowing"); }
+        animator.SetTrigger("isSwordThrowing"); 
     }
 
     private void UpdateAxisValues()

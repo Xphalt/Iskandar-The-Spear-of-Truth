@@ -14,6 +14,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     PlayerCombat_Jerzy combatScript;
     private PlayerAnimationManager playerAnim;
+    private PlayerMovement_Jerzy playerMovement;
 
     float throwTimeBeforeSpinInPlace;
     float throwTimeSpinningInPlace;
@@ -30,6 +31,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
         swordRigidBody = GetComponent<Rigidbody>(); 
         combatScript = player.GetComponent<PlayerCombat_Jerzy>();
         playerAnim = FindObjectOfType<PlayerAnimationManager>();
+        playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
     }
 
     void Start()
@@ -73,6 +75,8 @@ public class ThrowSword_Jerzy : MonoBehaviour
                 swordRigidBody.velocity = transform.forward * returningSpeed;
             }
             timeTravelling += Time.deltaTime;
+
+            playerMovement.LockPlayerMovement();
         }
     }
 
