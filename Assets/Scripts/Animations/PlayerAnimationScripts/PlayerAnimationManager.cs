@@ -8,9 +8,12 @@ public class PlayerAnimationManager : MonoBehaviour
 {
     #region Variables
     [HideInInspector] public Animator animator;
-    private Vector2 input;
 
-    [HideInInspector] public bool isLongIdling = false, isStrafing = false;
+    [HideInInspector] public bool isLongIdling = false;
+    [HideInInspector] public bool isStrafing = false;
+    [HideInInspector] public bool isSwordThrowing = false;
+
+    private Vector2 input;
     private float time = 0; 
     #endregion
 
@@ -27,7 +30,10 @@ public class PlayerAnimationManager : MonoBehaviour
         }
     }
 
-    public void PlayerLongIdle(float playerVelocity)
+    /*_________________________________________________________________________
+     * Player switches between idle states if player is stationary for too long
+     * ________________________________________________________________________*/
+    public void PlayerLongIdle(float playerVelocity) //not working atm
     {
         float waitDuration = 4;
 
@@ -40,7 +46,7 @@ public class PlayerAnimationManager : MonoBehaviour
             animator.SetBool("isLongIdling", true);
             isLongIdling = true;
         }
-
+        //If player moves/no longer stationary, reset the idle condition.
         if (playerVelocity >= 0)
         {
             time = 0;
@@ -57,6 +63,11 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void SimpleAttack() { animator.SetTrigger("isSimpleAttacking"); }
 
+    public void SwordThrowAttack()
+    {
+        { animator.SetTrigger("isSwordThrowing"); }
+    }
+
     private void UpdateAxisValues()
     {
         /*_____________________________________________
@@ -70,9 +81,9 @@ public class PlayerAnimationManager : MonoBehaviour
         //_____________________________________________
     }
 
-    public void ResetAnimationStates()
-    {
-    } 
+    //public void ResetAnimationStates()
+    //{
+    //} 
     
  
 }

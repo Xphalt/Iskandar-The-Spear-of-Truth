@@ -13,6 +13,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
     private Vector3 swordStartDirection =  Vector3.zero;
 
     PlayerCombat_Jerzy combatScript;
+    private PlayerAnimationManager playerAnim;
 
     float throwTimeBeforeSpinInPlace;
     float throwTimeSpinningInPlace;
@@ -22,10 +23,13 @@ public class ThrowSword_Jerzy : MonoBehaviour
     float throwSpeed;
     float returningSpeed;
 
+    public float pauseBeforeThrow;
+
     private void Awake()
     {
         swordRigidBody = GetComponent<Rigidbody>(); 
         combatScript = player.GetComponent<PlayerCombat_Jerzy>();
+        playerAnim = FindObjectOfType<PlayerAnimationManager>();
     }
 
     void Start()
@@ -37,12 +41,13 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     }
 
-    void Update()
+    void FixedUpdate()
     {
-
+        //  StartCoroutine(CountDownForAttack());
+        SwordThrown();
     }
 
-    void FixedUpdate()
+    private void SwordThrown() //This was in the fixed update before.
     {
         // if the sword is thrown
         if (thrown)
@@ -50,8 +55,8 @@ public class ThrowSword_Jerzy : MonoBehaviour
             // move in specific direction for a specific amount of time (Stage 1 of throw attack)
             if (timeTravelling < throwTimeBeforeSpinInPlace)
             {
-               
                 swordRigidBody.velocity = transform.forward * throwSpeed;
+                playerAnim.SwordThrowAttack();
             }
 
             // spin on the spot for a specific amount of time (Stage 2 of throw attack)
@@ -69,8 +74,12 @@ public class ThrowSword_Jerzy : MonoBehaviour
             }
             timeTravelling += Time.deltaTime;
         }
+    }
 
-
+    IEnumerator CountDownForAttack() 
+    { 
+        yield return new WaitForSeconds(pauseBeforeThrow);
+        SwordThrown();
     }
 
     public void ThrowSword(Quaternion targetRotation)
