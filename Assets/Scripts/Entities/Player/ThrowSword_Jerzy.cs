@@ -45,11 +45,10 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     void FixedUpdate()
     {
-        //  StartCoroutine(CountDownForAttack());
-        SwordThrown();
+        ThrowingSwordPhysics();
     }
 
-    private void SwordThrown() //This was in the fixed update before.
+    private void ThrowingSwordPhysics() //This was in the fixed update before.
     {
         // if the sword is thrown
         if (thrown)
@@ -78,12 +77,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
             playerMovement.LockPlayerMovement();
         }
-    }
-
-    IEnumerator CountDownForAttack() 
-    { 
-        yield return new WaitForSeconds(pauseBeforeThrow);
-        SwordThrown();
     }
 
     public void ThrowSword(Quaternion targetRotation)

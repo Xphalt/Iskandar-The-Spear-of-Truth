@@ -14,7 +14,6 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     Quaternion swordLookRotation;
     private float timeInteractHeld = 0f;
     public float timeToThrowSword;
-    private bool isAttacking = false;
 
     public GameObject swordObject;
     public GameObject swordEmpty;
@@ -67,8 +66,6 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     }
 
-
-
     private void OnTriggerStay(Collider other)
     {
         // when the sword returns to the player
@@ -82,8 +79,4 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             canAttack = true;
         }
     }
-
-
-
-
 }

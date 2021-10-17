@@ -12,7 +12,6 @@ public class PlayerAnimationManager : MonoBehaviour
  //   [HideInInspector] public bool isIdling = false;
     [HideInInspector] public bool isLongIdling = false;
     [HideInInspector] public bool isStrafing = false;
-    [HideInInspector] public bool isSimpleAttacking = false;
     [HideInInspector] public bool isSwordThrowing = false;
 
     private Vector2 input;
@@ -65,7 +64,6 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void SimpleAttack() 
     {
-        isSimpleAttacking = true;
         animator.SetTrigger("isSimpleAttacking");
     }
 
