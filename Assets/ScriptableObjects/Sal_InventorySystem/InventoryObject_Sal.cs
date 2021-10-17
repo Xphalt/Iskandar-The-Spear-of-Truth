@@ -15,7 +15,7 @@ public enum InterfaceType
 }
 
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
-public class InventoryObject_Sal : ScriptableObject
+public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackReceiver
 {
     public string savePath;
     public DatabaseObject database;
@@ -149,6 +149,22 @@ public class InventoryObject_Sal : ScriptableObject
     {
         Storage.Clear();
     }
+
+    public void OnBeforeSerialize()
+    {
+        for (int i = 0; i < Storage.Slots.Length; i++)
+        {
+            if (Storage.Slots[i].item.id > -1 && Storage.Slots[i].item.id < Storage.Slots.Length)
+                Storage.Slots[i].item.name = database.ItemObjects[Storage.Slots[i].item.id].name;
+            else
+                Storage.Slots[i].item.name = string.Empty;
+        }
+    }
+
+    public void OnAfterDeserialize()
+    {
+        
+    } 
 }
 
 [System.Serializable]

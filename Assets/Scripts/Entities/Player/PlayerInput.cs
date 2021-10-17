@@ -30,6 +30,8 @@ public class PlayerInput : MonoBehaviour
 
     private void Awake()
     {
+        _player_sal = GetComponent<Player_Sal>();
+
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
 
