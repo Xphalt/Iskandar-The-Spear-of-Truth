@@ -531,6 +531,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: isStrafing
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isIdling
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2884920526647657101}
   m_Solo: 0
@@ -690,7 +693,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: fc219270dba374b4dbaf910832f1bb97, type: 2}
-    m_Threshold: 0.5
+    m_Threshold: 0.09375
     m_Position: {x: 1, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -698,16 +701,32 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: c19c985d8ed66b84c87d657eb7a74a78, type: 2}
-    m_Threshold: 1
+    m_Threshold: 0.1875
     m_Position: {x: 0, y: -1}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: inputX
     m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 53656a9daaecf9a46800c6223fa24938, type: 2}
+    m_Threshold: 0.28125
+    m_Position: {x: 0, y: 1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: InputX
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: e306fd59376a3f642a4a00e5e06ec6fd, type: 2}
+    m_Threshold: 0.375
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: InputX
+    m_Mirror: 0
   m_BlendParameter: InputX
   m_BlendParameterY: InputZ
   m_MinThreshold: 0
-  m_MaxThreshold: 1
+  m_MaxThreshold: 0.375
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 2
@@ -785,6 +804,12 @@ AnimatorController:
     m_Controller: {fileID: 0}
   - m_Name: isSwordThrowing
     m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: isIdling
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -1047,6 +1072,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 4
     m_ConditionEvent: isRunning
     m_EventTreshold: 0.2
+  - m_ConditionMode: 2
+    m_ConditionEvent: isStrafing
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5404307871801449419}
   m_Solo: 0
@@ -1252,6 +1280,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 3
     m_ConditionEvent: isRunning
     m_EventTreshold: 0.2
+  - m_ConditionMode: 2
+    m_ConditionEvent: isStrafing
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6003276679023476148}
   m_Solo: 0
@@ -1329,6 +1360,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 2
     m_ConditionEvent: isStrafing
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: isIdling
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5404307871801449419}

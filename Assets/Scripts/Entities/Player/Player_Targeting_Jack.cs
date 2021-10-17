@@ -60,6 +60,10 @@ public class Player_Targeting_Jack : MonoBehaviour
 		}
         else
         {
+
+            playerAnimation.isStrafing = true;
+
+
             _targetableObjectHit = Physics.BoxCast(transform.position,
                                             _boxCastHalfDimensions,
                                             playerModelTransform.forward,
@@ -77,10 +81,13 @@ public class Player_Targeting_Jack : MonoBehaviour
                 ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.yellow);
                 targetingIcon.gameObject.SetActive(true);
 
-                playerAnimation.isStrafing = true;
+            }
+            else
+            {
+                playerAnimation.isStrafing = false;
             }
         }
-        playerAnimation.isStrafing = false;
+         
     }
 
     private void UnTargetObject()
@@ -91,6 +98,8 @@ public class Player_Targeting_Jack : MonoBehaviour
 
         _targetedTransform = null;
         _wasTargeting = false;
+
+        playerAnimation.isStrafing = false;
     }
 
     public Transform GetTargetTransform()

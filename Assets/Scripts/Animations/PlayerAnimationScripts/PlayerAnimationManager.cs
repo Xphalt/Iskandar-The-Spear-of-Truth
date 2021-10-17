@@ -9,9 +9,10 @@ public class PlayerAnimationManager : MonoBehaviour
     #region Variables
     [HideInInspector] public Animator animator;
 
- //   [HideInInspector] public bool isIdling = false;
+  //  [HideInInspector] public bool isIdling = false;
+    [HideInInspector] public bool isRunning = false;
     [HideInInspector] public bool isLongIdling = false;
-    [HideInInspector] public bool isStrafing = false;
+    [HideInInspector] public bool isStrafing = true;
     [HideInInspector] public bool isSwordThrowing = false;
 
     private Vector2 input;
@@ -25,10 +26,21 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private void Update()
     {
+        // UpdateAxisValues();
         if (isStrafing)
         {
             UpdateAxisValues();
+            animator.SetBool("isIdling", false);
+            animator.SetBool("isStrafing", true);
         }
+        else if (!isStrafing)
+        {
+            animator.SetBool("isIdling", true);
+            animator.SetBool("isStrafing", false);
+        }
+
+       // print("is idling:" + isIdling);
+        print("is strafing:" + isStrafing);
     }
 
     /*_________________________________________________________________________
@@ -60,6 +72,8 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         if (!isStrafing)
             animator.SetFloat("isRunning", speed); 
+        else if (isStrafing)
+            animator.SetFloat("isRunning", 0);
     }
 
     public void SimpleAttack() 
@@ -82,6 +96,8 @@ public class PlayerAnimationManager : MonoBehaviour
 
         animator.SetFloat("InputX", input.x);
         animator.SetFloat("InputZ", input.y);
+
+        //Debug.Log("Input:" + input);
         //_____________________________________________
     }
 
