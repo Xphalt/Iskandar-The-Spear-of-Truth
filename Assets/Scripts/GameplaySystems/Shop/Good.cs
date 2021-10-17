@@ -57,15 +57,19 @@ public class Good : MonoBehaviour
             return;
         if (obj.amount > 0) //Player has item
         {
-            //Remove 1 from player inventory
-            obj.AddAmount(-1);
+            if (obj.amount == 1) //Remove item if all amount is sold
+                destinationInvenotory.RemoveItem(objHolder.data);
+            else //Remove 1 from player inventory
+                obj.AddAmount(-1);
+
             //Add amount to the shop
             GameObject.FindObjectOfType<ShopManager>().shop.FindItemOnInventory(objHolder.data).AddAmount(1);
             amount.text = (++howMany).ToString();
+
             
+
             //TODO: pay
         }
-        if(obj.amount == 0) //Remove item if all amount is sold
-            destinationInvenotory.RemoveItem(objHolder.data);
+        
     }
 } 

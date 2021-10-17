@@ -74,7 +74,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         {
             if(Storage.Slots[i].item.id == p_item.id)
             {
-                Storage.Slots[i].UpdateSlot(null, 0);
+                Storage.Slots[i].UpdateSlot(new Item(), 0);
             }
         }
     }
