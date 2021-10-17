@@ -4,12 +4,11 @@ using UnityEngine.UI;
 
 public class QuestLogManager : MonoBehaviour
 {
-    public GameObject ButtonArea;
-    public Button QuestButton;
+    [HideInInspector] public GameObject ButtonArea;
+    [HideInInspector] public Button QuestButton;
 
     public List<QuestObject> ListOfQuests = new List<QuestObject>();
-    [HideInInspector]
-    public List<Button> ListOfButtons = new List<Button>();
+    [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
 
     private void Awake()
     {
