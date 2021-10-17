@@ -38,6 +38,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
+
+        swordLookRotation = playerModel.transform.rotation;
     }
 
     private void Update()

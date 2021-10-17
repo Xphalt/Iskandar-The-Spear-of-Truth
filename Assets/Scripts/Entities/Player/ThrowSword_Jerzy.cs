@@ -8,8 +8,9 @@ public class ThrowSword_Jerzy : MonoBehaviour
     public bool thrown;
     public bool returning = false;
     public GameObject swordModel;
-    public GameObject swordModelBlade;
+    private GameObject swordModelBlade;
     Rigidbody swordRigidBody;
+    private Vector3 swordStartDirection =  Vector3.zero;
 
     PlayerCombat_Jerzy combatScript;
 
@@ -21,10 +22,14 @@ public class ThrowSword_Jerzy : MonoBehaviour
     float throwSpeed;
     float returningSpeed;
 
+    private void Awake()
+    {
+        swordRigidBody = GetComponent<Rigidbody>(); 
+        combatScript = player.GetComponent<PlayerCombat_Jerzy>();
+    }
 
     void Start()
     {
-        combatScript = player.GetComponent<PlayerCombat_Jerzy>();
         throwTimeBeforeSpinInPlace = combatScript.throwTimeBeforeSpinInPlace;
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
         throwSpeed = combatScript.throwSpeed;
@@ -45,6 +50,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
             // move in specific direction for a specific amount of time (Stage 1 of throw attack)
             if (timeTravelling < throwTimeBeforeSpinInPlace)
             {
+               
                 swordRigidBody.velocity = transform.forward * throwSpeed;
             }
 
@@ -79,6 +85,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
         swordRigidBody.isKinematic = false;
         swordRigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
+         
         // play looped spinning animation
         swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
     }

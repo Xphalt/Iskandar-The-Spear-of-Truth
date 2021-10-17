@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*________________________________________________________________________
@@ -10,14 +8,23 @@ public class PlayerAnimationManager : MonoBehaviour
 {
     #region Variables
     [HideInInspector] public Animator animator;
+    private Vector2 input;
 
-    public bool isLongIdling = false;
+    [HideInInspector] public bool isLongIdling = false, isStrafing = false;
     private float time = 0; 
     #endregion
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        if (isStrafing)
+        {
+            UpdateAxisValues();
+        }
     }
 
     public void PlayerLongIdle(float playerVelocity)
@@ -42,11 +49,25 @@ public class PlayerAnimationManager : MonoBehaviour
 
     }
 
-    public void Running(float speed) { animator.SetFloat("isRunning", speed); }
-
-    public void SimpleAttack()
+    public void Running(float speed) 
     {
-        animator.SetTrigger("isSimpleAttacking");
+        if (!isStrafing)
+            animator.SetFloat("isRunning", speed); 
+    }
+
+    public void SimpleAttack() { animator.SetTrigger("isSimpleAttacking"); }
+
+    private void UpdateAxisValues()
+    {
+        /*_____________________________________________
+         * These are assigned to the animation blend tree.
+         *_____________________________________________*/
+        input.x = Input.GetAxis("Horizontal");
+        input.y = Input.GetAxis("Vertical");
+
+        animator.SetFloat("InputX", input.x);
+        animator.SetFloat("InputZ", input.y);
+        //_____________________________________________
     }
 
     public void ResetAnimationStates()
