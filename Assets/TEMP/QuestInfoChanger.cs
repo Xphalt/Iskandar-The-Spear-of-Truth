@@ -4,7 +4,12 @@ using UnityEngine.UI;
 public class QuestInfoChanger : MonoBehaviour
 {
     public QuestLogManager QuestLog;
-    public GameObject QuestInfoText;
+    private GameObject QuestInfoText;
+
+    private void Start()
+    {
+        QuestInfoText = GameObject.Find("TextQuestDescription");
+    }
 
     public void ChangeQuestInfo()
     {
