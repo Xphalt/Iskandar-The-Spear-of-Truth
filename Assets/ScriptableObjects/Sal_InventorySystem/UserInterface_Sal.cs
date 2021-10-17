@@ -6,17 +6,18 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System;
+using UnityEngine.InputSystem;
 
 public abstract class UserInterface_Sal : MonoBehaviour
 {
     public InventoryObject_Sal inventory;  
-    public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
+    public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>(); 
 
     public abstract void CreateSlots();
     
     // Dominique 13-10-2021, Changed to Awake so it is called before the UI is hiddeb by Inventory_UI_Script in Start
     void Awake()
-    {
+    { 
         for (int i = 0; i < inventory.GetSlots.Length; i++)
         {
             inventory.GetSlots[i].parent = this;   //Sets the right interface parent to each slot (for dragging into another database)
@@ -43,12 +44,7 @@ public abstract class UserInterface_Sal : MonoBehaviour
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
             slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = "";
         }
-    }
-
-    //void Update()
-    //{
-    //    slotsOnInterface.UpdateSlotDisplay();
-    //}
+    } 
 
 
     public void UpdateSlots()
@@ -113,38 +109,38 @@ public abstract class UserInterface_Sal : MonoBehaviour
             rt.sizeDelta = new Vector2(50, 50); //Same size of the UIdisplay
             rt.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             tempItem.transform.SetParent(transform.parent);  //set parent to the canvas 
-            
+
             var img = tempItem.AddComponent<Image>();
             img.sprite = slotsOnInterface[obj].ItemObject.uiDisplay;
             img.raycastTarget = false;
         }
         
-        MouseData.tempItemBeingDragged = tempItem; 
+        MouseData.tempItemBeingDragged = tempItem;  
     }
     public void OnDrag(GameObject obj)
-    {
+    { 
         //Update the position of the item dragged
         if (MouseData.tempItemBeingDragged != null)
-            MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = Input.mousePosition;
+            MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = Mouse.current.position.ReadValue();
+       
     }
 
     public void OnDragEnd(GameObject obj)
-    { 
+    {
         Destroy(MouseData.tempItemBeingDragged);
-         
-        if(MouseData.interfaceMouseIsOver == null)//Remove item if dragged outside the interface
+
+        if (MouseData.interfaceMouseIsOver == null)//Remove item if dragged outside the interface
         {
             slotsOnInterface[obj].RemoveItem();
             return;
         }
 
-        if(MouseData.slotHoveredOver)//If there is a slot hovering over, check if we can swap
+        if (MouseData.slotHoveredOver)//If there is a slot hovering over, check if we can swap
         {
             InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
             inventory.SwapItem(slotsOnInterface[obj], mouseHoverSlotData);
         }
     }
-    
 }
 
 public static class MouseData
@@ -154,25 +150,4 @@ public static class MouseData
     public static GameObject tempItemBeingDragged;
     public static GameObject slotHoveredOver;
 }
-
-public static class ExtensionMethods
-{
-    public static void UpdateSlotDisplay(this Dictionary<GameObject, InventorySlot> slotsOnInterface)
-    {
-        foreach (KeyValuePair<GameObject, InventorySlot> slot in slotsOnInterface)
-        {
-            if (slot.Value.item.id >= 0) //has item
-            {
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = slot.Value.ItemObject.uiDisplay;
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-                slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = slot.Value.amount == 1 ? "" : slot.Value.amount.ToString("n0");
-            }
-            else //No item
-            {
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-                slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
-            }
-        }
-    }
-}
+ 
