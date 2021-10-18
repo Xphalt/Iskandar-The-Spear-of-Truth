@@ -22,7 +22,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     public InterfaceType type;
     public Inventory Storage;
 
-    //morgan's autosave/load game edit
+    //morgan's load game edit
     private void Start()
     {
         LoadStatsf1();
@@ -114,7 +114,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     /// THIS IS WHERE I IMPLEMENT THE SAVE SYSTEM
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ///Morgan version of save stats
+    /////////////////////////////////////////////////////// MORGAN SAVE CHANGE ///////////////////////////////////////////////////
     [ContextMenu("Save")]
     public void SaveStatsf1()
     {
@@ -140,7 +140,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         stream.Close();
     }
 
-
+    /////////////////////////////////////////////////////// MORGAN LOAD CHANGE ///////////////////////////////////////////////////
     [ContextMenu("Load")]
     public void LoadStatsf1()
     {
@@ -199,7 +199,13 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     public void OnAfterDeserialize()
     {
         
-    } 
+    }
+
+    //morgan's autosave game edit
+    private void OnDestroy()
+    {
+        SaveStatsf1();
+    }
 }
 
 [System.Serializable]
