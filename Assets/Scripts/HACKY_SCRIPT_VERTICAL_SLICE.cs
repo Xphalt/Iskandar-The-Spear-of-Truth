@@ -11,6 +11,8 @@ public class HACKY_SCRIPT_VERTICAL_SLICE : MonoBehaviour
     public static HACKY_SCRIPT_VERTICAL_SLICE instance;
     public bool hasSpokenToMum = false;
     public bool hasSpokenToMilkperson = false;
+    public bool spawnedLittleOrcs = false;
+    public bool spawnedBigOrc = false;
 
     private void Awake()
     {
@@ -25,12 +27,13 @@ public class HACKY_SCRIPT_VERTICAL_SLICE : MonoBehaviour
             
         }
 
-        if (hasSpokenToMilkperson)
+        if (hasSpokenToMilkperson && !spawnedLittleOrcs)
         {
             for (int i = 0; i < little_orcs.Length; i++)
             {
                 little_orcs[i].SetActive(true);
             }
+            spawnedLittleOrcs = true;
         }
 
         bool hasDefeatedLittleOrcs = true;
@@ -43,9 +46,10 @@ public class HACKY_SCRIPT_VERTICAL_SLICE : MonoBehaviour
             }
         }
 
-        if (hasDefeatedLittleOrcs)
+        if (hasDefeatedLittleOrcs && !spawnedBigOrc)
         {
             big_orc.SetActive(true);
+            spawnedBigOrc = true;
         }
     }
 }
