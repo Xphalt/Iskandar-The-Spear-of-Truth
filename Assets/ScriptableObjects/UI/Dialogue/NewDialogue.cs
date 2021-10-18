@@ -5,14 +5,14 @@ using UnityEngine;
 [SerializeField]
 public class NewDialogue : ScriptableObject
 {
+    public List<NextExchange> ListOfCharacterExchanges = new List<NextExchange>();
+
     [System.Serializable]
-    public struct NextSentence
+    public struct NextExchange
     {
         public string NPCName;
 
         [TextArea]
         public string[] NumOfSentences;
     }
-
-    public List<NextSentence> ListOfCharacterExchanges = new List<NextSentence>();
 }
