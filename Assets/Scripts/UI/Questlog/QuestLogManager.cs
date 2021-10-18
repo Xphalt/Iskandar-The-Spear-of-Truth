@@ -4,14 +4,11 @@ using UnityEngine.UI;
 
 public class QuestLogManager : MonoBehaviour
 {
-    public GameObject ButtonArea;
-    public Button QuestButton;
+    [HideInInspector] public GameObject ButtonArea;
+    [HideInInspector] public Button QuestButton;
 
-    //Add quests to list
     public List<QuestObject> ListOfQuests = new List<QuestObject>();
-    //[HideInInspector]
-    public List<Button> ListOfButtons = new List<Button>();
-    public Dictionary<QuestObject, Button> QuestDictionary = new Dictionary<QuestObject, Button>();
+    [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
 
     private void Awake()
     {
@@ -20,11 +17,6 @@ public class QuestLogManager : MonoBehaviour
             ListOfButtons.Add(QuestButton);
             QuestButton.GetComponentInChildren<Text>().text = item.QuestName;
             Instantiate(QuestButton, ButtonArea.transform).name = item.QuestName;
-        }
-
-        for (int i = 0; i < ListOfQuests.Count; i++)
-        {
-            QuestDictionary.Add(ListOfQuests[i], ListOfButtons[i]);
         }
     }
 }
