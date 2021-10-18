@@ -12,7 +12,8 @@ public class SaveDataF2
     Scene m_Scene;
     public string scenename;
     public float healthf2;
-    //public bool load;
+
+    public Inventory Storagef2;
 
     public SaveDataF2(CharacterStats playerstatsf2)
     {
@@ -23,7 +24,7 @@ public class SaveDataF2
 
     public SaveDataF2(InventoryObject_Sal playerstatsf2)
     {
-
+        Storagef2 = playerstatsf2.Storage;
     }
 }
 

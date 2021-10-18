@@ -121,6 +121,16 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         SaveManager.SavePlayerInventoryf1(this);
     }
 
+    public void SaveStatsf2()
+    {
+        SaveManager.SavePlayerInventoryf2(this);
+    }
+
+    public void SaveStatsf3()
+    {
+        SaveManager.SavePlayerInventoryf3(this);
+    }
+
     [ContextMenu("Save")]
     public void Save()
     {
@@ -149,6 +159,32 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
         Inventory newStorage = saveDataf1.Storagef1;
+        for (int i = 0; i < Storage.Slots.Length; i++)
+        {
+            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+        }
+    }
+
+    public void LoadStatsf2()
+    {
+        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerStatsf2();
+
+        //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
+
+        Inventory newStorage = saveDataf2.Storagef2;
+        for (int i = 0; i < Storage.Slots.Length; i++)
+        {
+            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+        }
+    }
+
+    public void LoadStatsf3()
+    {
+        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerStatsf3();
+
+        //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
+
+        Inventory newStorage = saveDataf3.Storagef3;
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
             Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
