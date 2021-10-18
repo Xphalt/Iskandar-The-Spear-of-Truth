@@ -4,40 +4,34 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
-    private float Row, Line;
-    private Rigidbody rigi;
+    public Transform UpBound;
+    public Transform DownBound;
+    public Transform LeftBound;
+    public Transform RightBound;
+    public Transform Target;
+
+    private bool XFollowing, ZFollowing;
+    public float Yoffset = 10, Zoffset = 5;
+
+    public Vector3 Limits = new Vector3(15, 0, 5);   
 
 
-
-    void Start()
+    private void Awake() //used to avoid reference errors
     {
-        rigi = GetComponent<Rigidbody>(); 
+        transform.position = new Vector3(Target.position.x, Yoffset, Zoffset);
     }
 
     void Update()
     {
-        Row = Input.GetAxis("Horizontal");
-        Line = Input.GetAxis("Vertical");
-        Vector3 MoveVec = new Vector3(Row, 0, Line);
+        XFollowing = RightBound.position.x - LeftBound.position.x > Limits.x * 2; //Can be done in awake if boundaries do not change mid-level
+        ZFollowing = UpBound.position.z - DownBound.position.z > Limits.z * 2;
 
-        if (MoveVec.magnitude > 1)
-        {
-            MoveVec = MoveVec.normalized;
-        }
+        float Xmid = (RightBound.position.x + LeftBound.position.x) / 2;
+        float Zmid = (UpBound.position.z + DownBound.position.z) / 2;
 
-        rigi.velocity = MoveVec * 2;
+        float newX = XFollowing ? Mathf.Clamp(Target.position.x, LeftBound.position.x + Limits.x, RightBound.position.x - Limits.x) : Xmid;
+        float newZ = ZFollowing ? Mathf.Clamp(Target.position.z, DownBound.position.z + Limits.z, UpBound.position.z - Limits.z) : Zmid;
 
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Boundary"))
-        {
-            rigi.velocity = Vector3.zero;
-        }
-        else
-        {
-            Physics.IgnoreCollision(collision.transform.GetComponent<Collider>(), GetComponent<Collider>());
-        }
-    }
+        transform.position = new Vector3(newX, Yoffset, (newZ - Zoffset));
+    }    
 }
