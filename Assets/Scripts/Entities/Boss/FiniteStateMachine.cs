@@ -75,12 +75,15 @@ public sealed class Idle : State
 
     public override void Execute(BossStats Entity)
     {
-        //check for BossStats HP
-        if (Entity.health <= 10)
-            owningFSM.ChangeState(new FinalAttack(owningFSM));
-        //specified amount of time check
-        if (Entity.idleTimer >= Entity.idleTime)
-            owningFSM.ChangeState(new HeavyAttack(owningFSM));
+        if (Entity.detector.GetCurTarget() != null)
+        {
+            //check for BossStats HP
+            if (Entity.health <= 10)
+                owningFSM.ChangeState(new FinalAttack(owningFSM));
+            //specified amount of time check
+            if (Entity.idleTimer >= Entity.idleTime)
+                owningFSM.ChangeState(new HeavyAttack(owningFSM));
+        }
     }
 
     public override void Exit(BossStats Entity)

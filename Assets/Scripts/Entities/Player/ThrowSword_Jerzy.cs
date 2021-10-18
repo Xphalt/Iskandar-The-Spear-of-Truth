@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ThrowSword_Jerzy : MonoBehaviour
 {
+    public float swordDamage = 2;
+
     public GameObject player;
     public bool thrown;
     public bool returning = false;
@@ -12,6 +14,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     PlayerCombat_Jerzy combatScript;
     private PlayerMovement_Jerzy playerMovement;
+    private PlayerAnimationManager playerAnim;
 
     float throwTimeBeforeSpinInPlace;
     float throwTimeSpinningInPlace;
@@ -28,6 +31,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
         swordRigidBody = GetComponent<Rigidbody>(); 
         combatScript = player.GetComponent<PlayerCombat_Jerzy>();
         playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
+        playerAnim = GetComponentInParent<PlayerAnimationManager>();
     }
 
     void Start()
@@ -36,7 +40,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
         throwSpeed = combatScript.throwSpeed;
         returningSpeed = combatScript.throwReturnSpeed;
-
     }
 
     void FixedUpdate()
@@ -106,13 +109,19 @@ public class ThrowSword_Jerzy : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         // when the sword returns to the player
         if (other.gameObject.tag == "Enemy")
         {
-           // other.gameObject.GetComponent<CharacterStats>().TakeDamage(player.GetComponent<CharacterStats>().attackDamage);
-            player.GetComponent<CharacterStats>().DealDamage(other.gameObject, player.GetComponent<CharacterStats>().attackDamage);
+            StatsInterface statsInterface;
+            bool gotStatsInterface = other.TryGetComponent<StatsInterface>(out statsInterface);
+
+            // other.gameObject.GetComponent<CharacterStats>().TakeDamage(player.GetComponent<CharacterStats>().attackDamage);
+            if (gotStatsInterface)
+            {
+                player.GetComponent<StatsInterface>().DealDamage(statsInterface, swordDamage);
+            }
         }
     }
 }

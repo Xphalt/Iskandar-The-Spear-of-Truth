@@ -23,7 +23,7 @@ public class Gargoyle : BossStats
         {
             Debug.Log(transform.GetDistance(detector.GetCurTarget()));
             detector.GetCurTarget().GetComponent<PlayerStats>().TakeDamage(lightAtkDamage);
-            detector.GetCurTarget().parent.GetComponent<Rigidbody>().AddForce((detector.GetCurTarget().position - transform.position).normalized * lightAtkKnockback,ForceMode.Impulse);
+            detector.GetCurTarget().GetComponent<Rigidbody>().AddForce((detector.GetCurTarget().position - transform.position).normalized * lightAtkKnockback,ForceMode.Impulse);
             lightAtkTimer = 0;
         }
     }
