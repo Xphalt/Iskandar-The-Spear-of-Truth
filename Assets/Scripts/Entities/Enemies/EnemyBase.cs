@@ -169,7 +169,7 @@ public class EnemyBase : Patrol
     //will be called by other scripts
     public virtual void Attack ()
     {
-        if(AttackEnded)
+        if(AttackEnded && detector.GetCurTarget() != null)
         {
             attackUsed = false;
 

@@ -49,6 +49,7 @@ public class Patrol : MonoBehaviour
 
     void GoToNextNode()
     {
+        if (ListOfNodes.Length == 0) return;
         agent.destination = ListOfNodes[_currentNode].position;
         _currentNode = (_currentNode + 1) % ListOfNodes.Length;
     }

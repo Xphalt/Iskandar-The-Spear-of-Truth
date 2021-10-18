@@ -48,7 +48,7 @@ public class PlayerDetection : MonoBehaviour
 
     public bool MeleeRangeCheck(float attackrange, Transform target)
     {
-        foreach (RaycastHit targetScan in Physics.RaycastAll(transform.position, transform.forward, attackrange))
+        foreach (RaycastHit targetScan in Physics.RaycastAll(transform.position, transform.forward, attackrange, targetMask))
         {
             if (targetScan.collider.transform == target) return true;
         }
