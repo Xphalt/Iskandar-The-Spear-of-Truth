@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class NPC_Interaction : Patrol
 {
-    public float viewRadius;
+    public float ViewRadius;
 
-    [SerializeField]
-    LayerMask targetMask;
+    [SerializeField] private LayerMask _targetMask;
 
     public override void Update()
     {
         base.Update();
 
-        Collider[] playerIsInReach = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+        Collider[] playerIsInReach = Physics.OverlapSphere(transform.position, ViewRadius, _targetMask);
 
-        Patrolling = playerIsInReach.Length == 0;
+        //Patrolling = playerIsInReach.Length == 0;
     }
 }

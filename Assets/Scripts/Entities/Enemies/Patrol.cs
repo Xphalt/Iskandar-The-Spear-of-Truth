@@ -1,54 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Patrol : MonoBehaviour
 {
-    public Transform[] nodes;
-    public float speed;
+    [Header("Node Information")]
+    [SerializeField] private string _nodeTag;
+    public Transform[] ListOfNodes;
+    private int _currentNode;
 
-    protected bool Patrolling;
-    int currentNode;
+    [Header("")]
+
+
+    protected NavMeshAgent agent;
+    private float minRemainingDistance = 0.5f;
+    public float pauseTime;
+    protected float patrolSpeed;
 
     protected Rigidbody MyRigid;
 
     Vector3 direction;
 
-    [SerializeField]
-    private string nodeTag;
-
-    public bool defaultToZero = true;
 
     public virtual void Start()
     {
-        currentNode = 0;
-
-        Patrolling = true;
+        _currentNode = 0;
 
         MyRigid = GetComponent<Rigidbody>();
+        agent = GetComponent<NavMeshAgent>();
+        agent.autoBraking = false;
+        GoToNextNode();
+
+        patrolSpeed = agent.speed;
     }
 
     public virtual void Update()
     {
-        if (Patrolling)
+        if (agent.enabled)
         {
-            direction = (nodes[currentNode].position - transform.position).normalized;
-
-            MyRigid.velocity = direction * speed;
-            transform.rotation = Quaternion.LookRotation(MyRigid.velocity);
-        }
-        else if (defaultToZero)
-        {
-            MyRigid.velocity = Vector3.zero;
+            if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
+            {
+                StartCoroutine(Pause(pauseTime));
+                GoToNextNode();
+            }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void GoToNextNode()
     {
-        if (other.gameObject.tag == nodeTag)
-        {
-            currentNode++;
-            currentNode %= nodes.Length;
-        }
+        agent.destination = ListOfNodes[_currentNode].position;
+        _currentNode = (_currentNode + 1) % ListOfNodes.Length;
+    }
+
+    private IEnumerator Pause(float delay) // Temporarily stop the NPC's speed to allow for idle posing
+    {
+        agent.speed = 0.0f;
+        yield return new WaitForSeconds(delay);
+        agent.speed = patrolSpeed;
     }
 }
