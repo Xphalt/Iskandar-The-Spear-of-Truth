@@ -37,7 +37,7 @@ public class Patrol : MonoBehaviour
 
     public virtual void Update()
     {
-        if (agent.enabled)
+        if (agent.enabled && ListOfNodes.Length > 0)
         {
             if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
             {
