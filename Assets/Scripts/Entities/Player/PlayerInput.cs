@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions; // Needed to have acess to the Interecations (Hold and PRess interactions) 
 
+//Animations in this script were done by Fate. Please contact me if you have any questions.
+
 public class PlayerInput : MonoBehaviour
 {
     // Reference Variables
     private PlayerActionsAsset _playerActionsAsset;
+    private PlayerAnimationManager playerAnimation;
     private Rigidbody _playerRigidbody;
 
     [Header("Scripts References")]
@@ -33,6 +36,7 @@ public class PlayerInput : MonoBehaviour
         _player_sal = GetComponent<Player_Sal>();
 
         _playerActionsAsset = new PlayerActionsAsset();
+        playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         _playerRigidbody = GetComponent<Rigidbody>();
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
@@ -66,23 +70,12 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
-        //_playerRigidbody.velocity = new Vector3(inputVector.x, 0.0f, inputVector.y) * _movementSpeed;
-
-        //HandleRotation();
-
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
+
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
+
     }
 
-    private void HandleRotation()
-    {
-        if (_playerRigidbody.velocity != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(_playerRigidbody.velocity);
-            _playerModel.transform.rotation = Quaternion.Lerp(_playerModel.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-        }
-    }
 
     private void OnPause(InputAction.CallbackContext ctx)
     {
@@ -103,16 +96,6 @@ public class PlayerInput : MonoBehaviour
             default:
                 break;
         }
-    }
-
-    private void Attack()
-    {
-        Debug.Log("Normal Attack");
-    }
-
-    private void ChargedAttack()
-    {
-        Debug.Log("Charged Attack");
     }
 
     private void Dash()

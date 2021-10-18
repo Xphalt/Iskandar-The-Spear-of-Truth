@@ -8,23 +8,23 @@ public class ThrowSword_Jerzy : MonoBehaviour
     public bool thrown;
     public bool returning = false;
     public GameObject swordModel;
-    public GameObject swordModelBlade;
     Rigidbody swordRigidBody;
 
     PlayerCombat_Jerzy combatScript;
+    private PlayerMovement_Jerzy playerMovement;
 
-    float throwTimeBeforeSpinInPlace;
-    float throwTimeSpinningInPlace;
+    private float throwTimeBeforeSpinInPlace, throwTimeSpinningInPlace, timeTravelling;
+    private float throwSpeed, returningSpeed;
 
-    float timeTravelling;
-
-    float throwSpeed;
-    float returningSpeed;
-
+    private void Awake()
+    {
+        swordRigidBody = GetComponent<Rigidbody>(); 
+        combatScript = player.GetComponent<PlayerCombat_Jerzy>();
+        playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
+    }
 
     void Start()
     {
-        combatScript = player.GetComponent<PlayerCombat_Jerzy>();
         throwTimeBeforeSpinInPlace = combatScript.throwTimeBeforeSpinInPlace;
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
         throwSpeed = combatScript.throwSpeed;
@@ -32,14 +32,14 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     }
 
-    void Update()
-    {
-
-    }
-
     void FixedUpdate()
     {
-        // if the sword is thrown
+        ThrowingSwordPhysics();
+    }
+
+    private void ThrowingSwordPhysics()
+    {
+
         if (thrown)
         {
             // move in specific direction for a specific amount of time (Stage 1 of throw attack)
@@ -62,9 +62,9 @@ public class ThrowSword_Jerzy : MonoBehaviour
                 swordRigidBody.velocity = transform.forward * returningSpeed;
             }
             timeTravelling += Time.deltaTime;
+
+            playerMovement.LockPlayerMovement();
         }
-
-
     }
 
     public void ThrowSword(Quaternion targetRotation)
@@ -83,6 +83,8 @@ public class ThrowSword_Jerzy : MonoBehaviour
         swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
     }
 
+
+
     public void EndThrowCycle()
     {
         // initiated whenever sword is returning and collides with player
@@ -94,8 +96,5 @@ public class ThrowSword_Jerzy : MonoBehaviour
             swordModel.GetComponent<Animator>().Play("PlayerSwordIdle");
             timeTravelling = 0;
         }
-
     }
-
-
 }

@@ -13,13 +13,15 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public bool canAttack = true;
     Quaternion swordLookRotation;
     private float timeInteractHeld = 0f;
-    public float timeToThrowSword;
-    private bool isAttacking = false;
+    public float timeToThrowSword, swordReleaseDelay;
 
     public GameObject swordObject;
     public GameObject swordEmpty;
-    Animator swordAnimator;
     public GameObject swordDefaultPosition;
+
+    Animator swordAnimator;
+    private PlayerAnimationManager playerAnimation;
+    private PlayerMovement_Jerzy playerMovement;
 
     bool returning;
     bool thrown;
@@ -30,6 +32,8 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     void Start()
     {
         swordAnimator = swordObject.GetComponent<Animator>();
+        playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+        playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
     }
 
     void FixedUpdate()
@@ -43,26 +47,35 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void Attack()
     {
-        if(timeSinceLastAttack >= attackCooldown && canAttack)
+        if (timeSinceLastAttack >= attackCooldown && canAttack)
         {
-            swordAnimator.Play("PlayerSwordSwing");
+            playerAnimation.SimpleAttack();
             timeSinceLastAttack = 0;
+            playerMovement.LockPlayerMovement();
         }
-
     }
 
     public void ThrowAttack()
     {
+        StartCoroutine(PauseForThrow());
+    }
+
+    IEnumerator PauseForThrow() 
+    {
+        /*___________________________________________________________________________
+         * This makes the attack line up with animation sword release time.
+         * __________________________________________________________________________*/
+        playerAnimation.SwordThrowAttack();
+
+        yield return new WaitForSeconds(swordReleaseDelay);
+
         if (timeSinceLastAttack >= attackCooldown && canAttack)
         {
             swordEmpty.GetComponent<ThrowSword_Jerzy>().ThrowSword(swordLookRotation);
             canAttack = false;
             timeSinceLastAttack = 0;
         }
-
     }
-
-
 
     private void OnTriggerStay(Collider other)
     {
@@ -77,8 +90,4 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             canAttack = true;
         }
     }
-
-
-
-
 }
