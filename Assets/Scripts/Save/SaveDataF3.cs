@@ -14,7 +14,7 @@ public class SaveDataF3
     public float healthf3;
     //public bool load;
 
-    public SaveDataF3(CharacterStats playerstatsf3)
+    public SaveDataF3(PlayerStats playerstatsf3)
     {
         healthf3 = playerstatsf3.health;
         m_Scene = SceneManager.GetActiveScene();

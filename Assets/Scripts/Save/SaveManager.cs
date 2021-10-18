@@ -8,7 +8,7 @@ public static class SaveManager
 {
 
     //FILE 1
-    public static void SavePlayerStatsf1(CharacterStats playerStatsf1)
+    public static void SavePlayerStatsf1(PlayerStats playerStatsf1)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
@@ -42,7 +42,7 @@ public static class SaveManager
     }
 
     //FILE 2
-    public static void SavePlayerStatsf2(CharacterStats playerStatsf2)
+    public static void SavePlayerStatsf2(PlayerStats playerStatsf2)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
@@ -76,7 +76,7 @@ public static class SaveManager
     }
 
     //FILE 3
-    public static void SavePlayerStatsf3(CharacterStats playerStatsf3)
+    public static void SavePlayerStatsf3(PlayerStats playerStatsf3)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
