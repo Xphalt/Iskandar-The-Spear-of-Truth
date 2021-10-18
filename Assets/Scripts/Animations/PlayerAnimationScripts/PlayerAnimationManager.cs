@@ -27,9 +27,6 @@ public class PlayerAnimationManager : MonoBehaviour
     private void Update()
     {
         Strafing();
-
-        // print("is idling:" + isIdling);
-        print("is strafing:" + isStrafing);
     }
 
     public void PlayerLongIdle(float playerVelocity) //not working atm
