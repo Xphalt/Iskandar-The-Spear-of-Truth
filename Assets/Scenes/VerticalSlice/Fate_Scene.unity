@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -279,6 +279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   attackDamage: 0
+  takeDamageDelay: 0
   _isPlayer: 0
 --- !u!54 &23437429
 Rigidbody:
@@ -1272,13 +1273,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186822798}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 553981dbaf6452a458667fa8ccc7c7d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 4
-  attackDamage: 0
+  attackDamage: 1
+  takeDamageDelay: 0
   _isPlayer: 1
 --- !u!114 &186822801
 MonoBehaviour:
@@ -2688,6 +2690,7 @@ GameObject:
   m_Component:
   - component: {fileID: 406709719}
   - component: {fileID: 406709720}
+  - component: {fileID: 406709721}
   m_Layer: 0
   m_Name: EmptySword
   m_TagString: Untagged
@@ -2726,6 +2729,22 @@ MonoBehaviour:
   thrown: 0
   returning: 0
   swordModel: {fileID: 1350622439}
+--- !u!54 &406709721
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406709718}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &409759606
 GameObject:
   m_ObjectHideFlags: 0
@@ -8690,6 +8709,7 @@ GameObject:
   - component: {fileID: 1160312877}
   - component: {fileID: 1160312885}
   - component: {fileID: 1160312886}
+  - component: {fileID: 1160312887}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -8705,7 +8725,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1160312875}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5262655, y: -0.045799732, z: -11.85}
+  m_LocalPosition: {x: 0.5262655, y: -0.995, z: -11.85}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 186822797}
@@ -8903,7 +8923,7 @@ MonoBehaviour:
   canBeDamaged: 1
   dashCooldown: 1
   invincibilityFramesAfterDash: 0.3
-  dashForce: 500
+  dashForce: 10
   dashAnalogueReq: 0.5
   _rotationSpeed: 10
 --- !u!54 &1160312884
@@ -8933,8 +8953,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5029068, y: 4.3970785, z: 2.0898829}
-  m_Center: {x: 0.06660533, y: 1.2107029, z: 0.37071753}
+  m_Size: {x: 1.5029068, y: 4.215627, z: 2.0898829}
+  m_Center: {x: 0.06660533, y: 2.131151, z: 0.37071753}
 --- !u!114 &1160312886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8948,17 +8968,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 1794143196}
-  throwTimeBeforeSpinInPlace: 0.5
-  throwTimeSpinningInPlace: 0.5
+  throwTimeBeforeSpinInPlace: 1
+  throwTimeSpinningInPlace: 1
   throwSpeed: 18
   throwReturnSpeed: 24
   canAttack: 1
   timeToThrowSword: 1
-  swordReleaseDelay: 0.35
   swordObject: {fileID: 1350622439}
   swordEmpty: {fileID: 406709718}
   swordDefaultPosition: {fileID: 1559435787}
-  attackCooldown: 0
+  attackCooldown: 1
+--- !u!114 &1160312887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160312875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553981dbaf6452a458667fa8ccc7c7d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 4
+  attackDamage: 1
+  takeDamageDelay: 0.4
+  _isPlayer: 1
 --- !u!114 &1166402577 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4411731879537684950, guid: e70ae5ba9cd982143ac4e494eada4dc4, type: 3}
@@ -9132,7 +9167,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1271860800}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10322,7 +10357,7 @@ BoxCollider:
   m_GameObject: {fileID: 1350622439}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 14.845813, y: 124.164024, z: 6.041976}
   m_Center: {x: 0.31698433, y: 49.345108, z: 0.25688338}
@@ -10979,8 +11014,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553981dbaf6452a458667fa8ccc7c7d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  attackDamage: 0
+  health: 3
+  attackDamage: 1
+  takeDamageDelay: 0.4
   _isPlayer: 0
 --- !u!114 &1407409327
 MonoBehaviour:

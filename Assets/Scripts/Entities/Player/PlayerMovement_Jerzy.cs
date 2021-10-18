@@ -18,6 +18,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public float invincibilityFramesAfterDash;
     public float dashForce;
     public float dashAnalogueReq;
+    private Vector3 dashDirection;
 
     float timeSinceLastDash = 0;
 
@@ -25,6 +26,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private Transform _targetedTransform = null;
 
     float lastMagnitudeFromTarget = 0;
+
+    private const float FIX_DISTANCE_FORCE = 5;
 
 
     [SerializeField] private float _rotationSpeed;
@@ -47,6 +50,14 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         timeSinceLastDash += Time.deltaTime;
     }
 
+    private void FixedUpdate()
+    {
+        if(!canBeDamaged)
+        {
+            m_Rigidbody.AddForce(dashDirection * dashForce);
+        }
+    }
+
     public float GetPlayerVelocity()
     {
         return m_Rigidbody.velocity.magnitude;
@@ -57,21 +68,22 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         m_Rigidbody.velocity = Vector3.zero;
     }
 
-    public void Dash(Vector3 dashDirection)
+    public void Dash(Vector3 _dashDirection)
     {
         if (timeSinceLastDash >= dashCooldown)
         {
             canBeDamaged = false;
-            m_Rigidbody.AddForce(dashDirection * dashForce);
+            dashDirection = _dashDirection;
             timeSinceLastDash = 0;
         }
     }
 
     public void Movement(Vector3 m_Input)
     {
-        //This prevents player from moving whilst attacking.
+        //This prevents player from moving whilst attacking or dashing
         if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
-            (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("SwordThrow&Return")))
+            (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("SwordThrow&Return")) &&
+            timeSinceLastDash >= invincibilityFramesAfterDash)
         {
             if (_playerTargetingScript.IsTargeting())
             {
@@ -94,7 +106,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 }
                 if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
                 {
-                    m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * 5); // What does this 5 means?
+                    m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE); // What does this 5 means? <--- made into const
                 }
 
                 m_Rigidbody.velocity = (direction * m_Speed);
@@ -105,13 +117,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             else
             {
                 m_Rigidbody.velocity = (m_Input * m_Speed);
-
-                if (timeSinceLastDash >= invincibilityFramesAfterDash)
-                {
-                    canBeDamaged = true;
-                }
-
                 Rotation(m_Input);
+            }
+            if (timeSinceLastDash >= invincibilityFramesAfterDash && !canBeDamaged)
+            {
+                canBeDamaged = true;
             }
         }
         /*_________________________________________________________________________
@@ -126,6 +136,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         else if (playerAnimation.isLongIdling)
             playerAnimation.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
         //_________________________________________________________________________
+        //Debug.Log(Mathf.Abs(m_Rigidbody.velocity.magnitude));
     }
 
 

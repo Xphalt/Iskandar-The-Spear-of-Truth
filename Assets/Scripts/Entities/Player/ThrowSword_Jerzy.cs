@@ -13,8 +13,15 @@ public class ThrowSword_Jerzy : MonoBehaviour
     PlayerCombat_Jerzy combatScript;
     private PlayerMovement_Jerzy playerMovement;
 
-    private float throwTimeBeforeSpinInPlace, throwTimeSpinningInPlace, timeTravelling;
-    private float throwSpeed, returningSpeed;
+    float throwTimeBeforeSpinInPlace;
+    float throwTimeSpinningInPlace;
+
+    float timeTravelling;
+
+    float throwSpeed;
+    float returningSpeed;
+
+   // public float pauseBeforeThrow;
 
     private void Awake()
     {
@@ -70,14 +77,14 @@ public class ThrowSword_Jerzy : MonoBehaviour
     public void ThrowSword(Quaternion targetRotation)
     {
         // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
+        playerAnim.SwordThrowAttack();
+
+        swordModel.GetComponent<BoxCollider>().enabled = true;
         returning = false;
         transform.rotation = targetRotation;
         transform.parent = null;
         thrown = true;
-        swordRigidBody = gameObject.AddComponent<Rigidbody>();
-        swordRigidBody.useGravity = false;
         swordRigidBody.isKinematic = false;
-        swordRigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
         // play looped spinning animation
         swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
@@ -90,11 +97,22 @@ public class ThrowSword_Jerzy : MonoBehaviour
         // initiated whenever sword is returning and collides with player
         if (returning)
         {
+            swordModel.GetComponent<BoxCollider>().enabled = false;
             returning = false;
             thrown = false;
-            Destroy(swordRigidBody);
+            swordRigidBody.isKinematic = true;
             swordModel.GetComponent<Animator>().Play("PlayerSwordIdle");
             timeTravelling = 0;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        // when the sword returns to the player
+        if (other.gameObject.tag == "Enemy")
+        {
+           // other.gameObject.GetComponent<CharacterStats>().TakeDamage(player.GetComponent<CharacterStats>().attackDamage);
+            player.GetComponent<CharacterStats>().DealDamage(other.gameObject, player.GetComponent<CharacterStats>().attackDamage);
         }
     }
 }
