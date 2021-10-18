@@ -131,7 +131,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         SaveManager.SavePlayerInventoryf3(this);
     }
 
-    [ContextMenu("Save")]
+    /*[ContextMenu("Save")]
     public void Save()
     {
         ////Serialize scriptable object out to a string 
@@ -148,7 +148,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create, FileAccess.Write);
         formatter.Serialize(stream, Storage);
         stream.Close();
-    }
+    }*/
 
     /////////////////////////////////////////////////////// MORGAN LOAD CHANGE ///////////////////////////////////////////////////
     [ContextMenu("Load")]
@@ -191,7 +191,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         }
     }
 
-    [ContextMenu("Load")]
+    /*[ContextMenu("Load")]
     public void Load()
     {
         if(File.Exists(string.Concat(Application.persistentDataPath, savePath)))
@@ -213,13 +213,15 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
             }
             stream.Close();
         }
-    }
+    }*/
 
     [ContextMenu("Clear")]
     public void Clear()
     {
         Storage.Clear();
     }
+
+
 
     public void OnBeforeSerialize()
     {
