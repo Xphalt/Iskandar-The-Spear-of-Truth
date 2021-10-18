@@ -12,7 +12,7 @@ public class PlayerAnimationManager : MonoBehaviour
   //  [HideInInspector] public bool isIdling = false;
     [HideInInspector] public bool isRunning = false;
     [HideInInspector] public bool isLongIdling = false;
-    [HideInInspector] public bool isStrafing = true;
+    [HideInInspector] public bool isStrafing = false;
     [HideInInspector] public bool isSwordThrowing = false;
 
     private Vector2 input;
@@ -26,28 +26,17 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private void Update()
     {
-        // UpdateAxisValues();
-        if (isStrafing)
-        {
-            UpdateAxisValues();
-            animator.SetBool("isIdling", false);
-            animator.SetBool("isStrafing", true);
-        }
-        else if (!isStrafing)
-        {
-            animator.SetBool("isIdling", true);
-            animator.SetBool("isStrafing", false);
-        }
+        Strafing();
 
-       // print("is idling:" + isIdling);
+        // print("is idling:" + isIdling);
         print("is strafing:" + isStrafing);
     }
 
-    /*_________________________________________________________________________
-     * Player switches between idle states if player is stationary for too long
-     * ________________________________________________________________________*/
     public void PlayerLongIdle(float playerVelocity) //not working atm
     {
+     /*_________________________________________________________________________
+     * Player switches between idle states if player is stationary for too long
+     * ________________________________________________________________________*/
         float waitDuration = 4;
 
         while ((time < waitDuration) && !isLongIdling)
@@ -76,6 +65,21 @@ public class PlayerAnimationManager : MonoBehaviour
             animator.SetFloat("isRunning", 0);
     }
 
+    public void Strafing()
+    {
+        if (isStrafing)
+        {
+            UpdateAxisValues();
+            animator.SetBool("isIdling", false);
+            animator.SetBool("isStrafing", true);
+        }
+        else if (!isStrafing)
+        {
+            animator.SetBool("isIdling", true);
+            animator.SetBool("isStrafing", false);
+        }
+    }
+
     public void SimpleAttack() 
     {
         animator.SetTrigger("isSimpleAttacking");
@@ -96,14 +100,6 @@ public class PlayerAnimationManager : MonoBehaviour
 
         animator.SetFloat("InputX", input.x);
         animator.SetFloat("InputZ", input.y);
-
-        //Debug.Log("Input:" + input);
         //_____________________________________________
     }
-
-    //public void ResetAnimationStates()
-    //{
-    //} 
-    
- 
 }

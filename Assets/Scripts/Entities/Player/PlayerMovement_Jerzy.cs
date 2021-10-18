@@ -118,13 +118,14 @@ public class PlayerMovement_Jerzy : MonoBehaviour
          * Player animation.
          * ________________________________________________________________________*/
         if (!playerAnimation.isLongIdling)
+        {
             playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+            playerAnimation.Strafing();
+        }
 
-        else if (playerAnimation.isLongIdling) 
+        else if (playerAnimation.isLongIdling)
             playerAnimation.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
         //_________________________________________________________________________
-
-        Debug.Log(Mathf.Abs(m_Rigidbody.velocity.magnitude));
     }
 
 
