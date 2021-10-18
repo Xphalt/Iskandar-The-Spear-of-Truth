@@ -21,6 +21,13 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     public DatabaseObject database;
     public InterfaceType type;
     public Inventory Storage;
+
+    //morgan's autosave/load game edit
+    private void Start()
+    {
+        LoadStatsf1();
+    }
+
     public InventorySlot[] GetSlots
     {
         get { return Storage.Slots; }
@@ -135,6 +142,20 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
 
     [ContextMenu("Load")]
+    public void LoadStatsf1()
+    {
+        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerStatsf1();
+
+        //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
+
+        Inventory newStorage = saveDataf1.Storagef1;
+        for (int i = 0; i < Storage.Slots.Length; i++)
+        {
+            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+        }
+    }
+
+    [ContextMenu("Load")]
     public void Load()
     {
         if(File.Exists(string.Concat(Application.persistentDataPath, savePath)))
@@ -155,19 +176,6 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
                 Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
             }
             stream.Close();
-        }
-    }
-
-    public void LoadStatsf1()
-    {
-        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerStatsf1();
-
-        //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
-
-        Inventory newStorage = saveDataf1.Storagef1;
-        for (int i = 0; i < Storage.Slots.Length; i++)
-        {
-            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
         }
     }
 
