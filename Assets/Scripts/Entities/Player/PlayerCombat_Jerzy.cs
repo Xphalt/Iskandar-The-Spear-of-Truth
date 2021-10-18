@@ -29,6 +29,9 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     float timeSinceLastAttack = 0;
     public float attackCooldown;
 
+    private const float TIME_BEFORE_DISABLING_COLLIDER = 1f;
+
+
     void Start()
     {
         swordAnimator = swordObject.GetComponent<Animator>();
@@ -42,6 +45,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         swordLookRotation = GetComponent<PlayerMovement_Jerzy>().swordLookRotation;
         returning = swordEmpty.GetComponent<ThrowSword_Jerzy>().returning;
         thrown = swordEmpty.GetComponent<ThrowSword_Jerzy>().thrown;
+        if (timeSinceLastAttack >= TIME_BEFORE_DISABLING_COLLIDER && !thrown)
+        {
+            swordObject.GetComponent<BoxCollider>().enabled = false;
+        }
 
     }
 
@@ -49,6 +56,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     {
         if (timeSinceLastAttack >= attackCooldown && canAttack)
         {
+            swordObject.GetComponent<BoxCollider>().enabled = true;
             playerAnimation.SimpleAttack();
             timeSinceLastAttack = 0;
             playerMovement.LockPlayerMovement();
@@ -62,6 +70,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             swordEmpty.GetComponent<ThrowSword_Jerzy>().ThrowSword(swordLookRotation);
             canAttack = false;
             timeSinceLastAttack = 0;
+
         }
 
     }

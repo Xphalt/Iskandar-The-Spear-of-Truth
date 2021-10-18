@@ -26,6 +26,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     float lastMagnitudeFromTarget = 0;
 
+    private const float FIX_DISTANCE_FORCE = 5;
+
 
     [SerializeField] private float _rotationSpeed;
 
@@ -94,7 +96,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 }
                 if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
                 {
-                    m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * 5); // What does this 5 means?
+                    m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE); // What does this 5 means? <--- made into const
                 }
 
                 m_Rigidbody.velocity = (direction * m_Speed);
@@ -124,7 +126,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             playerAnimation.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
         //_________________________________________________________________________
 
-        Debug.Log(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+        //Debug.Log(Mathf.Abs(m_Rigidbody.velocity.magnitude));
     }
 
 

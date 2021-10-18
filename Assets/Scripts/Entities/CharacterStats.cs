@@ -7,6 +7,9 @@ public class CharacterStats : MonoBehaviour
 
     public float health;
     public int attackDamage;
+    public float takeDamageDelay;
+
+    private float timeSinceTakenDamage;
 
     private SoundPlayer sfx;
 
@@ -18,20 +21,30 @@ public class CharacterStats : MonoBehaviour
         sfx = GetComponentInParent<SoundPlayer>();
     }
 
+    private void FixedUpdate()
+    {
+        timeSinceTakenDamage += Time.deltaTime;
+    }
+
+
     public void TakeDamage(int amt)
     {
-        health -= amt;
-        sfx.PlayAudio();
-        if (_isPlayer)
+        if(timeSinceTakenDamage >= takeDamageDelay)
         {
-            UIManager.instance.UpdateHealthBar(-amt);
+            timeSinceTakenDamage = 0;
+            health -= amt;
+            //sfx.PlayAudio();
+            if (_isPlayer)
+            {
+                UIManager.instance.UpdateHealthBar(-amt);
+            }
+
+            // anything that happens when taking damage happens 
+            if (health <= 0)
+            {
+                if (!_isPlayer) gameObject.SetActive(false);
+            }
         }
-        
-        // anything that happens when taking damage happens 
-        if (health <= 0)
-        {
-            if (!_isPlayer) gameObject.SetActive(false);
-        }     
     }
 
     public void DealDamage(GameObject character, int amt = 0)
@@ -45,4 +58,5 @@ public class CharacterStats : MonoBehaviour
         if (amt == 0) amt = (float)attackDamage;
         character.GetComponent<CharacterStats>().TakeDamage((int)amt);
     }
+
 }
