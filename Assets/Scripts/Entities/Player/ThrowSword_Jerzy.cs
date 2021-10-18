@@ -57,7 +57,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
             if (timeTravelling < throwTimeBeforeSpinInPlace)
             {
                 swordRigidBody.velocity = transform.forward * throwSpeed;
-                playerAnim.SwordThrowAttack();
             }
 
             // spin on the spot for a specific amount of time (Stage 2 of throw attack)
@@ -82,6 +81,8 @@ public class ThrowSword_Jerzy : MonoBehaviour
     public void ThrowSword(Quaternion targetRotation)
     {
         // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
+        playerAnim.SwordThrowAttack();
+
         returning = false;
         transform.rotation = targetRotation;
         transform.parent = null;
