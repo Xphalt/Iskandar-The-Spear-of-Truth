@@ -103,6 +103,17 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         return null;
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// THIS IS WHERE I IMPLEMENT THE SAVE SYSTEM
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///Morgan version of save stats
+    [ContextMenu("Save")]
+    public void SaveStatsf1()
+    {
+        SaveManager.SavePlayerInventoryf1(this);
+    }
+
     [ContextMenu("Save")]
     public void Save()
     {
@@ -121,6 +132,8 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         formatter.Serialize(stream, Storage);
         stream.Close();
     }
+
+
     [ContextMenu("Load")]
     public void Load()
     {
@@ -144,6 +157,20 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
             stream.Close();
         }
     }
+
+    public void LoadStatsf1()
+    {
+        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerStatsf1();
+
+        //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
+
+        Inventory newStorage = saveDataf1.Storagef1;
+        for (int i = 0; i < Storage.Slots.Length; i++)
+        {
+            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+        }
+    }
+
     [ContextMenu("Clear")]
     public void Clear()
     {

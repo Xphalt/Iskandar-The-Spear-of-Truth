@@ -20,5 +20,10 @@ public class SaveDataF3
         m_Scene = SceneManager.GetActiveScene();
         scenename = m_Scene.name;
     }
+
+    public SaveDataF3(InventoryObject_Sal playerstatsf3)
+    {
+
+    }
 }
 

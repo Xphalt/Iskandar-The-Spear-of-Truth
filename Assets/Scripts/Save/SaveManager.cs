@@ -22,10 +22,42 @@ public static class SaveManager
         fs.Close();
     }
 
+    public static void SavePlayerInventoryf1(InventoryObject_Sal playerInventoryf1)
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+
+        string filePathF1 = Application.persistentDataPath + "/Player_Inventoryf1.txt";
+        FileStream fs = new FileStream(filePathF1, FileMode.Create);
+
+        SaveDataF1 saveDataf1 = new SaveDataF1(playerInventoryf1);
+
+        bf.Serialize(fs, saveDataf1);
+        fs.Close();
+    }
+
 
     public static SaveDataF1 LoadPlayerStatsf1()
     {
         string filePathF1 = Application.persistentDataPath + "/Player_statsf1.txt";
+        if (File.Exists(filePathF1))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fs = new FileStream(filePathF1, FileMode.Open);
+
+            SaveDataF1 saveDataf1 = bf.Deserialize(fs) as SaveDataF1;
+            fs.Close();
+
+            return saveDataf1;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static SaveDataF1 LoadPlayerInventoryf1()
+    {
+        string filePathF1 = Application.persistentDataPath + "/Player_Inventoryf1.txt";
         if (File.Exists(filePathF1))
         {
             BinaryFormatter bf = new BinaryFormatter();

@@ -20,5 +20,10 @@ public class SaveDataF2
         m_Scene = SceneManager.GetActiveScene();
         scenename = m_Scene.name;
     }
+
+    public SaveDataF2(InventoryObject_Sal playerstatsf2)
+    {
+
+    }
 }
 
