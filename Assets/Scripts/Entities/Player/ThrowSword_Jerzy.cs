@@ -8,29 +8,18 @@ public class ThrowSword_Jerzy : MonoBehaviour
     public bool thrown;
     public bool returning = false;
     public GameObject swordModel;
-    private GameObject swordModelBlade;
     Rigidbody swordRigidBody;
-    private Vector3 swordStartDirection =  Vector3.zero;
 
     PlayerCombat_Jerzy combatScript;
-    private PlayerAnimationManager playerAnim;
     private PlayerMovement_Jerzy playerMovement;
 
-    float throwTimeBeforeSpinInPlace;
-    float throwTimeSpinningInPlace;
-
-    float timeTravelling;
-
-    float throwSpeed;
-    float returningSpeed;
-
-    public float pauseBeforeThrow;
+    private float throwTimeBeforeSpinInPlace, throwTimeSpinningInPlace, timeTravelling;
+    private float throwSpeed, returningSpeed;
 
     private void Awake()
     {
         swordRigidBody = GetComponent<Rigidbody>(); 
         combatScript = player.GetComponent<PlayerCombat_Jerzy>();
-        playerAnim = FindObjectOfType<PlayerAnimationManager>();
         playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
     }
 
@@ -48,9 +37,9 @@ public class ThrowSword_Jerzy : MonoBehaviour
         ThrowingSwordPhysics();
     }
 
-    private void ThrowingSwordPhysics() //This was in the fixed update before.
+    private void ThrowingSwordPhysics()
     {
-        // if the sword is thrown
+
         if (thrown)
         {
             // move in specific direction for a specific amount of time (Stage 1 of throw attack)
@@ -81,8 +70,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
     public void ThrowSword(Quaternion targetRotation)
     {
         // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
-        playerAnim.SwordThrowAttack();
-
         returning = false;
         transform.rotation = targetRotation;
         transform.parent = null;
@@ -92,10 +79,11 @@ public class ThrowSword_Jerzy : MonoBehaviour
         swordRigidBody.isKinematic = false;
         swordRigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
-         
         // play looped spinning animation
         swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
     }
+
+
 
     public void EndThrowCycle()
     {
@@ -108,8 +96,5 @@ public class ThrowSword_Jerzy : MonoBehaviour
             swordModel.GetComponent<Animator>().Play("PlayerSwordIdle");
             timeTravelling = 0;
         }
-
     }
-
-
 }

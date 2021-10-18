@@ -1293,9 +1293,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  isRunning: 0
   isLongIdling: 0
   isStrafing: 0
-  isSimpleAttacking: 0
   isSwordThrowing: 0
 --- !u!1 &188978172
 GameObject:
@@ -2726,7 +2726,6 @@ MonoBehaviour:
   thrown: 0
   returning: 0
   swordModel: {fileID: 1350622439}
-  pauseBeforeThrow: 1
 --- !u!1 &409759606
 GameObject:
   m_ObjectHideFlags: 0
@@ -8949,12 +8948,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 1794143196}
-  throwTimeBeforeSpinInPlace: 1
-  throwTimeSpinningInPlace: 1
+  throwTimeBeforeSpinInPlace: 0.5
+  throwTimeSpinningInPlace: 0.5
   throwSpeed: 18
   throwReturnSpeed: 24
   canAttack: 1
   timeToThrowSword: 1
+  swordReleaseDelay: 0.35
   swordObject: {fileID: 1350622439}
   swordEmpty: {fileID: 406709718}
   swordDefaultPosition: {fileID: 1559435787}
@@ -9132,7 +9132,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1271860800}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10350,23 +10350,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fdc5deb46a74f70418972377e43128fe, type: 3}
   m_PrefabInstance: {fileID: 1350622438}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1350622443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1350622439}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57027c0899de352418c31d5d4e630861, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1160312875}
-  thrown: 0
-  returning: 0
-  swordModel: {fileID: 1350622439}
-  pauseBeforeThrow: 0
 --- !u!1 &1352221248
 GameObject:
   m_ObjectHideFlags: 0

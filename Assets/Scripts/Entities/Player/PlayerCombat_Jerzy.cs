@@ -13,7 +13,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public bool canAttack = true;
     Quaternion swordLookRotation;
     private float timeInteractHeld = 0f;
-    public float timeToThrowSword;
+    public float timeToThrowSword, swordReleaseDelay;
 
     public GameObject swordObject;
     public GameObject swordEmpty;
@@ -57,13 +57,24 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void ThrowAttack()
     {
+        StartCoroutine(PauseForThrow());
+    }
+
+    IEnumerator PauseForThrow() 
+    {
+        /*___________________________________________________________________________
+         * This makes the attack line up with animation sword release time.
+         * __________________________________________________________________________*/
+        playerAnimation.SwordThrowAttack();
+
+        yield return new WaitForSeconds(swordReleaseDelay);
+
         if (timeSinceLastAttack >= attackCooldown && canAttack)
         {
             swordEmpty.GetComponent<ThrowSword_Jerzy>().ThrowSword(swordLookRotation);
             canAttack = false;
             timeSinceLastAttack = 0;
         }
-
     }
 
     private void OnTriggerStay(Collider other)
