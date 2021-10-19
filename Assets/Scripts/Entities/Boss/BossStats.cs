@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class BossStats : StatsInterface
 {
-    public Transform returnSpot;
+    public Transform returnSpot, fleeSpot;
     internal Rigidbody myRigid;
     private FiniteStateMachine MyFSM;
     public PlayerDetection detector;
@@ -25,8 +25,8 @@ public class BossStats : StatsInterface
     public int vulnHits;
     internal int currVulnHits;
     public bool isVuln = false;
-    protected bool hasHitPlayer = false;
-    internal bool hasReturned;
+    protected bool heavyAtkHit = false, lightAtkHit = false;
+    internal bool hasReturned, hasFled;
     /*For scripted story event*/
     public bool godMode = false;
 
@@ -55,25 +55,37 @@ public class BossStats : StatsInterface
         lightAtkTimer += Time.deltaTime;
     }
 
-    public override void TakeDamage(float amount)
+    public override void TakeDamage(float amount, bool scriptedKill)
     {
         //this is called when Boss is in 'Vulnerability' State
-        if((!godMode) && (isVuln))
+        if(!godMode && isVuln)
         {
-            //health -= amount;
+            health -= amount;
             currVulnHits++;
         }
     }
 
-    public override void DealDamage(StatsInterface target, float amount)
+    public override void DealDamage(StatsInterface target, float amount, bool scriptedKill)
     {
-        target.TakeDamage(amount);
+        target.TakeDamage(amount, scriptedKill);
     }
 
     public void ReturnToIdle()
     {
         //moves the boss to its 'returnSpot', this is called when Boss is in 'Recovery' State
         transform.position = Vector3.MoveTowards(transform.position,returnSpot.position,moveSpeed * Time.deltaTime);
+    }
+
+    public void BeginFlee()
+    {
+        returnSpot.gameObject.SetActive(false);
+        hasReturned = false;
+    }
+
+    public void RunAway()
+    {
+        //moves the boss to its 'returnSpot', this is called when Boss is in 'Recovery' State
+        transform.position = Vector3.MoveTowards(transform.position, fleeSpot.position, moveSpeed * Time.deltaTime);
     }
 
     //These virtual methods are to be overriden by the specific boss's script
@@ -92,8 +104,23 @@ public class BossStats : StatsInterface
 
     public virtual void FinishFinalAttack() { }
 
-    public virtual bool GetHasHitPlayer()
+    public virtual bool LightAttackHit()
     {
-        return hasHitPlayer;
+        return lightAtkHit;
+    }
+
+    public virtual bool HeavyAttackHit()
+    {
+        return heavyAtkHit && !godMode;
+    }
+
+    public virtual bool ScriptedKillFinished()
+    {
+        return (lightAtkHit || heavyAtkHit) && godMode;
+    }
+
+    public virtual void EndFight()
+    {
+        gameObject.SetActive(false);
     }
 }

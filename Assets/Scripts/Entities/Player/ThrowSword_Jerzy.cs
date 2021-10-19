@@ -112,16 +112,9 @@ public class ThrowSword_Jerzy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // when the sword returns to the player
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.CompareTag("Enemy"))
         {
-            StatsInterface statsInterface;
-            bool gotStatsInterface = other.TryGetComponent<StatsInterface>(out statsInterface);
-
-            // other.gameObject.GetComponent<CharacterStats>().TakeDamage(player.GetComponent<CharacterStats>().attackDamage);
-            if (gotStatsInterface)
-            {
-                player.GetComponent<StatsInterface>().DealDamage(statsInterface, swordDamage);
-            }
+            if (other.TryGetComponent<StatsInterface>(out StatsInterface statsInterface)) statsInterface.TakeDamage(swordDamage);
         }
     }
 }

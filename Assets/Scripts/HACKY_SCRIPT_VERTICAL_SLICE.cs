@@ -17,6 +17,7 @@ public class HACKY_SCRIPT_VERTICAL_SLICE : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        foreach (GameObject lo in little_orcs) lo.SetActive(false);
     }
 
     private void Update()

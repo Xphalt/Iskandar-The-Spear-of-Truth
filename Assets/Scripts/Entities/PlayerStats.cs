@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : StatsInterface
 {
@@ -10,8 +11,9 @@ public class PlayerStats : StatsInterface
         sfx = GetComponentInParent<SoundPlayer>();
     }
 
-    public override void TakeDamage(float amount)
+    public override void TakeDamage(float amount, bool scriptedKill = false)
     {
+        if (scriptedKill) amount = health - 1;
         health -= amount;
         sfx.PlayAudio();
         UIManager.instance.UpdateHealthBar((int)-amount);
@@ -20,11 +22,12 @@ public class PlayerStats : StatsInterface
         if (health <= 0)
         {
             gameObject.SetActive(false);
-        }     
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
-    public override void DealDamage(StatsInterface target, float amount)
+    public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
     {
-        target.TakeDamage(amount);
+        target.TakeDamage(amount, scriptedKill);
     }
 }

@@ -16,15 +16,16 @@ public class Gargoyle : BossStats
 
     public override void LightAttack()
     {
+        lightAtkHit = false;
         //this attack needs to be tied to an active raidius around the Gargoyle 
         //and if the player gets inside it, the Gargoyle will jab at the
         //player, inflicting damage and a knockback effect
         if(lightAtkTimer >= lightAtkCooldown && transform.GetDistance(detector.GetCurTarget()) <= lightAtkRange)
         {
-            Debug.Log(transform.GetDistance(detector.GetCurTarget()));
-            detector.GetCurTarget().GetComponent<PlayerStats>().TakeDamage(lightAtkDamage);
+            detector.GetCurTarget().GetComponent<PlayerStats>().TakeDamage(lightAtkDamage, godMode);
             detector.GetCurTarget().GetComponent<Rigidbody>().AddForce((detector.GetCurTarget().position - transform.position).normalized * lightAtkKnockback,ForceMode.Impulse);
             lightAtkTimer = 0;
+            lightAtkHit = true;
         }
     }
 
@@ -37,8 +38,8 @@ public class Gargoyle : BossStats
         //since there'll be different outcomes
         if(!isCharging)
         {
-        myRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
-        isCharging = true;
+            myRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
+            isCharging = true;
         }
     }
 
@@ -71,17 +72,12 @@ public class Gargoyle : BossStats
         usedCharges = 0;
     }
 
-    public override bool GetHasHitPlayer ()
-    {
-        return hasHitPlayer;
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.CompareTag("Player") && isCharging)
         {
-            hasHitPlayer = true;
-            detector.GetCurTarget().GetComponent<PlayerStats>().TakeDamage(heavyAtkDamage);
+            heavyAtkHit = true;
+            detector.GetCurTarget().GetComponent<PlayerStats>().TakeDamage(heavyAtkDamage, godMode);
         }
 
     }

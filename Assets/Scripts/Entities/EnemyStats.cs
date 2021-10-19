@@ -7,7 +7,7 @@ public class EnemyStats : StatsInterface
     // THIS IS TEMPORARY FOR VERTICAL SLICE
     public bool HasBeenDefeated() { return health <= 0; }
 
-    public override void TakeDamage(float amount)
+    public override void TakeDamage(float amount, bool scriptedKill = false)
     {
         health -= amount;
 
@@ -18,8 +18,8 @@ public class EnemyStats : StatsInterface
         }
     }
 
-    public override void DealDamage(StatsInterface target, float amount)
+    public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
     {
-        target.TakeDamage(amount);
+        target.TakeDamage(amount, scriptedKill);
     }
 }

@@ -116,7 +116,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             }
             else
             {
-                m_Rigidbody.velocity = (m_Input * m_Speed);
+                m_Rigidbody.velocity = (m_Input.normalized * m_Speed);
                 Rotation(m_Input);
             }
             if (timeSinceLastDash >= invincibilityFramesAfterDash && !canBeDamaged)
@@ -142,7 +142,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void Rotation(Vector3 m_Input)
     {
-        Debug.Log(m_Input);
+        //Debug.Log(m_Input);
         if (m_Input != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(m_Input);
