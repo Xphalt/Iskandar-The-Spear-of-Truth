@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44418684, g: 0.49362445, b: 0.57302666, a: 1}
+  m_IndirectSpecularColor: {r: 0.44418678, g: 0.4936244, b: 0.5730259, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -795,6 +795,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2234273064487884622, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 2234273064506110995, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -870,6 +874,10 @@ PrefabInstance:
     - target: {fileID: 2234982890724156071, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2235173603738687998, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 2235182665665785481, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
       propertyPath: m_IsActive
@@ -2862,6 +2870,7 @@ GameObject:
   - component: {fileID: 1277337687}
   - component: {fileID: 1277337689}
   - component: {fileID: 1277337688}
+  - component: {fileID: 1277337690}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -2934,6 +2943,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1277337690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277337686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b3b199b5d03594faa1abf9769aa85a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1885327494}
 --- !u!4 &1302411181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1314172486360009285, guid: 38bd75dc08e9d814a8bf95405eb81752, type: 3}
@@ -4099,6 +4121,10 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 2a0b416b5d7f5d5478dc09f3586b8bea, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6315765792793278136, guid: 2a0b416b5d7f5d5478dc09f3586b8bea, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -4308,10 +4334,10 @@ GameObject:
   - component: {fileID: 1885327500}
   - component: {fileID: 1885327499}
   - component: {fileID: 1885327498}
-  - component: {fileID: 1885327497}
   - component: {fileID: 1885327496}
   - component: {fileID: 1885327506}
   - component: {fileID: 1885327507}
+  - component: {fileID: 1885327508}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -4358,20 +4384,7 @@ MonoBehaviour:
   swordObject: {fileID: 2023810879}
   swordEmpty: {fileID: 1963160203}
   swordDefaultPosition: {fileID: 1566811352}
-  attackCooldown: 0
---- !u!65 &1885327497
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1885327494}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5029068, y: 4.3970785, z: 2.0898829}
-  m_Center: {x: 0.06660533, y: 2.2, z: 0.37071753}
+  attackCooldown: 1
 --- !u!114 &1885327498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4564,7 +4577,7 @@ MonoBehaviour:
   canBeDamaged: 1
   dashCooldown: 1
   invincibilityFramesAfterDash: 0.3
-  dashForce: 500
+  dashForce: 10
   dashAnalogueReq: 0.5
   _rotationSpeed: 10
 --- !u!54 &1885327505
@@ -4581,7 +4594,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &1885327506
 MonoBehaviour:
@@ -4614,6 +4627,20 @@ MonoBehaviour:
   defence: 0
   fireDefence: 0
   iceDefence: 0
+--- !u!136 &1885327508
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885327494}
+  m_Material: {fileID: 13400000, guid: 48b2882bf27b1104aa085d69f5300248, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.74
+  m_Height: 4.54
+  m_Direction: 1
+  m_Center: {x: 0.15, y: 2.31, z: 0.25}
 --- !u!1 &1963160203
 GameObject:
   m_ObjectHideFlags: 0
@@ -4678,7 +4705,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &1997911028
 GameObject:
@@ -7892,7 +7919,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 816250392514231181}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
