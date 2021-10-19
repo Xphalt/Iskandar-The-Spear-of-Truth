@@ -117,14 +117,14 @@ public class Player_Sal : MonoBehaviour
 
     public void SaveInventory()
     {
-        inventory.Save();
-        equipment.Save();
+        inventory.SaveStatsf1();
+        equipment.SaveStatsf1();
 
     }
     public void LoadInventory()
     {
-        inventory.Load();
-        equipment.Load();
+        inventory.LoadStatsf1();
+        equipment.LoadStatsf1();
 
     }
 
