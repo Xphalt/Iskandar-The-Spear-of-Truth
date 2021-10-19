@@ -463,6 +463,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bd1440708b27c8418a8f3db31c9c53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMum: 0
+  isMilk: 0
   DialoguePanel: {fileID: 4411731880072706643}
   Dialogue:
     NPC_Name: Test
@@ -484,6 +486,7 @@ GameObject:
   - component: {fileID: 4411731880072706640}
   - component: {fileID: 4411731880072706638}
   - component: {fileID: 4411731880072706641}
+  - component: {fileID: 6334128133339329108}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -549,6 +552,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6334128133339329108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4411731880072706643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b911c8e602b5841b8db4efa321445f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListOfNewConversations: []
+  DialoguePanel: {fileID: 4411731880072706643}
+  TextNPCName: {fileID: 0}
+  TextDialogueBox: {fileID: 0}
+  TextContinueDialogue: {fileID: 0}
 --- !u!1 &4411731880114687856
 GameObject:
   m_ObjectHideFlags: 0
