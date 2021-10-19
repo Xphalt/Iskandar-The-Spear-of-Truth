@@ -7,8 +7,8 @@ public class TransparentObject_Jerzy : MonoBehaviour
     float transparencyAmount = 1f;
     private MeshRenderer meshRend;
 
-    private const float TRANSPARENCY_SPEED = 0.03f;
-    private const float MIN_TRANSPARENCY_PER_LAYER = 0.5f;
+    public float TRANSPARENCY_SPEED = 0.03f;
+    public float MIN_TRANSPARENCY_PER_LAYER = 0.5f;
     private const float MAX_TRANSPARENCY = 1;
 
     private float timeSinceLastInWay = 0f;

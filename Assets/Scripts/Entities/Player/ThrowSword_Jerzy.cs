@@ -73,7 +73,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
             }
             timeTravelling += Time.deltaTime;
 
-            playerMovement.LockPlayerMovement();
+            //playerMovement.LockPlayerMovement();
         }
     }
 
