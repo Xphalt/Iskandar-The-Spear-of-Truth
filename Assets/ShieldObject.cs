@@ -31,7 +31,7 @@ public class ShieldObject : ItemObject_Sal
 
     public void Awake()
     {
-        type = ItemType.Shield;
+        type = ItemType.Weapon;
     }
 
     public override void Use()

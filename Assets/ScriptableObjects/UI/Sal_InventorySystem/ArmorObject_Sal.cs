@@ -10,7 +10,7 @@ public class ArmorObject_Sal : ItemObject_Sal
 
     public void Awake()
     {
-        type = ItemType.Chest;
+        type = ItemType.Armor;
     }
 
     public override void Use()
