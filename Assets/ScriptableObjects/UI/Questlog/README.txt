@@ -18,4 +18,5 @@ To create a new quest:
 8. Increase the list of quests by the amount of quests you want to add
    and then drag the quest objects into the list
 
-NOTICE: If you need any help at all please let me know!
+NOTICE: PLEASE DO THIS ON THE PREFAB SO IT SAVES EVERYTHING YOU'VE DONE!!!
+If you need any help at all please let me know!
