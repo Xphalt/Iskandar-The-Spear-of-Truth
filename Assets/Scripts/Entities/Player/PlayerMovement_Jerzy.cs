@@ -8,7 +8,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     Rigidbody m_Rigidbody;
     public GameObject playerModel;
-    public float m_Speed;
+    public float m_Speed, m_floorDistance;
 
     public Quaternion swordLookRotation;
 
@@ -116,8 +116,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             }
             else
             {
-                m_Rigidbody.velocity = (m_Input.normalized * m_Speed);
+                Vector3 newVel = m_Input.normalized * m_Speed;
+                newVel.y = m_Rigidbody.velocity.y;
+                m_Rigidbody.velocity = (newVel);
                 Rotation(m_Input);
+                CheckGround();
             }
             if (timeSinceLastDash >= invincibilityFramesAfterDash && !canBeDamaged)
             {
@@ -137,6 +140,17 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             playerAnimation.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
         //_________________________________________________________________________
         //Debug.Log(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+    }
+
+    void CheckGround()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, m_floorDistance))
+        {
+            print(Physics.gravity);
+            Vector3 newVel = m_Rigidbody.velocity;
+            newVel.y = 0;
+            m_Rigidbody.velocity = newVel;
+        }
     }
 
 
