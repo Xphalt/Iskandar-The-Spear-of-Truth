@@ -5,19 +5,29 @@ using UnityEngine.UI;
 
 public class TEMPDialogueManager : MonoBehaviour
 {
-    public List<NewDialogue> ListOfNewConversations = new List<NewDialogue>();
+    //public List<NewDialogue> ListOfNewConversations = new List<NewDialogue>();
     private Queue<NewDialogue.NextExchange> QueueOfCharacterExchanges = new Queue<NewDialogue.NextExchange>();
     private Queue<string> QueueOfCharacterConversations = new Queue<string>();
 
     public GameObject DialoguePanel;
+    public Button ButtonContinue;
     public Text TextNPCName;
     public Text TextDialogueBox;
     public Text TextContinueDialogue;
+
+    public void Start()
+    {
+        gameObject.SetActive(false);
+        TextNPCName.text = "";
+        TextDialogueBox.text = "";
+        TextContinueDialogue.text = "";
+    }
 
     public void StartDialogue(NewDialogue newDialogue)
     {
         QueueOfCharacterExchanges.Clear();
         QueueOfCharacterConversations.Clear();
+        TextContinueDialogue.text = "Next";
 
         foreach (NewDialogue.NextExchange queuedCharacterExchanges in newDialogue.ListOfCharacterExchanges)
         {
@@ -30,10 +40,10 @@ public class TEMPDialogueManager : MonoBehaviour
             }
         }
 
-        DisplayNextExchange(newDialogue);
+        DisplayNextExchange();
     }
 
-    public void DisplayNextExchange(NewDialogue newDialogue)
+    public void DisplayNextExchange()
     {
         if (QueueOfCharacterConversations.Count == 0)
         {

@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class TEMPDialogueTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public TEMPDialogueManager DialogueManager;
+    public NewDialogue Dialogue;
 
-    // Update is called once per frame
-    void Update()
+    public void OnClick()
     {
-        
+        gameObject.SetActive(false);
+        DialogueManager.gameObject.SetActive(true);
+        DialogueManager.StartDialogue(Dialogue);
     }
 }
