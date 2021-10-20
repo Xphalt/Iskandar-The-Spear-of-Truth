@@ -955,6 +955,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 123.072
       objectReference: {fileID: 0}
+    - target: {fileID: 2299234410433602934, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2299234410550727320, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2299478051603539932, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
 --- !u!1 &549357676 stripped
@@ -2862,6 +2874,7 @@ GameObject:
   - component: {fileID: 1277337687}
   - component: {fileID: 1277337689}
   - component: {fileID: 1277337688}
+  - component: {fileID: 1277337690}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -2934,6 +2947,38 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1277337690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277337686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!4 &1302411181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1314172486360009285, guid: 38bd75dc08e9d814a8bf95405eb81752, type: 3}
@@ -4092,12 +4137,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 2a0b416b5d7f5d5478dc09f3586b8bea, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 2a0b416b5d7f5d5478dc09f3586b8bea, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 5cd4e81cf5b3aec4c93d25b5f857490f, type: 2}
     - target: {fileID: 5866666021909216657, guid: 2a0b416b5d7f5d5478dc09f3586b8bea, type: 3}
       propertyPath: m_WarningMessage
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 2a0b416b5d7f5d5478dc09f3586b8bea, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6315765792793278136, guid: 2a0b416b5d7f5d5478dc09f3586b8bea, type: 3}
       propertyPath: m_Layer
@@ -4308,10 +4361,10 @@ GameObject:
   - component: {fileID: 1885327500}
   - component: {fileID: 1885327499}
   - component: {fileID: 1885327498}
-  - component: {fileID: 1885327497}
   - component: {fileID: 1885327496}
   - component: {fileID: 1885327506}
   - component: {fileID: 1885327507}
+  - component: {fileID: 1885327497}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -4359,19 +4412,20 @@ MonoBehaviour:
   swordEmpty: {fileID: 1963160203}
   swordDefaultPosition: {fileID: 1566811352}
   attackCooldown: 0
---- !u!65 &1885327497
-BoxCollider:
+--- !u!136 &1885327497
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885327494}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 48b2882bf27b1104aa085d69f5300248, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5029068, y: 4.3970785, z: 2.0898829}
-  m_Center: {x: 0.06660533, y: 2.2, z: 0.37071753}
+  m_Radius: 0.97688293
+  m_Height: 5
+  m_Direction: 1
+  m_Center: {x: 0.048217773, y: 2.0623856, z: 0.50105286}
 --- !u!114 &1885327498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4560,6 +4614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerModel: {fileID: 280665404}
   m_Speed: 10
+  m_floorDistance: 1
   swordLookRotation: {x: 0, y: 0, z: 0, w: 0}
   canBeDamaged: 1
   dashCooldown: 1
@@ -4581,7 +4636,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &1885327506
 MonoBehaviour:
@@ -4755,6 +4810,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997911028}
   m_CullTransparentMesh: 1
+--- !u!1 &2002232202 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2234273065665811072, guid: f6ac768a2934f0442a7e7d1bf8a4b90d, type: 3}
+  m_PrefabInstance: {fileID: 545871860}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2002232206
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002232202}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.3792856, y: 5.2941513, z: 2.396652}
+  m_Center: {x: -2.0091476, y: 2.6065927, z: -0.017938828}
+--- !u!65 &2002232207
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002232202}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.4741768, y: 5.2941513, z: 2.396652}
+  m_Center: {x: 1.9616978, y: 2.6065927, z: -0.017938826}
 --- !u!1 &2023810879 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fdc5deb46a74f70418972377e43128fe, type: 3}
@@ -7891,7 +7977,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 816250392514231170}
   m_HandleRect: {fileID: 816250392514231181}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
