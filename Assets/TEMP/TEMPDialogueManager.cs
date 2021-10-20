@@ -57,6 +57,20 @@ public class TEMPDialogueManager : MonoBehaviour
         string _queueOfCharacterConversations = QueueOfCharacterConversations.Dequeue();
 
         TextDialogueBox.text = _queueOfCharacterConversations;
+
+        StopAllCoroutines();
+        StartCoroutine(TypeSentence(_queueOfCharacterConversations));
+    }
+
+    IEnumerator TypeSentence(string sentence)
+    {
+        TextDialogueBox.text = "";
+
+        foreach (char letter in sentence.ToCharArray())
+        {
+            TextDialogueBox.text += letter;
+            yield return null;
+        }
     }
 
     private void EndDialogue()
