@@ -53,39 +53,37 @@ public class EquipPanel : MonoBehaviour
 
     public void OnPointerEnter(GameObject obj)
     {
+        //UIDesc positioning 
         Vector3 cellPosition = obj.GetComponentInParent<GridLayoutGroup>().transform.position;
         UIDescHolder = Instantiate(UIDescription, new Vector3(obj.transform.GetChild(1).position.x + UIDescription.GetComponent<RectTransform>().sizeDelta.x / 2, cellPosition.y, .0f), Quaternion.identity, parent.parent);
          
         //Stats
-        float damage = 0;
-        float physicalDEF = 0;
-        try //Weapon
+        string values = string.Empty; 
+        switch(inventory.database.ItemObjects[slotItem[obj].id].type)
         {
-            damage = ((WeaponObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).damage;
-        }
-        catch
-        {
-            try //Shield
-            {
-                physicalDEF = ((ShieldObject)(inventory.database.ItemObjects[slotItem[obj].id])).defValues.physicalDef;
-            }
-            catch
-            {
-                try //Armor
+            case ItemType.Weapon:
+                try //Weapon, Shield
                 {
-                    physicalDEF = ((ArmorObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).defValues.physicalDef;
+                    values = ((WeaponObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
                 }
-                catch { }
-            }
-        }
+                catch
+                {
+                    values = ((ShieldObject)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
+                }
+                break;
+            case ItemType.Armor: //Armor
+                values = ((ArmorObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
+                break; 
 
+        } 
+
+        //Assign text Desc
         UIDescHolder.GetComponentInChildren<TextMeshProUGUI>().text = string.Concat(
-            "Name:\n",
+            "<b><color=red>Name</color></b>:\n",
             slotItem[obj].name,
-            "\nDescription:\n",
+            "\n<b><color=red>Description</color></b>:\n",
             inventory.database.ItemObjects[slotItem[obj].id].description, "\n\n",
-            "Damage value: ", damage,
-            "\nDefence value: ", physicalDEF
+            values
             );
     }
     private void OnPointerExit(GameObject obj)
