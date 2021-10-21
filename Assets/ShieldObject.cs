@@ -29,9 +29,15 @@ public class ShieldObject : ItemObject_Sal
 { 
     public Defencevalues defValues = new Defencevalues();
 
+    public string Desc;
+
     public void Awake()
     {
-        type = ItemType.Shield;
+        type = ItemType.Weapon;
+        Desc = string.Concat(
+            "<b><color=red>Physical Defence</color></b>: ", defValues.physicalDef,
+            "\n<b><color=red>Fire Defence</color></b>: ", defValues.fireDef,
+            "\n<b><color=red>Ice Defence</color></b>: ", defValues.iceDef);
     }
 
     public override void Use()

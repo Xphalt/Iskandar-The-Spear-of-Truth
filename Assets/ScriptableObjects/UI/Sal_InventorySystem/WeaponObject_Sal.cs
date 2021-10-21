@@ -21,9 +21,12 @@ public class WeaponObject_Sal : ItemObject_Sal
 
     public WeaponType Type;
 
+    public string Desc; 
+
     public void Awake()
     {
         type = ItemType.Weapon;
+        Desc = string.Concat("<color=red><b>Damage value</color></b>: ", damage);
     }
 
     public override void Use()

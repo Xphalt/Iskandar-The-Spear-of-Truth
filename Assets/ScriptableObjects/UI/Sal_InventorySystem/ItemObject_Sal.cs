@@ -4,11 +4,8 @@ using UnityEngine;
 
 public enum ItemType
 {
-    Helmet,
-    Chest,
-    Weapon,
-    Shield,
-    Boots,
+    Armor,
+    Weapon, 
     Default
 }
 
