@@ -73,7 +73,10 @@ public class EquipPanel : MonoBehaviour
                 break;
             case ItemType.Armor: //Armor
                 values = ((ArmorObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
-                break; 
+                break;
+            case ItemType.Default: //Default
+                values = ((DefaultObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
+                break;
 
         } 
 
@@ -93,16 +96,23 @@ public class EquipPanel : MonoBehaviour
     private void OnClick(GameObject obj)
     {
         //Equip
-        if (inventory.database.ItemObjects[slotItem[obj].id].type == ItemType.Weapon || inventory.database.ItemObjects[slotItem[obj].id].type == ItemType.Weapon)
+        if (inventory.database.ItemObjects[slotItem[obj].id].type == ItemType.Weapon)
         {
             inventory.SwapItem(equipment.Storage.Slots[0], inventory.FindItemOnInventory(slotItem[obj]));   //Weapon
 
             ClearObjects();
             SpawnPanel();
         }
-        else
+        else if (inventory.database.ItemObjects[slotItem[obj].id].type == ItemType.Armor)
         {
             inventory.SwapItem(equipment.Storage.Slots[1], inventory.FindItemOnInventory(slotItem[obj]));   //Armor
+
+            ClearObjects();
+            SpawnPanel();
+        }
+        else 
+        {
+            inventory.SwapItem(equipment.Storage.Slots[2], inventory.FindItemOnInventory(slotItem[obj]));   //Armor
 
             ClearObjects();
             SpawnPanel();
