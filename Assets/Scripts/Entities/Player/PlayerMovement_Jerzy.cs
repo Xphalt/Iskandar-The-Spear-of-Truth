@@ -9,6 +9,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     Rigidbody m_Rigidbody;
     public GameObject playerModel;
     public float m_Speed, m_floorDistance;
+    public float fallingSpeed;
 
     public Quaternion swordLookRotation;
 
@@ -56,6 +57,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             m_Rigidbody.AddForce(dashDirection * dashForce);
         }
+        CheckGround();
     }
 
     public float GetPlayerVelocity()
@@ -144,13 +146,19 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     void CheckGround()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, m_floorDistance))
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit))
         {
-            print(Physics.gravity);
-            Vector3 newVel = m_Rigidbody.velocity;
-            newVel.y = 0;
-            m_Rigidbody.velocity = newVel;
+            if(hit.distance > m_floorDistance)
+            {
+                Vector3 newVel = m_Rigidbody.velocity;
+                newVel.y = -fallingSpeed;
+                m_Rigidbody.velocity = newVel;
+            }
+
         }
+
+
     }
 
 
