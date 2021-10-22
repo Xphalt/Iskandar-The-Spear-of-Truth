@@ -122,7 +122,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 newVel.y = m_Rigidbody.velocity.y;
                 m_Rigidbody.velocity = (newVel);
                 Rotation(m_Input);
-                CheckGround();
             }
             if (timeSinceLastDash >= invincibilityFramesAfterDash && !canBeDamaged)
             {
@@ -146,19 +145,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     void CheckGround()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
         {
-            if(hit.distance > m_floorDistance)
+            if (hit.distance > m_floorDistance)
             {
                 Vector3 newVel = m_Rigidbody.velocity;
                 newVel.y = -fallingSpeed;
                 m_Rigidbody.velocity = newVel;
             }
-
         }
-
-
     }
 
 
