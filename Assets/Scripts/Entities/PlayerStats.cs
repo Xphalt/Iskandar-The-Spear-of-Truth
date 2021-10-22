@@ -30,4 +30,39 @@ public class PlayerStats : StatsInterface
     {
         target.TakeDamage(amount, scriptedKill);
     }
+
+    //Morgan's Save Edits
+    public void SaveStatsf1()
+    {
+        SaveManager.SavePlayerStatsf1(this);
+    }
+
+    public void SaveStatsf2()
+    {
+        SaveManager.SavePlayerStatsf2(this);
+    }
+
+    public void SaveStatsf3()
+    {
+        SaveManager.SavePlayerStatsf3(this);
+    }
+
+    public void LoadStatsf1()
+    {
+        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerStatsf1();
+        health = saveDataf1.healthf1;
+    }
+
+    public void LoadStatsf2()
+    {
+        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerStatsf2();
+        health = saveDataf2.healthf2;
+    }
+
+    public void LoadStatsf3()
+    {
+        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerStatsf3();
+        health = saveDataf3.healthf3;
+    }
+
 }

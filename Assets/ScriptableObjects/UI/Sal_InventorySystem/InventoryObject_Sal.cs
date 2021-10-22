@@ -158,7 +158,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
-        Inventory newStorage = saveDataf1.Storagef1;
+        Inventory newStorage = (Inventory)saveDataf1.Storagef1;
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
             Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
@@ -171,7 +171,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
-        Inventory newStorage = saveDataf2.Storagef2;
+        Inventory newStorage = (Inventory)saveDataf2.Storagef2;
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
             Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
@@ -184,7 +184,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
-        Inventory newStorage = saveDataf3.Storagef3;
+        Inventory newStorage = (Inventory)saveDataf3.Storagef3;
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
             Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
