@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Detects and handles the player hitting the target pad
 public class TargetPad_Jack : MonoBehaviour
 {
     [SerializeField]
@@ -26,6 +27,7 @@ public class TargetPad_Jack : MonoBehaviour
         _timeSinceLastTriggered += Time.deltaTime;
 	}
 
+    // When hit by the player all attached walls will alternate between being risen & fallen
 	private void OnTriggerEnter(Collider other)
 	{
         if (other.CompareTag(_playerSwordTag) 

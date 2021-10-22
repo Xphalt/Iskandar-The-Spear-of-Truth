@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Sets the initial Animator state for the attached falling door
 public class FallingWall_Jack : MonoBehaviour
 {
     [SerializeField]
