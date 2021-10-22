@@ -29,7 +29,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     float timeSinceLastAttack = 0;
     public float attackCooldown;
 
-    private const float TIME_BEFORE_DISABLING_COLLIDER = 1f;
+    public float TIME_BEFORE_DISABLING_COLLIDER = 0.6f; // May need to change for target pads
 
 
     void Start()
