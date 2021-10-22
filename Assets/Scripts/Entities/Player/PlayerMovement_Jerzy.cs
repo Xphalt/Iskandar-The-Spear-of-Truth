@@ -16,7 +16,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public bool canBeDamaged = true;
 
     public float dashCooldown;
-    public float invincibilityFramesAfterDash;
+    public float dashDuration;
     public float dashForce;
     public float dashAnalogueReq;
     private Vector3 dashDirection;
@@ -53,7 +53,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!canBeDamaged)
+        if(timeSinceLastDash < dashDuration)
         {
             m_Rigidbody.AddForce(dashDirection * dashForce);
         }
@@ -85,7 +85,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         //This prevents player from moving whilst attacking or dashing
         if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
             (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("SwordThrow&Return")) &&
-            timeSinceLastDash >= invincibilityFramesAfterDash)
+            timeSinceLastDash >= dashDuration)
         {
             if (_playerTargetingScript.IsTargeting())
             {
@@ -123,7 +123,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 m_Rigidbody.velocity = (newVel);
                 Rotation(m_Input);
             }
-            if (timeSinceLastDash >= invincibilityFramesAfterDash && !canBeDamaged)
+            if (timeSinceLastDash >= dashDuration && !canBeDamaged)
             {
                 canBeDamaged = true;
             }
@@ -145,14 +145,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     void CheckGround()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
+        if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance))
         {
-            if (hit.distance > m_floorDistance)
-            {
-                Vector3 newVel = m_Rigidbody.velocity;
-                newVel.y = -fallingSpeed;
-                m_Rigidbody.velocity = newVel;
-            }
+            Vector3 newVel = m_Rigidbody.velocity;
+            newVel.y = -fallingSpeed;
+            m_Rigidbody.velocity = newVel;
         }
     }
 
