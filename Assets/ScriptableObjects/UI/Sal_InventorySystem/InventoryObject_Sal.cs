@@ -22,12 +22,6 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     public InterfaceType type;
     public Inventory Storage;
 
-    //morgan's load game edit
-    private void Start()
-    {
-        LoadStatsf1();
-    }
-
     public InventorySlot[] GetSlots
     {
         get { return Storage.Slots; }
@@ -154,7 +148,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     [ContextMenu("Load")]
     public void LoadStatsf1()
     {
-        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerStatsf1();
+        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerInventoryf1();
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
@@ -167,7 +161,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
     public void LoadStatsf2()
     {
-        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerStatsf2();
+        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerInventoryf2();
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
@@ -180,7 +174,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
     public void LoadStatsf3()
     {
-        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerStatsf3();
+        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerInventoryf3();
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
