@@ -114,7 +114,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
         // when the sword returns to the player
         if (other.gameObject.CompareTag("Enemy"))
         {
-            if (other.TryGetComponent<StatsInterface>(out StatsInterface statsInterface)) statsInterface.TakeDamage(swordDamage);
+            if (other.TryGetComponent(out StatsInterface statsInterface)) statsInterface.TakeDamage(swordDamage);
         }
     }
 }

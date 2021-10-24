@@ -8,14 +8,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     Rigidbody m_Rigidbody;
     public GameObject playerModel;
-    public float m_Speed;
+    public float m_Speed, m_floorDistance;
+    public float fallingSpeed;
 
     public Quaternion swordLookRotation;
 
     public bool canBeDamaged = true;
 
     public float dashCooldown;
-    public float invincibilityFramesAfterDash;
+    public float dashDuration;
     public float dashForce;
     public float dashAnalogueReq;
     private Vector3 dashDirection;
@@ -52,10 +53,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!canBeDamaged)
+        if(timeSinceLastDash < dashDuration)
         {
             m_Rigidbody.AddForce(dashDirection * dashForce);
         }
+        CheckGround();
     }
 
     public float GetPlayerVelocity()
@@ -83,7 +85,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         //This prevents player from moving whilst attacking or dashing
         if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
             (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("SwordThrow&Return")) &&
-            timeSinceLastDash >= invincibilityFramesAfterDash)
+            timeSinceLastDash >= dashDuration)
         {
             if (_playerTargetingScript.IsTargeting())
             {
@@ -116,10 +118,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             }
             else
             {
-                m_Rigidbody.velocity = (m_Input.normalized * m_Speed);
+                Vector3 newVel = m_Input.normalized * m_Speed;
+                newVel.y = m_Rigidbody.velocity.y;
+                m_Rigidbody.velocity = (newVel);
                 Rotation(m_Input);
             }
-            if (timeSinceLastDash >= invincibilityFramesAfterDash && !canBeDamaged)
+            if (timeSinceLastDash >= dashDuration && !canBeDamaged)
             {
                 canBeDamaged = true;
             }
@@ -137,6 +141,16 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             playerAnimation.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
         //_________________________________________________________________________
         //Debug.Log(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+    }
+
+    void CheckGround()
+    {
+        if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance))
+        {
+            Vector3 newVel = m_Rigidbody.velocity;
+            newVel.y = -fallingSpeed;
+            m_Rigidbody.velocity = newVel;
+        }
     }
 
 

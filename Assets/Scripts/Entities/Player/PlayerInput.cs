@@ -20,8 +20,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private PlayerCombat_Jerzy _playerCombat_Jerzy;
     //[SerializeField] private Inventory_UI_Script _inventoryUI;
     [SerializeField] private ItemSelectionWheel _itemSelectionWheel;
-    [SerializeField] private ItemSelectionBar _itemSelectionBar;
-    [SerializeField] private Player_Sal _player_sal;
+    [SerializeField] private ItemSelectionBar _itemSelectionBar; 
     [SerializeField] private PauseMenuManager _pauseMenuManager;
 
     [Header("Movement Settings")]
@@ -32,9 +31,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float _rotationSpeed;
 
     private void Awake()
-    {
-        _player_sal = GetComponent<Player_Sal>();
-
+    { 
         _playerActionsAsset = new PlayerActionsAsset();
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         _playerRigidbody = GetComponent<Rigidbody>();
@@ -58,10 +55,7 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
 
         _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
-        _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar();
-
-        _playerActionsAsset.Player.SaveInventory.performed += _ => _player_sal.SaveInventory();
-        _playerActionsAsset.Player.LoadInventory.performed += _ => _player_sal.LoadInventory();
+        _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar(); 
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
         //_playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();

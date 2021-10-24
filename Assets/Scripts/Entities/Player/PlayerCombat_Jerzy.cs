@@ -19,9 +19,11 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public GameObject swordEmpty;
     public GameObject swordDefaultPosition;
 
-    Animator swordAnimator;
+    private Animator swordAnimator;
     private PlayerAnimationManager playerAnimation;
     private PlayerMovement_Jerzy playerMovement;
+    private ThrowSword_Jerzy throwSword;
+    private Collider swordCollider;
 
     bool returning;
     bool thrown;
@@ -29,7 +31,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     float timeSinceLastAttack = 0;
     public float attackCooldown;
 
-    private const float TIME_BEFORE_DISABLING_COLLIDER = 1f;
+    public float TIME_BEFORE_DISABLING_COLLIDER = 0.6f; // May need to change for target pads
 
 
     void Start()
@@ -37,17 +39,19 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         swordAnimator = swordObject.GetComponent<Animator>();
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
+        throwSword = swordEmpty.GetComponent<ThrowSword_Jerzy>();
+        swordCollider = swordObject.GetComponent<Collider>();
     }
 
     void FixedUpdate()
     {
         timeSinceLastAttack += Time.deltaTime;
-        swordLookRotation = GetComponent<PlayerMovement_Jerzy>().swordLookRotation;
-        returning = swordEmpty.GetComponent<ThrowSword_Jerzy>().returning;
-        thrown = swordEmpty.GetComponent<ThrowSword_Jerzy>().thrown;
+        swordLookRotation = playerMovement.swordLookRotation;
+        returning = throwSword.returning;
+        thrown = throwSword.thrown;
         if (timeSinceLastAttack >= TIME_BEFORE_DISABLING_COLLIDER && !thrown)
         {
-            swordObject.GetComponent<BoxCollider>().enabled = false;
+            swordCollider.enabled = false;
         }
 
     }
@@ -56,7 +60,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     {
         if (timeSinceLastAttack >= attackCooldown && canAttack)
         {
-            swordObject.GetComponent<BoxCollider>().enabled = true;
+            swordCollider.enabled = true;
             playerAnimation.SimpleAttack();
             timeSinceLastAttack = 0;
             playerMovement.LockPlayerMovement();
@@ -79,7 +83,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
         if (timeSinceLastAttack >= attackCooldown && canAttack)
         {
-            swordEmpty.GetComponent<ThrowSword_Jerzy>().ThrowSword(swordLookRotation);
+            throwSword.ThrowSword(swordLookRotation);
             canAttack = false;
             timeSinceLastAttack = 0;
 
@@ -92,10 +96,9 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         if (other.tag == "playerSword" && returning && thrown)
         {
             // end throw cycle, attach sword to player, set appropriate position and rotation for the sword
-            swordEmpty.GetComponent<ThrowSword_Jerzy>().EndThrowCycle();
+            throwSword.EndThrowCycle();
             swordEmpty.transform.parent = playerModel.transform;
-            swordEmpty.transform.position = swordDefaultPosition.transform.position;
-            swordEmpty.transform.rotation = swordDefaultPosition.transform.rotation;
+            swordEmpty.transform.SetPositionAndRotation(swordDefaultPosition.transform.position, swordDefaultPosition.transform.rotation);
             canAttack = true;
         }
     }
