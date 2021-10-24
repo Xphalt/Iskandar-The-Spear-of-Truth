@@ -210,7 +210,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &78185617538369030
 GameObject:
@@ -231,7 +231,6 @@ GameObject:
   - component: {fileID: 78185617538369034}
   - component: {fileID: 78185617538369032}
   - component: {fileID: 78185617538369042}
-  - component: {fileID: 78185617538369043}
   - component: {fileID: 78185617538369033}
   m_Layer: 3
   m_Name: Player
@@ -247,7 +246,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78185617538369030}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 241, y: -0.98, z: 184.2}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
@@ -286,14 +285,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerModel: {fileID: 996611316734489866}
   m_Speed: 10
-  m_floorDistance: 1
+  m_floorDistance: 0.5
+  fallingSpeed: 7
+  falling: 0
+  controlsLocked: 0
   swordLookRotation: {x: 0, y: 0, z: 0, w: 0}
   canBeDamaged: 1
   dashCooldown: 1
-  invincibilityFramesAfterDash: 0.3
-  dashForce: 500
+  dashDuration: 0.15
+  dashForce: 24
   dashAnalogueReq: 0.5
-  _rotationSpeed: 10
+  _rotationSpeed: 25
 --- !u!114 &78185617538369039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,7 +465,6 @@ MonoBehaviour:
   _playerCombat_Jerzy: {fileID: 78185617538369032}
   _itemSelectionWheel: {fileID: 0}
   _itemSelectionBar: {fileID: 0}
-  _player_sal: {fileID: 78185617538369043}
   _pauseMenuManager: {fileID: 0}
   _movementSpeed: 10
   _playerModel: {fileID: 996611316734489866}
@@ -492,6 +493,7 @@ MonoBehaviour:
   swordEmpty: {fileID: 78185617451115531}
   swordDefaultPosition: {fileID: 78185617050514008}
   attackCooldown: 0
+  TIME_BEFORE_DISABLING_COLLIDER: 0.6
 --- !u!114 &78185617538369042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,21 +507,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 6
---- !u!114 &78185617538369043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 78185617538369030}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1732c4a6cc31c6f4ca660091a77821ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: 26754aa56798a1244bc66bcb0018782c, type: 2}
   equipment: {fileID: 11400000, guid: 1404d5272f1fab045a59c4cb3f99e452, type: 2}
-  damage: 2
+  damage: 0
   defence: 0
   fireDefence: 0
   iceDefence: 0
@@ -536,7 +526,7 @@ CapsuleCollider:
   m_Radius: 0.97688293
   m_Height: 5
   m_Direction: 1
-  m_Center: {x: 0.048217773, y: 2.0623856, z: 0.50105286}
+  m_Center: {x: 0.01, y: 2.47, z: 0}
 --- !u!65 &78185617658507714
 BoxCollider:
   m_ObjectHideFlags: 0
