@@ -36,7 +36,7 @@ public class Interactable_Object_Jack : MonoBehaviour
             case InteractableType.NPC_Dialogue:
                 // NPC interaction logic
                 _npcDialogueTrigger = GetComponent<DialogueTrigger>();
-                _npcDialogueTrigger.TriggerDialogue();
+                //_npcDialogueTrigger.TriggerDialogue();
                 break;
 
             case InteractableType.Seller:
