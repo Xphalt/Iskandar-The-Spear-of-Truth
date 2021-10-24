@@ -8,8 +8,6 @@ public class PlayerAnimationManager : MonoBehaviour
 {
     #region Variables
     [HideInInspector] public Animator animator;
-
-  //  [HideInInspector] public bool isIdling = false;
     [HideInInspector] public bool isRunning = false;
     [HideInInspector] public bool isLongIdling = false;
     [HideInInspector] public bool isStrafing = false;
@@ -26,10 +24,11 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private void Update()
     {
+        UpdateAxisValues();
         Strafing();
     }
 
-    public void PlayerLongIdle(float playerVelocity) //not working atm
+    public void LongIdling(float playerVelocity) //not working atm
     {
      /*_________________________________________________________________________
      * Player switches between idle states if player is stationary for too long
@@ -56,17 +55,19 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void Running(float speed) 
     {
-        if (!isStrafing)
-            animator.SetFloat("isRunning", speed); 
-        else if (isStrafing)
-            animator.SetFloat("isRunning", 0);
+        if (speed < 0.2f)
+        {
+            animator.SetTrigger("isIdling");
+            animator.SetBool("isRunning", false);
+        }
+        else
+            animator.SetBool("isRunning", true);
     }
 
     public void Strafing()
     {
         if (isStrafing)
         {
-            UpdateAxisValues();
             animator.SetBool("isIdling", false);
             animator.SetBool("isStrafing", true);
         }
@@ -85,6 +86,21 @@ public class PlayerAnimationManager : MonoBehaviour
     public void SwordThrowAttack()
     {
         animator.SetTrigger("isSwordThrowing"); 
+    }
+
+    public void SwordReturnAttack()
+    {
+        animator.SetTrigger("isSwordReturning");
+    }
+
+    public void Falling(float velocity)
+    {
+        if (velocity < 0)
+        {
+            animator.SetTrigger("isFalling");
+            if (velocity >= 0)
+                animator.SetTrigger("isLanding");
+        }
     }
 
     private void UpdateAxisValues()
