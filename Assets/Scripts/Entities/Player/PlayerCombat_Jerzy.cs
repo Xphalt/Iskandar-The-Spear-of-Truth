@@ -96,6 +96,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         if (other.tag == "playerSword" && returning && thrown)
         {
             // end throw cycle, attach sword to player, set appropriate position and rotation for the sword
+            playerAnimation.SwordReturnAttack();
             throwSword.EndThrowCycle();
             swordEmpty.transform.parent = playerModel.transform;
             swordEmpty.transform.SetPositionAndRotation(swordDefaultPosition.transform.position, swordDefaultPosition.transform.rotation);
