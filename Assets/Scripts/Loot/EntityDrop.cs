@@ -46,7 +46,7 @@ public class EntityDrop : MonoBehaviour
             obj.GetComponent<GroundItem>().SetItem(itemToDrop);
             obj.GetComponent<GroundItem>().OnBeforeSerialize(); //Doesn't get called automatically for some reason
             //Set dir
-            obj.GetComponentInChildren<Rigidbody>().velocity = randomSpawnDir * spawnSpeed * Time.deltaTime;
+            obj.GetComponent<Rigidbody>().velocity = randomSpawnDir * spawnSpeed * Time.deltaTime;
 
             DropSystem.Instance.ResetTentativeNum(type);
             //Destroy
