@@ -64,8 +64,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (verticalVelocity < 0 && !onGround)
         {
             falling = true;
+            if (timeSpentFalling == 0)
+                playerAnimation.Falling();
             timeSpentFalling += Time.deltaTime;
-            playerAnimation.Falling();
         }
         else if (verticalVelocity == 0 && onGround)
         {
