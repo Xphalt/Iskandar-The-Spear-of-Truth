@@ -78,30 +78,19 @@ public class PlayerAnimationManager : MonoBehaviour
         }
     }
 
-    public void SimpleAttack() 
-    {
-        animator.SetTrigger("isSimpleAttacking");
-    }
+    public void SimpleAttack() { animator.SetTrigger("isSimpleAttacking"); }
 
-    public void SwordThrowAttack()
-    {
-        animator.SetTrigger("isSwordThrowing"); 
-    }
+    public void SwordThrowAttack() { animator.SetTrigger("isSwordThrowing"); }
 
-    public void SwordReturnAttack()
-    {
-        animator.SetTrigger("isSwordReturning");
-    }
+    public void SwordReturnAttack() { animator.SetTrigger("isSwordReturning"); }
 
-    public void Falling()
-    {
-        animator.SetTrigger("isFalling");
-    }
+    public void Dodging() { animator.SetTrigger("isDodging"); }
 
-    public void Landing()
-    {
-        animator.SetTrigger("isLanding");
-    }
+    public void Falling() { animator.SetTrigger("isFalling"); }
+
+    public void Landing() { animator.SetTrigger("isLanding"); }
+
+    public void Dead() { animator.SetTrigger("isDead"); }
 
     private void UpdateAxisValues()
     {

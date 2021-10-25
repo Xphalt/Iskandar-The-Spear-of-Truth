@@ -70,6 +70,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public void ThrowAttack()
     {
         StartCoroutine(PauseForThrow());
+        playerMovement.LockPlayerMovement();
     }
 
     IEnumerator PauseForThrow() 
@@ -86,7 +87,6 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             throwSword.ThrowSword(swordLookRotation);
             canAttack = false;
             timeSinceLastAttack = 0;
-
         }
     }
 
@@ -97,6 +97,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         {
             // end throw cycle, attach sword to player, set appropriate position and rotation for the sword
             playerAnimation.SwordReturnAttack();
+            playerMovement.LockPlayerMovement();
             throwSword.EndThrowCycle();
             swordEmpty.transform.parent = playerModel.transform;
             swordEmpty.transform.SetPositionAndRotation(swordDefaultPosition.transform.position, swordDefaultPosition.transform.rotation);
