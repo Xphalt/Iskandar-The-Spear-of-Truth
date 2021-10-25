@@ -54,6 +54,34 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private void Update()
     {
         timeSinceLastDash += Time.deltaTime;
+
+        CheckGround();
+
+        float verticalVelocity = m_Rigidbody.velocity.y;
+
+        // check if player's velocity is less than 0 and not on the ground
+        // !onGround is required because the player may be decending a ramp and it may think the player is falling without the check
+        if (verticalVelocity < 0 && !onGround)
+        {
+            falling = true;
+            timeSpentFalling += Time.deltaTime;
+            playerAnimation.Falling();
+        }
+        else if (verticalVelocity == 0 && onGround)
+        {
+            if (falling)
+                playerAnimation.Landing();
+
+            falling = false;
+            timeSpentFalling = 0;
+
+        }
+
+        // if player has stepped off a ledge, reset only their x and z velocity. This is optional if we want the player to fall directly downwards.
+        if (falling && timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS)
+        {
+            m_Rigidbody.velocity = new Vector3(0, verticalVelocity, 0);
+        }
     }
 
     private void FixedUpdate()
@@ -63,34 +91,33 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             m_Rigidbody.AddForce(dashDirection * dashForce);
         }
 
-        CheckGround();
+        //CheckGround();
 
-        // check if player's velocity is less than 0 and not on the ground
-        // !onGround is required because the player may be decending a ramp and it may think the player is falling without the check
-        if(m_Rigidbody.velocity.y < 0 && !onGround)
-        {
-            falling = true;
-            timeSpentFalling += Time.deltaTime;
-            // falling animation would go here
-        }
-        else
-        {
-            if (falling)
-            {
-                // landing animation would go here
-            }
-            falling = false;
-            timeSpentFalling = 0;
+        //float verticalVelocity = m_Rigidbody.velocity.y;
 
-        }
+        //// check if player's velocity is less than 0 and not on the ground
+        //// !onGround is required because the player may be decending a ramp and it may think the player is falling without the check
+        //if (verticalVelocity < 0 && !onGround)
+        //{
+        //    falling = true;
+        //    timeSpentFalling += Time.deltaTime;
+        //    playerAnimation.Falling();
+        //}
+        //else if (verticalVelocity == 0 && onGround)
+        //{
+        //    if (falling)
+        //        playerAnimation.Landing();
 
-        // if player has stepped off a ledge, reset only their x and z velocity. This is optional if we want the player to fall directly downwards.
-        if(falling && timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS)
-        {
-            m_Rigidbody.velocity = new Vector3(0, m_Rigidbody.velocity.y, 0);
-        }
+        //    falling = false;
+        //    timeSpentFalling = 0;
 
+        //}
 
+        //// if player has stepped off a ledge, reset only their x and z velocity. This is optional if we want the player to fall directly downwards.
+        //if(falling && timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS)
+        //{
+        //    m_Rigidbody.velocity = new Vector3(0, verticalVelocity, 0);
+        //}
     }
 
     public float GetPlayerVelocity()
@@ -119,8 +146,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             //This prevents player from moving whilst attacking, dashing, falling
             if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("SwordThrow&Return")) &&
-                timeSinceLastDash >= dashDuration &&
-                !falling)
+                timeSinceLastDash >= dashDuration && !falling)
             {
                 if (_playerTargetingScript.IsTargeting())
                 {
@@ -172,31 +198,30 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 playerAnimation.Strafing();
             }
 
-            //else if (playerAnimation.isLongIdling)
-               // playerAnimation.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
-                                                                                 //_________________________________________________________________________
-                                                                                 //Debug.Log(Mathf.Abs(m_Rigidbody.velocity.magnitude));
-
-
+        else if (playerAnimation.isLongIdling)
+            playerAnimation.LongIdling(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
+       //_________________________________________________________________________
     }
 
     void CheckGround()
-    {
+    { 
+        Vector3 newVel = m_Rigidbody.velocity;
+
         if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance))
         {
             fallingSpeedMultiplier += Time.deltaTime;
-            Vector3 newVel = m_Rigidbody.velocity;
             newVel.y = -(fallingSpeed* fallingSpeedMultiplier* fallingSpeedMultiplier);
-            m_Rigidbody.velocity = newVel;
             onGround = false;
         }
         else
         {
+            newVel.y = 0;
             onGround = true;
             fallingSpeedMultiplier = 1;
         }
+        m_Rigidbody.velocity = newVel;
 
-
+        print("grounded" + onGround);
     }
 
 

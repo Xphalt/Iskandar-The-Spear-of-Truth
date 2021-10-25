@@ -93,14 +93,14 @@ public class PlayerAnimationManager : MonoBehaviour
         animator.SetTrigger("isSwordReturning");
     }
 
-    public void Falling(float velocity)
+    public void Falling()
     {
-        if (velocity < 0)
-        {
-            animator.SetTrigger("isFalling");
-            if (velocity >= 0)
-                animator.SetTrigger("isLanding");
-        }
+        animator.SetTrigger("isFalling");
+    }
+
+    public void Landing()
+    {
+        animator.SetTrigger("isLanding");
     }
 
     private void UpdateAxisValues()
