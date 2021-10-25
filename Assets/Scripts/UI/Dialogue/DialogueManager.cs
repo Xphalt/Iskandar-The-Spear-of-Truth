@@ -43,24 +43,30 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextExchange()
     {
-        if (_QueueOfNextSentences.Count != 0)
+        if (_QueueOfNextCharacters.Count != 0)
         {
             NewConversation.NextCharacter nextCharacter = _QueueOfNextCharacters.Dequeue();
-            string nextSentence = _QueueOfNextSentences.Dequeue();
-
             TextNPCName.text = nextCharacter.CharacterName;
-            TextDialogueBox.text = nextSentence;
 
-            StopAllCoroutines();
-            StartCoroutine(TypeSentence(nextSentence));
+
+
+            if (_QueueOfNextCharacters.Count != 0)
+            {
+                string nextSentence = _QueueOfNextSentences.Dequeue();
+                TextDialogueBox.text = nextSentence;
+
+                StopAllCoroutines();
+                StartCoroutine(TypeSentence(nextSentence));
+            }
+
         }
 
-        else if (_QueueOfNextSentences.Count == 0 && _QueueOfNextCharacters.Count != 0)
-        {
-            _QueueOfNextCharacters.Dequeue();
-        }
+        //else if (_QueueOfNextCharacters.Count != 0 && _QueueOfNextSentences.Count == 0)
+        //{
+        //    
+        //}
 
-        else if (_QueueOfNextCharacters.Count == 0 && _QueueOfNextSentences.Count == 0)
+        else
         {
             TextContinueDialogue.text = "End";
             EndDialogue();
