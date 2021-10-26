@@ -22,7 +22,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public float dashAnalogueReq;
     private Vector3 dashDirection;
 
-    float timeSinceLastDash = 0;
+    public float timeSinceLastDash = 0;
+
+    private const float STARTING_DASH_MULTIPLIER = 0.1f;
+    private const float DASH_MULTIPLIER_NUMERATOR = 10;
+
+    private const float KNOCKBACK_DENOMINATOR_ADDITION = 0.5f;
 
     private Player_Targeting_Jack _playerTargetingScript;
     private Transform _targetedTransform = null;
@@ -34,7 +39,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float fallingSpeedMultiplier = 1;
     float timeSpentFalling = 0;
     bool onGround;
-    private const float TIME_BEFORE_FALLING_DOWNWARDS = 0.05f;
+    private const float TIME_BEFORE_FALLING_DOWNWARDS = 0.1f;
+
+    public bool knockedBack = false;
+    Vector3 knockBackDirection;
+    private float knockBackDuraction;
+    private float knockBackSpeed;
+    private float timeKnockedBack;
+    private float dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
+
 
     [SerializeField] private float _rotationSpeed;
 
@@ -54,6 +67,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private void Update()
     {
         timeSinceLastDash += Time.deltaTime;
+        dashSpeedMultiplier += Time.deltaTime;
 
         CheckGround();
 
@@ -64,7 +78,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (verticalVelocity < 0 && !onGround)
         {
             falling = true;
-            if (timeSpentFalling == 0)
+            if (timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS && !onGround)
                 playerAnimation.Falling();
             timeSpentFalling += Time.deltaTime;
         }
@@ -79,18 +93,35 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
 
         // if player has stepped off a ledge, reset only their x and z velocity. This is optional if we want the player to fall directly downwards.
-        if (falling && timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS)
-        {
-            m_Rigidbody.velocity = new Vector3(0, verticalVelocity, 0);
-        }
+        //if (falling && timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS)
+        //{
+        //    m_Rigidbody.velocity = new Vector3(0, verticalVelocity, 0);
+        //}
     }
 
     private void FixedUpdate()
     {
+        if (falling)
+            timeSinceLastDash = dashDuration;
+
         if(timeSinceLastDash < dashDuration)
         {
-            m_Rigidbody.AddForce(dashDirection * dashForce);
+            m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
         }
+
+        if (timeKnockedBack < knockBackDuraction && knockedBack && !falling)
+        {
+            timeKnockedBack += Time.deltaTime;
+            m_Rigidbody.velocity = knockBackDirection * Time.deltaTime * knockBackSpeed * (knockBackDuraction/ timeKnockedBack + KNOCKBACK_DENOMINATOR_ADDITION);
+            playerAnimation.Falling();
+        }
+        else if (knockedBack)
+        {
+            timeKnockedBack = 0;
+            knockedBack = false;
+            playerAnimation.Landing();
+        }
+
     }
 
     public float GetPlayerVelocity()
@@ -105,11 +136,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public void Dash(Vector3 _dashDirection)
     {
-        if (timeSinceLastDash >= dashCooldown)
+        if (timeSinceLastDash >= dashCooldown && !knockedBack)
         {
             canBeDamaged = false;
             dashDirection = _dashDirection;
             timeSinceLastDash = 0;
+            dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
             playerAnimation.Dodging();
         }
     }
@@ -121,7 +153,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
-                timeSinceLastDash >= dashDuration && !falling)
+                timeSinceLastDash >= dashDuration && !falling && !knockedBack)
             {
                 if (_playerTargetingScript.IsTargeting())
                 {
@@ -214,5 +246,16 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public void SetTargetedTransform(Transform newTargetedTransform)
     {
         _targetedTransform = newTargetedTransform;
+    }
+
+    public void KnockBack(Vector3 otherPosition, float speed, float duration)
+    {
+        timeSinceLastDash = dashDuration;
+        otherPosition = new Vector3(otherPosition.x, transform.position.y, otherPosition.z);
+        knockBackDuraction = duration;
+        knockBackSpeed = speed;
+        playerModel.transform.LookAt(otherPosition);
+        knockBackDirection = (transform.position - otherPosition).normalized;
+        knockedBack = true;
     }
 }
