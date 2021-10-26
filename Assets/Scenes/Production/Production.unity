@@ -498,6 +498,8 @@ MonoBehaviour:
   - 1
   - 2
   chargeSpeed: 3
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
   minChaseRadius: 0
 --- !u!114 &549357681
 MonoBehaviour:
@@ -709,6 +711,8 @@ MonoBehaviour:
   - 1
   - 2
   chargeSpeed: 15
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
   minChaseRadius: 0
 --- !u!54 &720094779
 Rigidbody:
@@ -789,6 +793,60 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 720094773}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &749602848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 749602850}
+  - component: {fileID: 749602849}
+  m_Layer: 0
+  m_Name: GameplayEventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &749602849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749602848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+  - conditions: []
+    events: []
+  - conditions: []
+    events: []
+  - conditions: []
+    events: []
+  - conditions: []
+    events: []
+  - conditions: []
+    events: []
+--- !u!4 &749602850
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749602848}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 349.3948, y: 1.79, z: 134.88}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &827607062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1296,6 +1354,8 @@ MonoBehaviour:
   - 1
   - 2
   chargeSpeed: 3
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
   minChaseRadius: 0
 --- !u!114 &1237221923
 MonoBehaviour:
@@ -1480,6 +1540,8 @@ MonoBehaviour:
   - 1
   - 2
   chargeSpeed: 15
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
   minChaseRadius: 0
 --- !u!54 &1340620839
 Rigidbody:
@@ -1684,6 +1746,8 @@ MonoBehaviour:
   - 1
   - 0
   chargeSpeed: 0
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
   minChaseRadius: 0
 --- !u!54 &1366041702
 Rigidbody:
@@ -2311,6 +2375,8 @@ MonoBehaviour:
   - 1
   - 0
   chargeSpeed: 0
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
   minChaseRadius: 0
 --- !u!54 &2044409781
 Rigidbody:
@@ -2550,6 +2616,8 @@ MonoBehaviour:
   - 1
   - 0
   chargeSpeed: 0
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
   minChaseRadius: 0
 --- !u!54 &2107213265
 Rigidbody:
@@ -2712,6 +2780,8 @@ MonoBehaviour:
   - 1
   - 2
   chargeSpeed: 3
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
   minChaseRadius: 0
 --- !u!114 &2112340525
 MonoBehaviour:
