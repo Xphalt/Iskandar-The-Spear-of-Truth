@@ -95,7 +95,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void Dodging() 
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Fall")) animator.SetTrigger("Dodge"); 
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge")) animator.SetTrigger("isDodging"); 
     }
 
     public void Falling() 
