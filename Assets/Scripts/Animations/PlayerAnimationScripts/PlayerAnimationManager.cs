@@ -28,6 +28,11 @@ public class PlayerAnimationManager : MonoBehaviour
         Strafing();
     }
 
+    public void Turning(float rotation)
+    {
+        animator.SetFloat("isTurning", rotation);
+    }
+
     public void LongIdling(float playerVelocity) //not working atm
     {
      /*_________________________________________________________________________
