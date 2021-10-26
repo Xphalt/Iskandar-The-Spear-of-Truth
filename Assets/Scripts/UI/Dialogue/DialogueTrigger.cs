@@ -7,10 +7,9 @@ public class DialogueTrigger : MonoBehaviour
     public DialogueManager DialogueManager_;
     public NewConversation Conversation;
 
-    public void OnClick()
+    public void TriggerDialogue()
     {
-        gameObject.SetActive(false);
-        DialogueManager_.gameObject.SetActive(true);
+        DialogueManager_.DialoguePanel.SetActive(true);
         DialogueManager_.StartDialogue(Conversation);
     }
 }

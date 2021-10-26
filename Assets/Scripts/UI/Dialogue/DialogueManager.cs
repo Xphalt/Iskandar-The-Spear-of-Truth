@@ -16,7 +16,6 @@ public class DialogueManager : MonoBehaviour
 
     public void Start()
     {
-        gameObject.SetActive(false);
         TextNPCName.text = "";
         TextDialogueBox.text = "";
         TextContinueDialogue.text = "";
