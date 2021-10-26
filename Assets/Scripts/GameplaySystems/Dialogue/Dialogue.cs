@@ -2,11 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Dialogue/Dialogue", fileName = "Dialogue")]
 [System.Serializable]
 public class Dialogue
 {
-    public string NPC_Name;
+    public List<NextExchange> ListOfCharacterExchanges = new List<NextExchange>();
 
-    // Dominique 08-10-2021, Use localised sentences
-    public LocalisationTableReference[] Sentences;
+    [System.Serializable]
+    public struct NextExchange
+    {
+        public string NPCName;
+
+        [TextArea]
+        public string[] NumOfSentences;
+    }
 }

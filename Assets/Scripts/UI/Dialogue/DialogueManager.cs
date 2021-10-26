@@ -4,65 +4,55 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    public List<Dialogue> ListOfNewConversations = new List<Dialogue>();
+    private Queue<Dialogue.NextExchange> QueueOfCharacterExchanges = new Queue<Dialogue.NextExchange>();
+    private Queue<string> QueueOfCharacterConversations = new Queue<string>();
+
     public GameObject DialoguePanel;
-    public GameObject DialogueTrigger;
-    public Text NameText;
-    public Text DialogueText;
-    public Button ContinueText;
-    public Text ButtonText;
-
-    public LocalisationTableReference nextString;
-    public LocalisationTableReference endString;
-
-    public Queue<string> SentenceQueue;
-
-    private void Start()
-    {
-        DialoguePanel.SetActive(false);
-        NameText.text = "";
-        DialogueText.text = "";
-        ButtonText.text = "";
-        SentenceQueue = new Queue<string>();
-    }
+    public Text TextNPCName;
+    public Text TextDialogueBox;
+    public Text TextContinueDialogue;
 
     public void StartDialogue(Dialogue dialogue)
     {
-        NameText.text = dialogue.NPC_Name;
-        // Dominique 08-10-2021, Use localised sentences
-        ButtonText.text = nextString.GetLocalisedString();
+        QueueOfCharacterExchanges.Clear();
+        QueueOfCharacterConversations.Clear();
 
-        SentenceQueue.Clear();
-
-        // Dominique 08-10-2021, Use localised sentences
-        foreach (LocalisationTableReference sentence in dialogue.Sentences)
+        foreach (Dialogue.NextExchange queuedCharacterExchanges in dialogue.ListOfCharacterExchanges)
         {
-            SentenceQueue.Enqueue(sentence.GetLocalisedString());
+            TextNPCName.text = queuedCharacterExchanges.NPCName;
+            QueueOfCharacterExchanges.Enqueue(queuedCharacterExchanges);
+
+            foreach (string queuedCharacterConversations in queuedCharacterExchanges.NumOfSentences)
+            {
+                QueueOfCharacterConversations.Enqueue(queuedCharacterConversations);
+            }
         }
 
-        DisplayNextSentence();
+        DisplayNextExchange();
     }
 
-    public void DisplayNextSentence()
+    public void DisplayNextExchange()
     {
-        if (SentenceQueue.Count <= 1)
+        if (QueueOfCharacterConversations.Count == 1)
         {
-            // Dominique 08-10-2021, Use localised sentences
-            ButtonText.text = endString.GetLocalisedString();
+            TextContinueDialogue.text = "End";
         }
-
-        if (SentenceQueue.Count == 0)
+        else if (QueueOfCharacterConversations.Count == 0)
         {
             EndDialogue();
+
             return;
         }
 
-        string sentence = SentenceQueue.Dequeue();
-        DialogueText.text = sentence;
+        Dialogue.NextExchange _queuedCharacterExchanges = QueueOfCharacterExchanges.Dequeue();
+        string _queueOfCharacterConversations = QueueOfCharacterConversations.Dequeue();
+
+        TextDialogueBox.text = _queueOfCharacterConversations;
     }
 
     private void EndDialogue()
     {
         DialoguePanel.SetActive(false);
-        //DialogueTrigger.SetActive(true);
     }
 }
