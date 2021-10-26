@@ -48,6 +48,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float timeKnockedBack;
     private float dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
 
+    private bool isRooted = false;
+    public float rootDuration;
+    private float timeRooted;
 
     [SerializeField] private float _rotationSpeed;
 
@@ -68,6 +71,18 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     {
         timeSinceLastDash += Time.deltaTime;
         dashSpeedMultiplier += Time.deltaTime;
+
+        if(isRooted && timeSinceLastDash > dashDuration)
+        {
+            m_Rigidbody.velocity = Vector3.zero;
+            timeRooted += Time.deltaTime;
+            if(timeRooted>=rootDuration)
+            {
+                isRooted = false;
+                timeRooted = 0;
+            }
+        }
+
 
         CheckGround();
 
@@ -156,7 +171,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
-                timeSinceLastDash >= dashDuration && !falling && !knockedBack)
+                timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted)
             {
                 if (_playerTargetingScript.IsTargeting())
                 {
@@ -260,5 +275,13 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         playerModel.transform.LookAt(otherPosition);
         knockBackDirection = (transform.position - otherPosition).normalized;
         knockedBack = true;
+    }
+
+    public void Root()
+    {
+        if(!isRooted)
+        {
+            isRooted = true;
+        }
     }
 }

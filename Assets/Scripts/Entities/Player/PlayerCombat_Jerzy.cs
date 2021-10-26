@@ -34,7 +34,12 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public float TIME_BEFORE_DISABLING_COLLIDER = 0.6f; // May need to change for target pads
 
-    
+    private float poisonDamage;
+    private float maxPoisonTicks;
+    private float poisonTicks;
+    private float poisonDelay;
+    private float timeSinceLastPoisonDamage;
+    private bool isPoisoned = false;
 
 
     void Start()
@@ -48,10 +53,12 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     void FixedUpdate()
     {
+        timeSinceLastPoisonDamage += Time.deltaTime;
         timeSinceLastAttack += Time.deltaTime;
         swordLookRotation = playerMovement.swordLookRotation;
         returning = throwSword.returning;
         thrown = throwSword.thrown;
+
         if (timeSinceLastAttack >= TIME_BEFORE_DISABLING_COLLIDER && !thrown)
         {
             swordCollider.enabled = false;
@@ -62,6 +69,17 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         }
         else
             canAttack = false;
+
+        if(isPoisoned && timeSinceLastPoisonDamage >= poisonDelay && poisonTicks < maxPoisonTicks)
+        {
+            GetComponent<PlayerStats>().TakeDamage(poisonDamage);
+            timeSinceLastPoisonDamage = 0;
+            poisonTicks++;
+        }
+        else if(isPoisoned && poisonTicks >= maxPoisonTicks)
+        {
+            isPoisoned = false;
+        }
 
     }
 
@@ -114,6 +132,21 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             swordEmpty.transform.parent = playerModel.transform;
             swordEmpty.transform.SetPositionAndRotation(swordDefaultPosition.transform.position, swordDefaultPosition.transform.rotation);
             attackOffCooldown = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Venom")
+        {
+            GetComponent<PlayerStats>().TakeDamage(other.gameObject.GetComponent<VenomShot>().damage);
+            poisonDamage = other.gameObject.GetComponent<VenomShot>().poisonDamage;
+            poisonDelay = other.gameObject.GetComponent<VenomShot>().poisonDelay;
+            maxPoisonTicks = other.gameObject.GetComponent<VenomShot>().amountOfPoisonTicks;
+            timeSinceLastPoisonDamage = 0;
+            poisonTicks = 0;
+            isPoisoned = true;
+            Destroy(other.gameObject);
         }
     }
 }
