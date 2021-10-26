@@ -16,6 +16,7 @@ public class DialogueManager : MonoBehaviour
 
     public void Start()
     {
+        DialoguePanel.SetActive(false);
         TextNPCName.text = "";
         TextDialogueBox.text = "";
         TextContinueDialogue.text = "";
@@ -24,6 +25,7 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(NewConversation newDialogue)
     {
         _QueueOfNextCharacters.Clear();
+        _QueueOfNextSentences.Clear();
         TextNPCName.text = newDialogue.ListOfCharacterExchanges[0].CharacterName;
         TextContinueDialogue.text = "Next";
 
@@ -59,11 +61,6 @@ public class DialogueManager : MonoBehaviour
             }
 
         }
-
-        //else if (_QueueOfNextCharacters.Count != 0 && _QueueOfNextSentences.Count == 0)
-        //{
-        //    
-        //}
 
         else
         {

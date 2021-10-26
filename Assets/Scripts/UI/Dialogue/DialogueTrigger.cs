@@ -9,6 +9,7 @@ public class DialogueTrigger : MonoBehaviour
 
     public void TriggerDialogue()
     {
+        gameObject.SetActive(false);
         DialogueManager_.DialoguePanel.SetActive(true);
         DialogueManager_.StartDialogue(Conversation);
     }
