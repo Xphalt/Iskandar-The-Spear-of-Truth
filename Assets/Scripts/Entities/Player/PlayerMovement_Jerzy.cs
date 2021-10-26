@@ -108,7 +108,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if(timeSinceLastDash < dashDuration)
         {
             //m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
-            m_Rigidbody.velocity = dashDirection * dashForce / dashSpeedMultiplier;
+            m_Rigidbody.velocity = dashDirection * dashForce;// / dashSpeedMultiplier;
         }
 
         if (timeKnockedBack < knockBackDuraction && knockedBack && !falling)
@@ -142,7 +142,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (timeSinceLastDash >= dashCooldown && !knockedBack)
         {
             canBeDamaged = false;
-            dashDirection = _dashDirection;
+            dashDirection = _dashDirection.normalized;
             timeSinceLastDash = 0;
             dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
             playerAnimation.Dodging();
