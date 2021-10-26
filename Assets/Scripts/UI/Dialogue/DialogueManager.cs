@@ -1,68 +1,93 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    private Queue<NewConversation.NextCharacter> _QueueOfNextCharacters = new Queue<NewConversation.NextCharacter>();
+    private Queue<string> _QueueOfNextSentences = new Queue<string>();
+
     public GameObject DialoguePanel;
-    public GameObject DialogueTrigger;
-    public Text NameText;
-    public Text DialogueText;
-    public Button ContinueText;
-    public Text ButtonText;
+    public Button ButtonContinue;
+    public Text TextNPCName;
+    public Text TextDialogueBox;
+    public Text TextContinueDialogue;
 
-    public LocalisationTableReference nextString;
-    public LocalisationTableReference endString;
-
-    public Queue<string> SentenceQueue;
-
-    private void Start()
+    public void Start()
     {
-        DialoguePanel.SetActive(false);
-        NameText.text = "";
-        DialogueText.text = "";
-        ButtonText.text = "";
-        SentenceQueue = new Queue<string>();
+        gameObject.SetActive(false);
+        TextNPCName.text = "";
+        TextDialogueBox.text = "";
+        TextContinueDialogue.text = "";
     }
 
-    public void StartDialogue(Dialogue dialogue)
+    public void StartDialogue(NewConversation newDialogue)
     {
-        NameText.text = dialogue.NPC_Name;
-        // Dominique 08-10-2021, Use localised sentences
-        ButtonText.text = nextString.GetLocalisedString();
+        _QueueOfNextCharacters.Clear();
+        TextNPCName.text = newDialogue.ListOfCharacterExchanges[0].CharacterName;
+        TextContinueDialogue.text = "Next";
 
-        SentenceQueue.Clear();
-
-        // Dominique 08-10-2021, Use localised sentences
-        foreach (LocalisationTableReference sentence in dialogue.Sentences)
+        foreach (NewConversation.NextCharacter nextCharacter in newDialogue.ListOfCharacterExchanges)
         {
-            SentenceQueue.Enqueue(sentence.GetLocalisedString());
+            _QueueOfNextCharacters.Enqueue(nextCharacter);
+
+            foreach (string sentence in nextCharacter.NumOfSentences)
+            {
+                _QueueOfNextSentences.Enqueue(sentence);
+            }
         }
 
-        DisplayNextSentence();
+        DisplayNextExchange();
     }
 
-    public void DisplayNextSentence()
+    public void DisplayNextExchange()
     {
-        if (SentenceQueue.Count <= 1)
+        if (_QueueOfNextCharacters.Count != 0)
         {
-            // Dominique 08-10-2021, Use localised sentences
-            ButtonText.text = endString.GetLocalisedString();
+            NewConversation.NextCharacter nextCharacter = _QueueOfNextCharacters.Dequeue();
+            TextNPCName.text = nextCharacter.CharacterName;
+
+
+
+            if (_QueueOfNextCharacters.Count != 0)
+            {
+                string nextSentence = _QueueOfNextSentences.Dequeue();
+                TextDialogueBox.text = nextSentence;
+
+                StopAllCoroutines();
+                StartCoroutine(TypeSentence(nextSentence));
+            }
+
         }
 
-        if (SentenceQueue.Count == 0)
+        //else if (_QueueOfNextCharacters.Count != 0 && _QueueOfNextSentences.Count == 0)
+        //{
+        //    
+        //}
+
+        else
         {
+            TextContinueDialogue.text = "End";
             EndDialogue();
-            return;
-        }
 
-        string sentence = SentenceQueue.Dequeue();
-        DialogueText.text = sentence;
+            return;
+        } 
+    }
+
+    IEnumerator TypeSentence(string sentence)
+    {
+        TextDialogueBox.text = "";
+
+        foreach (char letter in sentence.ToCharArray())
+        {
+            TextDialogueBox.text += letter;
+            yield return null;
+        }
     }
 
     private void EndDialogue()
     {
         DialoguePanel.SetActive(false);
-        //DialogueTrigger.SetActive(true);
     }
 }
