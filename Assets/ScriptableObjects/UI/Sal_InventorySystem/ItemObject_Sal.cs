@@ -6,9 +6,11 @@ public enum ItemType
 {
     Armor,
     Weapon, 
-    Default
+    Accessories,
+    Items
 }
 
+public delegate void Use(params GameObject[] p_obj);
 public abstract class ItemObject_Sal : ScriptableObject
 {
     public int BuyValue, SellValue;
@@ -21,7 +23,8 @@ public abstract class ItemObject_Sal : ScriptableObject
     public bool stackable;
     public Item data = new Item();
 
-    public abstract void Use();
+    public Use OnUse;
+    public abstract void Use(params GameObject[] p_obj);
 }
 
 [System.Serializable]

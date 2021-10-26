@@ -29,7 +29,7 @@ public class WeaponObject_Sal : ItemObject_Sal
         Desc = string.Concat("<color=red><b>Damage value</color></b>: ", damage);
     }
 
-    public override void Use()
+    public override void Use(params GameObject[] p_obj)
     {
         Debug.Log("Sword Used");
     }
