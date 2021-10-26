@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStats : StatsInterface
 {
+    private PlayerAnimationManager playerAnimation;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
 
@@ -18,6 +19,10 @@ public class PlayerStats : StatsInterface
     public float iceDefence;
     #endregion
 
+    private void Awake()
+    {
+        playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+    }
 
     private void Start()
     {
@@ -44,8 +49,9 @@ public class PlayerStats : StatsInterface
         // anything that happens when taking damage happens 
         if (health <= 0)
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            playerAnimation.Dead();
         }
     }
 

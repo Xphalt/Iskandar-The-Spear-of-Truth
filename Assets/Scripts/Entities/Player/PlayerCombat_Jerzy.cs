@@ -10,6 +10,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public float throwTimeSpinningInPlace;
     public float throwSpeed;
     public float throwReturnSpeed;
+    public bool attackOffCooldown = true;
     public bool canAttack = true;
     Quaternion swordLookRotation;
     private float timeInteractHeld = 0f;
@@ -33,6 +34,8 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public float TIME_BEFORE_DISABLING_COLLIDER = 0.6f; // May need to change for target pads
 
+    
+
 
     void Start()
     {
@@ -53,12 +56,18 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         {
             swordCollider.enabled = false;
         }
+        if (!playerMovement.falling && !playerMovement.knockedBack && playerMovement.timeSinceLastDash > playerMovement.dashDuration)
+        {
+            canAttack = true;
+        }
+        else
+            canAttack = false;
 
     }
 
     public void Attack()
     {
-        if (timeSinceLastAttack >= attackCooldown && canAttack)
+        if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
         {
             swordCollider.enabled = true;
             playerAnimation.SimpleAttack();
@@ -69,7 +78,14 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void ThrowAttack()
     {
-        StartCoroutine(PauseForThrow());
+        if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
+        {
+            attackOffCooldown = false;
+            StartCoroutine(PauseForThrow());
+            playerMovement.LockPlayerMovement();
+
+        }
+
     }
 
     IEnumerator PauseForThrow() 
@@ -80,14 +96,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         playerAnimation.SwordThrowAttack();
 
         yield return new WaitForSeconds(swordReleaseDelay);
+        throwSword.ThrowSword(swordLookRotation);
 
-        if (timeSinceLastAttack >= attackCooldown && canAttack)
-        {
-            throwSword.ThrowSword(swordLookRotation);
-            canAttack = false;
-            timeSinceLastAttack = 0;
+        timeSinceLastAttack = 0;
 
-        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -96,10 +108,12 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         if (other.tag == "playerSword" && returning && thrown)
         {
             // end throw cycle, attach sword to player, set appropriate position and rotation for the sword
+            playerAnimation.SwordReturnAttack();
+            playerMovement.LockPlayerMovement();
             throwSword.EndThrowCycle();
             swordEmpty.transform.parent = playerModel.transform;
             swordEmpty.transform.SetPositionAndRotation(swordDefaultPosition.transform.position, swordDefaultPosition.transform.rotation);
-            canAttack = true;
+            attackOffCooldown = true;
         }
     }
 }

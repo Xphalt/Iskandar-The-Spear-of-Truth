@@ -10,6 +10,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public GameObject playerModel;
     public float m_Speed, m_floorDistance;
     public float fallingSpeed;
+    public bool falling;
 
     public Quaternion swordLookRotation;
 
@@ -21,7 +22,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public float dashAnalogueReq;
     private Vector3 dashDirection;
 
-    float timeSinceLastDash = 0;
+    public float timeSinceLastDash = 0;
+
+    private const float STARTING_DASH_MULTIPLIER = 1f;
+    private const float DASH_MULTIPLIER_NUMERATOR = 10;
+
+    private const float KNOCKBACK_DENOMINATOR_ADDITION = 0.5f;
 
     private Player_Targeting_Jack _playerTargetingScript;
     private Transform _targetedTransform = null;
@@ -29,6 +35,18 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     float lastMagnitudeFromTarget = 0;
 
     private const float FIX_DISTANCE_FORCE = 5;
+
+    private float fallingSpeedMultiplier = 1;
+    float timeSpentFalling = 0;
+    bool onGround;
+    private const float TIME_BEFORE_FALLING_DOWNWARDS = 0.1f;
+
+    public bool knockedBack = false;
+    Vector3 knockBackDirection;
+    private float knockBackDuraction;
+    private float knockBackSpeed;
+    private float timeKnockedBack;
+    private float dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
 
 
     [SerializeField] private float _rotationSpeed;
@@ -49,15 +67,64 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private void Update()
     {
         timeSinceLastDash += Time.deltaTime;
+        dashSpeedMultiplier += Time.deltaTime;
+
+        CheckGround();
+
+        float verticalVelocity = m_Rigidbody.velocity.y;
+
+        // check if player's velocity is less than 0 and not on the ground
+        // !onGround is required because the player may be decending a ramp and it may think the player is falling without the check
+        if (verticalVelocity < 0 && !onGround)
+        {
+            falling = true;
+            if (timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS && !onGround)
+                playerAnimation.Falling();
+            timeSpentFalling += Time.deltaTime;
+        }
+        else if (verticalVelocity == 0 && onGround)
+        {
+            if (falling)
+                playerAnimation.Landing();
+                
+
+            falling = false;
+            timeSpentFalling = 0;
+
+        }
+
+        // if player has stepped off a ledge, reset only their x and z velocity. This is optional if we want the player to fall directly downwards.
+        //if (falling && timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS)
+        //{
+        //    m_Rigidbody.velocity = new Vector3(0, verticalVelocity, 0);
+        //}
     }
 
     private void FixedUpdate()
     {
+        if (falling)
+            timeSinceLastDash = dashDuration;
+
         if(timeSinceLastDash < dashDuration)
         {
-            m_Rigidbody.AddForce(dashDirection * dashForce);
+            //m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
+            m_Rigidbody.velocity = dashDirection * dashForce / dashSpeedMultiplier;
         }
-        CheckGround();
+
+        if (timeKnockedBack < knockBackDuraction && knockedBack && !falling)
+        {
+            timeKnockedBack += Time.deltaTime;
+            //knockBackDirection * Time.deltaTime * knockBackSpeed * (knockBackDuraction/ timeKnockedBack + KNOCKBACK_DENOMINATOR_ADDITION);
+            m_Rigidbody.velocity = knockBackDirection * knockBackSpeed * (1 - timeKnockedBack / knockBackDuraction * KNOCKBACK_DENOMINATOR_ADDITION);
+            playerAnimation.Falling();
+        }
+        else if (knockedBack)
+        {
+            timeKnockedBack = 0;
+            knockedBack = false;
+            playerAnimation.Landing();
+        }
+
     }
 
     public float GetPlayerVelocity()
@@ -72,85 +139,97 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public void Dash(Vector3 _dashDirection)
     {
-        if (timeSinceLastDash >= dashCooldown)
+        if (timeSinceLastDash >= dashCooldown && !knockedBack)
         {
             canBeDamaged = false;
             dashDirection = _dashDirection;
             timeSinceLastDash = 0;
+            dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
+            playerAnimation.Dodging();
         }
     }
 
     public void Movement(Vector3 m_Input)
     {
-        //This prevents player from moving whilst attacking or dashing
-        if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
-            (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("SwordThrow&Return")) &&
-            timeSinceLastDash >= dashDuration)
-        {
-            if (_playerTargetingScript.IsTargeting())
+
+            //This prevents player from moving whilst attacking, dashing, falling
+            if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
+                (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
+                (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
+                timeSinceLastDash >= dashDuration && !falling && !knockedBack)
             {
-                Transform tempTransform = _playerTargetingScript.GetTargetTransform();
-                _targetedTransform = tempTransform;
-
-                // Set player rotation to look at targeted object
-                Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
-                                    0.0f,
-                                    _targetedTransform.position.z - transform.position.z);
-
-                playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
-
-                Vector3 direction = playerModel.transform.TransformDirection(m_Input);
-
-                // this block of code ensures that the player does not spiral away from the targeted enemy
-                if (m_Input.x == 0)
+                if (_playerTargetingScript.IsTargeting())
                 {
-                    lastMagnitudeFromTarget = playerToTargetVector.magnitude;
+                    Transform tempTransform = _playerTargetingScript.GetTargetTransform();
+                    _targetedTransform = tempTransform;
+
+                    // Set player rotation to look at targeted object
+                    Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
+                                        0.0f,
+                                        _targetedTransform.position.z - transform.position.z);
+
+                    playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
+
+                    Vector3 direction = playerModel.transform.TransformDirection(m_Input);
+
+                    // this block of code ensures that the player does not spiral away from the targeted enemy
+                    if (m_Input.x == 0)
+                    {
+                        lastMagnitudeFromTarget = playerToTargetVector.magnitude;
+                    }
+                    if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
+                    {
+                        m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE); 
+                    }
+
+                    m_Rigidbody.velocity = (direction * m_Speed);
+
+                    // this line fixes the thrown sword direction when locked onto an enemy
+                    swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
                 }
-                if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
+                else
                 {
-                    m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE); // What does this 5 means? <--- made into const
+                    Vector3 newVel = m_Input.normalized * m_Speed;
+                    newVel.y = m_Rigidbody.velocity.y;
+                    m_Rigidbody.velocity = (newVel);
+                    Rotation(m_Input);
                 }
-
-                m_Rigidbody.velocity = (direction * m_Speed);
-
-                // this line fixes the thrown sword direction when locked onto an enemy
-                swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
+                if (timeSinceLastDash >= dashDuration && !canBeDamaged)
+                {
+                    canBeDamaged = true;
+                }
             }
-            else
-            {
-                Vector3 newVel = m_Input.normalized * m_Speed;
-                newVel.y = m_Rigidbody.velocity.y;
-                m_Rigidbody.velocity = (newVel);
-                Rotation(m_Input);
-            }
-            if (timeSinceLastDash >= dashDuration && !canBeDamaged)
-            {
-                canBeDamaged = true;
-            }
-        }
         /*_________________________________________________________________________
          * Player animation.
          * ________________________________________________________________________*/
         if (!playerAnimation.isLongIdling)
-        {
-            playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
-            playerAnimation.Strafing();
-        }
+            {
+                playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+                playerAnimation.Strafing();
+            }
 
         else if (playerAnimation.isLongIdling)
-            playerAnimation.PlayerLongIdle(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
-        //_________________________________________________________________________
-        //Debug.Log(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+            playerAnimation.LongIdling(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
+       //_________________________________________________________________________
     }
 
     void CheckGround()
-    {
+    { 
+        Vector3 newVel = m_Rigidbody.velocity;
+
         if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance))
         {
-            Vector3 newVel = m_Rigidbody.velocity;
-            newVel.y = -fallingSpeed;
-            m_Rigidbody.velocity = newVel;
+            fallingSpeedMultiplier += Time.deltaTime;
+            newVel.y = -(fallingSpeed* fallingSpeedMultiplier* fallingSpeedMultiplier);
+            onGround = false;
         }
+        else
+        {
+            newVel.y = 0;
+            onGround = true;
+            fallingSpeedMultiplier = 1;
+        }
+        m_Rigidbody.velocity = newVel;
     }
 
 
@@ -170,5 +249,16 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public void SetTargetedTransform(Transform newTargetedTransform)
     {
         _targetedTransform = newTargetedTransform;
+    }
+
+    public void KnockBack(Vector3 otherPosition, float speed, float duration)
+    {
+        timeSinceLastDash = dashDuration;
+        otherPosition = new Vector3(otherPosition.x, transform.position.y, otherPosition.z);
+        knockBackDuraction = duration;
+        knockBackSpeed = speed;
+        playerModel.transform.LookAt(otherPosition);
+        knockBackDirection = (transform.position - otherPosition).normalized;
+        knockedBack = true;
     }
 }

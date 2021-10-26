@@ -8,8 +8,6 @@ public class PlayerAnimationManager : MonoBehaviour
 {
     #region Variables
     [HideInInspector] public Animator animator;
-
-  //  [HideInInspector] public bool isIdling = false;
     [HideInInspector] public bool isRunning = false;
     [HideInInspector] public bool isLongIdling = false;
     [HideInInspector] public bool isStrafing = false;
@@ -26,10 +24,11 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private void Update()
     {
+        UpdateAxisValues();
         Strafing();
     }
 
-    public void PlayerLongIdle(float playerVelocity) //not working atm
+    public void LongIdling(float playerVelocity) //not working atm
     {
      /*_________________________________________________________________________
      * Player switches between idle states if player is stationary for too long
@@ -56,17 +55,19 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void Running(float speed) 
     {
-        if (!isStrafing)
-            animator.SetFloat("isRunning", speed); 
-        else if (isStrafing)
-            animator.SetFloat("isRunning", 0);
+        if (speed < 0.2f)
+        {
+            animator.SetTrigger("isIdling");
+            animator.SetBool("isRunning", false);
+        }
+        else
+            animator.SetBool("isRunning", true);
     }
 
     public void Strafing()
     {
         if (isStrafing)
         {
-            UpdateAxisValues();
             animator.SetBool("isIdling", false);
             animator.SetBool("isStrafing", true);
         }
@@ -79,12 +80,37 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void SimpleAttack() 
     {
-        animator.SetTrigger("isSimpleAttacking");
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) animator.SetTrigger("isSimpleAttacking"); 
     }
 
-    public void SwordThrowAttack()
+    public void SwordThrowAttack() 
     {
-        animator.SetTrigger("isSwordThrowing"); 
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) animator.SetTrigger("isSwordThrowing");
+    }
+
+    public void SwordReturnAttack() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) animator.SetTrigger("isSwordReturning"); 
+    }
+
+    public void Dodging() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge")) animator.SetTrigger("isDodging"); 
+    }
+
+    public void Falling() 
+    { 
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Fall")) animator.SetTrigger("isFalling");
+    }
+
+    public void Landing() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Land")) animator.SetTrigger("isLanding");
+    }
+
+    public void Dead() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dead")) animator.SetTrigger("isDead"); 
     }
 
     private void UpdateAxisValues()
