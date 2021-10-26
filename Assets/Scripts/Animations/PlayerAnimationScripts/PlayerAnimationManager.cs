@@ -78,19 +78,40 @@ public class PlayerAnimationManager : MonoBehaviour
         }
     }
 
-    public void SimpleAttack() { animator.SetTrigger("isSimpleAttacking"); }
+    public void SimpleAttack() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) animator.SetTrigger("isSimpleAttacking"); 
+    }
 
-    public void SwordThrowAttack() { animator.SetTrigger("isSwordThrowing"); }
+    public void SwordThrowAttack() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) animator.SetTrigger("isSwordThrowing");
+    }
 
-    public void SwordReturnAttack() { animator.SetTrigger("isSwordReturning"); }
+    public void SwordReturnAttack() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) animator.SetTrigger("isSwordReturning"); 
+    }
 
-    public void Dodging() { animator.SetTrigger("isDodging"); }
+    public void Dodging() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Fall")) animator.SetTrigger("Dodge"); 
+    }
 
-    public void Falling() { animator.SetTrigger("isFalling"); }
+    public void Falling() 
+    { 
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Fall")) animator.SetTrigger("isFalling");
+    }
 
-    public void Landing() { animator.SetTrigger("isLanding"); }
+    public void Landing() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Land")) animator.SetTrigger("isLanding");
+    }
 
-    public void Dead() { animator.SetTrigger("isDead"); }
+    public void Dead() 
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dead")) animator.SetTrigger("isDead"); 
+    }
 
     private void UpdateAxisValues()
     {

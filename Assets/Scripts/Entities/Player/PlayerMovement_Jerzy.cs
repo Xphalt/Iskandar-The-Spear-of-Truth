@@ -24,7 +24,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public float timeSinceLastDash = 0;
 
-    private const float STARTING_DASH_MULTIPLIER = 0.1f;
+    private const float STARTING_DASH_MULTIPLIER = 1f;
     private const float DASH_MULTIPLIER_NUMERATOR = 10;
 
     private const float KNOCKBACK_DENOMINATOR_ADDITION = 0.5f;
@@ -86,6 +86,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             if (falling)
                 playerAnimation.Landing();
+                
 
             falling = false;
             timeSpentFalling = 0;
@@ -106,13 +107,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         if(timeSinceLastDash < dashDuration)
         {
-            m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
+            //m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
+            m_Rigidbody.velocity = dashDirection * dashForce / dashSpeedMultiplier;
         }
 
         if (timeKnockedBack < knockBackDuraction && knockedBack && !falling)
         {
             timeKnockedBack += Time.deltaTime;
-            m_Rigidbody.velocity = knockBackDirection * Time.deltaTime * knockBackSpeed * (knockBackDuraction/ timeKnockedBack + KNOCKBACK_DENOMINATOR_ADDITION);
+            //knockBackDirection * Time.deltaTime * knockBackSpeed * (knockBackDuraction/ timeKnockedBack + KNOCKBACK_DENOMINATOR_ADDITION);
+            m_Rigidbody.velocity = knockBackDirection * knockBackSpeed * (1 - timeKnockedBack / knockBackDuraction * KNOCKBACK_DENOMINATOR_ADDITION);
             playerAnimation.Falling();
         }
         else if (knockedBack)
