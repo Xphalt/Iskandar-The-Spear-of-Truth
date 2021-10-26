@@ -15,23 +15,24 @@ public class EnemyBase : Patrol
     { 
         Melee,
         Charge,
+        Shoot,
         AttackTypesCount
     };
 
     #region Attack Info
-    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    [NamedArrayAttribute(new string[] { "Melee", "Charge", "Shoot" })]
     public bool[] availableAttacks = new bool[(int)AttackTypes.AttackTypesCount];
 
-    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    [NamedArrayAttribute(new string[] { "Melee", "Charge", "Shoot" })]
     public float[] attackDamages = new float[(int)AttackTypes.AttackTypesCount];
 
-    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    [NamedArrayAttribute(new string[] { "Melee", "Charge", "Shoot" })]
     public float[] attackRanges = new float[(int)AttackTypes.AttackTypesCount];
 
-    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    [NamedArrayAttribute(new string[] { "Melee", "Charge", "Shoot" })]
     public float[] attackDurations = new float[(int)AttackTypes.AttackTypesCount];
 
-    [NamedArrayAttribute(new string[] { "Melee", "Charge" })]
+    [NamedArrayAttribute(new string[] { "Melee", "Charge", "Shoot" })]
     public float[] attackCooldowns = new float[(int)AttackTypes.AttackTypesCount];
 
     private float[] attackTimers = new float[(int)AttackTypes.AttackTypesCount];
@@ -44,6 +45,8 @@ public class EnemyBase : Patrol
         (attackTimers[(int)AttackTypes.Melee] >= attackCooldowns[(int)AttackTypes.Melee]);
     protected bool ChargeAvailable => availableAttacks[(int)AttackTypes.Charge] && 
         (attackTimers[(int)AttackTypes.Charge] >= attackCooldowns[(int)AttackTypes.Charge]);
+    protected bool ShootAvailable => availableAttacks[(int)AttackTypes.Shoot] &&
+        (attackTimers[(int)AttackTypes.Shoot] >= attackCooldowns[(int)AttackTypes.Shoot]);
     protected bool AttackEnded => (curAttack != AttackTypes.AttackTypesCount) ? attackTimers[(int)curAttack] > attackDurations[(int)curAttack] : true;
     #endregion
 
@@ -60,6 +63,9 @@ public class EnemyBase : Patrol
     public float chargeSpeed;
     private float chargeDistance;
     private Vector3 chargePoint;
+
+    public GameObject projectileObj;
+    public Transform shootPoint;
 
     
     public float minChaseRadius;
@@ -183,6 +189,11 @@ public class EnemyBase : Patrol
                 ChargeAttack();
             }
 
+            if(!attackUsed && ShootAvailable && curState == EnemyStates.Chasing)
+            {
+                ShootAttack();
+            }
+
             if (attackUsed)
             {
                 //change state to Attacking
@@ -217,6 +228,50 @@ public class EnemyBase : Patrol
             curAttack = AttackTypes.Melee;
             MyRigid.velocity = Vector2.zero;
         }
+    }
+
+    public void ShootAttack()
+    {
+        if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Shoot])
+        {
+            transform.LookAt(detector.GetCurTarget().position,Vector3.up);
+            Vector3 projectileVelocity = CalculateVelocity(detector.GetCurTarget().position, shootPoint.position, attackDurations[(int)AttackTypes.Shoot]);
+            GameObject projectile = Instantiate(projectileObj, shootPoint.position, Quaternion.identity);
+            projectile.GetComponent<Rigidbody>().velocity = projectileVelocity;
+            projectile.GetComponent<ProjectileScript>().SetDamageFromParent(attackDamages[(int)AttackTypes.Shoot], attackDurations[(int)AttackTypes.Shoot]);
+            attackUsed = true;
+            curAttack = AttackTypes.Shoot;
+            MyRigid.velocity = Vector2.zero;
+
+        }
+    }
+
+    Vector3 CalculateVelocity(Vector3 startPos, Vector3 target, float time)
+    {
+        //find distance x and y first
+        Vector3 distance = startPos - target;
+
+        //find distance on x and z axis
+        Vector3 distance_x_z = distance;
+        distance_x_z.y = 0;
+
+        //creating a float for the vertical height
+        float projectileHeight = distance.y;
+        float DistanceOnX_Z = distance_x_z.magnitude;
+
+        //calculating initial x velocity
+        //velocityX = x / t
+        float velocityX_Z = DistanceOnX_Z / time;
+
+        //calculating initial y velocity
+        //velocityY = (y/t) + 1/2 * g * t
+        float velocityY = projectileHeight / time + 0.5f * Mathf.Abs(Physics.gravity.y) * time;
+
+        Vector3 result = distance_x_z.normalized;
+        result *= velocityX_Z;
+        result.y = velocityY;
+
+        return result;
     }
 
     private void OnCollisionEnter(Collision collision)
