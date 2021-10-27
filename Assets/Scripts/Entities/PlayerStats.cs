@@ -13,6 +13,19 @@ public class PlayerStats : StatsInterface
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
 
+    private int gems;
+    public int Gems
+    {
+        get
+        {
+            return gems;
+        }
+        set
+        {
+            gems = value;
+        }
+    }
+    
     public float damage;
     public float defence;
     public float fireDefence;
@@ -149,10 +162,15 @@ public class PlayerStats : StatsInterface
     private void OnTriggerEnter(Collider other)
     {
         var item = other.GetComponent<GroundItem>();
-        if (item)
+        if (item && item.itemobj.type != ItemType.Resource)
         {
             if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
+        }
+        else if(item) //It's a gem pot
+        { 
+            gems += ((ResourceObject)(item.itemobj)).gems;
+            Destroy(other.gameObject);
         }
     }
 

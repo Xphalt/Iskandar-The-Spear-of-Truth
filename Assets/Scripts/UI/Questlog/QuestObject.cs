@@ -23,6 +23,6 @@ public class QuestObject : ScriptableObject
 
     [Space(10)]
     [Tooltip("The rewards given to the player once the quest is completed.")]
-    public ItemObject[] QuestReward;
+    public ItemObj[] QuestReward;
 
 }

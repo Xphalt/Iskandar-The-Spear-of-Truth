@@ -7,6 +7,13 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public enum EquipSlot
+{
+    SwordSlot,
+    ArmorSlot,
+    MiscSlot
+}
+
 public class EquipPanel : MonoBehaviour
 {
     public ItemType type;
@@ -74,8 +81,8 @@ public class EquipPanel : MonoBehaviour
             case ItemType.Armor: //Armor
                 values = ((ArmorObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
                 break;
-            case ItemType.Default: //Default
-                values = ((DefaultObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
+            case ItemType.Accessories: //Default
+                values = ((AccessoryObject)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
                 break;
 
         } 
@@ -98,21 +105,21 @@ public class EquipPanel : MonoBehaviour
         //Equip
         if (inventory.database.ItemObjects[slotItem[obj].id].type == ItemType.Weapon)
         {
-            inventory.SwapItem(equipment.Storage.Slots[0], inventory.FindItemOnInventory(slotItem[obj]));   //Weapon
+            inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.SwordSlot], inventory.FindItemOnInventory(slotItem[obj]));   //Weapon
 
             ClearObjects();
             SpawnPanel();
         }
         else if (inventory.database.ItemObjects[slotItem[obj].id].type == ItemType.Armor)
         {
-            inventory.SwapItem(equipment.Storage.Slots[1], inventory.FindItemOnInventory(slotItem[obj]));   //Armor
+            inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.ArmorSlot], inventory.FindItemOnInventory(slotItem[obj]));   //Armor
 
             ClearObjects();
             SpawnPanel();
         }
         else 
         {
-            inventory.SwapItem(equipment.Storage.Slots[2], inventory.FindItemOnInventory(slotItem[obj]));   //Armor
+            inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.MiscSlot], inventory.FindItemOnInventory(slotItem[obj]));   //Miscelaneous
 
             ClearObjects();
             SpawnPanel();
