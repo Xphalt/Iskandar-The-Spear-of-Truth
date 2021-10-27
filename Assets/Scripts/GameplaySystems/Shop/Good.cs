@@ -13,8 +13,8 @@ public class Good : MonoBehaviour
 
     public Image image;
     public Text displayName;
-    public Text buyValue;
-    public Text sellValue;
+    public Text buyValue; private int buyVl;
+    public Text sellValue; private int sellVl;
     public Text amount; public int howMany;
 
     public void SetupGood(ItemObject_Sal item, InventoryObject_Sal inv)
@@ -27,8 +27,8 @@ public class Good : MonoBehaviour
         displayName.text = localisationTableReference.GetLocalisedString();
         
         image.sprite = item.uiDisplay;
-        buyValue.text = item.BuyValue.ToString();
-        sellValue.text = item.SellValue.ToString();
+        buyValue.text = item.BuyValue.ToString();   buyVl = item.BuyValue;
+        sellValue.text = item.SellValue.ToString(); sellVl = item.SellValue;
 
         amount.text = inv.FindItemOnInventory(item.data).amount.ToString();
         howMany = int.Parse(amount.text.ToString());
@@ -36,21 +36,26 @@ public class Good : MonoBehaviour
 
     public void BuyGood(InventoryObject_Sal destinationInvenotory)
     { 
-        if (howMany > 0)
+        var playerstats = FindObjectOfType<PlayerStats>();
+        if (howMany > 0 && playerstats.Gems > buyVl)
         {
             if (destinationInvenotory.AddItem(destinationInvenotory.database.ItemObjects[objHolder.data.id].data, 1))
             {
                 //Reduce amount in the shop
                 GameObject.FindObjectOfType<ShopManager>().shop.FindItemOnInventory(objHolder.data).AddAmount(-1);
-                amount.text = (--howMany).ToString(); 
+                amount.text = (--howMany).ToString();
 
-                //TODO:pay
+                //pay
+                playerstats.Gems -= buyVl; 
+                Debug.Log(playerstats.Gems);
             }
         }
     }
 
     public void SellGood(InventoryObject_Sal destinationInvenotory)
     {
+        var playerstats = FindObjectOfType<PlayerStats>();
+
         InventorySlot obj = destinationInvenotory.FindItemOnInventory(objHolder.data);
         
         if (obj == null) //No item in the inventory
@@ -65,11 +70,10 @@ public class Good : MonoBehaviour
             //Add amount to the shop
             GameObject.FindObjectOfType<ShopManager>().shop.FindItemOnInventory(objHolder.data).AddAmount(1);
             amount.text = (++howMany).ToString();
-
-            
-
-            //TODO: pay
-        }
-        
+             
+            //pay
+            playerstats.Gems += sellVl;
+            Debug.Log(playerstats.Gems);
+        } 
     }
 } 

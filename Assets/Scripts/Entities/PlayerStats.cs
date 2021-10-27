@@ -13,7 +13,18 @@ public class PlayerStats : StatsInterface
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
 
-    public int Gems;
+    private int gems;
+    public int Gems
+    {
+        get
+        {
+            return gems;
+        }
+        set
+        {
+            gems = value;
+        }
+    }
     
     public float damage;
     public float defence;
@@ -156,10 +167,9 @@ public class PlayerStats : StatsInterface
             if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
         }
-        else //It's a gem pot
-        {
-            Debug.Log(((ResourceObject)(item.itemobj)).gems);
-            Gems += ((ResourceObject)(item.itemobj)).gems;
+        else if(item) //It's a gem pot
+        { 
+            gems += ((ResourceObject)(item.itemobj)).gems;
             Destroy(other.gameObject);
         }
     }
