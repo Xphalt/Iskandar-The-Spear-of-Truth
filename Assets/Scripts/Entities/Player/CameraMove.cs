@@ -15,7 +15,7 @@ public class CameraMove : MonoBehaviour
 
     public Vector3 Limits = new Vector3(15, 0, 5);
 
-    public float panSpeed = 0;
+    public float panSpeed = 10;
     private float panLinger = 0;
     private float panDuration = 0;
     private float panTimer = 0;
@@ -61,8 +61,14 @@ public class CameraMove : MonoBehaviour
     {
         panTarget = newPan;
         panStart = transform.position;
-
+        panLinger = linger;
         panDuration = panStart.GetDistance(panTarget) / panSpeed;
+        panning = true;
+    }
+
+    public void StartPan(Transform newPan, float linger)
+    {
+        StartPan(newPan.position, linger);
     }
 
     private void Pan()
@@ -70,8 +76,15 @@ public class CameraMove : MonoBehaviour
         panTimer += Time.deltaTime;
 
         if (panTimer < panDuration)
-            transform.position = Vector3.Lerp(panStart, panTarget, panTimer / panDuration);
+            transform.position = Vector3.Lerp(panStart, panTarget, Mathf.SmoothStep(0, 1, panTimer / panDuration));
         else if (panTimer > panDuration + panLinger && panTimer < panDuration * 2 + panLinger)
-            transform.position = Vector3.Lerp(panTarget, panStart, (panTimer - panDuration - panLinger) / panDuration);
+            transform.position = Vector3.Lerp(panTarget, panStart, Mathf.SmoothStep(0, 1, (panTimer - panDuration - panLinger) / panDuration));
+        else if (panTimer > panDuration * 2 + panLinger)
+            panning = false;
+    }
+
+    public void TestPan()
+    {
+        StartPan(UpBound, 2);
     }
 }
