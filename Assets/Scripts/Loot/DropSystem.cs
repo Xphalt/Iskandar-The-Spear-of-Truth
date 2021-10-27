@@ -6,7 +6,8 @@ public enum EntityType
 {
     type1,
     type2,
-    type3
+    type3,
+    Chest
 }
 
 public class DropSystem : MonoBehaviour
@@ -25,7 +26,7 @@ public class DropSystem : MonoBehaviour
     }
 
     [SerializeField]
-    public List<EntityType> enemyType = new List<EntityType>();
+    public List<EntityType> entityType = new List<EntityType>();
     [SerializeField]
     public List<int> tentatives = new List<int>(); 
     public Dictionary<EntityType, int> tentativeNum = new Dictionary<EntityType, int>();
@@ -34,9 +35,9 @@ public class DropSystem : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {   
-        for (int i = 0; i < enemyType.Count; i++)
+        for (int i = 0; i < entityType.Count; i++)
         {
-            tentativeNum.Add(enemyType[i], tentatives[i]);
+            tentativeNum.Add(entityType[i], tentatives[i]);
         } 
     }
 

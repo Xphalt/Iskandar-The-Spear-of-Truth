@@ -44,5 +44,6 @@ public class UseAccessoriesTest : MonoBehaviour
         {
             Item.Use(gameObject);    //Adds vitality every time an enemy is killed
         }
+
     }
 }
