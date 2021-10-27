@@ -43,6 +43,7 @@ public class UseFunctions : MonoBehaviour
         }
     }
 
+
     public void SetVariables(float p_Interval, float p_healingVL)
     {
         regenerationInterval = p_Interval;

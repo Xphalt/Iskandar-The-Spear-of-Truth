@@ -28,23 +28,19 @@ public class UseAccessoriesTest : MonoBehaviour
         }
 
 
-        if (equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id > -1 &&
-            Item.accessory == Accessories.RingOfVitality)
+        if (Item && Item.accessory == Accessories.RingOfVitality)
         {
             Item.Use(gameObject); //Recovers hp every n seconds
         }
-        else if(Keyboard.current.bKey.isPressed && equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id > -1 &&
-            Item.accessory == Accessories.BracersOfScouting)
+        else if(Item && Keyboard.current.bKey.isPressed && Item.accessory == Accessories.BracersOfScouting)
         {
             Item.Use(gameObject, pos);    //Teleport
         }
-        else if (Keyboard.current.nKey.isPressed && equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id > -1 &&
-            Item.accessory == Accessories.Goggles)
+        else if (Item && Keyboard.current.nKey.isPressed && Item.accessory == Accessories.Goggles)
         {
             Item.Use(listOfObj);   //Make things invisible
         }
-        else if (Keyboard.current.mKey.isPressed && equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id > -1 &&
-            Item.accessory == Accessories.BracersOfTheLifeStealers)
+        else if (Item && Keyboard.current.mKey.isPressed && Item.accessory == Accessories.BracersOfTheLifeStealers)
         {
             Item.Use(gameObject);    //Adds vitality every time an enemy is killed
         }

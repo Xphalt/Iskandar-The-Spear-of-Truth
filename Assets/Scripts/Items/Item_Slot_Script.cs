@@ -13,11 +13,11 @@ public class Item_Slot_Script : MonoBehaviour
     public Button itemButton, removeButton;
     public GameObject pickUpScript;
 
-    ItemObject thisItem;
+    ItemObj thisItem;
 
     #endregion
 
-    public void UpdateSlotIcon(ItemObject  newItem)
+    public void UpdateSlotIcon(ItemObj  newItem)
     {
         /*_________________________________________________________________________
          * This sets the inventory icon to the object being picked up.

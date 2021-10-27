@@ -11,12 +11,12 @@ public enum Accessories
 }
  
 
-[CreateAssetMenu(fileName = "New Default Object", menuName = "Inventory System/Items/Default")]
+[CreateAssetMenu(fileName = "New Accessory Object", menuName = "Inventory System/Items/Accessory")]
 public class AccessoryObject : ItemObject_Sal
 {  
     public float HealingValue;
     public float regenerationInterval;
-
+    public bool isPassive;
     public string Desc;
     public Accessories accessory; 
 
