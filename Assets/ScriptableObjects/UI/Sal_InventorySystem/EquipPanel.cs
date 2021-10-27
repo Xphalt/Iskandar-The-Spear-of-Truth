@@ -11,7 +11,7 @@ public enum EquipSlot
 {
     SwordSlot,
     ArmorSlot,
-    MiscSlot
+    AccessorySlot
 }
 
 public class EquipPanel : MonoBehaviour
@@ -119,7 +119,10 @@ public class EquipPanel : MonoBehaviour
         }
         else 
         {
-            inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.MiscSlot], inventory.FindItemOnInventory(slotItem[obj]));   //Miscelaneous
+            if (equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id > -1 && equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id].OnUseAfter != null)
+                equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id].OnUseAfter.Invoke();
+            inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.AccessorySlot], inventory.FindItemOnInventory(slotItem[obj]));   //Accessories
+            
 
             ClearObjects();
             SpawnPanel();

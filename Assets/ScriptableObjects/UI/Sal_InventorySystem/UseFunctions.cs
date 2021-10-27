@@ -22,24 +22,29 @@ public class UseFunctions : MonoBehaviour
     private void Start()
     {    
         var database = FindObjectOfType<PlayerStats>().inventory.database.ItemObjects;
+        var playerstats = FindObjectOfType<PlayerStats>();
         for (int i = 0; i < database.Length; i++)
         {
             switch (database[i].name)
             {
                 case "Bracers of Scouting":
-                    database[i].OnUse += UseBracersOfScouting;
+                    database[i].OnUseBefore += UseBracersOfScouting;
+                    database[i].useParameters = new GameObject[] { playerstats.gameObject, playerstats.gameObject };
                     break;
                 case "Goggles":
-                    database[i].OnUse += UseGoggles;
+                    database[i].OnUseBefore += UseGoggles;
+                    database[i].OnUseAfter += UseGogglesUndo;
+                    database[i].useParameters = new GameObject[] { playerstats.listOfObjs };
                     break;
                 case "Ring Of Vitality":
-                    database[i].OnUse += UseRingOfVitality;
+                    database[i].OnUseBefore += UseRingOfVitality;
+                    database[i].useParameters = new GameObject[] { playerstats.gameObject };
                     break;
                 case "Bracers Of The Life Stealers":
-                    database[i].OnUse += UseBracersOfTheLifeStealers;
+                    database[i].OnUseBefore += UseBracersOfTheLifeStealers;
+                    database[i].useParameters = new GameObject[] { playerstats.gameObject };
                     break;
-            }
-
+            } 
         }
     }
 
@@ -59,8 +64,8 @@ public class UseFunctions : MonoBehaviour
     #region Use Functions
     //0 == playerPos, 1 == teleportPos
     public void UseBracersOfScouting(params GameObject[] playerPosAndTeleport)
-    {
-        Vector3 newPos = playerPosAndTeleport[1].transform.position;
+    { 
+        Vector3 newPos = FindObjectOfType<PlayerCombat_Jerzy>().swordObject.transform.position;
         newPos.y = playerPosAndTeleport[0].transform.position.y;
         playerPosAndTeleport[0].transform.position = newPos;
     }
@@ -68,9 +73,14 @@ public class UseFunctions : MonoBehaviour
     //0 == List of objs
     public void UseGoggles(params GameObject[] obj)
     {
-        if(obj[0].activeSelf) obj[0].SetActive(false);
+        obj = new GameObject[] { FindObjectOfType<PlayerStats>().listOfObjs };
+        if(obj[0] && obj[0].activeSelf) obj[0].SetActive(false);
     }
-
+    public void UseGogglesUndo(params GameObject[] obj)
+    {
+        obj = new GameObject[] { FindObjectOfType<PlayerStats>().listOfObjs };
+        if (obj[0] && !obj[0].activeSelf) obj[0].SetActive(true);
+    }
 
     //0 == Player
     public void UseRingOfVitality(params GameObject[] obj)

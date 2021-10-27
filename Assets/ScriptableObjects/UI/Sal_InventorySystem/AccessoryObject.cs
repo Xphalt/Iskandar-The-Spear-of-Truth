@@ -17,6 +17,8 @@ public class AccessoryObject : ItemObject_Sal
     public float HealingValue;
     public float regenerationInterval;
     public bool isPassive;
+
+
     public string Desc;
     public Accessories accessory; 
 
@@ -27,8 +29,8 @@ public class AccessoryObject : ItemObject_Sal
         Desc = string.Concat(
             "<b><color=red>Healing value</color></b>: ", HealingValue );
     }
-
-    public override void Use(params GameObject[] p_obj)
+     
+    public override void UseBefore()
     {
         Debug.Log("Default item Used");
 
@@ -36,7 +38,13 @@ public class AccessoryObject : ItemObject_Sal
         UseFunctions.Instance.SetVariables(regenerationInterval, HealingValue);
 
         //Use
-        OnUse.Invoke(p_obj);
+        OnUseBefore.Invoke(useParameters);
+    }
+    public override void UseAfter()
+    {
+        //Setting values for the delegate Use
+        UseFunctions.Instance.SetVariables(regenerationInterval, HealingValue);
+        OnUseAfter.Invoke(useParameters);
     }
 }
 

@@ -8,7 +8,8 @@ public enum ItemType
     Weapon, 
     Accessories,
     Items,
-    Resource
+    Resource,
+    Material
 }
 
 public delegate void Use(params GameObject[] p_obj);
@@ -23,8 +24,12 @@ public abstract class ItemObject_Sal : ScriptableObject
     public bool stackable;
     public Item data = new Item();
 
-    public Use OnUse;
-    public abstract void Use(params GameObject[] p_obj);
+    public Use OnUseBefore;
+    public Use OnUseAfter;
+    public GameObject[] useParameters; 
+
+    public abstract void UseBefore();  
+    public abstract void UseAfter();  
 }
 
 [System.Serializable]

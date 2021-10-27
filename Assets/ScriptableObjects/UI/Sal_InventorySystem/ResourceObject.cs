@@ -17,8 +17,12 @@ public class ResourceObject : ItemObject_Sal
         //    "\n<b><color=red>Ice Defence</color></b>: ", defValues.iceDef);
     }
 
-    public override void Use(params GameObject[] p_obj)
+    public override void UseBefore()
     {
         Debug.Log("Resource used");
+    }
+    public override void UseAfter()
+    {
+        OnUseAfter.Invoke(useParameters);
     }
 }

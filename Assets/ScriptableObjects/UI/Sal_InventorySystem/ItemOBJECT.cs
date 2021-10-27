@@ -18,8 +18,12 @@ public class ItemOBJECT : ItemObject_Sal
         //    "\n<b><color=red>Ice Defence</color></b>: ", defValues.iceDef);
     }
 
-    public override void Use(params GameObject[] p_obj)
+    public override void UseBefore()
     {
         Debug.Log("Item used/Equipped");
+    }
+    public override void UseAfter()
+    {
+        OnUseAfter.Invoke(useParameters);
     }
 } 

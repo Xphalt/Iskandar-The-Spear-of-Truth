@@ -71,7 +71,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     {
         if (throwSword.thrown && playerStats.Item && playerStats.Item.accessory == Accessories.BracersOfScouting)
         {
-            playerStats.Item.Use(gameObject, swordObject);    //Teleport
+            playerStats.Item.UseBefore();    //Teleport
         }
         if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
         {

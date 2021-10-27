@@ -15,11 +15,11 @@ public class UseAccessoriesTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id > -1)
+        if(equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id > -1)
         {
             try
             {
-                Item = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id]));
+                Item = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id]));
             }
             catch 
             {
@@ -30,19 +30,19 @@ public class UseAccessoriesTest : MonoBehaviour
 
         if (Item && Item.accessory == Accessories.RingOfVitality)
         {
-            Item.Use(gameObject); //Recovers hp every n seconds
+            Item.UseBefore(); //Recovers hp every n seconds
         }
         else if(Item && Keyboard.current.bKey.isPressed && Item.accessory == Accessories.BracersOfScouting)
         {
-            Item.Use(gameObject, pos);    //Teleport
+            Item.UseBefore();    //Teleport
         }
         else if (Item && Keyboard.current.nKey.isPressed && Item.accessory == Accessories.Goggles)
         {
-            Item.Use(listOfObj);   //Make things invisible
+            Item.UseBefore();   //Make things invisible
         }
         else if (Item && Keyboard.current.mKey.isPressed && Item.accessory == Accessories.BracersOfTheLifeStealers)
         {
-            Item.Use(gameObject);    //Adds vitality every time an enemy is killed
+            Item.UseBefore();    //Adds vitality every time an enemy is killed
         }
 
     }
