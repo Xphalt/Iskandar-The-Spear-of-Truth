@@ -7,7 +7,8 @@ public enum ItemType
     Armor,
     Weapon, 
     Accessories,
-    Items
+    Items,
+    Resource
 }
 
 public delegate void Use(params GameObject[] p_obj);
@@ -18,8 +19,7 @@ public abstract class ItemObject_Sal : ScriptableObject
     public Sprite uiDisplay;
     public Mesh model;
     public ItemType type;
-    [TextArea(10,15)]
-    public string description;
+    [TextArea(10,15)] public string description;
     public bool stackable;
     public Item data = new Item();
 

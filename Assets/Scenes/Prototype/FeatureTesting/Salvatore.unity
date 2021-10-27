@@ -1197,9 +1197,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropChance: 0
+  dropChance: 100
   itemToDrop: {fileID: 11400000, guid: 1b074604cbea66d41911e7d1f57d3fa4, type: 2}
-  type: 0
+  type: 3
   groundItem: {fileID: 4138513575415382912, guid: 26d61015829d48c44853d006ecd39a7b, type: 3}
 --- !u!4 &855912551
 Transform:
@@ -2541,8 +2541,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
+      propertyPath: entityType.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
       propertyPath: tentatives.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
       propertyPath: enemyType.Array.data[1]
@@ -2551,6 +2555,18 @@ PrefabInstance:
     - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
       propertyPath: enemyType.Array.data[2]
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
+      propertyPath: entityType.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
+      propertyPath: entityType.Array.data[2]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
+      propertyPath: entityType.Array.data[3]
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
       propertyPath: tentatives.Array.data[0]
@@ -2562,6 +2578,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
       propertyPath: tentatives.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5417927124470046046, guid: b31db46dec456db42981d441217efe84, type: 3}
+      propertyPath: tentatives.Array.data[3]
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7978926002874009546, guid: b31db46dec456db42981d441217efe84, type: 3}
