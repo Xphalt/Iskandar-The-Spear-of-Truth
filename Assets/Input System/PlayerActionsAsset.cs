@@ -235,7 +235,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1b517cac-32be-47cf-9063-278f213d91e5"",
-                    ""path"": ""<Keyboard>/x"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & mouse"",

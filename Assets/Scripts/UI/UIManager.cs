@@ -88,7 +88,7 @@ public class UIManager : MonoBehaviour
     };
 
     private INPUT_OPTIONS current_input = INPUT_OPTIONS.NUM_OPTIONS;
-    public INPUT_OPTIONS getCurrentInput() { return current_input;  }
+    public INPUT_OPTIONS getCurrentInput() { return current_input; }
 
     public void SetUIForInput(INPUT_OPTIONS input)
     {
@@ -146,6 +146,21 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region Targeting Icon
+    [SerializeField] private TargetingIcon targetingIcon;
+
+    public void EnableTargetingIcon(Transform transform, TargetingIcon.TARGETING_TYPE targetingType)
+    {
+        targetingIcon.gameObject.SetActive(true);
+        targetingIcon.SetTarget(transform, targetingType);
+    }
+    public void DisableTargetingIcon()
+    {
+        targetingIcon.SetTarget(null, TargetingIcon.TARGETING_TYPE.NUM_TARGETING_TYPES);
+        targetingIcon.gameObject.SetActive(false);
+    }
+    #endregion // Targeting Icon
+
     public static UIManager instance;
     private void Awake()
     {
@@ -160,7 +175,7 @@ public class UIManager : MonoBehaviour
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
 
         // At the moment we're using keyboard and mouse to play the game
-        SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
+        SetUIForInput(INPUT_OPTIONS.GAMEPAD);
     }
 
 #if DEBUG // Dominique 07-10-2021, Use to test enemy health bar (make sure to SetupEnemyHealthBar first)

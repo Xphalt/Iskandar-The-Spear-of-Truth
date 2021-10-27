@@ -6,21 +6,22 @@ using UnityEngine;
 public class Player_Targeting_Jack : MonoBehaviour
 {
     public Transform playerModelTransform;
-    public Transform targetingIcon;
 
     private Transform _targetedTransform = null;
-    private bool _targetableObjectHit = false;
     private const int TARGETABLE_LAYERMASK = 1 << 7;
     [SerializeField]
-    private Vector3 _boxCastHalfDimensions = new Vector3(3.0f, 3.0f, 1.0f); // Half the x, y & z dimensions for the box cast to detect targetable objects
+    private float targetRadius; // Half the x, y & z dimensions for the box cast to detect targetable objects
     [SerializeField]
-    private float _boxCastMaxDistance = 15.0f;
-    private RaycastHit _targetRaycastHit;
 
     private bool _wasTargeting = false;
     private PlayerMovement_Jerzy _playerMovementScript;
     private PlayerAnimationManager playerAnimation;
-    
+
+    private Collider[] _targetableColliders;
+    private Collider _nearestTargetableCollider = null;
+    private Collider _lastNearestTargetableCollider = null;
+    private float _targetIconTriggerDistance = 350f; // Dominique - Idk why it's this number and doesn't align with the other stuff used for the BoxCast ;-;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -35,12 +36,53 @@ public class Player_Targeting_Jack : MonoBehaviour
         {
             // Player was targeting an object last frame but is no longer targeting
             UnTargetObject();
-		}
-        // Dominique 07-10-2021, Ensure the icon follows above the targeted object
-        else if (IsTargeting())
+        }
+        GetTargetables();
+    }
+
+    // Show the targeting icon over the closest targetable object (based off of code for interactables in Player_Interaction_Jack)
+    private void GetTargetables()
+    {
+        Vector3 _boxDimensions = new Vector3(_targetIconTriggerDistance, _targetIconTriggerDistance, _targetIconTriggerDistance);
+        _targetableColliders = Physics.OverlapSphere(transform.position, targetRadius, TARGETABLE_LAYERMASK);
+
+        float _nearestTargetableDistanceSqr = _targetIconTriggerDistance;
+        _nearestTargetableCollider = null;
+
+        foreach (Collider collider in _targetableColliders)
         {
-            Vector3 new_pos = new Vector3(_targetedTransform.position.x, _targetedTransform.position.y + (1 * _targetedTransform.localScale.y), _targetedTransform.position.z);
-            targetingIcon.position = new_pos;
+            float xDistance = collider.transform.position.x - transform.position.x;
+            float zDistance = collider.transform.position.z - transform.position.z;
+
+            float distance = xDistance * xDistance + zDistance * zDistance;
+
+            if (distance <= _nearestTargetableDistanceSqr)
+            {
+                _nearestTargetableDistanceSqr = distance;
+                _nearestTargetableCollider = collider;
+            }
+        }
+
+        if (_nearestTargetableCollider != _lastNearestTargetableCollider)
+        {
+            bool indicateNearestTargetable = UIManager.instance.getCurrentInput() == UIManager.INPUT_OPTIONS.GAMEPAD && !IsTargeting();
+            if (indicateNearestTargetable && _lastNearestTargetableCollider)
+            {
+                ShaderHandler.instance.SetOutlineColor(_lastNearestTargetableCollider.gameObject, Color.clear);
+            }
+
+            _lastNearestTargetableCollider = _nearestTargetableCollider;
+
+            if (indicateNearestTargetable &&  _nearestTargetableCollider)
+            {
+                // Highlight the closest targetable object with outline + icon
+                ShaderHandler.instance.SetOutlineColor(_nearestTargetableCollider.gameObject, Color.white);
+                UIManager.instance.EnableTargetingIcon(_nearestTargetableCollider.transform, TargetingIcon.TARGETING_TYPE.INDICATING);
+            }
+            else if (indicateNearestTargetable)
+            {
+                UIManager.instance.DisableTargetingIcon();
+            }
         }
     }
 
@@ -54,32 +96,24 @@ public class Player_Targeting_Jack : MonoBehaviour
     // Otherwise, it will target the nearest targetable object in front of the player if any are within range
     public void TargetObject()
     {
-        if(IsTargeting())
+        // Reset so indicator will regrab on if disabling target
+        _lastNearestTargetableCollider = null;
+        if (IsTargeting())
         {
             UnTargetObject();
 		}
         else
         {
-
             playerAnimation.isStrafing = true;
 
-
-            _targetableObjectHit = Physics.BoxCast(transform.position,
-                                            _boxCastHalfDimensions,
-                                            playerModelTransform.forward,
-                                            out _targetRaycastHit,
-                                            transform.rotation,
-                                            _boxCastMaxDistance,
-                                            TARGETABLE_LAYERMASK);
-
-            if (_targetableObjectHit)
+            if (_nearestTargetableCollider)
             {
-                _targetedTransform = _targetRaycastHit.transform;
+                _targetedTransform = _nearestTargetableCollider.transform;
                 _wasTargeting = true;
 
                 // Dominique 07-10-2021, Outline the targeted enemy and move the interactable icon to them
                 ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.yellow);
-                targetingIcon.gameObject.SetActive(true);
+                UIManager.instance.EnableTargetingIcon(_targetedTransform, TargetingIcon.TARGETING_TYPE.ACTIVE);
 
             }
             else
@@ -94,7 +128,7 @@ public class Player_Targeting_Jack : MonoBehaviour
     {
         // Dominique 07-10-2021, Clear enemy outline when no longer targeting and remove the interactable icon
         ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.clear);
-        targetingIcon.gameObject.SetActive(false);
+        UIManager.instance.DisableTargetingIcon();
 
         _targetedTransform = null;
         _wasTargeting = false;

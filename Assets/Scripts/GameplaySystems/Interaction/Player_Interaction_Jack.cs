@@ -9,6 +9,7 @@ public class Player_Interaction_Jack : MonoBehaviour
     private float _interactionRadius = 5.0f;
 
     private const int INTERACTABLE_LAYERMASK = 1 << 8;
+    private const int TARGETABLE_LAYERMASK = 1 << 7;
 
     private Collider[] _interactableColliders;
     private Collider _nearestInteractableCollider = null;
