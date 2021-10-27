@@ -6,11 +6,12 @@ using UnityEngine.AI;
 public class Patrol : MonoBehaviour
 {
     [Header("Node Information")]
-    [SerializeField] private string _nodeTag;
+    //[SerializeField] private string _nodeTag;
     public Transform[] ListOfNodes;
     private int _currentNode;
 
-    [Header("")]
+
+    protected Animator _myAnimator;
 
 
     protected NavMeshAgent agent;
@@ -20,8 +21,7 @@ public class Patrol : MonoBehaviour
 
     protected Rigidbody MyRigid;
 
-    Vector3 direction;
-
+    //Vector3 direction;
 
     public virtual void Start()
     {
@@ -29,6 +29,9 @@ public class Patrol : MonoBehaviour
 
         MyRigid = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
+
+        _myAnimator = GetComponentInParent<Animator>();
+
         agent.autoBraking = false;
         GoToNextNode();
 
@@ -49,6 +52,7 @@ public class Patrol : MonoBehaviour
 
     void GoToNextNode()
     {
+        _myAnimator.SetBool("IsPatrolling", true);
         if (ListOfNodes.Length == 0) return;
         agent.destination = ListOfNodes[_currentNode].position;
         _currentNode = (_currentNode + 1) % ListOfNodes.Length;
@@ -56,6 +60,7 @@ public class Patrol : MonoBehaviour
 
     private IEnumerator Pause(float delay) // Temporarily stop the NPC's speed to allow for idle posing
     {
+        _myAnimator.SetBool("IsPatrolling", false);
         agent.speed = 0.0f;
         yield return new WaitForSeconds(delay);
         agent.speed = patrolSpeed;
