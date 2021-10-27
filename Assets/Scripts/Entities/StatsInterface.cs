@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class StatsInterface : MonoBehaviour
 {
+    public bool HasBeenDefeated => health <= 0;
+
     public float health;
     protected SoundPlayer sfx;
 

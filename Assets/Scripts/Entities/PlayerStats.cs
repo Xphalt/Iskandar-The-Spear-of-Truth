@@ -8,8 +8,11 @@ public class PlayerStats : StatsInterface
     private PlayerAnimationManager playerAnimation;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
+    public GameObject listOfObjs;
 
+    internal AccessoryObject Item;
     #region STATS
+    public float MAX_HEALTH = 10.0f;
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
 
@@ -52,6 +55,29 @@ public class PlayerStats : StatsInterface
         sfx = GetComponentInParent<SoundPlayer>();
     }
 
+    private void Update()
+    {
+        if (equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id > -1)
+        {
+            try
+            {
+                Item = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id]));
+            }
+            catch
+            {
+                Item = null;
+            }
+        }
+        if (Item && Item.accessory == Accessories.RingOfVitality)
+        {
+            Item.Use(gameObject); //Recovers hp every n seconds
+        }
+        if (Item && Item.accessory == Accessories.Goggles)
+        {
+            Item.Use(listOfObjs); //Recovers hp every n seconds
+        }
+    }
+
     public override void TakeDamage(float amount, bool scriptedKill = false)
     {
         if (scriptedKill) amount = health - 1;
@@ -71,6 +97,8 @@ public class PlayerStats : StatsInterface
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
     {
         target.TakeDamage(amount, scriptedKill);
+        
+        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.BracersOfTheLifeStealers) Item.Use(gameObject);
     }
 
 

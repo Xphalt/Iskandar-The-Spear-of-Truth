@@ -66,7 +66,7 @@ public class UseFunctions : MonoBehaviour
     //0 == List of objs
     public void UseGoggles(params GameObject[] obj)
     {
-        obj[0].SetActive(!obj[0].activeSelf);
+        if(obj[0].activeSelf) obj[0].SetActive(false);
     }
 
 
@@ -78,7 +78,7 @@ public class UseFunctions : MonoBehaviour
         current += Time.deltaTime;
         if (current > regenerationInterval)
         {
-            if (stats.health < 10) //Magic number (variable needed);
+            if (stats.health < stats.MAX_HEALTH) //Magic number (variable needed);
                 stats.health += HealingValue;
 
             current = 0;
@@ -89,7 +89,7 @@ public class UseFunctions : MonoBehaviour
     public void UseBracersOfTheLifeStealers(params GameObject[] obj)
     {
         var stats = obj[0].GetComponent<PlayerStats>();
-        if (stats.health < 10) //Magic number (variable needed);
+        if (stats.health < stats.MAX_HEALTH) //Magic number (variable needed);
             stats.health += HealingValue;
     }
     #endregion
