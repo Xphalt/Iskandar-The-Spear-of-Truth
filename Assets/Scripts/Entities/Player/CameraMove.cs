@@ -25,6 +25,7 @@ public class CameraMove : MonoBehaviour
     private Vector3 panStart = new Vector3();
 
     private bool Bound => LeftBound != null && RightBound != null && UpBound != null && DownBound != null;
+    private Vector3 TargetPos => new Vector3(Target.position.x, Target.position.y + Yoffset, Target.position.z - Zoffset);
 
     private void Awake() //used to avoid reference errors
     {
@@ -54,15 +55,16 @@ public class CameraMove : MonoBehaviour
             newZ = ZFollowing ? Mathf.Clamp(Target.position.z, DownBound.position.z + Limits.z, UpBound.position.z - Limits.z) : Zmid;
         }
         
-        transform.position = new Vector3(newX, Target.position.y + Yoffset, (newZ - Zoffset));
+        transform.position = new Vector3(newX, Target.position.y + Yoffset, newZ - Zoffset);
     }
 
     public void StartPan(Vector3 newPan, float linger)
     {
-        panTarget = newPan;
+        panTarget = new Vector3(newPan.x, newPan.y + Yoffset, newPan.z - Zoffset);
         panStart = transform.position;
         panLinger = linger;
         panDuration = panStart.GetDistance(panTarget) / panSpeed;
+        panTimer = 0;
         panning = true;
     }
 
@@ -78,7 +80,7 @@ public class CameraMove : MonoBehaviour
         if (panTimer < panDuration)
             transform.position = Vector3.Lerp(panStart, panTarget, Mathf.SmoothStep(0, 1, panTimer / panDuration));
         else if (panTimer > panDuration + panLinger && panTimer < panDuration * 2 + panLinger)
-            transform.position = Vector3.Lerp(panTarget, panStart, Mathf.SmoothStep(0, 1, (panTimer - panDuration - panLinger) / panDuration));
+            transform.position = Vector3.Lerp(panTarget, TargetPos, Mathf.SmoothStep(0, 1, (panTimer - panDuration - panLinger) / panDuration));
         else if (panTimer > panDuration * 2 + panLinger)
             panning = false;
     }
