@@ -60,7 +60,9 @@ public class UseFunctions : MonoBehaviour
     //0 == playerPos, 1 == teleportPos
     public void UseBracersOfScouting(params GameObject[] playerPosAndTeleport)
     {
-        playerPosAndTeleport[0].transform.position = playerPosAndTeleport[1].transform.position;
+        Vector3 newPos = playerPosAndTeleport[1].transform.position;
+        newPos.y = playerPosAndTeleport[0].transform.position.y;
+        playerPosAndTeleport[0].transform.position = newPos;
     }
 
     //0 == List of objs

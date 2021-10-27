@@ -14,6 +14,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     PlayerCombat_Jerzy combatScript;
     private PlayerMovement_Jerzy playerMovement;
+    private PlayerStats playerStats;
     private PlayerAnimationManager playerAnim;
 
     float throwTimeBeforeSpinInPlace;
@@ -31,6 +32,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
         swordRigidBody = GetComponent<Rigidbody>(); 
         combatScript = player.GetComponent<PlayerCombat_Jerzy>();
         playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
+        playerStats = player.GetComponent<PlayerStats>();
         playerAnim = GetComponentInParent<PlayerAnimationManager>();
     }
 
@@ -112,9 +114,9 @@ public class ThrowSword_Jerzy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // when the sword returns to the player
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.TryGetComponent(out EnemyStats statsInterface))
         {
-            if (other.TryGetComponent(out StatsInterface statsInterface)) statsInterface.TakeDamage(swordDamage);
+            playerStats.DealDamage(statsInterface, swordDamage);
         }
     }
 }
