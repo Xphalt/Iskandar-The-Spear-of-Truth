@@ -24,9 +24,9 @@ public class Transparency_Jerzy : MonoBehaviour
         {
             RaycastHit hit = hits[i];
 
-            if (hit.collider.gameObject.CompareTag("Wall"))
+            if (hit.collider.TryGetComponent(out TransparentObject_Jerzy vanish))
             {
-                hit.collider.gameObject.GetComponent<TransparentObject_Jerzy>().MakeTransparent(i+1);
+                vanish.MakeTransparent(i+1);
             }
         }
     }
