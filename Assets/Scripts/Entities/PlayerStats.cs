@@ -30,6 +30,7 @@ public class PlayerStats : StatsInterface
     }
     
     public float damage;
+    public float spiritualDamage;
     public float defence;
     public float fireDefence;
     public float iceDefence;
@@ -123,10 +124,14 @@ public class PlayerStats : StatsInterface
                         try
                         {
                             damage -= ((WeaponObject_Sal)(temp)).damage;
+                            spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
+                            GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost;
                         }
                         catch
                         {
                             defence -= ((ShieldObject)(temp)).defValues.physicalDef;
+                            fireDefence -= ((ShieldObject)(temp)).defValues.fireDef;
+                            iceDefence -= ((ShieldObject)(temp)).defValues.iceDef;
                         }
                         break;
                     case ItemType.Armor:
@@ -163,10 +168,15 @@ public class PlayerStats : StatsInterface
                             try
                             {
                                 damage += ((WeaponObject_Sal)(temp)).damage;
+                                spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
+                                GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
+
                             }
                             catch
                             {
                                 defence += ((ShieldObject)(temp)).defValues.physicalDef;
+                                fireDefence += ((ShieldObject)(temp)).defValues.fireDef;
+                                iceDefence += ((ShieldObject)(temp)).defValues.iceDef;
                             }
                             break;
                         case ItemType.Armor:
