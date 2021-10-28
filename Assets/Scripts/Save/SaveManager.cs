@@ -9,45 +9,45 @@ public static class SaveManager
     // Morgan S Script
 
     //FILE 1
-    public static void SavePlayerStatsf1(PlayerStats playerStatsf1)
+    public static void SavePlayerStats(PlayerStats playerStats, int num)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        string filePathF1 = Application.persistentDataPath + "/Player_statsf1.txt";
-        FileStream fs = new FileStream(filePathF1, FileMode.Create);
+        string filePath = Application.persistentDataPath + "/Player_statsf" + num + ".txt";
+        FileStream fs = new FileStream(filePath, FileMode.Create);
 
-        SaveDataF1 saveDataf1 = new SaveDataF1(playerStatsf1);
+        SaveData saveData = new SaveData(playerStats);
 
-        bf.Serialize(fs, saveDataf1);
+        bf.Serialize(fs, saveData);
         fs.Close();
     }
 
-    public static void SavePlayerInventoryf1(InventoryObject_Sal playerInventoryf1)
+    public static void SavePlayerInventory(InventoryObject_Sal playerInventory, int num)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        string filePathF1 = Application.persistentDataPath + "/Player_Inventoryf1.txt";
-        FileStream fs = new FileStream(filePathF1, FileMode.Create);
+        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + ".txt";
+        FileStream fs = new FileStream(filePath, FileMode.Create);
 
-        SaveDataF1 saveDataf1 = new SaveDataF1(playerInventoryf1);
+        SaveData saveData = new SaveData(playerInventory);
 
-        bf.Serialize(fs, saveDataf1);
+        bf.Serialize(fs, saveData);
         fs.Close();
     }
 
 
-    public static SaveDataF1 LoadPlayerStatsf1()
+    public static SaveData LoadPlayerStats(int num)
     {
-        string filePathF1 = Application.persistentDataPath + "/Player_statsf1.txt";
-        if (File.Exists(filePathF1))
+        string filePath = Application.persistentDataPath + "/Player_statsf" + num + ".txt";
+        if (File.Exists(filePath))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = new FileStream(filePathF1, FileMode.Open);
+            FileStream fs = new FileStream(filePath, FileMode.Open);
 
-            SaveDataF1 saveDataf1 = bf.Deserialize(fs) as SaveDataF1;
+            SaveData saveData = bf.Deserialize(fs) as SaveData;
             fs.Close();
 
-            return saveDataf1;
+            return saveData;
         }
         else
         {
@@ -55,18 +55,18 @@ public static class SaveManager
         }
     }
 
-    public static SaveDataF1 LoadPlayerInventoryf1()
+    public static SaveData LoadPlayerInventory(int num)
     {
-        string filePathF1 = Application.persistentDataPath + "/Player_Inventoryf1.txt";
-        if (File.Exists(filePathF1))
+        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + ".txt";
+        if (File.Exists(filePath))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = new FileStream(filePathF1, FileMode.Open);
+            FileStream fs = new FileStream(filePath, FileMode.Open);
 
-            SaveDataF1 saveDataf1 = bf.Deserialize(fs) as SaveDataF1;
+            SaveData saveData = bf.Deserialize(fs) as SaveData;
             fs.Close();
 
-            return saveDataf1;
+            return saveData;
         }
         else
         {
@@ -74,6 +74,7 @@ public static class SaveManager
         }
     }
 
+}/*
     //FILE 2
     public static void SavePlayerStatsf2(PlayerStats playerStatsf2)
     {
@@ -205,4 +206,4 @@ public static class SaveManager
             return null;
         }
     }
-}
+} */
