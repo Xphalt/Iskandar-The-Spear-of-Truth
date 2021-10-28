@@ -152,7 +152,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     //morgan's autosave game edit
     private void OnDestroy()
     {
-        SaveStats(4);
+        SaveStats(0);
     }
 }
 
