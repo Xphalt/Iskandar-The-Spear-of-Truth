@@ -110,19 +110,9 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
     /////////////////////////////////////////////////////// MORGAN SAVE CHANGE ///////////////////////////////////////////////////
     [ContextMenu("Save")]
-    public void SaveStatsf1()
+    public void SaveStats(int num)
     {
-        SaveManager.SavePlayerInventoryf1(this);
-    }
-
-    public void SaveStatsf2()
-    {
-        SaveManager.SavePlayerInventoryf2(this);
-    }
-
-    public void SaveStatsf3()
-    {
-        SaveManager.SavePlayerInventoryf3(this);
+        SaveManager.SavePlayerInventory(this, num);
     }
 
     /*[ContextMenu("Save")]
@@ -146,26 +136,26 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
     /////////////////////////////////////////////////////// MORGAN LOAD CHANGE ///////////////////////////////////////////////////
     [ContextMenu("Load")]
-    public void LoadStatsf1()
+    public void LoadStats(int num)
     {
-        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerInventoryf1();
+        SaveData saveData = SaveManager.LoadPlayerInventory(num);
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
-        Inventory newStorage = (Inventory)saveDataf1.Storagef1;
+        Inventory newStorage = (Inventory)saveData.Storage;
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
             Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
         }
     }
 
-    public void LoadStatsf2()
+    /*public void LoadStatsf2()
     {
-        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerInventoryf2();
+        SaveDataF1 saveData = SaveManager.LoadPlayerInventory(2);
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
-        Inventory newStorage = (Inventory)saveDataf2.Storagef2;
+        Inventory newStorage = (Inventory)saveData.Storage;
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
             Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
@@ -174,7 +164,33 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
     public void LoadStatsf3()
     {
-        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerInventoryf3();
+        SaveDataF1 saveData = SaveManager.LoadPlayerInventory(3);
+
+        //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
+
+        Inventory newStorage = (Inventory)saveData.Storage;
+        for (int i = 0; i < Storage.Slots.Length; i++)
+        {
+            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+        }
+    }
+
+    public void LoadStatsf2()
+    {
+        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerInventory(2);
+
+        //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
+
+        Inventory newStorage = (Inventory)saveData.Storagef2;
+        for (int i = 0; i < Storage.Slots.Length; i++)
+        {
+            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+        }
+    }
+
+    public void LoadStatsf3()
+    {
+        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerInventory(3);
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
@@ -185,7 +201,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         }
     }
 
-    /*[ContextMenu("Load")]
+    [ContextMenu("Load")]
     public void Load()
     {
         if(File.Exists(string.Concat(Application.persistentDataPath, savePath)))
@@ -236,7 +252,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     //morgan's autosave game edit
     private void OnDestroy()
     {
-        SaveStatsf1();
+        SaveStats(1);
     }
 }
 

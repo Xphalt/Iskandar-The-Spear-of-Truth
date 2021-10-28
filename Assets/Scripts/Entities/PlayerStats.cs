@@ -203,43 +203,17 @@ public class PlayerStats : StatsInterface
     }
 
     //Morgan's Save Edits
-    public void SaveStatsf1()
+    public void SaveStats(int num)
     {
-        SaveManager.SavePlayerStatsf1(this);
-        inventory.SaveStatsf1();
+        SaveManager.SavePlayerStats(this, num);
+        inventory.SaveStats(num);
     }
 
-    public void SaveStatsf2()
+    public void LoadStats(int num)
     {
-        SaveManager.SavePlayerStatsf2(this);
-        inventory.SaveStatsf2();
-    }
-
-    public void SaveStatsf3()
-    {
-        SaveManager.SavePlayerStatsf3(this);
-        inventory.SaveStatsf3();
-    }
-
-    public void LoadStatsf1()
-    {
-        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerStatsf1();
-        health = saveDataf1.healthf1;
-        inventory.LoadStatsf1();
-    }
-
-    public void LoadStatsf2()
-    {
-        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerStatsf2();
-        health = saveDataf2.healthf2;
-        inventory.LoadStatsf2();
-    }
-
-    public void LoadStatsf3()
-    {
-        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerStatsf3();
-        health = saveDataf3.healthf3;
-        inventory.LoadStatsf3();
+        SaveData saveData = SaveManager.LoadPlayerStats(num);
+        health = saveData.health;
+        inventory.LoadStats(num);
     }
 
 
