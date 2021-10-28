@@ -57,11 +57,11 @@ public class PlayerStats : StatsInterface
 
     private void Update()
     {
-        if (equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id > -1)
+        if (equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id > -1)
         {
             try
             {
-                Item = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.MiscSlot].item.id]));
+                Item = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id]));
             }
             catch
             {
@@ -70,11 +70,11 @@ public class PlayerStats : StatsInterface
         }
         if (Item && Item.accessory == Accessories.RingOfVitality)
         {
-            Item.Use(gameObject); //Recovers hp every n seconds
+            Item.UseBefore(); //Recovers hp every n seconds
         }
         if (Item && Item.accessory == Accessories.Goggles)
         {
-            Item.Use(listOfObjs); //Recovers hp every n seconds
+            Item.UseBefore(); //deactivates objects
         }
     }
 
@@ -98,7 +98,7 @@ public class PlayerStats : StatsInterface
     {
         target.TakeDamage(amount, scriptedKill);
         
-        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.BracersOfTheLifeStealers) Item.Use(gameObject);
+        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.BracersOfTheLifeStealers) Item.UseBefore();
     }
 
 
