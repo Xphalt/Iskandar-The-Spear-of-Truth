@@ -38,13 +38,13 @@ public class AccessoryObject : ItemObject_Sal
         UseFunctions.Instance.SetVariables(regenerationInterval, HealingValue);
 
         //Use
-        OnUseBefore.Invoke(useParameters);
+        OnUseBefore.Invoke();
     }
     public override void UseAfter()
     {
         //Setting values for the delegate Use
         UseFunctions.Instance.SetVariables(regenerationInterval, HealingValue);
-        OnUseAfter.Invoke(useParameters);
+        OnUseAfter.Invoke();
     }
 }
 

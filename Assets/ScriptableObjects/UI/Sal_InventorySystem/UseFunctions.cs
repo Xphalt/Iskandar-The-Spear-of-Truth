@@ -13,7 +13,10 @@ public class UseFunctions : MonoBehaviour
                 instance = FindObjectOfType<UseFunctions>();
             return instance;
         }
-    }  
+    }
+    //Variables needed for the functions 
+    private PlayerStats playerstats;
+    private PlayerCombat_Jerzy playerCombat;
 
     void Awake()
     {
@@ -22,27 +25,24 @@ public class UseFunctions : MonoBehaviour
     private void Start()
     {    
         var database = FindObjectOfType<PlayerStats>().inventory.database.ItemObjects;
-        var playerstats = FindObjectOfType<PlayerStats>();
+        playerstats = FindObjectOfType<PlayerStats>();
+        playerCombat = FindObjectOfType<PlayerCombat_Jerzy>();
         for (int i = 0; i < database.Length; i++)
         {
             switch (database[i].name)
             {
                 case "Bracers of Scouting":
-                    database[i].OnUseBefore += UseBracersOfScouting;
-                    database[i].useParameters = new GameObject[] { playerstats.gameObject, playerstats.gameObject };
+                    database[i].OnUseBefore += UseBracersOfScouting; 
                     break;
                 case "Goggles":
                     database[i].OnUseBefore += UseGoggles;
-                    database[i].OnUseAfter += UseGogglesUndo;
-                    database[i].useParameters = new GameObject[] { playerstats.listOfObjs };
+                    database[i].OnUseAfter += UseGogglesUndo; 
                     break;
                 case "Ring Of Vitality":
-                    database[i].OnUseBefore += UseRingOfVitality;
-                    database[i].useParameters = new GameObject[] { playerstats.gameObject };
+                    database[i].OnUseBefore += UseRingOfVitality; 
                     break;
                 case "Bracers Of The Life Stealers":
-                    database[i].OnUseBefore += UseBracersOfTheLifeStealers;
-                    database[i].useParameters = new GameObject[] { playerstats.gameObject };
+                    database[i].OnUseBefore += UseBracersOfTheLifeStealers; 
                     break;
             } 
         }
@@ -61,48 +61,39 @@ public class UseFunctions : MonoBehaviour
 
     private float HealingValue; 
 
-    #region Use Functions
-    //0 == playerPos, 1 == teleportPos
-    public void UseBracersOfScouting(params GameObject[] playerPosAndTeleport)
+    #region Use Functions 
+    public void UseBracersOfScouting()
     { 
-        Vector3 newPos = FindObjectOfType<PlayerCombat_Jerzy>().swordObject.transform.position;
-        newPos.y = playerPosAndTeleport[0].transform.position.y;
-        playerPosAndTeleport[0].transform.position = newPos;
+        Vector3 newPos = playerCombat.swordObject.transform.position;
+        newPos.y = playerstats.transform.position.y;
+        playerstats.transform.position = newPos;
     }
-
-    //0 == List of objs
-    public void UseGoggles(params GameObject[] obj)
-    {
-        obj = new GameObject[] { FindObjectOfType<PlayerStats>().listOfObjs };
-        if(obj[0] && obj[0].activeSelf) obj[0].SetActive(false);
+     
+    public void UseGoggles()
+    { 
+        if(playerstats.listOfObjs != null && playerstats.listOfObjs.activeSelf) playerstats.listOfObjs.SetActive(false);
     }
-    public void UseGogglesUndo(params GameObject[] obj)
-    {
-        obj = new GameObject[] { FindObjectOfType<PlayerStats>().listOfObjs };
-        if (obj[0] && !obj[0].activeSelf) obj[0].SetActive(true);
+    public void UseGogglesUndo()
+    { 
+        if (playerstats.listOfObjs != null && !playerstats.listOfObjs.activeSelf) playerstats.listOfObjs.SetActive(true);
     }
-
-    //0 == Player
-    public void UseRingOfVitality(params GameObject[] obj)
-    {
-        var stats = obj[0].GetComponent<PlayerStats>();
-
+     
+    public void UseRingOfVitality()
+    { 
         current += Time.deltaTime;
         if (current > regenerationInterval)
         {
-            if (stats.health < stats.MAX_HEALTH) //Magic number (variable needed);
-                stats.health += HealingValue;
+            if (playerstats.health < playerstats.MAX_HEALTH) //Magic number (variable needed);
+                playerstats.health += HealingValue;
 
             current = 0;
         }
     }
-
-    //0 == Player
-    public void UseBracersOfTheLifeStealers(params GameObject[] obj)
-    {
-        var stats = obj[0].GetComponent<PlayerStats>();
-        if (stats.health < stats.MAX_HEALTH) //Magic number (variable needed);
-            stats.health += HealingValue;
+     
+    public void UseBracersOfTheLifeStealers()
+    { 
+        if (playerstats.health < playerstats.MAX_HEALTH) //Magic number (variable needed);
+            playerstats.health += HealingValue;
     }
     #endregion
 }

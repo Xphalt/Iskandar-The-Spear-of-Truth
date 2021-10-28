@@ -35,6 +35,6 @@ public class WeaponObject_Sal : ItemObject_Sal
     }
     public override void UseAfter()
     {
-        OnUseAfter.Invoke(useParameters);
+        OnUseAfter.Invoke();
     }
 }

@@ -46,6 +46,6 @@ public class ShieldObject : ItemObject_Sal
     }
     public override void UseAfter()
     {
-        OnUseAfter.Invoke(useParameters);
+        OnUseAfter.Invoke();
     }
 }

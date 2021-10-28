@@ -12,7 +12,7 @@ public enum ItemType
     Material
 }
 
-public delegate void Use(params GameObject[] p_obj);
+public delegate void Use();
 public abstract class ItemObject_Sal : ScriptableObject
 {
     public int BuyValue, SellValue;
@@ -25,8 +25,7 @@ public abstract class ItemObject_Sal : ScriptableObject
     public Item data = new Item();
 
     public Use OnUseBefore;
-    public Use OnUseAfter;
-    public GameObject[] useParameters; 
+    public Use OnUseAfter; 
 
     public abstract void UseBefore();  
     public abstract void UseAfter();  
