@@ -1,18 +1,23 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using TMPro;
 
 /*
  * Created by Mattie Hilton - 03/10/2021 
  */
 public class SettingsOptions : MonoBehaviour
 {
-    public Dropdown qualityDropDown;
+    public TMP_Dropdown qualityDropDown;
     public string qualitySettingsStringTable = "QualitySettings";
 
     private LocaleIdentifier current_locale;
     private bool done_first_setup = false;
+
+    private void Start()
+    {
+        LocaleChange();
+    }
 
     // Dominique 08-10-2021, When the pause button is pressed the pause menu opens and the quality settings are populated with options taken from the current locale
     public void LocaleChange()
@@ -29,7 +34,7 @@ public class SettingsOptions : MonoBehaviour
             {
                 localisedString.TableEntryReference = name;
                 string localised_name = localisedString.GetLocalizedString();
-                qualityDropDown.options.Add(new Dropdown.OptionData(localised_name));
+                qualityDropDown.options.Add(new TMP_Dropdown.OptionData(localised_name));
             }
 
             SetQuality(QualitySettings.GetQualityLevel());
