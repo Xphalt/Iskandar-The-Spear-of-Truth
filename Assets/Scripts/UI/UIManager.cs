@@ -88,7 +88,7 @@ public class UIManager : MonoBehaviour
     };
 
     private INPUT_OPTIONS current_input = INPUT_OPTIONS.NUM_OPTIONS;
-    public INPUT_OPTIONS getCurrentInput() { return current_input; }
+    public INPUT_OPTIONS GetCurrentInput() { return current_input; }
 
     public void SetUIForInput(INPUT_OPTIONS input)
     {
@@ -134,6 +134,9 @@ public class UIManager : MonoBehaviour
                 enableObjects[i].SetActive(true);
             }
         }
+
+        // Ensure the icon above targetable enemies updates according to the input type
+        targetingIcon.SetSprite(input);
     }
     #endregion
 
@@ -175,7 +178,7 @@ public class UIManager : MonoBehaviour
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
 
         // At the moment we're using keyboard and mouse to play the game
-        SetUIForInput(INPUT_OPTIONS.GAMEPAD);
+        SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
     }
 
 #if DEBUG // Dominique 07-10-2021, Use to test enemy health bar (make sure to SetupEnemyHealthBar first)

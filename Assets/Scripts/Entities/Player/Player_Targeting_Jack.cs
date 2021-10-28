@@ -40,7 +40,7 @@ public class Player_Targeting_Jack : MonoBehaviour
         GetTargetables();
     }
 
-    // Show the targeting icon over the closest targetable object (based off of code for interactables in Player_Interaction_Jack)
+    // Dominique, Show the targeting icon over the closest targetable object (based off of code for interactables in Player_Interaction_Jack)
     private void GetTargetables()
     {
         Vector3 _boxDimensions = new Vector3(_targetIconTriggerDistance, _targetIconTriggerDistance, _targetIconTriggerDistance);
@@ -63,20 +63,15 @@ public class Player_Targeting_Jack : MonoBehaviour
             }
         }
 
+        // Update targeting UI
         if (_nearestTargetableCollider != _lastNearestTargetableCollider)
         {
-            bool indicateNearestTargetable = UIManager.instance.getCurrentInput() == UIManager.INPUT_OPTIONS.GAMEPAD && !IsTargeting();
-            if (indicateNearestTargetable && _lastNearestTargetableCollider)
-            {
-                ShaderHandler.instance.SetOutlineColor(_lastNearestTargetableCollider.gameObject, Color.clear);
-            }
-
             _lastNearestTargetableCollider = _nearestTargetableCollider;
 
+            bool indicateNearestTargetable = UIManager.instance.GetCurrentInput() != UIManager.INPUT_OPTIONS.MOBILE && !IsTargeting();
             if (indicateNearestTargetable &&  _nearestTargetableCollider)
             {
                 // Highlight the closest targetable object with outline + icon
-                ShaderHandler.instance.SetOutlineColor(_nearestTargetableCollider.gameObject, Color.white);
                 UIManager.instance.EnableTargetingIcon(_nearestTargetableCollider.transform, TargetingIcon.TARGETING_TYPE.INDICATING);
             }
             else if (indicateNearestTargetable)
@@ -94,6 +89,7 @@ public class Player_Targeting_Jack : MonoBehaviour
 
     // If already targeting an object calling this method will untarget the object.
     // Otherwise, it will target the nearest targetable object in front of the player if any are within range
+    // Dominique, modified to use a sphere and the same targeting system as for interactables in Interactable_Object_Jack for UX purposes
     public void TargetObject()
     {
         // Reset so indicator will regrab on if disabling target
