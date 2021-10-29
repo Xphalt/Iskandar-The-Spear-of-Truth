@@ -164,6 +164,16 @@ public class UIManager : MonoBehaviour
     }
     #endregion // Targeting Icon
 
+    #region Money Popup
+    [SerializeField] private MoneyPopup moneyPopup;
+    private PlayerStats playerStats;
+    public void ShowMoneyPopup()
+    {
+        moneyPopup.SetNumber(playerStats.Gems);
+        moneyPopup.gameObject.SetActive(true);
+    }
+    #endregion // Money Popup
+
     public static UIManager instance;
     private void Awake()
     {
@@ -177,8 +187,12 @@ public class UIManager : MonoBehaviour
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
 
+        playerStats = GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>();
+
         // At the moment we're using keyboard and mouse to play the game
         SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
+
+        ShowMoneyPopup();
     }
 
 #if DEBUG // Dominique 07-10-2021, Use to test enemy health bar (make sure to SetupEnemyHealthBar first)
