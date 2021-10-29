@@ -56,7 +56,7 @@ public class EnemyBase : Patrol
     protected bool charging = false;
     protected bool attackUsed = false;
 
-    public float chargeSpeed;
+    public float chargeSpeed, chargeDistanceMult = 1;
     protected float chargeDistance;
     protected Vector3 chargePoint;
 
@@ -191,7 +191,7 @@ public class EnemyBase : Patrol
         {
             chargePoint = transform.position;
             MyRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
-            chargeDistance = (detector.GetCurTarget().position - transform.position).magnitude;
+            chargeDistance = (detector.GetCurTarget().position - transform.position).magnitude * chargeDistanceMult;
 
             attackUsed = true;
             curAttack = AttackTypes.Charge;

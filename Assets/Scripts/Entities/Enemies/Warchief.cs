@@ -30,7 +30,7 @@ public class Warchief : EnemyBase
     [NamedArrayAttribute(new string[] { "Warcry", "Flurry", "Lunge", "Parry" })]
     public float[] warChiefCooldowns = new float[(int)WarchiefAttacks.AttackTypesCount];
 
-    public float[] warChiefTimers = new float[(int)WarchiefAttacks.AttackTypesCount];
+    private float[] warChiefTimers = new float[(int)WarchiefAttacks.AttackTypesCount];
 
     protected WarchiefAttacks warChiefAttack = WarchiefAttacks.AttackTypesCount;
 
