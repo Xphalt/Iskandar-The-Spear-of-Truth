@@ -240,7 +240,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             Quaternion targetRotation = Quaternion.LookRotation(m_Input);
             playerModel.transform.rotation = Quaternion.Lerp(playerModel.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-
+            playerAnimation.Turning(playerModel.transform.rotation.x);
             swordLookRotation = playerModel.transform.rotation;
         }
     }
