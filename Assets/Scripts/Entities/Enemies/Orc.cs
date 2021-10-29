@@ -48,13 +48,22 @@ public class Orc : EnemyBase
     {
         if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
         {
-            hitCollider.enabled = true;
             _myAnimator.SetTrigger("Hit");
 
             attackUsed = true;
             curAttack = AttackTypes.Melee;
             MyRigid.velocity = Vector2.zero;
         }
+    }
+
+    public void ActivateMeleeCollider()
+    {
+        hitCollider.enabled = true;
+    }
+
+    public void DeactivateMeleeCollider()
+    {
+        hitCollider.enabled = false;
     }
 
     protected override void OnCollisionEnter(Collision collision)

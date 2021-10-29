@@ -35,9 +35,9 @@ public class EnemyBase : Patrol
     [NamedArrayAttribute(new string[] { "Melee", "Charge", "Shoot" })]
     public float[] attackCooldowns = new float[(int)AttackTypes.AttackTypesCount];
 
-    private float[] attackTimers = new float[(int)AttackTypes.AttackTypesCount];
+    protected float[] attackTimers = new float[(int)AttackTypes.AttackTypesCount];
 
-    private float curAttackTimer = 0;
+    protected float curAttackTimer = 0;
 
     protected AttackTypes curAttack = AttackTypes.AttackTypesCount;
 
