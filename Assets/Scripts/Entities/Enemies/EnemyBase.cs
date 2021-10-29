@@ -39,7 +39,7 @@ public class EnemyBase : Patrol
 
     private float curAttackTimer = 0;
 
-    private AttackTypes curAttack = AttackTypes.AttackTypesCount;
+    protected AttackTypes curAttack = AttackTypes.AttackTypesCount;
 
     protected bool MeleeAvailable => availableAttacks[(int)AttackTypes.Melee] &&
         (attackTimers[(int)AttackTypes.Melee] >= attackCooldowns[(int)AttackTypes.Melee]);
@@ -66,7 +66,7 @@ public class EnemyBase : Patrol
 
     public GameObject projectileObj;
     public Transform shootPoint;
-
+    protected BoxCollider hitCollider;
 
     public float minChaseRadius;
 
@@ -82,6 +82,7 @@ public class EnemyBase : Patrol
         for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
         curState = EnemyStates.Patrolling;
         detector = GetComponent<PlayerDetection>();
+        hitCollider = GetComponent<BoxCollider>();
     }
 
     public override void Update()
@@ -272,6 +273,16 @@ public class EnemyBase : Patrol
         if (collision.collider.transform == detector.GetCurTarget() && charging)
         {
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
+        }
+    }
+
+    protected virtual void OnTriggerEnter(Collider collider)
+    {
+        if (collider.transform == detector.GetCurTarget())
+        {
+            print("Hit");
+            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
+            hitCollider.enabled = false;
         }
     }
 }

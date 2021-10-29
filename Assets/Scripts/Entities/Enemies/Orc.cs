@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Orc : EnemyBase
 {
-    // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
@@ -42,16 +40,21 @@ public class Orc : EnemyBase
     {
         base.ChargeAttack();
 
-        if(charging)
+        if (charging)
             _myAnimator.SetBool("IsCharging", true);
     }
 
     protected override void MeleeAttack()
     {
-        base.MeleeAttack();
-
-        if(attackUsed)
+        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
+        {
+            hitCollider.enabled = true;
             _myAnimator.SetTrigger("Hit");
+
+            attackUsed = true;
+            curAttack = AttackTypes.Melee;
+            MyRigid.velocity = Vector2.zero;
+        }
     }
 
     protected override void OnCollisionEnter(Collision collision)
