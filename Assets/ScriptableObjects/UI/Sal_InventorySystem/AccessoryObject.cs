@@ -4,10 +4,10 @@ using UnityEngine;
 
 public enum Accessories
 {
-    BracersOfScouting,
+    BraceletOfScouting,
     Goggles,
     RingOfVitality,
-    BracersOfTheLifeStealers
+    NecklaceOfTheLifeStealers
 }
  
 
@@ -27,12 +27,13 @@ public class AccessoryObject : ItemObject_Sal
         type = ItemType.Accessories; 
 
         Desc = string.Concat(
-            "<b><color=red>Healing value</color></b>: ", HealingValue );
+            "<b><color=red>Healing value</color></b>: ", HealingValue,
+            "\nRegeneration Rate: ", regenerationInterval, "sec");
     }
      
     public override void UseBefore()
     {
-        Debug.Log("Default item Used");
+        Debug.Log("Accessory Used");
 
         //Setting values for the delegate Use
         UseFunctions.Instance.SetVariables(regenerationInterval, HealingValue);

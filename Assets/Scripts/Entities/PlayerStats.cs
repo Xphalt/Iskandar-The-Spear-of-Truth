@@ -99,7 +99,7 @@ public class PlayerStats : StatsInterface
     {
         target.TakeDamage(amount, scriptedKill);
         
-        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.BracersOfTheLifeStealers) Item.UseBefore();
+        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.NecklaceOfTheLifeStealers) Item.UseBefore();
     }
 
 

@@ -32,7 +32,7 @@ public class UseAccessoriesTest : MonoBehaviour
         {
             Item.UseBefore(); //Recovers hp every n seconds
         }
-        else if(Item && Keyboard.current.bKey.isPressed && Item.accessory == Accessories.BracersOfScouting)
+        else if(Item && Keyboard.current.bKey.isPressed && Item.accessory == Accessories.BraceletOfScouting)
         {
             Item.UseBefore();    //Teleport
         }
@@ -40,7 +40,7 @@ public class UseAccessoriesTest : MonoBehaviour
         {
             Item.UseBefore();   //Make things invisible
         }
-        else if (Item && Keyboard.current.mKey.isPressed && Item.accessory == Accessories.BracersOfTheLifeStealers)
+        else if (Item && Keyboard.current.mKey.isPressed && Item.accessory == Accessories.NecklaceOfTheLifeStealers)
         {
             Item.UseBefore();    //Adds vitality every time an enemy is killed
         }

@@ -69,7 +69,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void Attack()
     {
-        if (throwSword.thrown && playerStats.Item && playerStats.Item.accessory == Accessories.BracersOfScouting)
+        if (throwSword.thrown && playerStats.Item && playerStats.Item.accessory == Accessories.BraceletOfScouting)
         {
             playerStats.Item.UseBefore();    //Teleport
         }
