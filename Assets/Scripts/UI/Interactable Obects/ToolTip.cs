@@ -1,18 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+//This script was created by Fate, contact me if you need any help.
 
 public class ToolTip : MonoBehaviour
 {
-    public Sprite image;
+    public Sprite image; //later create list of sprites
+    private SpriteRenderer SR;
 
-    private void OnMouseEnter()
+    private void Awake()
     {
-        ToolTipManager.instance.SetAndShowToolTip();
+        SR = gameObject.GetComponent<SpriteRenderer>();
     }
 
-    private void OnMouseExit()
+    private void Start()
     {
-        ToolTipManager.instance.HideToolTip();
+        SR.enabled = false;
+      
+    }
+
+    //private void OnMouseEnter()
+    //{
+    //    SetAndShowToolTip();
+    //}
+
+    //private void OnMouseExit()
+    //{
+    //    HideToolTip();
+    //}
+
+    public void SetAndShowToolTip()
+    {
+        SR.sprite = image;
+        SR.enabled = true;
+ 
+    }
+
+    public void HideToolTip()
+    {
+        SR.enabled = false;
     }
 }

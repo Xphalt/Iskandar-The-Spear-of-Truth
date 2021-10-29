@@ -18,15 +18,17 @@ public class Interactable_Object_Jack : MonoBehaviour
     private DialogueTrigger _npcDialogueTrigger;
     private ShopManager _shopManager;
     private LootChest_Jerzy _lootChest;
+    private ToolTip toolTip;
 
     [SerializeField]
     InteractableType type;
     public InteractableType GetInteractableType() { return type; }
 
-	private void Start()
+	private void Awake()
 	{
         _shopManager = FindObjectOfType<ShopManager>();
-	}
+        toolTip = GetComponentInChildren<ToolTip>();
+    }
 
 	// Runs the logic corresponding with the InteractableType of the object
 	public void Interact()
@@ -53,6 +55,7 @@ public class Interactable_Object_Jack : MonoBehaviour
             case InteractableType.Item:
                 // Item interaction logic
                 print("item");
+
                 break;
 
             default:
@@ -60,4 +63,14 @@ public class Interactable_Object_Jack : MonoBehaviour
                 break;
 		}
 	}
+
+    private void OnMouseEnter()
+    {
+        toolTip.SetAndShowToolTip();
+    }
+
+    private void OnMouseExit()
+    {
+        toolTip.HideToolTip();
+    }
 }
