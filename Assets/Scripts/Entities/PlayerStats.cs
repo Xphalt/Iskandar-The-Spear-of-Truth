@@ -12,7 +12,6 @@ public class PlayerStats : StatsInterface
 
     internal AccessoryObject Item;
     #region STATS
-    public float MAX_HEALTH = 10.0f;
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
 

@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class Warchief : EnemyBase
 {
+    public enum WarchiefAttacks
+    {
+        Warcry,
+        Flurry,
+        Lunge,
+        Parry,
+        AttackTypesCount
+    };
+    
     public int flurryChance;
 
-    public float axeDamage, AOEDamage, axeRadius, AOERadius, blockDuration;
+    public float meleeRange, minJumpDistance, axeDamage, AOEDamage, axeRadius, AOERadius, blockDuration;
     public Transform axeTransform;
 
     public List<GameObject> orcPrefabs;
@@ -18,20 +27,24 @@ public class Warchief : EnemyBase
     private bool AOEActive = false, blocking = false;
     private float blockTimer = 0;
 
-    public enum WarchiefAttacks
-    {
-        Warcry,
-        Flurry,
-        Lunge,
-        Parry,
-        AttackTypesCount
-    };
+    [NamedArrayAttribute(new string[] { "Warcry", "Flurry", "Lunge", "Parry" })]
+    public float[] warChiefCooldowns = new float[(int)WarchiefAttacks.AttackTypesCount];
+
+    public float[] warChiefTimers = new float[(int)WarchiefAttacks.AttackTypesCount];
+
+    protected WarchiefAttacks warChiefAttack = WarchiefAttacks.AttackTypesCount;
+
+    protected bool WarcryAvailable => (warChiefTimers[(int)WarchiefAttacks.Warcry] >= warChiefCooldowns[(int)WarchiefAttacks.Warcry]);
+    protected bool FlurryAvailable => (warChiefTimers[(int)WarchiefAttacks.Flurry] >= warChiefCooldowns[(int)WarchiefAttacks.Flurry]);
+    protected bool LungeAvailable => (warChiefTimers[(int)WarchiefAttacks.Lunge] >= warChiefCooldowns[(int)WarchiefAttacks.Lunge]);
+    protected bool ParryAvailable => (warChiefTimers[(int)WarchiefAttacks.Parry] >= warChiefCooldowns[(int)WarchiefAttacks.Parry]);
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
-}
+        _myAnimator.SetBool("isChasing", true);
+    }
 
     // Update is called once per frame
     public override void Update()
@@ -42,32 +55,42 @@ public class Warchief : EnemyBase
 
     public override void Attack()
     {
-        if (AttackEnded && detector.GetCurTarget() != null)
+        if (blocking)
+        {
+            blockTimer += Time.deltaTime;
+            if (blockTimer > blockDuration) EndBlock();
+        }
+        else if (attackEnded && detector.GetCurTarget() != null)
         {
             attackUsed = false;
 
-            /*if(WarcryAvailable)
+            if (WarcryAvailable)
             {
                 WarcryAttack();
-            }*/
+                attackUsed = true;
+                print(attackUsed);
+            }
 
-            if (MeleeAvailable)
+            if (!attackUsed && FlurryAvailable && transform.GetDistance(detector.GetCurTarget()) < meleeRange)
             {
                 int rand = Random.Range(0, 101);
                 if (rand > flurryChance)
                     FlurryAttack();
                 else
                     MeleeAttack();
+                attackUsed = true;
             }
 
-            /*if(LungeAvailable && Distance check from Player)
+            if (!attackUsed && LungeAvailable && transform.GetDistance(detector.GetCurTarget()) < minJumpDistance)
             {
-               //LungeAttack();
-            }*/
+                LungeAttack();
+                attackUsed = true;
+            }
 
-            if(/*ParryAvailable &&*/ stats.health < stats.health/2)
+            if (!attackUsed && ParryAvailable && stats.health < stats.MAX_HEALTH / 2)
             {
-                //ParryAttack()
+                Block();
+                attackUsed = true;
             }
 
             if (attackUsed)
@@ -75,14 +98,31 @@ public class Warchief : EnemyBase
                 //change state to Attacking
                 curState = EnemyStates.Attacking;
                 //reset cooldown so Enemy can attack again
-                attackTimers[(int)curAttack] = 0;
-                curAttackTimer = 0;
+                warChiefTimers[(int)warChiefAttack] = 0;
+                attackEnded = false;
             }
+            //_myAnimator.SetBool("isChasing", !attackUsed);
+        }
+    }
+
+    private void EndBlock()
+    {
+        blocking = false;
+        stats.vulnerable = false;
+        _myAnimator.SetBool("isBlocking", false);
+    }
+
+    protected override void AttackCooldown()
+    {
+        for (int a = 0; a < warChiefCooldowns.Length; a++)
+        {
+            warChiefTimers[a] += Time.deltaTime;
         }
     }
 
     private void WarcryAttack()
     {
+        warChiefAttack = WarchiefAttacks.Warcry;
         Vector3 spawnPos = transform.position;
         for (int o = 0; o < numOrcsSpawned; o++)
         {
@@ -97,21 +137,29 @@ public class Warchief : EnemyBase
 
         foreach (Orc o in minions)
             o.Buff(buffPercent, buffDuration);
+
+        _myAnimator.SetTrigger("Warcry");
     }
 
     private void FlurryAttack()
     {
-        hitCollider.enabled = false;
+        _myAnimator.SetTrigger("Flurry");
+        warChiefAttack = WarchiefAttacks.Flurry;
     }
 
     private void LungeAttack()
     {
-
+        _myAnimator.SetTrigger("Lunge");
+        warChiefAttack = WarchiefAttacks.Lunge;
     }
 
-    private void ParryAttack()
+    private void Block()
     {
-
+        blocking = true;
+        blockTimer = 0;
+        stats.vulnerable = false;
+        _myAnimator.SetBool("isBlocking", true);
+        warChiefAttack = WarchiefAttacks.Parry;
     }
 
     private void CheckAOECollision()
@@ -136,5 +184,12 @@ public class Warchief : EnemyBase
     public void SetAOE(int active)
     {
         AOEActive = active > 0 ? true : false;
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        if (other.CompareTag("playerSword") && blocking) EndBlock();
     }
 }

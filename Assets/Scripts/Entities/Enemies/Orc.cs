@@ -10,13 +10,17 @@ public class Orc : EnemyBase
     private List<float> defaultDamages = new List<float>();
     private float defaultSpeed = 0;
 
-    public override void Start()
+    private void Awake()
     {
-        base.Start();
         foreach (float damage in attackDamages)
             defaultDamages.Add(damage);
 
         defaultSpeed = chaseSpeed;
+    }
+
+    public override void Start()
+    {
+        base.Start();
     }
 
     public override void Update()
@@ -99,6 +103,7 @@ public class Orc : EnemyBase
             _myAnimator.SetTrigger("ChargeHit");
             _myAnimator.SetBool("IsCharging", false);
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
+            EndCharge();
         }
     }
 }

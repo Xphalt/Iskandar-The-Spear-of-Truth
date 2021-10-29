@@ -30,14 +30,9 @@ public class EnemyBase : Patrol
     public float[] attackRanges = new float[(int)AttackTypes.AttackTypesCount];
 
     [NamedArrayAttribute(new string[] { "Melee", "Charge", "Shoot" })]
-    public float[] attackDurations = new float[(int)AttackTypes.AttackTypesCount];
-
-    [NamedArrayAttribute(new string[] { "Melee", "Charge", "Shoot" })]
     public float[] attackCooldowns = new float[(int)AttackTypes.AttackTypesCount];
 
     protected float[] attackTimers = new float[(int)AttackTypes.AttackTypesCount];
-
-    protected float curAttackTimer = 0;
 
     protected AttackTypes curAttack = AttackTypes.AttackTypesCount;
 
@@ -47,7 +42,8 @@ public class EnemyBase : Patrol
         (attackTimers[(int)AttackTypes.Charge] >= attackCooldowns[(int)AttackTypes.Charge]);
     protected bool ShootAvailable => availableAttacks[(int)AttackTypes.Shoot] &&
         (attackTimers[(int)AttackTypes.Shoot] >= attackCooldowns[(int)AttackTypes.Shoot]);
-    protected bool AttackEnded => (curAttack != AttackTypes.AttackTypesCount) ? attackTimers[(int)curAttack] > attackDurations[(int)curAttack] : true;
+    
+    protected bool attackEnded = true;
     #endregion
 
     public enum EnemyStates
@@ -115,13 +111,12 @@ public class EnemyBase : Patrol
                     break;
             }
         }
+        else if (transform.position.GetDistance(chargePoint) > chargeDistance) EndCharge();
 
         Attack();
-        AttackEnd();
         AttackCooldown();
     }
 
-    //this isn't really being used anymore, may delete later
     IEnumerator FindTargetsWithDelay(float delay)
     {
         while (true)
@@ -136,21 +131,14 @@ public class EnemyBase : Patrol
         }
     }
 
-    protected void AttackEnd()
+    public void AttackEnd()
     {
-        //attack timer
-        if (!AttackEnded && curAttack != AttackTypes.AttackTypesCount)
-        {
-            curAttackTimer += Time.deltaTime;
-            if (curAttackTimer >= attackDurations[(int)curAttack])
-            {
-                if (charging) EndCharge();
-                curState = EnemyStates.Chasing;
-            }
-        }
+        curState = EnemyStates.Chasing;
+        attackEnded = true;
+        //if (charging) EndCharge();
     }
 
-    protected void AttackCooldown()
+    protected virtual void AttackCooldown()
     {
         for (int a = 0; a < attackCooldowns.Length; a++)
         {
@@ -162,13 +150,14 @@ public class EnemyBase : Patrol
     {
         charging = false;
         MyRigid.velocity = Vector3.zero;
+        AttackEnd();
     }
 
 
     //will be called by other scripts
     public virtual void Attack()
     {
-        if (AttackEnded && detector.GetCurTarget() != null)
+        if (attackEnded && detector.GetCurTarget() != null)
         {
             attackUsed = false;
 
@@ -193,7 +182,7 @@ public class EnemyBase : Patrol
                 curState = EnemyStates.Attacking;
                 //reset cooldown so Enemy can attack again
                 attackTimers[(int)curAttack] = 0;
-                curAttackTimer = 0;
+                attackEnded = false;
             }
         }
     }
@@ -202,9 +191,9 @@ public class EnemyBase : Patrol
     {
         if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge])
         {
-            MyRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
-            chargeDistance = (detector.GetCurTarget().position - transform.position).magnitude;
-            attackDurations[(int)AttackTypes.Charge] = chargeDistance / chargeSpeed;
+            chargePoint = detector.GetCurTarget().position;
+            MyRigid.velocity = (chargePoint - transform.position).normalized * chargeSpeed;
+            chargeDistance = (chargePoint - transform.position).magnitude;
 
             attackUsed = true;
             curAttack = AttackTypes.Charge;
@@ -228,10 +217,10 @@ public class EnemyBase : Patrol
         if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Shoot])
         {
             transform.LookAt(detector.GetCurTarget().position, Vector3.up);
-            Vector3 projectileVelocity = CalculateVelocity(detector.GetCurTarget().position, shootPoint.position, attackDurations[(int)AttackTypes.Shoot]);
+            Vector3 projectileVelocity = CalculateVelocity(detector.GetCurTarget().position, shootPoint.position);
             GameObject projectile = Instantiate(projectileObj, shootPoint.position, Quaternion.identity);
             projectile.GetComponent<Rigidbody>().velocity = projectileVelocity;
-            projectile.GetComponent<ProjectileScript>().SetDamageFromParent(attackDamages[(int)AttackTypes.Shoot], attackDurations[(int)AttackTypes.Shoot]);
+            projectile.GetComponent<ProjectileScript>().SetDamageFromParent(attackDamages[(int)AttackTypes.Shoot]);
             attackUsed = true;
             curAttack = AttackTypes.Shoot;
             MyRigid.velocity = Vector2.zero;
@@ -239,7 +228,7 @@ public class EnemyBase : Patrol
         }
     }
 
-    protected Vector3 CalculateVelocity(Vector3 startPos, Vector3 target, float time)
+    protected Vector3 CalculateVelocity(Vector3 startPos, Vector3 target, float time = 1)
     {
         //find distance x and y first
         Vector3 distance = startPos - target;
