@@ -8,6 +8,7 @@ public class ArmorObject_Sal : ItemObject_Sal
 {
     public Defencevalues defValues = new Defencevalues();
 
+
     public string Desc;
 
     public void Awake()

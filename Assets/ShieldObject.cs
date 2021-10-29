@@ -8,19 +8,19 @@ public class Defencevalues
     public float physicalDef;
     public float fireDef;
     public float iceDef;
+    public bool poisonProtection;
+    public bool desertProtection;
+    public bool snowProtection;
 
     public Defencevalues()
     {
         physicalDef = 0;
         fireDef = 0;
         iceDef = 0;
-    }
-    public Defencevalues(params float[] values)
-    {
-        physicalDef = values[0];
-        fireDef = values[1];
-        iceDef = values[2];
-    }
+        poisonProtection = false;
+        desertProtection = false;
+        snowProtection = false;
+    } 
 }
 
 
