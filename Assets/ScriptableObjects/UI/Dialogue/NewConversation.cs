@@ -15,4 +15,6 @@ public class NewConversation : ScriptableObject
         [TextArea]
         public string[] NumOfSentences;
     }
+
+    public string GetName(NewConversation.NextCharacter newCharacter) { return newCharacter.CharacterName; }
 }

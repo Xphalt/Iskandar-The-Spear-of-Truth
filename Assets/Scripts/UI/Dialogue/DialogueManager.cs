@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    private Queue<NewConversation.NextCharacter> _QueueOfNextCharacters = new Queue<NewConversation.NextCharacter>();
-    private Queue<string> _QueueOfNextSentences = new Queue<string>();
+    private Queue<NewConversation.NextCharacter> _QueueOfCharacters = new Queue<NewConversation.NextCharacter>();
+    private Queue<string[]> _QueueOfStringArrays = new Queue<string[]>();
+    private Queue<string> _QueueOfStrings = new Queue<string>();
 
     public GameObject DialoguePanel;
     public Button ButtonContinue;
@@ -24,51 +25,75 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(NewConversation newDialogue)
     {
-        _QueueOfNextCharacters.Clear();
-        _QueueOfNextSentences.Clear();
-        TextNPCName.text = newDialogue.ListOfCharacterExchanges[0].CharacterName;
+        newDialogue.GetName(newDialogue.ListOfCharacterExchanges[0]);
         TextContinueDialogue.text = "Next";
 
-        foreach (NewConversation.NextCharacter nextCharacter in newDialogue.ListOfCharacterExchanges)
-        {
-            _QueueOfNextCharacters.Enqueue(nextCharacter);
+        _QueueOfCharacters.Clear();
+        _QueueOfStringArrays.Clear();
+        _QueueOfStrings.Clear();
 
-            foreach (string sentence in nextCharacter.NumOfSentences)
-            {
-                _QueueOfNextSentences.Enqueue(sentence);
-            }
-        }
+        AddCharactersToQueue(newDialogue.ListOfCharacterExchanges);
+        AddCharacterDialogueToQueue(_QueueOfCharacters);
+        AddSentencesToQueue(_QueueOfStringArrays);
+
 
         DisplayNextExchange();
     }
 
     public void DisplayNextExchange()
     {
-        if (_QueueOfNextCharacters.Count != 0)
+        //switch (_QueueOfCharacters.Count == 0, _QueueOfStringArrays.Count == 0, _QueueOfStrings.Count == 0)
+        //{
+        //    case (false, false, true):
+        //        _QueueOfStringArrays.Dequeue();
+        //        AddSentencesToQueue(_QueueOfStringArrays);
+        //        break;
+
+        //    case (false, true, true):
+        //        _QueueOfCharacters.Dequeue();
+        //        break;
+
+        //    case (true, true, false):
+        //        if (_QueueOfStrings.Count == 1)
+        //        {
+        //            TextContinueDialogue.text = "End";
+        //        }
+        //        break;
+
+        //    case (true, true, true):
+        //        EndDialogue();
+        //        break;
+        //}
+
+        if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 0)
         {
-            NewConversation.NextCharacter nextCharacter = _QueueOfNextCharacters.Dequeue();
-            TextNPCName.text = nextCharacter.CharacterName;
+            EndDialogue();
+        }
 
-
-
-            if (_QueueOfNextCharacters.Count != 0)
-            {
-                string nextSentence = _QueueOfNextSentences.Dequeue();
-                TextDialogueBox.text = nextSentence;
-
-                StopAllCoroutines();
-                StartCoroutine(TypeSentence(nextSentence));
-            }
-
+        else if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 1)
+        {
+            TextContinueDialogue.text = "End";
         }
 
         else
         {
-            TextContinueDialogue.text = "End";
-            EndDialogue();
+            if (_QueueOfStrings.Count == 0)
+            {
+                _QueueOfStringArrays.Dequeue();
+                AddSentencesToQueue(_QueueOfStringArrays);
+            }
 
-            return;
-        } 
+            if (_QueueOfStringArrays.Count == 0)
+            {
+                _QueueOfCharacters.Dequeue();
+                TextNPCName.text = _QueueOfCharacters.Peek().CharacterName;
+            }
+
+            TextNPCName.text = _QueueOfCharacters.Peek().CharacterName;
+
+            StopAllCoroutines();
+            StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
+        }
     }
 
     IEnumerator TypeSentence(string sentence)
@@ -86,4 +111,32 @@ public class DialogueManager : MonoBehaviour
     {
         DialoguePanel.SetActive(false);
     }
+
+    #region Queues
+    /*_________________________________________________________________________*/
+    private void AddCharactersToQueue(List<NewConversation.NextCharacter> characterList)
+    {
+        foreach (NewConversation.NextCharacter character in characterList)
+        {
+            _QueueOfCharacters.Enqueue(character);
+        }
+    }
+
+    private void AddCharacterDialogueToQueue(Queue<NewConversation.NextCharacter> characterQueue)
+    {
+        foreach (NewConversation.NextCharacter characterDialogue in characterQueue)
+        {
+            _QueueOfStringArrays.Enqueue(characterDialogue.NumOfSentences);
+        }
+    }
+
+    private void AddSentencesToQueue(Queue<string[]> characterDialogueQueue)
+    {
+        for (int i = 0; i < characterDialogueQueue.Peek().Length; i++)
+        {
+            _QueueOfStrings.Enqueue(characterDialogueQueue.Peek()[i]);
+        }
+    }
+    /*_________________________________________________________________________*/
+    #endregion
 }
