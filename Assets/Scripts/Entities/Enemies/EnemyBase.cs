@@ -7,8 +7,8 @@ using UnityEngine;
 public class EnemyBase : Patrol
 {
     public float chaseSpeed;
-    private EnemyStats stats;
-    PlayerDetection detector;
+    protected EnemyStats stats;
+    protected PlayerDetection detector;
     public float findDelay;
 
     public enum AttackTypes
@@ -56,9 +56,9 @@ public class EnemyBase : Patrol
         Chasing,
         Attacking
     };
-    EnemyStates curState;
+    protected EnemyStates curState;
     protected bool charging = false;
-    private bool attackUsed = false;
+    protected bool attackUsed = false;
 
     public float chargeSpeed;
     private float chargeDistance;
@@ -95,16 +95,12 @@ public class EnemyBase : Patrol
             switch (curState)
             {
                 case EnemyStates.Patrolling:
-                    _myAnimator.SetBool("IsPatrolling", true);
-                    _myAnimator.SetBool("IsChasing", false);
                     agent.speed = patrolSpeed;
                     agent.stoppingDistance = 0;
 
                     break;
                 case EnemyStates.Chasing:
                     //seek player position and go to it
-                    _myAnimator.SetBool("IsPatrolling", false);
-                    _myAnimator.SetBool("IsChasing", true);
                     transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
                     agent.destination = detector.GetCurTarget().transform.position;
                     agent.speed = agent.remainingDistance > minChaseRadius ? chaseSpeed : 0;
@@ -125,6 +121,7 @@ public class EnemyBase : Patrol
         AttackCooldown();
     }
 
+    //this isn't really being used anymore, may delete later
     IEnumerator FindTargetsWithDelay(float delay)
     {
         while (true)
@@ -139,7 +136,7 @@ public class EnemyBase : Patrol
         }
     }
 
-    private void AttackEnd()
+    protected void AttackEnd()
     {
         //attack timer
         if (!AttackEnded && curAttack != AttackTypes.AttackTypesCount)
@@ -153,7 +150,7 @@ public class EnemyBase : Patrol
         }
     }
 
-    private void AttackCooldown()
+    protected void AttackCooldown()
     {
         for (int a = 0; a < attackCooldowns.Length; a++)
         {
@@ -161,20 +158,11 @@ public class EnemyBase : Patrol
         }
     }
 
-    private void EndCharge()
+    protected virtual void EndCharge()
     {
-        _myAnimator.SetBool("IsCharging", false);
         charging = false;
         MyRigid.velocity = Vector3.zero;
     }
-
-    //public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
-    //{
-    //    if(!angleIsGlobal)
-    //        angleInDegrees += transform.eulerAngles.y;
-
-    //    return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
-    //}
 
 
     //will be called by other scripts
@@ -210,12 +198,10 @@ public class EnemyBase : Patrol
         }
     }
 
-    private void ChargeAttack()
+    protected virtual void ChargeAttack()
     {
         if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge])
         {
-            _myAnimator.SetBool("IsCharging", true);
-
             MyRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
             chargeDistance = (detector.GetCurTarget().position - transform.position).magnitude;
             attackDurations[(int)AttackTypes.Charge] = chargeDistance / chargeSpeed;
@@ -226,12 +212,10 @@ public class EnemyBase : Patrol
         }
     }
 
-    private void MeleeAttack()
+    protected virtual void MeleeAttack()
     {
         if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
         {
-            _myAnimator.SetTrigger("Hit");
-
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
             attackUsed = true;
             curAttack = AttackTypes.Melee;
@@ -239,7 +223,7 @@ public class EnemyBase : Patrol
         }
     }
 
-    public void ShootAttack()
+    protected void ShootAttack()
     {
         if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Shoot])
         {
@@ -255,7 +239,7 @@ public class EnemyBase : Patrol
         }
     }
 
-    Vector3 CalculateVelocity(Vector3 startPos, Vector3 target, float time)
+    protected Vector3 CalculateVelocity(Vector3 startPos, Vector3 target, float time)
     {
         //find distance x and y first
         Vector3 distance = startPos - target;
@@ -283,13 +267,11 @@ public class EnemyBase : Patrol
         return result;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.transform == detector.GetCurTarget() && charging)
         {
-            _myAnimator.SetTrigger("ChargeHit");
-            _myAnimator.SetBool("IsCharging", false);
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
-        };
+        }
     }
 }
