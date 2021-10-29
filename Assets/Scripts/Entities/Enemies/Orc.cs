@@ -18,11 +18,6 @@ public class Orc : EnemyBase
         defaultSpeed = chaseSpeed;
     }
 
-    public override void Start()
-    {
-        base.Start();
-    }
-
     public override void Update()
     {
         base.Update();
@@ -73,7 +68,7 @@ public class Orc : EnemyBase
 
             attackUsed = true;
             curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector2.zero;
+            MyRigid.velocity = Vector3.zero;
         }
     }
 
@@ -98,12 +93,15 @@ public class Orc : EnemyBase
 
     protected override void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.transform == detector.GetCurTarget() && charging)
+        if (detector.GetCurTarget() != null && charging)
         {
-            _myAnimator.SetTrigger("ChargeHit");
-            _myAnimator.SetBool("IsCharging", false);
-            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
-            EndCharge();
+            if (collision.collider.transform == detector.GetCurTarget())
+            {
+                _myAnimator.SetTrigger("ChargeHit");
+                _myAnimator.SetBool("IsCharging", false);
+                stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
+                EndCharge();
+            }
         }
     }
 }

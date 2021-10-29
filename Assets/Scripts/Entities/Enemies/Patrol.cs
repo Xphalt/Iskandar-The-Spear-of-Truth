@@ -10,9 +10,7 @@ public class Patrol : MonoBehaviour
     public Transform[] ListOfNodes;
     private int _currentNode;
 
-
     protected Animator _myAnimator;
-
 
     protected NavMeshAgent agent;
     private float minRemainingDistance = 0.5f;

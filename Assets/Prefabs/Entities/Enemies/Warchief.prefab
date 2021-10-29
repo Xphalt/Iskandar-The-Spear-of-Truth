@@ -546,7 +546,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 2118242360396946730}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 30
   m_Speed: 3.5
   m_Acceleration: 2000
   avoidancePriority: 50
@@ -555,7 +555,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 200
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -572,7 +572,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: b7decaca9ad0ddb48b8b00e89763c047, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -622,13 +622,13 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  chargeSpeed: 0
+  chargeSpeed: 15
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
-  minChaseRadius: 1
+  minChaseRadius: 2
   flurryChance: 50
   meleeRange: 2
-  minJumpDistance: 5
+  minJumpDistance: 25
   axeDamage: 2
   AOEDamage: 1
   axeRadius: 2
@@ -683,7 +683,7 @@ MonoBehaviour:
     m_Bits: 8
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   viewAngle: 360
   detectionRadius: 100
 --- !u!1 &2118242360396947964

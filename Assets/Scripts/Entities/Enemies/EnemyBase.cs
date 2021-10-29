@@ -57,8 +57,8 @@ public class EnemyBase : Patrol
     protected bool attackUsed = false;
 
     public float chargeSpeed;
-    private float chargeDistance;
-    private Vector3 chargePoint;
+    protected float chargeDistance;
+    protected Vector3 chargePoint;
 
     public GameObject projectileObj;
     public Transform shootPoint;
@@ -101,7 +101,6 @@ public class EnemyBase : Patrol
                     agent.destination = detector.GetCurTarget().transform.position;
                     agent.speed = agent.remainingDistance > minChaseRadius ? chaseSpeed : 0;
                     agent.stoppingDistance = minChaseRadius;
-
                     break;
                 case EnemyStates.Attacking:
                     agent.speed = 0;
@@ -135,7 +134,6 @@ public class EnemyBase : Patrol
     {
         curState = EnemyStates.Chasing;
         attackEnded = true;
-        //if (charging) EndCharge();
     }
 
     protected virtual void AttackCooldown()
@@ -191,9 +189,9 @@ public class EnemyBase : Patrol
     {
         if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge])
         {
-            chargePoint = detector.GetCurTarget().position;
-            MyRigid.velocity = (chargePoint - transform.position).normalized * chargeSpeed;
-            chargeDistance = (chargePoint - transform.position).magnitude;
+            chargePoint = transform.position;
+            MyRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
+            chargeDistance = (detector.GetCurTarget().position - transform.position).magnitude;
 
             attackUsed = true;
             curAttack = AttackTypes.Charge;
@@ -208,7 +206,7 @@ public class EnemyBase : Patrol
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
             attackUsed = true;
             curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector2.zero;
+            MyRigid.velocity = Vector3.zero;
         }
     }
 
@@ -223,7 +221,7 @@ public class EnemyBase : Patrol
             projectile.GetComponent<ProjectileScript>().SetDamageFromParent(attackDamages[(int)AttackTypes.Shoot]);
             attackUsed = true;
             curAttack = AttackTypes.Shoot;
-            MyRigid.velocity = Vector2.zero;
+            MyRigid.velocity = Vector3.zero;
 
         }
     }
@@ -256,9 +254,14 @@ public class EnemyBase : Patrol
         return result;
     }
 
+    public void SetWeaponActive(int active)
+    {
+        hitCollider.enabled = active > 0;
+    }
+
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.transform == detector.GetCurTarget() && charging)
+        if (detector.IsTarget(collision.collider.transform) && charging)
         {
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
         }
@@ -266,7 +269,7 @@ public class EnemyBase : Patrol
 
     protected virtual void OnTriggerEnter(Collider collider)
     {
-        if (collider.transform == detector.GetCurTarget())
+        if (detector.IsTarget(collider.transform))
         {
             print("Hit");
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);

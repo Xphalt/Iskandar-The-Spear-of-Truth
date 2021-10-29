@@ -44,6 +44,8 @@ public class Warchief : EnemyBase
     {
         base.Start();
         _myAnimator.SetBool("isChasing", true);
+
+        chargeDistance = minJumpDistance;
     }
 
     // Update is called once per frame
@@ -64,13 +66,6 @@ public class Warchief : EnemyBase
         {
             attackUsed = false;
 
-            if (WarcryAvailable)
-            {
-                WarcryAttack();
-                attackUsed = true;
-                print(attackUsed);
-            }
-
             if (!attackUsed && FlurryAvailable && transform.GetDistance(detector.GetCurTarget()) < meleeRange)
             {
                 int rand = Random.Range(0, 101);
@@ -81,7 +76,7 @@ public class Warchief : EnemyBase
                 attackUsed = true;
             }
 
-            if (!attackUsed && LungeAvailable && transform.GetDistance(detector.GetCurTarget()) < minJumpDistance)
+            if (!attackUsed && LungeAvailable && transform.GetDistance(detector.GetCurTarget()) > minJumpDistance)
             {
                 LungeAttack();
                 attackUsed = true;
@@ -90,6 +85,12 @@ public class Warchief : EnemyBase
             if (!attackUsed && ParryAvailable && stats.health < stats.MAX_HEALTH / 2)
             {
                 Block();
+                attackUsed = true;
+            }
+
+            if (!attackUsed && WarcryAvailable)
+            {
+                WarcryAttack();
                 attackUsed = true;
             }
 
@@ -141,6 +142,12 @@ public class Warchief : EnemyBase
         _myAnimator.SetTrigger("Warcry");
     }
 
+    protected override void MeleeAttack()
+    {
+        _myAnimator.SetTrigger("Slash");
+        warChiefAttack = WarchiefAttacks.Flurry;
+    }
+
     private void FlurryAttack()
     {
         _myAnimator.SetTrigger("Flurry");
@@ -149,6 +156,11 @@ public class Warchief : EnemyBase
 
     private void LungeAttack()
     {
+        chargePoint = transform.position;
+        MyRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
+        print(MyRigid.velocity);
+        charging = true;
+
         _myAnimator.SetTrigger("Lunge");
         warChiefAttack = WarchiefAttacks.Lunge;
     }
@@ -164,26 +176,31 @@ public class Warchief : EnemyBase
 
     private void CheckAOECollision()
     {
-        if (AOEActive)
-        {
-            Collider[] objectsHit = Physics.OverlapSphere(axeTransform.position, AOERadius);
-            foreach (Collider hit in objectsHit)
-            {
-                if (hit.TryGetComponent(out PlayerStats player))
-                {
-                    player.TakeDamage(AOEDamage);
-                    if (hit.ClosestPoint(axeTransform.position).GetDistance(axeTransform.position) < axeRadius)
-                        player.TakeDamage(axeDamage);
+        if (!AOEActive) return;
 
-                    AOEActive = false;
-                }
+        Collider[] objectsHit = Physics.OverlapSphere(axeTransform.position, AOERadius);
+        foreach (Collider hit in objectsHit)
+        {
+            if (hit.TryGetComponent(out PlayerStats player))
+            {
+                player.TakeDamage(AOEDamage);
+                if (hit.ClosestPoint(axeTransform.position).GetDistance(axeTransform.position) < axeRadius)
+                    player.TakeDamage(axeDamage);
+
+                AOEActive = false;
             }
         }
     }
 
     public void SetAOE(int active)
     {
-        AOEActive = active > 0 ? true : false;
+        AOEActive = active > 0;
+    }
+
+    protected override void EndCharge()
+    {
+        charging = false;
+        MyRigid.velocity = Vector3.zero;
     }
 
     protected override void OnTriggerEnter(Collider other)
