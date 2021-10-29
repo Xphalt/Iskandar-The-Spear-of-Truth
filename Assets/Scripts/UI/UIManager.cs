@@ -178,6 +178,7 @@ public class UIManager : MonoBehaviour
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
 
         // At the moment we're using keyboard and mouse to play the game
+        //SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
         SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
     }
 
