@@ -8,7 +8,6 @@ public class ArmorObject_Sal : ItemObject_Sal
 {
     public Defencevalues defValues = new Defencevalues();
 
-
     public string Desc;
 
     public void Awake()
@@ -16,8 +15,9 @@ public class ArmorObject_Sal : ItemObject_Sal
         type = ItemType.Armor;
         Desc = string.Concat(
             "<b><color=red>Physical Defence</color></b>: ", defValues.physicalDef,
-            "\n<b><color=red>Fire Defence</color></b>: ", defValues.fireDef,
-            "\n<b><color=red>Ice Defence</color></b>: ", defValues.iceDef);
+            "\n<b><color=red>Poison Protection</color></b>: ", defValues.poisonProtection.ToString() ,
+            "\n<b><color=red>Desert Protection</color></b>: ", defValues.desertProtection.ToString() ,
+            "\n<b><color=red>Snow Protection</color></b>: ", defValues.snowProtection.ToString());
     }
 
     public override void UseAfter()

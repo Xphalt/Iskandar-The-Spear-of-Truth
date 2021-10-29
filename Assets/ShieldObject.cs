@@ -5,18 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class Defencevalues
 {
-    public float physicalDef;
-    public float fireDef;
-    public float iceDef;
+    public float physicalDef; 
     public bool poisonProtection;
     public bool desertProtection;
     public bool snowProtection;
 
     public Defencevalues()
     {
-        physicalDef = 0;
-        fireDef = 0;
-        iceDef = 0;
+        physicalDef = 0; 
         poisonProtection = false;
         desertProtection = false;
         snowProtection = false;
@@ -36,8 +32,9 @@ public class ShieldObject : ItemObject_Sal
         type = ItemType.Weapon;
         Desc = string.Concat(
             "<b><color=red>Physical Defence</color></b>: ", defValues.physicalDef,
-            "\n<b><color=red>Fire Defence</color></b>: ", defValues.fireDef,
-            "\n<b><color=red>Ice Defence</color></b>: ", defValues.iceDef);
+            "\n<b><color=red>Poison Protection</color></b>: ", defValues.poisonProtection.ToString(),
+            "\n<b><color=red>Desert Protection</color></b>: ", defValues.desertProtection.ToString(),
+            "\n<b><color=red>Snow Protection</color></b>: ", defValues.snowProtection.ToString());
     }
 
     public override void UseBefore()

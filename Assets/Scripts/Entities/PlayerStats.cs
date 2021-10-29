@@ -32,8 +32,9 @@ public class PlayerStats : StatsInterface
     public float damage;
     public float spiritualDamage;
     public float defence;
-    public float fireDefence;
-    public float iceDefence;
+    public bool poisonProtection = false;
+    public bool desertProtection = false;
+    public bool snowProtection = false;
     #endregion
 
     private void Awake()
@@ -130,14 +131,16 @@ public class PlayerStats : StatsInterface
                         catch
                         {
                             defence -= ((ShieldObject)(temp)).defValues.physicalDef;
-                            fireDefence -= ((ShieldObject)(temp)).defValues.fireDef;
-                            iceDefence -= ((ShieldObject)(temp)).defValues.iceDef;
+                            poisonProtection = false;
+                            desertProtection = false;
+                            snowProtection = false;
                         }
                         break;
                     case ItemType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
-                        fireDefence -= ((ArmorObject_Sal)(temp)).defValues.fireDef;
-                        iceDefence -= ((ArmorObject_Sal)(temp)).defValues.iceDef;
+                        poisonProtection = false;
+                        desertProtection = false;
+                        snowProtection = false;
                         break;
                     default:
                         damage = BASE_DAMAGE;
@@ -175,14 +178,16 @@ public class PlayerStats : StatsInterface
                             catch
                             {
                                 defence += ((ShieldObject)(temp)).defValues.physicalDef;
-                                fireDefence += ((ShieldObject)(temp)).defValues.fireDef;
-                                iceDefence += ((ShieldObject)(temp)).defValues.iceDef;
+                                poisonProtection = ((ShieldObject)(temp)).defValues.poisonProtection;
+                                desertProtection = ((ShieldObject)(temp)).defValues.desertProtection;
+                                snowProtection = ((ShieldObject)(temp)).defValues.snowProtection;
                             }
                             break;
                         case ItemType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
-                            fireDefence += ((ArmorObject_Sal)(temp)).defValues.fireDef;
-                            iceDefence += ((ArmorObject_Sal)(temp)).defValues.iceDef;
+                            poisonProtection = ((ArmorObject_Sal)(temp)).defValues.poisonProtection;
+                            desertProtection = ((ArmorObject_Sal)(temp)).defValues.desertProtection;
+                            snowProtection = ((ArmorObject_Sal)(temp)).defValues.snowProtection;
                             break;
                         default:
                             damage = BASE_DAMAGE;

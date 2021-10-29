@@ -119,11 +119,12 @@ public class EquipPanel : MonoBehaviour
         }
         else 
         {
+            //Run function delegate that undo accessories' effects when unequipped
             if (equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id > -1 && equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id].OnUseAfter != null)
-                equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id].OnUseAfter.Invoke();
+                equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id].OnUseAfter();
+
             inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.AccessorySlot], inventory.FindItemOnInventory(slotItem[obj]));   //Accessories
             
-
             ClearObjects();
             SpawnPanel();
         }
