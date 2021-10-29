@@ -8,6 +8,7 @@ using TMPro;
 
 public class MoneyPopup : MonoBehaviour
 {
+    [SerializeField] private bool enableTimer = true;
     [SerializeField] private float disappearTime = 5;
     private float timer;
 
@@ -27,7 +28,7 @@ public class MoneyPopup : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if (timer > disappearTime)
+        if (enableTimer && timer > disappearTime)
         {
             timer = 0;
             gameObject.SetActive(false);

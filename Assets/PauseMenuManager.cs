@@ -26,6 +26,8 @@ public class PauseMenuManager : MonoBehaviour
 
     public float LerpPauseSpeed = 0.1f;
 
+    [SerializeField] private MoneyPopup equipmentMoney;
+
     private void Start()
     {
         Resume();
@@ -84,6 +86,8 @@ public class PauseMenuManager : MonoBehaviour
         title.text = "Equipment";
         leftOption.text = "Settings";
         rightOption.text = "Quests";
+        // Update the money value in the equipment screen
+        equipmentMoney.SetNumber(GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().Gems);
     }
 
     public void LoadMenu()
@@ -132,6 +136,8 @@ public class PauseMenuManager : MonoBehaviour
                 title.text = "Equipment";
                 leftOption.text = "Settings";
                 rightOption.text = "Quests";
+                // Update the money value in the equipment screen
+                equipmentMoney.SetNumber(GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().Gems);
                 break;
             case 1:
                 questsMenu.SetActive(true);

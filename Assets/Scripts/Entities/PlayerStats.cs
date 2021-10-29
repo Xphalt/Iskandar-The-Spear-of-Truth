@@ -198,6 +198,7 @@ public class PlayerStats : StatsInterface
         else if(item) //It's a gem pot
         { 
             gems += ((ResourceObject)(item.itemobj)).gems;
+            UIManager.instance.ShowMoneyPopup();
             Destroy(other.gameObject);
         }
     }
