@@ -40,8 +40,12 @@ public class ShieldObject : ItemObject_Sal
             "\n<b><color=red>Ice Defence</color></b>: ", defValues.iceDef);
     }
 
-    public override void Use()
+    public override void UseBefore()
     {
         Debug.Log("Shield used/Equipped");
+    }
+    public override void UseAfter()
+    {
+        OnUseAfter.Invoke();
     }
 }

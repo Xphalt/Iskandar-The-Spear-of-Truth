@@ -152,7 +152,7 @@ Transform:
   m_GameObject: {fileID: 78185617538369030}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 241, y: -0.98, z: 184.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 78185618437973452}
   m_Father: {fileID: 0}
@@ -187,15 +187,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 78185618438207916}
-  m_Speed: 20
+  m_Speed: 10
   m_floorDistance: 0.5
   fallingSpeed: 7
   falling: 0
   swordLookRotation: {x: 0, y: 0, z: 0, w: 0}
   canBeDamaged: 1
-  dashCooldown: 1
+  dashCooldown: 2
   dashDuration: 0.5
-  dashForce: 30
+  dashForce: 15
   dashAnalogueReq: 0.5
   timeSinceLastDash: 0
   knockedBack: 0
@@ -414,6 +414,8 @@ MonoBehaviour:
   health: 6
   inventory: {fileID: 11400000, guid: 26754aa56798a1244bc66bcb0018782c, type: 2}
   equipment: {fileID: 11400000, guid: 1404d5272f1fab045a59c4cb3f99e452, type: 2}
+  listOfObjs: {fileID: 0}
+  MAX_HEALTH: 10
   damage: 5
   defence: 5
   fireDefence: 5

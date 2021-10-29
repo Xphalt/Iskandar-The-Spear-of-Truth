@@ -104,110 +104,26 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         return null;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// THIS IS WHERE I IMPLEMENT THE SAVE SYSTEM
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /////////////////////////////////////////////////////// MORGAN SAVE CHANGE ///////////////////////////////////////////////////
+    /////////////////////////////////////////////////////// MORGAN'S SAVE CHANGES ///////////////////////////////////////////////////
     [ContextMenu("Save")]
-    public void SaveStatsf1()
+    public void SaveStats(int num)
     {
-        SaveManager.SavePlayerInventoryf1(this);
+        SaveManager.SavePlayerInventory(this, num);
     }
 
-    public void SaveStatsf2()
-    {
-        SaveManager.SavePlayerInventoryf2(this);
-    }
-
-    public void SaveStatsf3()
-    {
-        SaveManager.SavePlayerInventoryf3(this);
-    }
-
-    /*[ContextMenu("Save")]
-    public void Save()
-    {
-        ////Serialize scriptable object out to a string 
-        //string saveData = JsonUtility.ToJson(this, true);
-        //
-        ////Create a file and write string into the file and save it to a given location
-        //BinaryFormatter bf = new BinaryFormatter();
-        //FileStream file = File.Create(string.Concat(Application.persistentDataPath, savePath));
-        //bf.Serialize(file, saveData);
-        //
-        //file.Close();
-
-        IFormatter formatter = new BinaryFormatter();
-        Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create, FileAccess.Write);
-        formatter.Serialize(stream, Storage);
-        stream.Close();
-    }*/
-
-    /////////////////////////////////////////////////////// MORGAN LOAD CHANGE ///////////////////////////////////////////////////
     [ContextMenu("Load")]
-    public void LoadStatsf1()
+    public void LoadStats(int num)
     {
-        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerInventoryf1();
+        SaveData saveData = SaveManager.LoadPlayerInventory(num);
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
-        Inventory newStorage = (Inventory)saveDataf1.Storagef1;
+        Inventory newStorage = (Inventory)saveData.Storage;
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
             Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
         }
     }
-
-    public void LoadStatsf2()
-    {
-        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerInventoryf2();
-
-        //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
-
-        Inventory newStorage = (Inventory)saveDataf2.Storagef2;
-        for (int i = 0; i < Storage.Slots.Length; i++)
-        {
-            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
-        }
-    }
-
-    public void LoadStatsf3()
-    {
-        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerInventoryf3();
-
-        //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
-
-        Inventory newStorage = (Inventory)saveDataf3.Storagef3;
-        for (int i = 0; i < Storage.Slots.Length; i++)
-        {
-            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
-        }
-    }
-
-    /*[ContextMenu("Load")]
-    public void Load()
-    {
-        if(File.Exists(string.Concat(Application.persistentDataPath, savePath)))
-        {
-            //BinaryFormatter bf = new BinaryFormatter();
-            //FileStream file = File.Open(string.Concat(Application.persistentDataPath, savePath), FileMode.Open);
-            //
-            ////Convert file back to the scriptable object 
-            //JsonUtility.FromJsonOverwrite(bf.Deserialize(file).ToString(), this);
-            //
-            //file.Close();
-
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Open, FileAccess.Read);
-            Inventory newStorage = (Inventory)formatter.Deserialize(stream);
-            for (int i = 0; i < Storage.Slots.Length; i++)
-            {
-                Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
-            }
-            stream.Close();
-        }
-    }*/
 
     [ContextMenu("Clear")]
     public void Clear()
@@ -236,7 +152,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     //morgan's autosave game edit
     private void OnDestroy()
     {
-        SaveStatsf1();
+        SaveStats(0);
     }
 }
 

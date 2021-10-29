@@ -23,6 +23,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     private Animator swordAnimator;
     private PlayerAnimationManager playerAnimation;
     private PlayerMovement_Jerzy playerMovement;
+    private PlayerStats playerStats;
     private ThrowSword_Jerzy throwSword;
     private Collider swordCollider;
 
@@ -42,6 +43,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         swordAnimator = swordObject.GetComponent<Animator>();
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
+        playerStats = FindObjectOfType<PlayerStats>();
         throwSword = swordEmpty.GetComponent<ThrowSword_Jerzy>();
         swordCollider = swordObject.GetComponent<Collider>();
     }
@@ -67,6 +69,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void Attack()
     {
+        if (throwSword.thrown && playerStats.Item && playerStats.Item.accessory == Accessories.BracersOfScouting)
+        {
+            playerStats.Item.UseBefore();    //Teleport
+        }
         if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
         {
             swordCollider.enabled = true;

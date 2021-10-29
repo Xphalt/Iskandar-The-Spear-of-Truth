@@ -11,7 +11,7 @@ public class Inventory_Script : MonoBehaviour
     #region Variables
     //A static inventory instance means that there'll only be 1 inventory (no duplicates)
     public static Inventory_Script instance;
-    public List<ItemObject> myItems = new List<ItemObject>();
+    public List<ItemObj> myItems = new List<ItemObj>();
 
     /*__________________________________________________________________________________
     * All objects containing the delegate method will be updated automatically.
@@ -42,7 +42,7 @@ public class Inventory_Script : MonoBehaviour
     /*_________________________________________________________________________
     * This method adds the chosen item into the inventory.
     * ________________________________________________________________________*/
-    public bool Add(ItemObject item)
+    public bool Add(ItemObj item)
     {
         //If item is not immediatly equipped, add to inventory.
         if (!item.isEquipped)
@@ -63,7 +63,7 @@ public class Inventory_Script : MonoBehaviour
         return true;
     }
 
-    public void RemoveItem(ItemObject item)
+    public void RemoveItem(ItemObj item)
     {
         myItems.Remove(item);
 

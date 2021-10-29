@@ -7,6 +7,20 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
 {
     public ItemObject_Sal itemobj;
 
+    public delegate void Spawn(GameObject obj);
+    public Spawn spawn;
+
+    void Start()
+    {
+        if(spawn != null)
+        {
+            OnBeforeSerialize(); //Doesn't get called automatically for some reason
+            spawn.Invoke(gameObject); //Spawn movement
+            StartCoroutine(StopForce());
+        }
+    }
+
+
     public void OnAfterDeserialize()
     { }
 
@@ -30,5 +44,14 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
     public void SetItem(ItemObject_Sal obj)
     {
         itemobj = obj;
+    }
+
+    IEnumerator StopForce()
+    {
+        yield return new WaitForSeconds(1.0f);
+        //Stop drop
+        Rigidbody objRgdBody = GetComponentInChildren<Rigidbody>();
+        objRgdBody.velocity = Vector3.zero;
+        objRgdBody.angularVelocity = Vector3.zero; 
     }
 }

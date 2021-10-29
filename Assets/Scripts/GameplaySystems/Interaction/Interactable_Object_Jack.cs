@@ -40,7 +40,7 @@ public class Interactable_Object_Jack : MonoBehaviour
                 break;
 
             case InteractableType.Seller:
-                _shopManager.OpenShop(SHOP_TYPE.POTION_SELLER);
+                _shopManager.OpenShop();
                 break;
 
             case InteractableType.LootChest:

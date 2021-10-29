@@ -19,8 +19,13 @@ public class ArmorObject_Sal : ItemObject_Sal
             "\n<b><color=red>Ice Defence</color></b>: ", defValues.iceDef);
     }
 
-    public override void Use()
+    public override void UseAfter()
+    {
+        
+    }
+
+    public override void UseBefore()
     {
         Debug.Log("Armor used/Equipped");
-    }
+    } 
 }

@@ -88,7 +88,7 @@ public class UIManager : MonoBehaviour
     };
 
     private INPUT_OPTIONS current_input = INPUT_OPTIONS.NUM_OPTIONS;
-    public INPUT_OPTIONS getCurrentInput() { return current_input;  }
+    public INPUT_OPTIONS GetCurrentInput() { return current_input; }
 
     public void SetUIForInput(INPUT_OPTIONS input)
     {
@@ -134,6 +134,9 @@ public class UIManager : MonoBehaviour
                 enableObjects[i].SetActive(true);
             }
         }
+
+        // Ensure the icon above targetable enemies updates according to the input type
+        targetingIcon.SetSprite(input);
     }
     #endregion
 
@@ -145,6 +148,31 @@ public class UIManager : MonoBehaviour
         actionImageChanger.SetInteractImage(interactableType);
     }
     #endregion
+
+    #region Targeting Icon
+    [SerializeField] private TargetingIcon targetingIcon;
+
+    public void EnableTargetingIcon(Transform transform, TargetingIcon.TARGETING_TYPE targetingType)
+    {
+        targetingIcon.gameObject.SetActive(true);
+        targetingIcon.SetTarget(transform, targetingType);
+    }
+    public void DisableTargetingIcon()
+    {
+        targetingIcon.SetTarget(null, TargetingIcon.TARGETING_TYPE.NUM_TARGETING_TYPES);
+        targetingIcon.gameObject.SetActive(false);
+    }
+    #endregion // Targeting Icon
+
+    #region Money Popup
+    [SerializeField] private MoneyPopup moneyPopup;
+    private PlayerStats playerStats;
+    public void ShowMoneyPopup()
+    {
+        moneyPopup.SetNumber(playerStats.Gems);
+        moneyPopup.gameObject.SetActive(true);
+    }
+    #endregion // Money Popup
 
     public static UIManager instance;
     private void Awake()
@@ -158,6 +186,8 @@ public class UIManager : MonoBehaviour
 
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
+
+        playerStats = GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>();
 
         // At the moment we're using keyboard and mouse to play the game
         SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);

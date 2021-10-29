@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyStats : StatsInterface
 {
     // THIS IS TEMPORARY FOR VERTICAL SLICE
-    public bool HasBeenDefeated() { return health <= 0; }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
     {

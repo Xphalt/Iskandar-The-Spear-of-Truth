@@ -7,24 +7,24 @@ using UnityEngine.SceneManagement;
 
 [System.Serializable]
 
-public class SaveDataF1
+public class SaveData
 {
     Scene m_Scene;
     public string scenename;
-    public float healthf1;
+    public float health;
 
-    public Inventory Storagef1;
+    public Inventory Storage;
 
-    public SaveDataF1(PlayerStats playerstatsf1)
+    public SaveData(PlayerStats playerstats)
     {
-        healthf1 = playerstatsf1.health;
+        health = playerstats.health;
         m_Scene = SceneManager.GetActiveScene();
         scenename = m_Scene.name;
     }
 
-    public SaveDataF1(InventoryObject_Sal playerstatsf1)
+    public SaveData(InventoryObject_Sal playerstats)
     {
-        Storagef1 = playerstatsf1.Storage;
+        Storage = playerstats.Storage;
     }
 }
 
