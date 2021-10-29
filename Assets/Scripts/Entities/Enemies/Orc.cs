@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class Orc : EnemyBase
 {
+    private float buffDuration;
+    private float buffTimer = 0;
+
+    private List<float> defaultDamages = new List<float>();
+    private float defaultSpeed = 0;
+
     public override void Start()
     {
         base.Start();
+        foreach (float damage in attackDamages)
+            defaultDamages.Add(damage);
+
+        defaultSpeed = chaseSpeed;
     }
 
     public override void Update()
@@ -27,6 +37,13 @@ public class Orc : EnemyBase
                 break;
             default:
                 break;
+        }
+
+
+        if (buffTimer < buffDuration)
+        {
+            buffTimer += Time.deltaTime;
+            if (buffTimer > buffDuration) Debuff();
         }
     }
 
@@ -56,14 +73,23 @@ public class Orc : EnemyBase
         }
     }
 
-    public void ActivateMeleeCollider()
+    public void Buff(float percent, float duration)
     {
-        hitCollider.enabled = true;
+        buffDuration = duration;
+        buffTimer = 0;
+
+        for(int d = 0; d < attackDamages.Length; d++)
+            attackDamages[d] = defaultDamages[d] * (1 + percent / 100);
+
+        chaseSpeed = defaultSpeed * (1 + percent / 100);
     }
 
-    public void DeactivateMeleeCollider()
+    public void Debuff()
     {
-        hitCollider.enabled = false;
+        for (int d = 0; d < attackDamages.Length; d++)
+            attackDamages[d] = defaultDamages[d];
+
+        chaseSpeed = defaultSpeed;
     }
 
     protected override void OnCollisionEnter(Collision collision)

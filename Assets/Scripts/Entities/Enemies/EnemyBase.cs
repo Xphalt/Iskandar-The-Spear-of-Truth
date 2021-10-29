@@ -70,7 +70,6 @@ public class EnemyBase : Patrol
 
     public float minChaseRadius;
 
-
     [HideInInspector]
 
     public override void Start()
