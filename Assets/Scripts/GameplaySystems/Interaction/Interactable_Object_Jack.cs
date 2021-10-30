@@ -66,7 +66,7 @@ public class Interactable_Object_Jack : MonoBehaviour
     {
         //This function displays the tool tip on mouse hover.
 
-        if (toolTip.inRange)
+        if (toolTip && toolTip.inRange)
         {
             //Can't use above switch as images need to change on hover, not on click.
             switch (type)
@@ -91,5 +91,5 @@ public class Interactable_Object_Jack : MonoBehaviour
         }
     }
 
-    private void OnMouseExit() { toolTip.Hide(); }
+    private void OnMouseExit() { if (toolTip) toolTip.Hide(); }
 }
