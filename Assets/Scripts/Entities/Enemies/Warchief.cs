@@ -15,7 +15,7 @@ public class Warchief : EnemyBase
     
     public int flurryChance;
 
-    public float meleeRange, minJumpDistance, axeDamage, AOEDamage, axeRadius, AOERadius, blockDuration;
+    public float meleeRange, minJumpDistance, axeDamage, AOEDamageInner, AOEDamageOuter, AOERadiusInner, AOERadiusOuter, blockDuration;
     public Transform axeTransform;
 
     public List<GameObject> orcPrefabs;
@@ -110,7 +110,7 @@ public class Warchief : EnemyBase
     private void EndBlock()
     {
         blocking = false;
-        stats.vulnerable = false;
+        stats.vulnerable = true;
         _myAnimator.SetBool("isBlocking", false);
     }
 
@@ -157,9 +157,9 @@ public class Warchief : EnemyBase
 
     private void LungeAttack()
     {
-        chargePoint = transform.position;
-        MyRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
-        print(MyRigid.velocity);
+        chargeStart = transform.position;
+        chargeDirection = (detector.GetCurTarget().position - transform.position).normalized;
+        MyRigid.velocity = chargeDirection * chargeSpeed;
         charging = true;
 
         _myAnimator.SetTrigger("Lunge");
@@ -180,14 +180,14 @@ public class Warchief : EnemyBase
     {
         if (!AOEActive) return;
 
-        Collider[] objectsHit = Physics.OverlapSphere(axeTransform.position, AOERadius);
+        Collider[] objectsHit = Physics.OverlapSphere(axeTransform.position, AOERadiusOuter);
         foreach (Collider hit in objectsHit)
         {
             if (hit.TryGetComponent(out PlayerStats player))
             {
-                player.TakeDamage(AOEDamage);
-                if (hit.ClosestPoint(axeTransform.position).GetDistance(axeTransform.position) < axeRadius)
-                    player.TakeDamage(axeDamage);
+                player.TakeDamage(AOEDamageOuter);
+                if (hit.ClosestPoint(axeTransform.position).GetDistance(axeTransform.position) < AOERadiusInner)
+                    player.TakeDamage(AOEDamageInner);
 
                 AOEActive = false;
             }
@@ -206,8 +206,12 @@ public class Warchief : EnemyBase
     }
 
     protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
+    {        
+        if (detector.IsTarget(other.transform))
+        {
+            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), axeDamage);
+            hitCollider.enabled = false;
+        }
 
         if (other.CompareTag("playerSword") && blocking) EndBlock();
     }

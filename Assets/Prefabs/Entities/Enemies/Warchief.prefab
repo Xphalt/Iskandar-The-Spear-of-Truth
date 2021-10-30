@@ -630,10 +630,11 @@ MonoBehaviour:
   flurryChance: 50
   meleeRange: 2
   minJumpDistance: 25
-  axeDamage: 2
-  AOEDamage: 1
-  axeRadius: 2
-  AOERadius: 15
+  axeDamage: 1
+  AOEDamageInner: 2
+  AOEDamageOuter: 1
+  AOERadiusInner: 2
+  AOERadiusOuter: 10
   blockDuration: 10
   axeTransform: {fileID: 4397367601529911120}
   orcPrefabs:
@@ -643,7 +644,7 @@ MonoBehaviour:
   maxSpawnRadius: 10
   buffPercent: 10
   buffDuration: 10
-  numOrcsSpawned: 0
+  numOrcsSpawned: 1
   warChiefCooldowns:
   - 10
   - 5

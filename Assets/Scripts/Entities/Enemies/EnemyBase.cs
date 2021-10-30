@@ -52,13 +52,13 @@ public class EnemyBase : Patrol
         Chasing,
         Attacking
     };
-    protected EnemyStates curState;
+    protected EnemyStates curState = EnemyStates.Patrolling;
     protected bool charging = false;
     protected bool attackUsed = false;
 
     public float chargeSpeed, chargeDistanceMult = 1;
     protected float chargeDistance;
-    protected Vector3 chargePoint;
+    protected Vector3 chargeStart, chargeDirection;
 
     public GameObject projectileObj;
     public Transform shootPoint;
@@ -101,6 +101,7 @@ public class EnemyBase : Patrol
                     agent.destination = detector.GetCurTarget().transform.position;
                     agent.speed = agent.remainingDistance > minChaseRadius ? chaseSpeed : 0;
                     agent.stoppingDistance = minChaseRadius;
+
                     break;
                 case EnemyStates.Attacking:
                     agent.speed = 0;
@@ -110,9 +111,13 @@ public class EnemyBase : Patrol
                     break;
             }
         }
-        else if (transform.position.GetDistance(chargePoint) > chargeDistance) EndCharge();
+        else
+        {
+            MyRigid.velocity = chargeDirection * chargeSpeed;
+            if (transform.position.GetDistance(chargeStart) > chargeDistance) EndCharge();
+        }
 
-        Attack();
+            Attack();
         AttackCooldown();
     }
 
@@ -132,7 +137,7 @@ public class EnemyBase : Patrol
 
     public void AttackEnd()
     {
-        curState = EnemyStates.Chasing;
+        curState = detector.GetCurTarget() ? EnemyStates.Chasing : EnemyStates.Patrolling;
         attackEnded = true;
     }
 
@@ -189,9 +194,11 @@ public class EnemyBase : Patrol
     {
         if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge])
         {
-            chargePoint = transform.position;
-            MyRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * chargeSpeed;
-            chargeDistance = (detector.GetCurTarget().position - transform.position).magnitude * chargeDistanceMult;
+            chargeStart = transform.position;
+            chargeDirection = detector.GetCurTarget().position - transform.position;
+            chargeDistance = chargeDirection.magnitude * chargeDistanceMult;
+            chargeDirection.Normalize();
+            MyRigid.velocity = chargeDirection * chargeSpeed;
 
             attackUsed = true;
             curAttack = AttackTypes.Charge;
@@ -271,7 +278,6 @@ public class EnemyBase : Patrol
     {
         if (detector.IsTarget(collider.transform))
         {
-            print("Hit");
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
             hitCollider.enabled = false;
         }
