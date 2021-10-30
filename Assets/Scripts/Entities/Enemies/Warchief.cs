@@ -60,11 +60,18 @@ public class Warchief : EnemyBase
         if (blocking)
         {
             blockTimer += Time.deltaTime;
+            if (detector.GetCurTarget()) transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
             if (blockTimer > blockDuration) EndBlock();
         }
         else if (attackEnded && detector.GetCurTarget() != null)
         {
             attackUsed = false;
+
+            if (!attackUsed && ParryAvailable && stats.health < stats.MAX_HEALTH / 2)
+            {
+                Block();
+                attackUsed = true;
+            }
 
             if (!attackUsed && FlurryAvailable && transform.GetDistance(detector.GetCurTarget()) < meleeRange)
             {
@@ -79,12 +86,6 @@ public class Warchief : EnemyBase
             if (!attackUsed && LungeAvailable && transform.GetDistance(detector.GetCurTarget()) > minJumpDistance)
             {
                 LungeAttack();
-                attackUsed = true;
-            }
-
-            if (!attackUsed && ParryAvailable && stats.health < stats.MAX_HEALTH / 2)
-            {
-                Block();
                 attackUsed = true;
             }
 
@@ -171,6 +172,7 @@ public class Warchief : EnemyBase
         blockTimer = 0;
         stats.vulnerable = false;
         _myAnimator.SetBool("isBlocking", true);
+        _myAnimator.SetTrigger("Taunt");
         warChiefAttack = WarchiefAttacks.Parry;
     }
 
