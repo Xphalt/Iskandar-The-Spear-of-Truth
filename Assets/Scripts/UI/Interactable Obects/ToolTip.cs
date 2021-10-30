@@ -8,12 +8,15 @@ using UnityEngine;
 
 public class ToolTip : MonoBehaviour
 {
+    #region Variables
     private SpriteRenderer SR;
     private Transform player;
-    //private static int look = 0, use = 1, talk = 2; //Add list elements in Inspector in this order
-    //public List<Sprite> toolTipImages = new List<Sprite>();
+
     public Sprite lookSprite, useSprite, talkSprite;
+
     public float nearRadius, farRadius;
+    [HideInInspector] public bool inRange;
+    #endregion
 
     private void Awake()
     {
@@ -38,21 +41,27 @@ public class ToolTip : MonoBehaviour
 
     private void Update()
     {
+        CheckInRange();
+    }
+
+    public void CheckInRange()
+    {
         float toolTipRange = Vector3.Distance(player.position, transform.position);
 
+        if (toolTipRange <= farRadius)
+        {
+            inRange = true;
 
-        if (toolTipRange <= farRadius && toolTipRange > nearRadius)
-        {
-            print("far range");
-            SR.color = Color.gray;
+            if (toolTipRange > nearRadius)
+            {
+                SR.color = Color.gray;
+            }
+            else if (toolTipRange <= nearRadius)
+            {
+                SR.color = Color.white;
+            }
         }
-        else if (toolTipRange <= nearRadius)
-        {
-            print("near range");
-            SR.color = Color.white;
-        }
-        else
-            print("not in range");
+        else inRange = false;
     }
 
     public void SetImage(string type)
@@ -60,15 +69,12 @@ public class ToolTip : MonoBehaviour
         switch(type)
         {
             case "Look":
-                //SR.sprite = toolTipImages[look];
                 SR.sprite = lookSprite;
                 break;
             case "Use":
-                // SR.sprite = toolTipImages[use];
                 SR.sprite = useSprite;
                 break;
             case "Talk":
-                // SR.sprite = toolTipImages[talk];
                 SR.sprite = talkSprite;
                 break;
         }

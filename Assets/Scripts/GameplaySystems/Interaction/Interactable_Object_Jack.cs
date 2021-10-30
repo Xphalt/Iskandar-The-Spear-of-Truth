@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Attached to any object that can be interacted with
+
 public class Interactable_Object_Jack : MonoBehaviour
 {
     public enum InteractableType
@@ -63,26 +64,31 @@ public class Interactable_Object_Jack : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        //Can't use above switch as images need to change on hover, not on click.
-        switch (type)
+        //This function displays the tool tip on mouse hover.
+
+        if (toolTip.inRange)
         {
-            case InteractableType.NPC_Dialogue:
-                toolTip.SetImage("Talk");
-                break;
-            case InteractableType.Seller:
-                toolTip.SetImage("Talk");
-                break;
-            case InteractableType.LootChest:
-                toolTip.SetImage("Look");
-                break;
-            case InteractableType.Item:
-                toolTip.SetImage("Use");
-                break;
-            default:
-                print("No tool tip image found");
-                break;
+            //Can't use above switch as images need to change on hover, not on click.
+            switch (type)
+            {
+                case InteractableType.NPC_Dialogue:
+                    toolTip.SetImage("Talk");
+                    break;
+                case InteractableType.Seller:
+                    toolTip.SetImage("Talk");
+                    break;
+                case InteractableType.LootChest:
+                    toolTip.SetImage("Look");
+                    break;
+                case InteractableType.Item:
+                    toolTip.SetImage("Use");
+                    break;
+                default:
+                    print("No tool tip image found");
+                    break;
+            }
+            toolTip.Show();
         }
-        toolTip.Show();
     }
 
     private void OnMouseExit() { toolTip.Hide(); }
