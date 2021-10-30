@@ -190,6 +190,7 @@ public class UIManager : MonoBehaviour
         playerStats = GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>();
 
         // At the moment we're using keyboard and mouse to play the game
+        //SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
         SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
     }
 
