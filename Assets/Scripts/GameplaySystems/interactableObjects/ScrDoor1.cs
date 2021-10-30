@@ -6,13 +6,43 @@ using UnityEngine;
 
 public class ScrDoor1 : MonoBehaviour
 {
-    //note this is a hitbox for the door opening animation,
-    void OnTriggerStay(Collider other)
+    float height = 3;
+
+    public int id;
+
+    public float Xpos;
+    public float Ypos;
+    public float Zpos;
+
+    private void Start()
     {
-        if (other.gameObject.tag == "Player")
+        GameEvents.current.onDoorwayTriggerEnter += OnDoorwayOpen;
+        GameEvents.current.onDoorwayTriggerExit += OnDoorwayClose;
+        Xpos = transform.position.x;
+        Ypos = transform.position.y;
+        Zpos = transform.position.z;
+    }
+
+
+    private void OnDoorwayOpen(int id)
+    {
+        if (id == this.id)
         {
-            //insert door open animation here
-            //print("test_success");
+            transform.position = new Vector3(Xpos, Ypos * height, Zpos);
         }
+    }
+
+    private void OnDoorwayClose(int id)
+    {
+        if (id == this.id)
+        {
+            transform.position = new Vector3(Xpos, Ypos, Zpos);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.current.onDoorwayTriggerEnter -= OnDoorwayOpen;
+        GameEvents.current.onDoorwayTriggerExit -= OnDoorwayClose;
     }
 }
