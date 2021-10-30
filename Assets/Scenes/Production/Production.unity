@@ -403,7 +403,6 @@ GameObject:
   - component: {fileID: 351967360}
   - component: {fileID: 351967362}
   - component: {fileID: 351967361}
-  - component: {fileID: 351967363}
   m_Layer: 8
   m_Name: Square
   m_TagString: Untagged
@@ -437,7 +436,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6e2661c5db7b64690e18a5fc04e174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 557b7b45bf49825438907ae5e103b181, type: 3}
+  toolTipImages:
+  - {fileID: 21300000, guid: ce002f7126bf0df4da62e29c8b5540fb, type: 3}
+  - {fileID: 21300000, guid: 85c28c90113faf245b144c1222ed3298, type: 3}
+  - {fileID: 21300000, guid: 557b7b45bf49825438907ae5e103b181, type: 3}
 --- !u!212 &351967362
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -489,32 +491,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &351967363
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 351967359}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.003871, y: 2.9099998}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3, y: 3}
-  m_EdgeRadius: 0
 --- !u!114 &486972282 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2291525582406994561, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
@@ -2792,7 +2768,6 @@ GameObject:
   - component: {fileID: 1652393322}
   - component: {fileID: 1652393321}
   - component: {fileID: 1652393320}
-  - component: {fileID: 1652393325}
   m_Layer: 8
   m_Name: TestCube
   m_TagString: Collectable
@@ -2812,7 +2787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 001ae092629f0e64fb8bace5cc4063e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 0
 --- !u!65 &1652393321
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2890,24 +2865,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1652393325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1652393319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 3.6
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!1 &1671675828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2098817887289178918, guid: 5ebda71d647431b418a55c73e466c42f, type: 3}
