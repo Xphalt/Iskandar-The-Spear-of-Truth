@@ -21,7 +21,7 @@ public class VenomShot : MonoBehaviour
 
     void Update()
     {
-        m_Rigidbody.velocity = projectileDirection * Time.deltaTime * projectileSpeed;
+        m_Rigidbody.velocity = projectileDirection * projectileSpeed;
         timeExisted += Time.deltaTime;
         if(timeExisted>=LIFE_TIME)
         {

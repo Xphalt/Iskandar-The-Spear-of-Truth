@@ -49,7 +49,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
 
     private bool isRooted = false;
-    public float rootDuration;
+    private float rootDuration;
     private float timeRooted;
 
     [SerializeField] private float _rotationSpeed;
@@ -277,11 +277,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         knockedBack = true;
     }
 
-    public void Root()
+    public void Root(float duration)
     {
         if(!isRooted)
         {
             isRooted = true;
+            rootDuration = duration;
         }
     }
 }

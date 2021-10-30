@@ -16,7 +16,7 @@ public class VenomSpitter : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player" && timeSinceLastShot >= shootDelay)
+        if (other.gameObject.CompareTag("Player") && timeSinceLastShot >= shootDelay)
         {
             timeSinceLastShot = 0;
             GameObject venomShot = Instantiate(VenomBulletPrefab, transform.position, Quaternion.identity);
