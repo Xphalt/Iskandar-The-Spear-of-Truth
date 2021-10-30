@@ -24,7 +24,7 @@ public class Interactable_Object_Jack : MonoBehaviour
     InteractableType type;
     public InteractableType GetInteractableType() { return type; }
 
-	private void Awake()
+    private void Awake()
 	{
         _shopManager = FindObjectOfType<ShopManager>();
         toolTip = GetComponentInChildren<ToolTip>();
@@ -49,13 +49,10 @@ public class Interactable_Object_Jack : MonoBehaviour
                 // Loot chest interaction logic
                 _lootChest = GetComponent<LootChest_Jerzy>();
                 _lootChest.Interact();
-                print("loot chest");
                 break;
 
             case InteractableType.Item:
                 // Item interaction logic
-                print("item");
-
                 break;
 
             default:
@@ -66,11 +63,27 @@ public class Interactable_Object_Jack : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        toolTip.SetAndShowToolTip();
+        //Can't use above switch as images need to change on hover, not on click.
+        switch (type)
+        {
+            case InteractableType.NPC_Dialogue:
+                toolTip.SetImage("Talk");
+                break;
+            case InteractableType.Seller:
+                toolTip.SetImage("Talk");
+                break;
+            case InteractableType.LootChest:
+                toolTip.SetImage("Look");
+                break;
+            case InteractableType.Item:
+                toolTip.SetImage("Use");
+                break;
+            default:
+                print("No tool tip image found");
+                break;
+        }
+        toolTip.Show();
     }
 
-    private void OnMouseExit()
-    {
-        toolTip.HideToolTip();
-    }
+    private void OnMouseExit() { toolTip.Hide(); }
 }
