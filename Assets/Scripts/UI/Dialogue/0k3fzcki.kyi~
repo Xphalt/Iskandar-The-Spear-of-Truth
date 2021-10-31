@@ -37,39 +37,39 @@ public class DialogueManager : MonoBehaviour
 
         AddCharactersToQueue(newConversation.ListOfCharacterExchanges);
         AddCharacterDialogueToQueue(_QueueOfCharacters);
-        AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
+        AddSentencesToQueue(_QueueOfStringArrays);
 
         DisplayNextExchange();
     }
 
     public void DisplayNextExchange()
     {
-        //Is the character queue empty?
-        if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 0)
-        {
-            //If yes, end dialogue
-            EndDialogue();
-        }
+        TextNPCName.text = _QueueOfCharacters.Peek().CharacterName;
+        StopAllCoroutines();
+        StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
 
         //Is the string queue empty?
         if (_QueueOfStrings.Count == 0)
         {
             //If yes, dequeue from tthe stringArray queue and and new sentences to the string queue
-            AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
+            AddSentencesToQueue(_QueueOfStringArrays);
 
             //Is the stringArray queue empty?
             if (_QueueOfStringArrays.Count == 0)
             {
                 //If yes, dequeue from the character queue and change the character name
                 TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
+
+                //Is the character queue empty?
+                if (_QueueOfCharacters.Count == 0)
+                {
+                    //If yes, end dialogue
+                    EndDialogue();
+                }
             }
         }
 
-        TextNPCName.text = _QueueOfCharacters.Peek().CharacterName;
-        StopAllCoroutines();
-        StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
-
-        if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 1)
+        else if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 1)
         {
             TextContinueDialogue.text = "End";
         }
@@ -111,9 +111,11 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void AddSentencesToQueue(string[] characterDialogueQueue)
+    private void AddSentencesToQueue(Queue<string[]> characterDialogueQueue)
     {
-        foreach (string item in characterDialogueQueue)
+        string[] array = characterDialogueQueue.Peek();
+
+        foreach (string item in array)
         {
             _QueueOfStrings.Enqueue(item);
             Debug.Log(item);
