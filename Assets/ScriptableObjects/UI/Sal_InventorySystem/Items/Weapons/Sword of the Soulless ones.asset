@@ -21,7 +21,7 @@ MonoBehaviour:
   stackable: 0
   data:
     name: Sword of the Soulless ones
-    id: 2
+    id: 1
   damage: 10
   spiritualDamage: 5
   speedBoost: 1
@@ -30,8 +30,10 @@ MonoBehaviour:
   throwSpeed: 0
   throwDmgTickRate: 0
   returnSped: 0
-  Type: 0
-  Desc: '<color=red><b>Damage value</color></b>: 10
+  desc: '<color=red><b>Damage value</color></b>:  {damage}
 
     <color=red><b>Spiritual
-    Damage value</color></b>: 5'
+    Damage value</color></b>:  {spiritualDamage}
+
+    <color=red><b>Speed Boost</color></b>: 
+    {speedBoost}'
