@@ -30,9 +30,11 @@ public class PlayerStats : StatsInterface
     }
     
     public float damage;
+    public float spiritualDamage;
     public float defence;
-    public float fireDefence;
-    public float iceDefence;
+    public bool poisonProtection = false;
+    public bool desertProtection = false;
+    public bool snowProtection = false;
     #endregion
 
     private void Awake()
@@ -70,11 +72,11 @@ public class PlayerStats : StatsInterface
         }
         if (Item && Item.accessory == Accessories.RingOfVitality)
         {
-            Item.UseBefore(); //Recovers hp every n seconds
+            Item.UseCurrent(); //Recovers hp every n seconds
         }
         if (Item && Item.accessory == Accessories.Goggles)
         {
-            Item.UseBefore(); //deactivates objects
+            Item.UseCurrent(); //deactivates objects
         }
     }
 
@@ -98,7 +100,7 @@ public class PlayerStats : StatsInterface
     {
         target.TakeDamage(amount, scriptedKill);
         
-        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.BracersOfTheLifeStealers) Item.UseBefore();
+        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.NecklaceOfTheLifeStealers) Item.UseCurrent();
     }
 
 
@@ -119,20 +121,16 @@ public class PlayerStats : StatsInterface
                 ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
                 switch (p_slot.ItemObject.type)
                 {
-                    case ItemType.Weapon:
-                        try
-                        {
-                            damage -= ((WeaponObject_Sal)(temp)).damage;
-                        }
-                        catch
-                        {
-                            defence -= ((ShieldObject)(temp)).defValues.physicalDef;
-                        }
+                    case ItemType.Weapon: 
+                        damage -= ((WeaponObject_Sal)(temp)).damage;
+                        spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
+                        GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
                         break;
                     case ItemType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
-                        fireDefence -= ((ArmorObject_Sal)(temp)).defValues.fireDef;
-                        iceDefence -= ((ArmorObject_Sal)(temp)).defValues.iceDef;
+                        poisonProtection = false;
+                        desertProtection = false;
+                        snowProtection = false;
                         break;
                     default:
                         damage = BASE_DAMAGE;
@@ -159,20 +157,16 @@ public class PlayerStats : StatsInterface
                     ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
                     switch (p_slot.ItemObject.type)
                     {
-                        case ItemType.Weapon:
-                            try
-                            {
-                                damage += ((WeaponObject_Sal)(temp)).damage;
-                            }
-                            catch
-                            {
-                                defence += ((ShieldObject)(temp)).defValues.physicalDef;
-                            }
+                        case ItemType.Weapon: 
+                            damage += ((WeaponObject_Sal)(temp)).damage;
+                            spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
+                            GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost; 
                             break;
                         case ItemType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
-                            fireDefence += ((ArmorObject_Sal)(temp)).defValues.fireDef;
-                            iceDefence += ((ArmorObject_Sal)(temp)).defValues.iceDef;
+                            poisonProtection = ((ArmorObject_Sal)(temp)).defValues.poisonProtection;
+                            desertProtection = ((ArmorObject_Sal)(temp)).defValues.desertProtection;
+                            snowProtection = ((ArmorObject_Sal)(temp)).defValues.snowProtection;
                             break;
                         default:
                             damage = BASE_DAMAGE;
@@ -195,10 +189,12 @@ public class PlayerStats : StatsInterface
             if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
         }
-        else if(item) //It's a gem pot
+        else if(item) //It's a resource
         { 
             gems += ((ResourceObject)(item.itemobj)).gems;
             UIManager.instance.ShowMoneyPopup();
+            if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
+                ((ResourceObject)(item.itemobj)).UseCurrent();
             Destroy(other.gameObject);
         }
     }

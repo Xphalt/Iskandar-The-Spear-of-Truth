@@ -17,12 +17,16 @@ public class ResourceObject : ItemObject_Sal
         //    "\n<b><color=red>Ice Defence</color></b>: ", defValues.iceDef);
     }
 
-    public override void UseBefore()
+    public override void UseCurrent()
     {
-        Debug.Log("Resource used");
+        //Setting values for the delegate Use
+        UseFunctions.Instance.GemsValue = gems;
+        OnUseCurrent.Invoke();
     }
     public override void UseAfter()
     {
+        //Setting values for the delegate Use
+        UseFunctions.Instance.GemsValue = gems;
         OnUseAfter.Invoke();
     }
 }

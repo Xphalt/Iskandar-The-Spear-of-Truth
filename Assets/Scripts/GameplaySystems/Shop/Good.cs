@@ -37,7 +37,7 @@ public class Good : MonoBehaviour
     public void BuyGood(InventoryObject_Sal destinationInvenotory)
     { 
         var playerstats = FindObjectOfType<PlayerStats>();
-        if (howMany > 0 && playerstats.Gems > buyVl)
+        if (howMany > 0 && playerstats.Gems >= buyVl)
         {
             if (destinationInvenotory.AddItem(destinationInvenotory.database.ItemObjects[objHolder.data.id].data, 1))
             {

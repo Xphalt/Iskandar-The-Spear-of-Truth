@@ -11,19 +11,22 @@ using UnityEngine.InputSystem;
 public abstract class UserInterface_Sal : MonoBehaviour
 {
     public InventoryObject_Sal inventory;  
-    public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>(); 
+    public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
+    private Sprite uiMask;
 
     public abstract void CreateSlots();
     
     // Dominique 13-10-2021, Changed to Awake so it is called before the UI is hiddeb by Inventory_UI_Script in Start
     void Awake()
-    { 
+    {
+
         for (int i = 0; i < inventory.GetSlots.Length; i++)
         {
             inventory.GetSlots[i].parent = this;   //Sets the right interface parent to each slot (for dragging into another database)
             inventory.GetSlots[i].OnAfterUpdate += OnSlotUpdate;    //Setting delegate method to update the UI
         }
         CreateSlots();
+        uiMask = inventory.GetSlots[0].slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite;
 
         //Adds Events to check if the drag and drop is within the inventory area
         AddEvent(this.gameObject, EventTriggerType.PointerEnter, delegate { OnEnterInterface(this.gameObject); });
@@ -40,8 +43,8 @@ public abstract class UserInterface_Sal : MonoBehaviour
         }
         else //No item
         {
-            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
-            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = uiMask;
+            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
             slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = "";
         }
     } 

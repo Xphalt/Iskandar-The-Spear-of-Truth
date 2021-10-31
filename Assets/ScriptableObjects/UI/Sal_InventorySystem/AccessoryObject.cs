@@ -4,46 +4,56 @@ using UnityEngine;
 
 public enum Accessories
 {
-    BracersOfScouting,
+    BraceletOfScouting,
     Goggles,
     RingOfVitality,
-    BracersOfTheLifeStealers
+    NecklaceOfTheLifeStealers
 }
  
 
 [CreateAssetMenu(fileName = "New Accessory Object", menuName = "Inventory System/Items/Accessory")]
 public class AccessoryObject : ItemObject_Sal
-{  
-    public float HealingValue;
+{ 
+    public float healingValue;
     public float regenerationInterval;
     public bool isPassive;
 
 
-    public string Desc;
+    [TextArea(5, 10)] public string desc;
+    public string Desc
+    {
+        get 
+        {
+            const string value1 = "{healingValue}";
+            const string value2 = "{regenerationInterval}";
+            string desc1  = desc.Replace(value1, healingValue.ToString());
+            string desc2  = desc1.Replace (value2, regenerationInterval.ToString());
+            return desc2;
+        }
+    }
     public Accessories accessory; 
 
-    public void Awake()
+    void Awake()
     {
-        type = ItemType.Accessories; 
-
-        Desc = string.Concat(
-            "<b><color=red>Healing value</color></b>: ", HealingValue );
-    }
+        type = ItemType.Accessory; 
+    } 
      
-    public override void UseBefore()
+    public override void UseCurrent()
     {
-        Debug.Log("Default item Used");
+        Debug.Log("Accessory Used");
 
         //Setting values for the delegate Use
-        UseFunctions.Instance.SetVariables(regenerationInterval, HealingValue);
+        UseFunctions.Instance.RegenerationInterval = regenerationInterval; 
+        UseFunctions.Instance.HealingValue = healingValue; 
 
-        //Use
-        OnUseBefore.Invoke();
+        OnUseCurrent.Invoke();
     }
     public override void UseAfter()
     {
         //Setting values for the delegate Use
-        UseFunctions.Instance.SetVariables(regenerationInterval, HealingValue);
+        UseFunctions.Instance.RegenerationInterval = regenerationInterval;
+        UseFunctions.Instance.HealingValue = healingValue;
+
         OnUseAfter.Invoke();
     }
 }
