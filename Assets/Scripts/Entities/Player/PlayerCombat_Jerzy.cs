@@ -63,7 +63,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         {
             swordCollider.enabled = false;
         }
-        if (!playerMovement.falling && !playerMovement.knockedBack && playerMovement.timeSinceLastDash > playerMovement.dashDuration)
+        if (!playerMovement.falling && !playerMovement.knockedBack && playerMovement.timeSinceLastDash > playerMovement.dashDuration && !playerMovement.respawning && !playerMovement.gettingConsumed)
         {
             canAttack = true;
         }
@@ -149,4 +149,6 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
+
+
 }

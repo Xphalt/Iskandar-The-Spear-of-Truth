@@ -1,3 +1,5 @@
+// Script made by Jerzy
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

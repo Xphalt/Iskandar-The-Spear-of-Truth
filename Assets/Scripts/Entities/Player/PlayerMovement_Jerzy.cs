@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class PlayerMovement_Jerzy : MonoBehaviour
 {
-    private PlayerAnimationManager playerAnimation;
+    public PlayerAnimationManager playerAnimation;
 
     Rigidbody m_Rigidbody;
     public GameObject playerModel;
     public float m_Speed, m_floorDistance;
     public float fallingSpeed;
     public bool falling;
+    public bool respawning = false;
+    public bool gettingConsumed = false;
 
     public Quaternion swordLookRotation;
 
@@ -52,6 +54,20 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float rootDuration;
     private float timeRooted;
 
+    private float respawnTime;
+    private float timeSinceRespawnStarted;
+    private Vector3 respawnPosition;
+    private float respawnDamage;
+
+    private float consumeDuration;
+    private float timeSinceConsumed;
+    private float consumeMoveAmount;
+    
+
+    public GameObject FadeUI;
+
+    private const int RAYCAST_LAYER_MASK = -1;
+
     [SerializeField] private float _rotationSpeed;
 
     private void Awake()
@@ -83,8 +99,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             }
         }
 
+        if (!gettingConsumed && !respawning)
+        {
+            CheckGround();
+        }
 
-        CheckGround();
 
         float verticalVelocity = m_Rigidbody.velocity.y;
 
@@ -117,7 +136,43 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (falling)
+        if (gettingConsumed)
+        {
+            timeSinceConsumed += Time.deltaTime;
+
+            if(timeSinceConsumed <= consumeDuration)
+            {
+                transform.Translate(Vector3.up * -consumeMoveAmount);
+            }
+            else
+            {
+                timeSinceRespawnStarted = 0;
+                gettingConsumed = false;
+                timeSinceConsumed = 0;
+                respawning = true;
+                GetComponent<CapsuleCollider>().enabled = true;
+                playerAnimation.Landing();
+            }
+
+        }
+
+        if (respawning)
+        {
+            timeSinceRespawnStarted += Time.deltaTime;
+
+            if (timeSinceRespawnStarted >= respawnTime)
+            {
+                FadeUI.GetComponent<Fading>().FadeIn();
+                transform.position = respawnPosition;
+                GetComponent<PlayerStats>().TakeDamage(respawnDamage);
+                respawning = false;
+            }
+        }
+        else
+            timeSinceRespawnStarted = 0;
+
+    
+        if (falling || respawning || gettingConsumed)
             timeSinceLastDash = dashDuration;
 
         if(timeSinceLastDash < dashDuration)
@@ -171,7 +226,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
-                timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted)
+                timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted && !respawning && !gettingConsumed)
             {
                 if (_playerTargetingScript.IsTargeting())
                 {
@@ -232,7 +287,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     { 
         Vector3 newVel = m_Rigidbody.velocity;
 
-        if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance))
+        if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance, RAYCAST_LAYER_MASK, QueryTriggerInteraction.Ignore))
         {
             fallingSpeedMultiplier += Time.deltaTime;
             newVel.y = -(fallingSpeed* fallingSpeedMultiplier* fallingSpeedMultiplier);
@@ -285,4 +340,32 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             rootDuration = duration;
         }
     }
+
+    public void Respawn(Vector3 position, float time, float damage)
+    {
+        timeSinceRespawnStarted = 0;
+        FadeUI.GetComponent<Fading>().FadeOut();
+        respawnDamage = damage;
+        respawnPosition = position;
+        respawnTime = time;
+        LockPlayerMovement();
+        respawning = true;
+        playerAnimation.Dead();
+    }
+
+    public void GetConsumed(Vector3 position, float time, float damage, float duration, float moveAmt)
+    {
+        timeSinceConsumed = 0;
+        respawnDamage = damage;
+        respawnPosition = position;
+        respawnTime = time;
+        consumeDuration = duration;
+        consumeMoveAmount = moveAmt;
+        gettingConsumed = true;
+        playerAnimation.Falling();
+        GetComponent<CapsuleCollider>().enabled = false;
+        FadeUI.GetComponent<Fading>().FadeOut();
+        LockPlayerMovement();
+    }
+
 }
