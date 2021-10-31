@@ -24,8 +24,7 @@ public class ShopManager : MonoBehaviour
     {
         shopPanel = GameObject.Find("ShopUI");
         shopContentPanel = GameObject.Find("ShopContentPanel");
-        shopPanel.SetActive(false);
-        OpenShop();
+        shopPanel.SetActive(false); 
     } 
 
     // Pass in an integer that corresponds to the SHOP_TYPE enum
