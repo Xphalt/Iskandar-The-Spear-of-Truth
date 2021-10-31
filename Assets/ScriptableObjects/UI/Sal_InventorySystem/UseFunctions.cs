@@ -31,8 +31,8 @@ public class UseFunctions : MonoBehaviour
         {
             switch (database[i].name)
             {
-                case "Bracers of Scouting":
-                    database[i].OnUseCurrent += UseBracersOfScouting; 
+                case "Bracelet of Scouting":
+                    database[i].OnUseCurrent += UseBraceletOfScouting; 
                     break;
                 case "Goggles":
                     database[i].OnUseCurrent += UseGoggles;
@@ -41,8 +41,8 @@ public class UseFunctions : MonoBehaviour
                 case "Ring Of Vitality":
                     database[i].OnUseCurrent += UseRingOfVitality; 
                     break;
-                case "Bracers Of The Life Stealers":
-                    database[i].OnUseCurrent += UseBracersOfTheLifeStealers; 
+                case "Necklace Of The Life Stealers":
+                    database[i].OnUseCurrent += UseBraceletOfTheLifeStealers; 
                     break;
                 case "Gem Pot":
                     database[i].OnUseCurrent += UseGemsPot;
@@ -75,7 +75,7 @@ public class UseFunctions : MonoBehaviour
     }
 
     #region Use Functions 
-    public void UseBracersOfScouting()
+    public void UseBraceletOfScouting()
     { 
         Vector3 newPos = playerCombat.swordObject.transform.position;
         newPos.y = playerstats.transform.position.y;
@@ -103,7 +103,7 @@ public class UseFunctions : MonoBehaviour
         }
     }
      
-    public void UseBracersOfTheLifeStealers()
+    public void UseBraceletOfTheLifeStealers()
     { 
         if (playerstats.health < playerstats.MAX_HEALTH) //Magic number (variable needed);
             playerstats.health += healingValue;

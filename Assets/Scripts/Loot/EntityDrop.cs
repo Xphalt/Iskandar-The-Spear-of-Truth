@@ -46,7 +46,7 @@ public class EntityDrop : MonoBehaviour
             obj.GetComponent<GroundItem>().SetItem(itemToDrop);
             //Set spawn type
             if (type == EntityType.Chest)
-                obj.GetComponent<GroundItem>().spawn += GemSpawn;
+                obj.GetComponent<GroundItem>().spawn += ChestSpawn;
             else
                 obj.GetComponent<GroundItem>().spawn += NormalSpawn;
              
@@ -69,7 +69,7 @@ public class EntityDrop : MonoBehaviour
         obj.GetComponent<Rigidbody>().velocity = randomSpawnDir * spawnSpeed * Time.deltaTime;
     }
 
-    public void GemSpawn(GameObject obj)
+    public void ChestSpawn(GameObject obj)
     {
         obj.GetComponent<Rigidbody>().velocity = Vector3.up * Time.deltaTime; 
     }
