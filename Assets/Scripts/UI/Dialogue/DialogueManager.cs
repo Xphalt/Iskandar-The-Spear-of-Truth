@@ -45,14 +45,20 @@ public class DialogueManager : MonoBehaviour
     public void DisplayNextExchange()
     {
         //Is the character queue empty?
-        if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 0)
+        if (_QueueOfCharacters.Count == 0)
         {
             //If yes, end dialogue
             EndDialogue();
         }
+        if (_QueueOfStrings.Count > 0)
+        {
+            TextNPCName.text = _QueueOfCharacters.Peek().CharacterName;
+            StopAllCoroutines();
+            StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
+        }
 
         //Is the string queue empty?
-        if (_QueueOfStrings.Count == 0)
+        if (_QueueOfStringArrays.Count > 0 && _QueueOfStrings.Count == 0)
         {
             //If yes, dequeue from tthe stringArray queue and and new sentences to the string queue
             AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
@@ -64,10 +70,6 @@ public class DialogueManager : MonoBehaviour
                 TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
             }
         }
-
-        TextNPCName.text = _QueueOfCharacters.Peek().CharacterName;
-        StopAllCoroutines();
-        StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
 
         if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 1)
         {
