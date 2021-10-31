@@ -32,34 +32,47 @@ public class UseFunctions : MonoBehaviour
             switch (database[i].name)
             {
                 case "Bracers of Scouting":
-                    database[i].OnUseBefore += UseBracersOfScouting; 
+                    database[i].OnUseCurrent += UseBracersOfScouting; 
                     break;
                 case "Goggles":
-                    database[i].OnUseBefore += UseGoggles;
+                    database[i].OnUseCurrent += UseGoggles;
                     database[i].OnUseAfter += UseGogglesUndo; 
                     break;
                 case "Ring Of Vitality":
-                    database[i].OnUseBefore += UseRingOfVitality; 
+                    database[i].OnUseCurrent += UseRingOfVitality; 
                     break;
                 case "Bracers Of The Life Stealers":
-                    database[i].OnUseBefore += UseBracersOfTheLifeStealers; 
+                    database[i].OnUseCurrent += UseBracersOfTheLifeStealers; 
+                    break;
+                case "Gem Pot":
+                    database[i].OnUseCurrent += UseGemsPot;
                     break;
             } 
         }
     }
+     
 
-
-    public void SetVariables(float p_Interval, float p_healingVL)
-    {
-        regenerationInterval = p_Interval;
-        HealingValue = p_healingVL;
-    }
-
-    //Timer Stuff
+    //Usefull variables
     private float current;
     private float regenerationInterval;
+    public float RegenerationInterval
+    {
+        get { return regenerationInterval; }
+        set { regenerationInterval = value; }
+    }
 
-    private float HealingValue; 
+    private float healingValue;
+    public float HealingValue
+    {
+        get { return healingValue; }
+        set { healingValue = value; }
+    }
+    private int gemsValue;
+    public int GemsValue
+    {
+        get { return gemsValue; }
+        set { gemsValue = value; }
+    }
 
     #region Use Functions 
     public void UseBracersOfScouting()
@@ -80,11 +93,11 @@ public class UseFunctions : MonoBehaviour
      
     public void UseRingOfVitality()
     { 
-        current += Time.deltaTime;
+        current += Time.deltaTime; 
         if (current > regenerationInterval)
         {
             if (playerstats.health < playerstats.MAX_HEALTH) //Magic number (variable needed);
-                playerstats.health += HealingValue;
+                playerstats.health += healingValue;
 
             current = 0;
         }
@@ -93,7 +106,12 @@ public class UseFunctions : MonoBehaviour
     public void UseBracersOfTheLifeStealers()
     { 
         if (playerstats.health < playerstats.MAX_HEALTH) //Magic number (variable needed);
-            playerstats.health += HealingValue;
+            playerstats.health += healingValue;
+    }
+
+    public void UseGemsPot()
+    {
+        playerstats.Gems += gemsValue;
     }
     #endregion
 }

@@ -68,23 +68,15 @@ public class EquipPanel : MonoBehaviour
         string values = string.Empty; 
         switch(inventory.database.ItemObjects[slotItem[obj].id].type)
         {
-            case ItemType.Weapon:
-                try //Weapon, Shield
-                {
-                    values = ((WeaponObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
-                }
-                catch
-                {
-                    values = ((ShieldObject)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
-                }
+            case ItemType.Weapon: //Weapon 
+                values = ((WeaponObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc; 
                 break;
             case ItemType.Armor: //Armor
                 values = ((ArmorObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
                 break;
-            case ItemType.Accessories: //Default
+            case ItemType.Accessory: //Default
                 values = ((AccessoryObject)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
-                break;
-
+                break; 
         } 
 
         //Assign text Desc
@@ -121,7 +113,7 @@ public class EquipPanel : MonoBehaviour
         {
             //Run function delegate that undo accessories' effects when unequipped
             if (equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id > -1 && equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id].OnUseAfter != null)
-                equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id].OnUseAfter();
+                equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id].UseAfter();
 
             inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.AccessorySlot], inventory.FindItemOnInventory(slotItem[obj]));   //Accessories
             

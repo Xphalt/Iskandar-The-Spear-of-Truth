@@ -72,11 +72,11 @@ public class PlayerStats : StatsInterface
         }
         if (Item && Item.accessory == Accessories.RingOfVitality)
         {
-            Item.UseBefore(); //Recovers hp every n seconds
+            Item.UseCurrent(); //Recovers hp every n seconds
         }
         if (Item && Item.accessory == Accessories.Goggles)
         {
-            Item.UseBefore(); //deactivates objects
+            Item.UseCurrent(); //deactivates objects
         }
     }
 
@@ -100,7 +100,7 @@ public class PlayerStats : StatsInterface
     {
         target.TakeDamage(amount, scriptedKill);
         
-        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.NecklaceOfTheLifeStealers) Item.UseBefore();
+        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.NecklaceOfTheLifeStealers) Item.UseCurrent();
     }
 
 
@@ -121,20 +121,10 @@ public class PlayerStats : StatsInterface
                 ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
                 switch (p_slot.ItemObject.type)
                 {
-                    case ItemType.Weapon:
-                        try
-                        {
-                            damage -= ((WeaponObject_Sal)(temp)).damage;
-                            spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
-                            GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost;
-                        }
-                        catch
-                        {
-                            defence -= ((ShieldObject)(temp)).defValues.physicalDef;
-                            poisonProtection = false;
-                            desertProtection = false;
-                            snowProtection = false;
-                        }
+                    case ItemType.Weapon: 
+                        damage -= ((WeaponObject_Sal)(temp)).damage;
+                        spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
+                        GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
                         break;
                     case ItemType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
@@ -167,21 +157,10 @@ public class PlayerStats : StatsInterface
                     ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
                     switch (p_slot.ItemObject.type)
                     {
-                        case ItemType.Weapon:
-                            try
-                            {
-                                damage += ((WeaponObject_Sal)(temp)).damage;
-                                spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
-                                GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
-
-                            }
-                            catch
-                            {
-                                defence += ((ShieldObject)(temp)).defValues.physicalDef;
-                                poisonProtection = ((ShieldObject)(temp)).defValues.poisonProtection;
-                                desertProtection = ((ShieldObject)(temp)).defValues.desertProtection;
-                                snowProtection = ((ShieldObject)(temp)).defValues.snowProtection;
-                            }
+                        case ItemType.Weapon: 
+                            damage += ((WeaponObject_Sal)(temp)).damage;
+                            spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
+                            GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost; 
                             break;
                         case ItemType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
@@ -210,9 +189,10 @@ public class PlayerStats : StatsInterface
             if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
         }
-        else if(item) //It's a gem pot
+        else if(item) //It's a resource
         { 
-            gems += ((ResourceObject)(item.itemobj)).gems;
+            if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
+                ((ResourceObject)(item.itemobj)).UseCurrent();
             Destroy(other.gameObject);
         }
     }

@@ -2,13 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
-public enum WeaponType
-{
-    Mele,
-    Throwable
-}
-
+ 
 [CreateAssetMenu(fileName = "New Weapon Object", menuName = "Inventory System/Items/Weapon")]
 public class WeaponObject_Sal : ItemObject_Sal
 {
@@ -22,20 +16,29 @@ public class WeaponObject_Sal : ItemObject_Sal
     public float attackCooldown;
     public float throwSpeed;
     public float throwDmgTickRate;
-    public float returnSped; 
+    public float returnSped;
 
-    public WeaponType Type;
-
-    public string Desc; 
+    [TextArea(5, 10)] public string desc;
+    public string Desc
+    {
+        get
+        {
+            const string value1 = "{damage}";
+            const string value2 = "{spiritualDamage}";
+            const string value3 = "{speedBoost}";
+            string newDesc1 = desc.Replace(value1, damage.ToString());
+            string newDesc2 = newDesc1.Replace(value2, spiritualDamage.ToString());
+            string newDesc3 = newDesc2.Replace(value3, speedBoost.ToString());
+            return newDesc3;
+        }
+    }
 
     public void Awake()
     {
-        type = ItemType.Weapon;
-        Desc = string.Concat("<color=red><b>Damage value</color></b>: ", damage,
-            "\n<color=red><b>Spiritual Damage value</color></b>: ", spiritualDamage);
+        type = ItemType.Weapon; 
     }
 
-    public override void UseBefore()
+    public override void UseCurrent()
     {
         Debug.Log("Sword Used");
     }

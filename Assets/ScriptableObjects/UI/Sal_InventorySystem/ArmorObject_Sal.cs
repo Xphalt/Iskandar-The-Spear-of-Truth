@@ -1,23 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
- 
+
+[System.Serializable]
+public class Defencevalues
+{
+    public float physicalDef;
+    public bool poisonProtection;
+    public bool desertProtection;
+    public bool snowProtection;
+
+    public Defencevalues()
+    {
+        physicalDef = 0;
+        poisonProtection = false;
+        desertProtection = false;
+        snowProtection = false;
+    }
+}
 
 [CreateAssetMenu(fileName = "New Armor Object", menuName = "Inventory System/Items/Armor")]
 public class ArmorObject_Sal : ItemObject_Sal
 {
     public Defencevalues defValues = new Defencevalues();
 
-    public string Desc;
+    [TextArea(5, 10)] public string desc;
+    public string Desc
+    {
+        get
+        {
+            const string value = "{defValues.physicalDef}";
+            string newDesc = desc.Replace(value, defValues.physicalDef.ToString());
+            return newDesc;
+        }
+    }
 
     public void Awake()
     {
-        type = ItemType.Armor;
-        Desc = string.Concat(
-            "<b><color=red>Physical Defence</color></b>: ", defValues.physicalDef,
-            "\n<b><color=red>Poison Protection</color></b>: ", defValues.poisonProtection.ToString() ,
-            "\n<b><color=red>Desert Protection</color></b>: ", defValues.desertProtection.ToString() ,
-            "\n<b><color=red>Snow Protection</color></b>: ", defValues.snowProtection.ToString());
+        type = ItemType.Armor; 
     }
 
     public override void UseAfter()
@@ -25,7 +45,7 @@ public class ArmorObject_Sal : ItemObject_Sal
         
     }
 
-    public override void UseBefore()
+    public override void UseCurrent()
     {
         Debug.Log("Armor used/Equipped");
     } 

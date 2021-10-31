@@ -6,10 +6,9 @@ public enum ItemType
 {
     Armor,
     Weapon, 
-    Accessories,
-    Items,
-    Resource,
-    Material
+    Accessory,
+    Item,
+    Resource, 
 }
 
 public delegate void Use();
@@ -24,10 +23,10 @@ public abstract class ItemObject_Sal : ScriptableObject
     public bool stackable;
     public Item data = new Item();
 
-    public Use OnUseBefore;
+    public Use OnUseCurrent;
     public Use OnUseAfter; 
 
-    public abstract void UseBefore();  
+    public abstract void UseCurrent();  
     public abstract void UseAfter();  
 }
 

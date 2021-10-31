@@ -30,19 +30,19 @@ public class UseAccessoriesTest : MonoBehaviour
 
         if (Item && Item.accessory == Accessories.RingOfVitality)
         {
-            Item.UseBefore(); //Recovers hp every n seconds
+            Item.UseCurrent(); //Recovers hp every n seconds
         }
         else if(Item && Keyboard.current.bKey.isPressed && Item.accessory == Accessories.BraceletOfScouting)
         {
-            Item.UseBefore();    //Teleport
+            Item.UseCurrent();    //Teleport
         }
         else if (Item && Keyboard.current.nKey.isPressed && Item.accessory == Accessories.Goggles)
         {
-            Item.UseBefore();   //Make things invisible
+            Item.UseCurrent();   //Make things invisible
         }
         else if (Item && Keyboard.current.mKey.isPressed && Item.accessory == Accessories.NecklaceOfTheLifeStealers)
         {
-            Item.UseBefore();    //Adds vitality every time an enemy is killed
+            Item.UseCurrent();    //Adds vitality every time an enemy is killed
         }
 
     }
