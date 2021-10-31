@@ -50,30 +50,30 @@ public class DialogueManager : MonoBehaviour
             //If yes, end dialogue
             EndDialogue();
         }
-        if (_QueueOfStrings.Count > 0)
+
+        else
         {
             TextNPCName.text = _QueueOfCharacters.Peek().CharacterName;
             StopAllCoroutines();
             StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
-        }
 
-        //Is the string queue empty?
-        if (_QueueOfStringArrays.Count > 0 && _QueueOfStrings.Count == 0)
-        {
-            //If yes, dequeue from tthe stringArray queue and and new sentences to the string queue
-            AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
+            //Is the string queue empty?
+            if (_QueueOfStringArrays.Count != 0 && _QueueOfStrings.Count == 0)
+            {
+                //If yes, dequeue from the stringArray queue and and new sentences to the string queue
+                AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
+            }
 
             //Is the stringArray queue empty?
-            if (_QueueOfStringArrays.Count == 0)
+            else if (_QueueOfStringArrays.Count == 0)
             {
                 //If yes, dequeue from the character queue and change the character name
                 TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
             }
-        }
 
-        if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 1)
-        {
-            TextContinueDialogue.text = "End";
+            Debug.Log(_QueueOfCharacters.Count);
+            Debug.Log(_QueueOfStringArrays.Count);
+            Debug.Log(_QueueOfStrings.Count);
         }
     }
 
@@ -100,7 +100,6 @@ public class DialogueManager : MonoBehaviour
         foreach (NewConversation.NextCharacter character in characterList)
         {
             _QueueOfCharacters.Enqueue(character);
-            Debug.Log(character.CharacterName);
         }
     }
 
@@ -109,7 +108,6 @@ public class DialogueManager : MonoBehaviour
         foreach (NewConversation.NextCharacter characterDialogue in characterQueue)
         {
             _QueueOfStringArrays.Enqueue(characterDialogue.NumOfSentences);
-            Debug.Log(characterDialogue.NumOfSentences);
         }
     }
 
@@ -118,7 +116,6 @@ public class DialogueManager : MonoBehaviour
         foreach (string item in characterDialogueQueue)
         {
             _QueueOfStrings.Enqueue(item);
-            Debug.Log(item);
         }
     }
     /*_________________________________________________________________________*/
