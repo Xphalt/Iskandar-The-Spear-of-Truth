@@ -67,11 +67,16 @@ public class DialogueManager : MonoBehaviour
             {
                 StopAllCoroutines();
                 StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
+            }
 
-                if (_QueueOfCharacters.Count != 0 && _QueueOfStringArrays.Count == 0)
-                {
-                    TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
-                }
+            if (_QueueOfCharacters.Count != 0 && _QueueOfStringArrays.Count == 0)
+            {
+                TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
+            }
+
+            if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 0)
+            {
+                TextContinueDialogue.text = "End";
             }
 
             Debug.Log(_QueueOfCharacters.Count);
