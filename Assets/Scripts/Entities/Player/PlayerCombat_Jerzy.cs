@@ -93,11 +93,16 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         }
         if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
         {
-            swordCollider.enabled = true;
+            //swordCollider.enabled = true;
             playerAnimation.SimpleAttack();
             timeSinceLastAttack = 0;
             playerMovement.LockPlayerMovement();
         }
+    }
+
+    public void SetSwordCollider(int active)
+    {
+        swordCollider.enabled = active > 0;
     }
 
     public void ThrowAttack()

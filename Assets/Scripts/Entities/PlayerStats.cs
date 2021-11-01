@@ -90,9 +90,13 @@ public class PlayerStats : StatsInterface
         if (health <= 0)
         {
             //gameObject.SetActive(false);
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             playerAnimation.Dead();
         }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
