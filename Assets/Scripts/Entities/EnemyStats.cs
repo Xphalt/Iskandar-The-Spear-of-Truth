@@ -8,6 +8,12 @@ public class EnemyStats : StatsInterface
     private float deathTimer = 0.0f;
     public float despawnTime;
     private bool isDead = false;
+    EntityDrop drops;
+
+    private void Start()
+    {
+        drops = GetComponent<EntityDrop>();
+    }
 
     private void Update()
     {
@@ -16,7 +22,10 @@ public class EnemyStats : StatsInterface
             //timer til gameobj disable
             deathTimer += Time.deltaTime;
             if (deathTimer >= despawnTime)
+            {
+                drops.SpawnLoot();
                 gameObject.SetActive(false);
+            }
         }
     }
 

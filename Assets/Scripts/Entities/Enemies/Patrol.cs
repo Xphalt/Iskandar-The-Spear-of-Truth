@@ -30,6 +30,7 @@ public class Patrol : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
 
         _myAnimator = GetComponentInParent<Animator>();
+        _myCapsuleCol = GetComponent<CapsuleCollider>();
 
         agent.autoBraking = false;
         GoToNextNode();
