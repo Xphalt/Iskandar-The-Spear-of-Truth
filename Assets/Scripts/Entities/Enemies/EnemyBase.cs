@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class EnemyBase : Patrol
 {
+    protected bool isDead = false;
     public float chaseSpeed;
     protected EnemyStats stats;
     protected PlayerDetection detector;
@@ -117,7 +118,7 @@ public class EnemyBase : Patrol
             if (transform.position.GetDistance(chargeStart) > chargeDistance) EndCharge();
         }
 
-            Attack();
+        Attack();
         AttackCooldown();
     }
 

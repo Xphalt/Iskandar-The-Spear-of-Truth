@@ -8,6 +8,8 @@ public class EntityDrop : MonoBehaviour
 {
     private float spawnSpeed = 150.0f;
 
+    //public float disableDelay = 0;
+
     [Range(1, 100)] public float dropChance;
     public ItemObject_Sal itemToDrop;
     public EntityType type;
@@ -53,8 +55,8 @@ public class EntityDrop : MonoBehaviour
             //Reset tentatives to 1
             DropSystem.Instance.ResetTentativeNum(type);
             //Destroy
-            if (type != EntityType.Chest)
-                Destroy(gameObject, 1.5f);
+            //if (type != EntityType.Chest)
+                //Destroy(gameObject, disableDelay); GOING TO HANDLE THIS IN OTHER SCRIPTS
         }
         else
         {

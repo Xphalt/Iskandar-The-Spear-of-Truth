@@ -20,29 +20,39 @@ public class Orc : EnemyBase
 
     public override void Update()
     {
-        base.Update();
-
-        switch (curState)
+        if(stats.health <= 0)
         {
-            case EnemyStates.Patrolling:
-                _myAnimator.SetBool("IsPatrolling", true);
-                _myAnimator.SetBool("IsChasing", false);
-                break;
-            case EnemyStates.Chasing:
-                _myAnimator.SetBool("IsPatrolling", false);
-                _myAnimator.SetBool("IsChasing", true);
-                break;
-            case EnemyStates.Attacking:
-                break;
-            default:
-                break;
+            _myAnimator.SetBool("IsDead", true);
+            _myCapsuleCol.enabled = false;
         }
 
-
-        if (buffTimer < buffDuration)
+        if(!isDead)
         {
-            buffTimer += Time.deltaTime;
-            if (buffTimer > buffDuration) Debuff();
+            base.Update();
+
+            switch (curState)
+            {
+                case EnemyStates.Patrolling:
+                    _myAnimator.SetBool("IsPatrolling", true);
+                    _myAnimator.SetBool("IsChasing", false);
+                    break;
+                case EnemyStates.Chasing:
+                    _myAnimator.SetBool("IsPatrolling", false);
+                    _myAnimator.SetBool("IsChasing", true);
+                    break;
+                case EnemyStates.Attacking:
+                    break;
+                default:
+                    break;
+            }
+
+
+            if (buffTimer < buffDuration)
+            {
+                buffTimer += Time.deltaTime;
+                if (buffTimer > buffDuration) Debuff();
+            }
+
         }
     }
 

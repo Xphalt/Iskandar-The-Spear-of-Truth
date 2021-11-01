@@ -4,26 +4,19 @@ using UnityEngine;
 
 public class ScrDestructablePot : MonoBehaviour
 {
-    void Start()
-    {
-        //List<Item> item = new List<Item>();
+    private EntityDrop drop;
 
-        //adding items to the list
-        //item.Add(new Item("Bow", 0));
-        //item.Add(new Item("Sword", 1));
-        //item.Add(new Item("Shield", 2));
-        //item.Add(new Item("Coin", 3));
+    private void Start()
+    {
+        drop = GetComponent<EntityDrop>();
     }
 
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "playerSword")
+        if (other.gameObject.CompareTag("playerSword"))
         {
+            drop.SpawnLoot();
             Destroy(gameObject);
-            //instantiate()
-            //item.Clear();
-            //insert anything else on Pot destruction here
-            //instantiate(??? , new Vector3(i * 2.0F, 0, 0), Quaternion.identity);
         }
     }
 }
