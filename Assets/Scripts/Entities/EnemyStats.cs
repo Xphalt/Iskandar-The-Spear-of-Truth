@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class EnemyStats : StatsInterface
 {
-    // THIS IS TEMPORARY FOR VERTICAL SLICE
+    public bool vulnerable = true;
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
     {
+        if (!vulnerable) return;
         health -= amount;
 
         // anything that happens when taking damage happens 

@@ -6,6 +6,7 @@ public abstract class StatsInterface : MonoBehaviour
 {
     public bool HasBeenDefeated => health <= 0;
 
+    public float MAX_HEALTH = 10.0f;
     public float health;
     protected SoundPlayer sfx;
 
