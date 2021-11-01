@@ -32,7 +32,7 @@ public class SoundPlayer : MonoBehaviour
     private void AddAudioSource()
     {
         aSource = gameObject.AddComponent<AudioSource>();
-        aSource.outputAudioMixerGroup = mixer.FindMatchingGroups("SFX")[0];
+        //aSource.outputAudioMixerGroup = mixer.FindMatchingGroups("SFX")[0];
         aSource.loop = false;
         aSource.playOnAwake = false;
     }
