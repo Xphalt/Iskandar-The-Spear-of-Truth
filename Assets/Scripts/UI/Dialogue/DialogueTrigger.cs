@@ -7,10 +7,16 @@ public class DialogueTrigger : MonoBehaviour
     public DialogueManager DialogueManager_;
     public NewConversation Conversation;
 
+    private void Start()
+    {
+        gameObject.SetActive(true);
+    }
+
     public void TriggerDialogue()
     {
-        gameObject.SetActive(false);
+        Collider collider = GetComponent<Collider>();
+        collider.enabled = false;
         DialogueManager_.DialoguePanel.SetActive(true);
-        DialogueManager_.StartDialogue(Conversation);
+        DialogueManager_.StartDialogue(collider, Conversation);
     }
 }

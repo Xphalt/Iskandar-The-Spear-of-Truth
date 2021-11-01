@@ -12,7 +12,8 @@ public class NewConversation : ScriptableObject
     {
         public string CharacterName;
 
-        [TextArea]
-        public string[] NumOfSentences;
+        public LocalisationTableReference[] NumOfSentences;
     }
+
+    public string GetName(NewConversation.NextCharacter newCharacter) { return newCharacter.CharacterName; }
 }
