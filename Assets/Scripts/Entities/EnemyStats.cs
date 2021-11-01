@@ -5,6 +5,21 @@ using UnityEngine;
 public class EnemyStats : StatsInterface
 {
     public bool vulnerable = true;
+    private float deathTimer = 0.0f;
+    public float despawnTime;
+    private bool isDead = false;
+
+    private void Update()
+    {
+        if(isDead)
+        {
+            //timer til gameobj disable
+            deathTimer += Time.deltaTime;
+            if (deathTimer >= despawnTime)
+                gameObject.SetActive(false);
+        }
+    }
+
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
     {
@@ -14,7 +29,7 @@ public class EnemyStats : StatsInterface
         // anything that happens when taking damage happens 
         if (health <= 0)
         {
-            gameObject.SetActive(false);
+            isDead = true;
         }
     }
 

@@ -11,6 +11,7 @@ public class Patrol : MonoBehaviour
     private int _currentNode;
 
     protected Animator _myAnimator;
+    protected CapsuleCollider _myCapsuleCol;
 
     protected NavMeshAgent agent;
     private float minRemainingDistance = 0.5f;
