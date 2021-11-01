@@ -349,8 +349,13 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         respawnPosition = position;
         respawnTime = time;
         LockPlayerMovement();
-        respawning = true;
+        SetRespawn();
         playerAnimation.Dead();
+    }
+
+    public void SetRespawn(int active = 1)
+    {
+        respawning = active > 0;
     }
 
     public void GetConsumed(Vector3 position, float time, float damage, float duration, float moveAmt)
