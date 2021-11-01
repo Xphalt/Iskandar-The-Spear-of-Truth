@@ -32,18 +32,15 @@ class TestBehaviourInspector : Editor
 		EditorGUILayout.LabelField($"Found {_implementations.Count()} implementations");
 
 
-			//select implementation from editor popup
-			_implementationTypeIndex = EditorGUILayout.Popup(	new GUIContent("Implementation"),
-																_implementationTypeIndex, _implementations.Select(impl => impl.FullName).ToArray());
+		//select implementation from editor popup
+		_implementationTypeIndex = EditorGUILayout.Popup(	new GUIContent("Implementation"),
+															_implementationTypeIndex, _implementations.Select(impl => impl.FullName).ToArray());
 		for (int i = 0; i < testBehaviour.nodes.Count; i++)
 		{
 			if (GUILayout.Button("Create instance " + i))
 			{
 				//set new value
 				testBehaviour.nodes[i] = (INode)Activator.CreateInstance(_implementations[_implementationTypeIndex]);
-
-
-					//testBehaviour.Node = (INode)Activator.CreateInstance(_implementations[_implementationTypeIndex]);
 			}
 
 

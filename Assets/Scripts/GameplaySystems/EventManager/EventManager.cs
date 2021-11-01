@@ -5,86 +5,51 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+[System.Serializable]
+public class EventAction
+{
+    [SerializeReference]    public List<Condition> conditions = new List<Condition>();
+    [SerializeReference]    public List<Event> events = new List<Event>();
+    [SerializeField]        public bool complete = false;   
+}
 
 public class EventManager : MonoBehaviour
 {
-	[System.Serializable]
-	public struct Action
-	{
-        [SerializeReference]
-        [SelectImplementation(typeof(Condition))]
-        public List<Condition> conditions;
-		public List<Event> events;
-	}
+    [SerializeReference] public List<EventAction> actions = new List<EventAction>();
 
-    
-	[SerializeReference] 
-    [SelectImplementation(typeof(Condition))]
-    public Condition Condition;
-
-	//[SerializeReference] public List<Condition> testCondition 
-	//    = new List<Condition>()
-	//    {  
-	//        new KillCondition(),
-	//        new KillCondition()
-	//    }
-	//;
-
-	[SerializeField] private List<Action> actions;
-
-	// Start is called before the first frame update
-	void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-}
-
-
-public class SelectImplementationAttribute : PropertyAttribute
-{
-    public Type FieldType;
-
-    public SelectImplementationAttribute(Type fieldType)
-    {
-        FieldType = fieldType;
-    }
-}
-
-[CustomPropertyDrawer(typeof(SelectImplementationAttribute))]
-public class SelectImplementationDrawer : PropertyDrawer
-{
-    private Type[] _implementations;
-    private int _implementationTypeIndex;
-
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        if (_implementations == null || GUILayout.Button("Refresh implementations"))
+        foreach (EventAction action in actions)
         {
-            _implementations = GetImplementations((attribute as SelectImplementationAttribute).FieldType)
-                .Where(impl => !impl.IsSubclassOf(typeof(UnityEngine.Object))).ToArray();
+            if (!action.complete)
+            {
+                // Test conditions are met
+                action.complete = true;
+                foreach (Condition condition in action.conditions)
+                {
+                    if (!condition.TestCondition())
+                    {
+                        action.complete = false;
+                        break;
+                    }
+                }
+
+                // If all conditions are met execute the connected events
+                if (action.complete)
+                {
+                    foreach (Event actionEvent in action.events)
+                    {
+                        actionEvent.TriggerEvent();
+                    }
+                }
+            }
         }
-
-        EditorGUILayout.LabelField($"Found {_implementations.Count()} implementations");
-
-        _implementationTypeIndex = EditorGUILayout.Popup(new GUIContent("Implementation"),
-            _implementationTypeIndex, _implementations.Select(impl => impl.FullName).ToArray());
-
-        if (GUILayout.Button("Create instance"))
-        {
-            property.managedReferenceValue = Activator.CreateInstance(_implementations[_implementationTypeIndex]);
-        }
-        EditorGUILayout.PropertyField(property, true);
-    }
-
-    public static Type[] GetImplementations(Type interfaceType)
-    {
-        var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes());
-        return types.Where(p => interfaceType.IsAssignableFrom(p) && !p.IsAbstract).ToArray();
     }
 }

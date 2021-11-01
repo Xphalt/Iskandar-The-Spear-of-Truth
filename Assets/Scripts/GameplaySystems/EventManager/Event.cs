@@ -3,13 +3,24 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Event", menuName = "EventManager/Event")]
 [System.Serializable]
-public abstract class Event : ScriptableObject
+public abstract class Event
 {
     public abstract void TriggerEvent();
 
-    public int testInt;
-    public bool testBool;
-    public float testFloat;
+    [SerializeField] public int testInt;
+    [SerializeField] public bool testBool;
+    [SerializeField] public float testFloat;
+}
+
+[System.Serializable]
+public class DoorEvent : Event
+{
+    public override void TriggerEvent()
+    {
+        
+	}
+
+    [SerializeField] public GameObject door;
+    [SerializeField] public bool unlockDoor;
 }
