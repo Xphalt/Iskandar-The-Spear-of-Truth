@@ -58,7 +58,7 @@ public class HeavySnowfall : MonoBehaviour
     {
         if (other.transform.tag == "Player")
         {
-            if (Frosted)
+            while (Frosted)
             {
                 CurrentTimer += Time.deltaTime;
 
@@ -68,15 +68,16 @@ public class HeavySnowfall : MonoBehaviour
                     
                     CurrentTimer = 0;
                     Frosted = !(CurrentFrostTicks == 0);
+                    if (CurrentFrostTicks == 0)
+                    {
+                        DOT_DEBUFF = 0;
+                        Frosted = false;
+                        playerMovement.dashCooldown = StartDash;
+                        playerMovement.m_Speed = StartSpeed;
+                    }
                 }
 
-                if (CurrentFrostTicks == 0)
-                {
-                    DOT_DEBUFF = 0;
-                    Frosted = false;
-                    playerMovement.dashCooldown = StartDash;
-                    playerMovement.m_Speed = StartSpeed;
-                }
+                
             }
         }
         

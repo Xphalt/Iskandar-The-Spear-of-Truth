@@ -52,7 +52,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private bool isRooted = false;
     private float rootDuration;
-    private float timeRooted;
+    private float timeRooted;   
+    
+    private bool isSliding;
 
     private float respawnTime;
     private float timeSinceRespawnStarted;
@@ -69,6 +71,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private const int RAYCAST_LAYER_MASK = -1;
 
     [SerializeField] private float _rotationSpeed;
+
 
     private void Awake()
     {
@@ -226,7 +229,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
-                timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted && !respawning && !gettingConsumed)
+                timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted && !respawning && !gettingConsumed && !isSliding)
             {
                 if (_playerTargetingScript.IsTargeting())
                 {
@@ -340,6 +343,16 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             rootDuration = duration;
         }
     }
+
+    public void Slide(Vector3 direction)
+    {
+        if (!isSliding)
+        {
+            isSliding = true;
+
+        }
+    }
+
 
     public void Respawn(Vector3 position, float time, float damage)
     {
