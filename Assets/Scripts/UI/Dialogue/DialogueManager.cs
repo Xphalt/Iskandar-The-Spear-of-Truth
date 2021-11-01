@@ -38,31 +38,40 @@ public class DialogueManager : MonoBehaviour
         AddCharactersToQueue(newConversation.ListOfCharacterExchanges);
         AddCharacterDialogueToQueue(_QueueOfCharacters);
         AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
+        TextNPCName.text = _QueueOfCharacters.Peek().CharacterName;
 
         DisplayNextExchange();
     }
 
     public void DisplayNextExchange()
     {
-        if (_QueueOfCharacters.Count == 0)
+        if (_QueueOfCharacters.Count == 0 && _QueueOfStrings.Count == 0)
         {
             EndDialogue();
         }
 
         else
         {
-            TextNPCName.text = _QueueOfCharacters.Peek().CharacterName;
-            StopAllCoroutines();
-            StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
 
-            if (_QueueOfStringArrays.Count != 0 && _QueueOfStrings.Count == 0)
+            if (_QueueOfStrings.Count == 0)
             {
                 AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
+
+                if (_QueueOfStringArrays.Count == 0)
+                {
+                    TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
+                }
             }
 
-            else if (_QueueOfStringArrays.Count == 0)
+            if (_QueueOfStrings.Count != 0)
             {
-                TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
+                StopAllCoroutines();
+                StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
+
+                if (_QueueOfCharacters.Count != 0 && _QueueOfStringArrays.Count == 0)
+                {
+                    TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
+                }
             }
 
             Debug.Log(_QueueOfCharacters.Count);
