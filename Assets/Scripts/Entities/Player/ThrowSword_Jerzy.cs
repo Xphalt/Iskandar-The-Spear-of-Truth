@@ -21,8 +21,9 @@ public class ThrowSword_Jerzy : MonoBehaviour
     float throwTimeSpinningInPlace;
 
     float timeTravelling;
+    float startTime;
 
-    float throwSpeed;
+    float minThrowSpeed, maxThrowSpeed;
     float returningSpeed;
 
    // public float pauseBeforeThrow;
@@ -40,7 +41,8 @@ public class ThrowSword_Jerzy : MonoBehaviour
     {
         throwTimeBeforeSpinInPlace = combatScript.throwTimeBeforeSpinInPlace;
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
-        throwSpeed = combatScript.throwSpeed;
+        minThrowSpeed = combatScript.minThrowSpeed;
+        maxThrowSpeed = combatScript.maxThrowSpeed;
         returningSpeed = combatScript.throwReturnSpeed;
     }
 
@@ -57,7 +59,10 @@ public class ThrowSword_Jerzy : MonoBehaviour
             // move in specific direction for a specific amount of time (Stage 1 of throw attack)
             if (timeTravelling < throwTimeBeforeSpinInPlace)
             {
-                swordRigidBody.velocity = transform.forward * throwSpeed;
+                //float t = (Time.time - startTime);
+                //swordRigidBody.velocity = transform.forward * throwSpeed;
+                Vector3 smoothVel = new Vector3(Mathf.SmoothStep(minThrowSpeed, maxThrowSpeed, timeTravelling), 0, 0);
+                swordRigidBody.velocity = transform.forward * smoothVel.magnitude;
             }
 
             // spin on the spot for a specific amount of time (Stage 2 of throw attack)

@@ -8,7 +8,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public float throwTimeBeforeSpinInPlace;
     public float throwTimeSpinningInPlace;
-    public float throwSpeed;
+    public float minThrowSpeed, maxThrowSpeed;
     public float throwReturnSpeed;
     public bool attackOffCooldown = true;
     public bool canAttack = true;
