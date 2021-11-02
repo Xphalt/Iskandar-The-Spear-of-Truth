@@ -402,22 +402,58 @@ MonoBehaviour:
   - id: 0
   - id: 1
   - id: 2
+  - id: 3
+  - id: 4
+  - id: 5
+  - id: 6
+  - id: 7
+  - id: 8
   references:
     version: 1
     00000000:
+      type: {class: Node, ns: , asm: Assembly-CSharp}
+      data:
+        _displayText: display text
+    00000001:
       type: {class: DerivedNode, ns: , asm: Assembly-CSharp}
       data:
         _displayText: display text
         _displayTextDerived: derived
-    00000001:
+        _object: {fileID: 0}
+    00000002:
       type: {class: Node, ns: , asm: Assembly-CSharp}
       data:
         _displayText: display text
-    00000002:
+    00000003:
+      type: {class: Node, ns: , asm: Assembly-CSharp}
+      data:
+        _displayText: display text
+    00000004:
+      type: {class: Node, ns: , asm: Assembly-CSharp}
+      data:
+        _displayText: display text
+    00000005:
+      type: {class: Node, ns: , asm: Assembly-CSharp}
+      data:
+        _displayText: display text
+    00000006:
       type: {class: DerivedNode, ns: , asm: Assembly-CSharp}
       data:
-        _displayText: node 3 A
-        _displayTextDerived: node 3 B
+        _displayText: display text
+        _displayTextDerived: derived
+        _object: {fileID: 0}
+    00000007:
+      type: {class: DerivedNode, ns: , asm: Assembly-CSharp}
+      data:
+        _displayText: display text
+        _displayTextDerived: derived
+        _object: {fileID: 0}
+    00000008:
+      type: {class: DerivedNode, ns: , asm: Assembly-CSharp}
+      data:
+        _displayText: display text
+        _displayTextDerived: derived
+        _object: {fileID: 0}
 --- !u!4 &246016238
 Transform:
   m_ObjectHideFlags: 0
@@ -1310,7 +1346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 2
@@ -1322,13 +1357,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 3
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -1344,7 +1377,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 1
+  vulnerable: 1
+  despawnTime: 0
 --- !u!54 &549357683
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1488,7 +1524,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &720094777
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1523,7 +1562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 3
@@ -1535,13 +1573,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 15
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -1653,13 +1689,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Condition:
-    id: 0
   actions:
-  - conditions:
-    - id: 0
-    events:
-    - {fileID: 0}
+  - id: 0
+  - id: 0
   references:
     version: 1
     00000000:
@@ -1906,7 +1938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b36088d4761aeb46b291cac9b5c663e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   ViewRadius: 0
@@ -2387,7 +2418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 2
@@ -2399,13 +2429,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 3
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -2421,7 +2449,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 1
+  vulnerable: 1
+  despawnTime: 0
 --- !u!54 &1237221925
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2538,7 +2569,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &1340620837
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2573,7 +2607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 3
@@ -2585,13 +2618,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 15
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -2744,7 +2775,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &1366041700
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2779,7 +2813,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 10
@@ -2791,13 +2824,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 0
-  attackDurations:
-  - 0.5
-  - 0
   attackCooldowns:
   - 1
   - 0
   chargeSpeed: 0
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -2879,6 +2910,74 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1366041696}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1437719246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1437719249}
+  - component: {fileID: 1437719248}
+  - component: {fileID: 1437719247}
+  m_Layer: 0
+  m_Name: DoorParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1437719247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437719246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 200b1deb6b13d9c48a6d4354893bc097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  Xpos: 0
+  Ypos: 0
+  Zpos: 0
+--- !u!95 &1437719248
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437719246}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 32ad75f3d7aabe848a28f762d8f470a0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!4 &1437719249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437719246}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 354.52, y: 2.16, z: 126.56265}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1742641522}
+  m_Father: {fileID: 0}
+  m_RootOrder: 27
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1443844533 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2291525582707136704, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
@@ -3085,6 +3184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4371beab758bb5d43aaefa5f20ec6871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 100
   returnSpot: {fileID: 1681935678}
   fleeSpot: {fileID: 1650057761}
@@ -3184,7 +3284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueManager_: {fileID: 1827202630}
-  Conversation: {fileID: 11400000, guid: 85b3e39b441f2394b9b2275e0d7ad7fa, type: 2}
+  Conversation: {fileID: 0}
 --- !u!114 &1671675832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3354,6 +3454,101 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1742641521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1742641522}
+  - component: {fileID: 1742641526}
+  - component: {fileID: 1742641525}
+  - component: {fileID: 1742641524}
+  m_Layer: 0
+  m_Name: Door
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1742641522
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742641521}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.710022, y: 0, z: 0}
+  m_LocalScale: {x: 3.3885853, y: 5.0075994, z: 0.26917}
+  m_Children: []
+  m_Father: {fileID: 1437719249}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1742641524
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742641521}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1742641525
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742641521}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1742641526
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742641521}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1800707286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3597,7 +3792,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &2044409779
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3632,7 +3830,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 10
@@ -3644,13 +3841,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 0
-  attackDurations:
-  - 0.5
-  - 0
   attackCooldowns:
   - 1
   - 0
   chargeSpeed: 0
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -3838,7 +4033,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &2107213263
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3873,7 +4071,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 10
@@ -3885,13 +4082,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 0
-  attackDurations:
-  - 0.5
-  - 0
   attackCooldowns:
   - 1
   - 0
   chargeSpeed: 0
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -4037,7 +4232,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 2
@@ -4049,13 +4243,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 3
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -4071,7 +4263,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 1
+  vulnerable: 1
+  despawnTime: 0
 --- !u!54 &2112340527
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4674,6 +4869,30 @@ PrefabInstance:
       propertyPath: TextContinueDialogue
       value: 
       objectReference: {fileID: 486972282}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
 --- !u!4 &4762450011334126064

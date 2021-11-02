@@ -6,29 +6,41 @@ using UnityEngine;
 
 public class ScrDoor1 : MonoBehaviour
 {
-    float height = 3;
-
     public int id;
 
-    public float Xpos;
-    public float Ypos;
-    public float Zpos;
+    private bool _locked = false;
+    public bool Locked
+    {
+        get => _locked;
+        set { _locked = value; }
+	}
+
+    private Animator _animator;
+
+    [SerializeField] private bool _startsOpen = false;
+
+    private float timer = 0;
+
+    // Alternate the door between open and closed if it's unlocked
+    public void SwapDoor()
+    {
+        if(!_locked) _animator.SetTrigger("Swap");
+    }
 
     private void Start()
     {
         GameEvents.current.onDoorwayTriggerEnter += OnDoorwayOpen;
         GameEvents.current.onDoorwayTriggerExit += OnDoorwayClose;
-        Xpos = transform.position.x;
-        Ypos = transform.position.y;
-        Zpos = transform.position.z;
+
+        _animator = GetComponent<Animator>();
+        _animator.SetBool("StartsOpen", _startsOpen);
     }
 
-
-    private void OnDoorwayOpen(int id)
+	private void OnDoorwayOpen(int id)
     {
         if (id == this.id)
         {
-            transform.position = new Vector3(Xpos, Ypos * height, Zpos);
+            SwapDoor();
         }
     }
 
@@ -36,7 +48,7 @@ public class ScrDoor1 : MonoBehaviour
     {
         if (id == this.id)
         {
-            transform.position = new Vector3(Xpos, Ypos, Zpos);
+            SwapDoor();
         }
     }
 
