@@ -10,8 +10,8 @@ using UnityEngine.Localization;
 [System.Serializable]
 public struct LocalisationTableReference
 {
-    public string tableReference;
-    public string entryReference;
+    [TextArea] public string tableReference;
+    [TextArea] public string entryReference;
 
     public string GetLocalisedString()
     {

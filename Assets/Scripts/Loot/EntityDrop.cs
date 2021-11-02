@@ -8,6 +8,8 @@ public class EntityDrop : MonoBehaviour
 {
     private float spawnSpeed = 150.0f;
 
+    //public float disableDelay = 0;
+
     [Range(1, 100)] public float dropChance;
     public ItemObject_Sal itemToDrop;
     public EntityType type;
@@ -44,28 +46,33 @@ public class EntityDrop : MonoBehaviour
             GameObject obj = Instantiate(groundItem, transform.position, Quaternion.identity);
             //Set Item
             obj.GetComponent<GroundItem>().SetItem(itemToDrop);
-            obj.GetComponent<GroundItem>().OnBeforeSerialize(); //Doesn't get called automatically for some reason
-            //Set dir
-            obj.GetComponent<Rigidbody>().velocity = randomSpawnDir * spawnSpeed * Time.deltaTime;
-
+            //Set spawn type
+            if (type == EntityType.Chest)
+                obj.GetComponent<GroundItem>().spawn += ChestSpawn;
+            else
+                obj.GetComponent<GroundItem>().spawn += NormalSpawn;
+             
+            //Reset tentatives to 1
             DropSystem.Instance.ResetTentativeNum(type);
             //Destroy
-            StartCoroutine(StopForceAndDestroy(obj));
+            //if (type != EntityType.Chest)
+                //Destroy(gameObject, disableDelay); GOING TO HANDLE THIS IN OTHER SCRIPTS
         }
         else
         {
             DropSystem.Instance.IncreaseTentatives(type);
         }
     }
+     
+    //Function delegates 
+    public void NormalSpawn(GameObject obj)
+    {
+        //Set dir
+        obj.GetComponent<Rigidbody>().velocity = randomSpawnDir * spawnSpeed * Time.deltaTime;
+    }
 
-    IEnumerator StopForceAndDestroy(GameObject obj)
-    {      
-        yield return new WaitForSeconds(1.5f);
-        //Stop drop
-        Rigidbody objRgdBody = obj.GetComponentInChildren<Rigidbody>();
-        objRgdBody.velocity = Vector3.zero;
-        objRgdBody.angularVelocity = Vector3.zero;
-
-        Destroy(gameObject);
+    public void ChestSpawn(GameObject obj)
+    {
+        obj.GetComponent<Rigidbody>().velocity = Vector3.up * Time.deltaTime; 
     }
 }

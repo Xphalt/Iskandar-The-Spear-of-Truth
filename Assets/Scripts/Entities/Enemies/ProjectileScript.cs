@@ -17,7 +17,7 @@ public class ProjectileScript : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void SetDamageFromParent(float dmg, float projlife)
+    public void SetDamageFromParent(float dmg, float projlife = 1)
     {
         projectileLifetime = projlife * lifetimeMultiplier;
         damage = dmg;

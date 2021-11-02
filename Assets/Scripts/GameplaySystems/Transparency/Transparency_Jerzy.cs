@@ -4,39 +4,30 @@ using UnityEngine;
 
 public class Transparency_Jerzy : MonoBehaviour
 {
+    public Transform player;
 
-    public GameObject player;
-
-
-    // Start is called before the first frame update
     void Start()
     {
-        
+        if (!player) player = FindObjectOfType<PlayerMovement_Jerzy>().transform;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-
         Vector3 fromPosition = transform.position;
-        Vector3 toPosition = player.transform.position;
+        Vector3 toPosition = player.position;
         Vector3 direction = toPosition - fromPosition;
 
         RaycastHit[] hits;
-        hits = Physics.RaycastAll(transform.position, direction, Vector3.Distance(player.transform.position, transform.position));
+        hits = Physics.RaycastAll(transform.position, direction, Vector3.Distance(player.position, transform.position));
 
-
-        for (float i = 0; i < hits.Length; i+=1)
+        for (int i = 0; i < hits.Length; i++)
         {
-            RaycastHit hit = hits[(int)i];
+            RaycastHit hit = hits[i];
 
-            if (hit.collider.gameObject.tag == "Wall")
+            if (hit.collider.TryGetComponent(out TransparentObject_Jerzy vanish))
             {
-
-                hit.collider.gameObject.GetComponent<TransparentObject_Jerzy>().MakeTransparent(i+1);
+                vanish.MakeTransparent(i+1);
             }
-
         }
-
     }
 }

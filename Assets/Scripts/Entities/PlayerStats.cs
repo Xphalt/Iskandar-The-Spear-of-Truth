@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,15 +8,32 @@ public class PlayerStats : StatsInterface
     private PlayerAnimationManager playerAnimation;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
+    public GameObject listOfObjs;
 
+    internal AccessoryObject Item;
     #region STATS
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
 
+    private int gems;
+    public int Gems
+    {
+        get
+        {
+            return gems;
+        }
+        set
+        {
+            gems = value;
+        }
+    }
+    
     public float damage;
+    public float spiritualDamage;
     public float defence;
-    public float fireDefence;
-    public float iceDefence;
+    public bool poisonProtection = false;
+    public bool desertProtection = false;
+    public bool snowProtection = false;
     #endregion
 
     private void Awake()
@@ -39,6 +56,29 @@ public class PlayerStats : StatsInterface
         sfx = GetComponentInParent<SoundPlayer>();
     }
 
+    private void Update()
+    {
+        if (equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id > -1)
+        {
+            try
+            {
+                Item = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id]));
+            }
+            catch
+            {
+                Item = null;
+            }
+        }
+        if (Item && Item.accessory == Accessories.RingOfVitality)
+        {
+            Item.UseCurrent(); //Recovers hp every n seconds
+        }
+        if (Item && Item.accessory == Accessories.Goggles)
+        {
+            Item.UseCurrent(); //deactivates objects
+        }
+    }
+
     public override void TakeDamage(float amount, bool scriptedKill = false)
     {
         if (scriptedKill) amount = health - 1;
@@ -50,14 +90,20 @@ public class PlayerStats : StatsInterface
         if (health <= 0)
         {
             //gameObject.SetActive(false);
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             playerAnimation.Dead();
         }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
     {
         target.TakeDamage(amount, scriptedKill);
+        
+        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.NecklaceOfTheLifeStealers) Item.UseCurrent();
     }
 
 
@@ -78,20 +124,16 @@ public class PlayerStats : StatsInterface
                 ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
                 switch (p_slot.ItemObject.type)
                 {
-                    case ItemType.Weapon:
-                        try
-                        {
-                            damage -= ((WeaponObject_Sal)(temp)).damage;
-                        }
-                        catch
-                        {
-                            defence -= ((ShieldObject)(temp)).defValues.physicalDef;
-                        }
+                    case ItemType.Weapon: 
+                        damage -= ((WeaponObject_Sal)(temp)).damage;
+                        spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
+                        GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
                         break;
                     case ItemType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
-                        fireDefence -= ((ArmorObject_Sal)(temp)).defValues.fireDef;
-                        iceDefence -= ((ArmorObject_Sal)(temp)).defValues.iceDef;
+                        poisonProtection = false;
+                        desertProtection = false;
+                        snowProtection = false;
                         break;
                     default:
                         damage = BASE_DAMAGE;
@@ -118,20 +160,16 @@ public class PlayerStats : StatsInterface
                     ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
                     switch (p_slot.ItemObject.type)
                     {
-                        case ItemType.Weapon:
-                            try
-                            {
-                                damage += ((WeaponObject_Sal)(temp)).damage;
-                            }
-                            catch
-                            {
-                                defence += ((ShieldObject)(temp)).defValues.physicalDef;
-                            }
+                        case ItemType.Weapon: 
+                            damage += ((WeaponObject_Sal)(temp)).damage;
+                            spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
+                            GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost; 
                             break;
                         case ItemType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
-                            fireDefence += ((ArmorObject_Sal)(temp)).defValues.fireDef;
-                            iceDefence += ((ArmorObject_Sal)(temp)).defValues.iceDef;
+                            poisonProtection = ((ArmorObject_Sal)(temp)).defValues.poisonProtection;
+                            desertProtection = ((ArmorObject_Sal)(temp)).defValues.desertProtection;
+                            snowProtection = ((ArmorObject_Sal)(temp)).defValues.snowProtection;
                             break;
                         default:
                             damage = BASE_DAMAGE;
@@ -149,51 +187,33 @@ public class PlayerStats : StatsInterface
     private void OnTriggerEnter(Collider other)
     {
         var item = other.GetComponent<GroundItem>();
-        if (item)
+        if (item && item.itemobj.type != ItemType.Resource)
         {
             if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
         }
+        else if(item) //It's a resource
+        { 
+            gems += ((ResourceObject)(item.itemobj)).gems;
+            UIManager.instance.ShowMoneyPopup();
+            if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
+                ((ResourceObject)(item.itemobj)).UseCurrent();
+            Destroy(other.gameObject);
+        }
     }
 
     //Morgan's Save Edits
-    public void SaveStatsf1()
+    public void SaveStats(int num)
     {
-        SaveManager.SavePlayerStatsf1(this);
-        inventory.SaveStatsf1();
+        SaveManager.SavePlayerStats(this, num);
+        inventory.SaveStats(num);
     }
 
-    public void SaveStatsf2()
+    public void LoadStats(int num)
     {
-        SaveManager.SavePlayerStatsf2(this);
-        inventory.SaveStatsf2();
-    }
-
-    public void SaveStatsf3()
-    {
-        SaveManager.SavePlayerStatsf3(this);
-        inventory.SaveStatsf3();
-    }
-
-    public void LoadStatsf1()
-    {
-        SaveDataF1 saveDataf1 = SaveManager.LoadPlayerStatsf1();
-        health = saveDataf1.healthf1;
-        inventory.LoadStatsf1();
-    }
-
-    public void LoadStatsf2()
-    {
-        SaveDataF2 saveDataf2 = SaveManager.LoadPlayerStatsf2();
-        health = saveDataf2.healthf2;
-        inventory.LoadStatsf2();
-    }
-
-    public void LoadStatsf3()
-    {
-        SaveDataF3 saveDataf3 = SaveManager.LoadPlayerStatsf3();
-        health = saveDataf3.healthf3;
-        inventory.LoadStatsf3();
+        SaveData saveData = SaveManager.LoadPlayerStats(num);
+        health = saveData.health;
+        inventory.LoadStats(num);
     }
 
 

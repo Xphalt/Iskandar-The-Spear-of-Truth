@@ -10,7 +10,7 @@ public class PickUp_Item_Script : MonoBehaviour
 {
     [HideInInspector]
     public string chosenObject;
-    public ItemObject item;
+    public ItemObj item;
 
     /* __________________________________________________________________________________________________________
     Detecting item with mouse click.

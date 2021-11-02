@@ -6,9 +6,12 @@ public enum ItemType
 {
     Armor,
     Weapon, 
-    Default
+    Accessory,
+    Item,
+    Resource, 
 }
 
+public delegate void Use();
 public abstract class ItemObject_Sal : ScriptableObject
 {
     public int BuyValue, SellValue;
@@ -16,12 +19,15 @@ public abstract class ItemObject_Sal : ScriptableObject
     public Sprite uiDisplay;
     public Mesh model;
     public ItemType type;
-    [TextArea(10,15)]
-    public string description;
+    [TextArea(10,15)] public string description;
     public bool stackable;
     public Item data = new Item();
 
-    public abstract void Use();
+    public Use OnUseCurrent;
+    public Use OnUseAfter; 
+
+    public abstract void UseCurrent();  
+    public abstract void UseAfter();  
 }
 
 [System.Serializable]

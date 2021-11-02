@@ -3,21 +3,13 @@ using UnityEngine.UI;
 
 public class ItemSelectionWheel : MonoBehaviour
 {
-#if UNITY_STANDALONE
-
-#endif
-
-
-#if UNITY_ANDROID
-
-#endif
-
-
+    public EquipPanel equipment;
     public Animator anim;
     private bool itemWheelSelected = false;
     public Image selectedItem;
     public Sprite noImage;
     public static int itemID;
+    public ItemWheelButtonController[] itemWheelButtons;
 
     private void Update()
     {
@@ -36,5 +28,9 @@ public class ItemSelectionWheel : MonoBehaviour
     {
         itemWheelSelected = !itemWheelSelected;
     }
-        
+
+    public void ShowItem(Item item)
+    {
+        //itemWheelButtons[item.id].icon = item.icon?????
+    }        
 }

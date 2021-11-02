@@ -4,26 +4,7 @@
  * Handles interactions with the shop UI
  */
 
-using UnityEngine;
-
-// int version is passed in to OpenShop so correct goods are shown
-public enum SHOP_TYPE
-{
-    HUNTER,
-    POTION_SELLER,
-    NUM_SHOP_TYPES,
-}
-
-public enum GOOD_TYPE
-{
-    // Hunter
-    BOAR_TUSK,
-    BAT_WINGS,
-
-    // Potion Seller
-    SMALL_HEALTH,
-    MEDIUM_HEALTH,
-}
+using UnityEngine; 
 
 public class ShopManager : MonoBehaviour
 {
@@ -43,14 +24,11 @@ public class ShopManager : MonoBehaviour
     {
         shopPanel = GameObject.Find("ShopUI");
         shopContentPanel = GameObject.Find("ShopContentPanel");
-        shopPanel.SetActive(false);
-        //OpenShop(SHOP_TYPE.HUNTER);
-
-
+        shopPanel.SetActive(false); 
     } 
 
     // Pass in an integer that corresponds to the SHOP_TYPE enum
-    public void OpenShop(SHOP_TYPE shopType)
+    public void OpenShop()
     {  
         // Populate shop with goods
         int numGoods = 0;

@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class PlayerMovement_Jerzy : MonoBehaviour
 {
-    private PlayerAnimationManager playerAnimation;
+    public PlayerAnimationManager playerAnimation;
 
     Rigidbody m_Rigidbody;
     public GameObject playerModel;
     public float m_Speed, m_floorDistance;
     public float fallingSpeed;
     public bool falling;
+    public bool respawning = false;
+    public bool gettingConsumed = false;
 
     public Quaternion swordLookRotation;
 
@@ -48,6 +50,23 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float timeKnockedBack;
     private float dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
 
+    private bool isRooted = false;
+    private float rootDuration;
+    private float timeRooted;
+
+    private float respawnTime;
+    private float timeSinceRespawnStarted;
+    private Vector3 respawnPosition;
+    private float respawnDamage;
+
+    private float consumeDuration;
+    private float timeSinceConsumed;
+    private float consumeMoveAmount;
+    
+
+    public GameObject FadeUI;
+
+    private const int RAYCAST_LAYER_MASK = -1;
 
     [SerializeField] private float _rotationSpeed;
 
@@ -69,7 +88,22 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         timeSinceLastDash += Time.deltaTime;
         dashSpeedMultiplier += Time.deltaTime;
 
-        CheckGround();
+        if(isRooted && timeSinceLastDash > dashDuration)
+        {
+            m_Rigidbody.velocity = Vector3.zero;
+            timeRooted += Time.deltaTime;
+            if(timeRooted>=rootDuration)
+            {
+                isRooted = false;
+                timeRooted = 0;
+            }
+        }
+
+        if (!gettingConsumed && !respawning)
+        {
+            CheckGround();
+        }
+
 
         float verticalVelocity = m_Rigidbody.velocity.y;
 
@@ -102,7 +136,43 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (falling)
+        if (gettingConsumed)
+        {
+            timeSinceConsumed += Time.deltaTime;
+
+            if(timeSinceConsumed <= consumeDuration)
+            {
+                transform.Translate(Vector3.up * -consumeMoveAmount);
+            }
+            else
+            {
+                timeSinceRespawnStarted = 0;
+                gettingConsumed = false;
+                timeSinceConsumed = 0;
+                respawning = true;
+                GetComponent<CapsuleCollider>().enabled = true;
+                playerAnimation.Landing();
+            }
+
+        }
+
+        if (respawning)
+        {
+            timeSinceRespawnStarted += Time.deltaTime;
+
+            if (timeSinceRespawnStarted >= respawnTime)
+            {
+                FadeUI.GetComponent<Fading>().FadeIn();
+                transform.position = respawnPosition;
+                GetComponent<PlayerStats>().TakeDamage(respawnDamage);
+                respawning = false;
+            }
+        }
+        else
+            timeSinceRespawnStarted = 0;
+
+    
+        if (falling || respawning || gettingConsumed)
             timeSinceLastDash = dashDuration;
 
         if(timeSinceLastDash < dashDuration)
@@ -156,7 +226,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
-                timeSinceLastDash >= dashDuration && !falling && !knockedBack)
+                timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted && !respawning && !gettingConsumed)
             {
                 if (_playerTargetingScript.IsTargeting())
                 {
@@ -217,7 +287,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     { 
         Vector3 newVel = m_Rigidbody.velocity;
 
-        if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance))
+        if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance, RAYCAST_LAYER_MASK, QueryTriggerInteraction.Ignore))
         {
             fallingSpeedMultiplier += Time.deltaTime;
             newVel.y = -(fallingSpeed* fallingSpeedMultiplier* fallingSpeedMultiplier);
@@ -240,7 +310,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             Quaternion targetRotation = Quaternion.LookRotation(m_Input);
             playerModel.transform.rotation = Quaternion.Lerp(playerModel.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-
+            playerAnimation.Turning(playerModel.transform.rotation.x);
             swordLookRotation = playerModel.transform.rotation;
         }
     }
@@ -261,4 +331,46 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         knockBackDirection = (transform.position - otherPosition).normalized;
         knockedBack = true;
     }
+
+    public void Root(float duration)
+    {
+        if(!isRooted)
+        {
+            isRooted = true;
+            rootDuration = duration;
+        }
+    }
+
+    public void Respawn(Vector3 position, float time, float damage)
+    {
+        timeSinceRespawnStarted = 0;
+        FadeUI.GetComponent<Fading>().FadeOut();
+        respawnDamage = damage;
+        respawnPosition = position;
+        respawnTime = time;
+        LockPlayerMovement();
+        SetRespawn();
+        playerAnimation.Dead();
+    }
+
+    public void SetRespawn(int active = 1)
+    {
+        respawning = active > 0;
+    }
+
+    public void GetConsumed(Vector3 position, float time, float damage, float duration, float moveAmt)
+    {
+        timeSinceConsumed = 0;
+        respawnDamage = damage;
+        respawnPosition = position;
+        respawnTime = time;
+        consumeDuration = duration;
+        consumeMoveAmount = moveAmt;
+        gettingConsumed = true;
+        playerAnimation.Falling();
+        GetComponent<CapsuleCollider>().enabled = false;
+        FadeUI.GetComponent<Fading>().FadeOut();
+        LockPlayerMovement();
+    }
+
 }

@@ -5,8 +5,12 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    private Queue<NewConversation.NextCharacter> _QueueOfNextCharacters = new Queue<NewConversation.NextCharacter>();
-    private Queue<string> _QueueOfNextSentences = new Queue<string>();
+    private Queue<NewConversation.NextCharacter> _QueueOfCharacters = new Queue<NewConversation.NextCharacter>();
+    private Queue<LocalisationTableReference[]> _QueueOfStringArrays = new Queue<LocalisationTableReference[]>();
+    private Queue<string> _QueueOfStrings = new Queue<string>();
+
+    private Collider currentCollider;
+    private NewConversation newConversation;
 
     public GameObject DialoguePanel;
     public Button ButtonContinue;
@@ -22,53 +26,60 @@ public class DialogueManager : MonoBehaviour
         TextContinueDialogue.text = "";
     }
 
-    public void StartDialogue(NewConversation newDialogue)
+    public void StartDialogue(Collider newCollider, NewConversation newDialogue)
     {
-        _QueueOfNextCharacters.Clear();
-        _QueueOfNextSentences.Clear();
-        TextNPCName.text = newDialogue.ListOfCharacterExchanges[0].CharacterName;
+        currentCollider = newCollider;
+        newConversation = newDialogue;
+
         TextContinueDialogue.text = "Next";
 
-        foreach (NewConversation.NextCharacter nextCharacter in newDialogue.ListOfCharacterExchanges)
-        {
-            _QueueOfNextCharacters.Enqueue(nextCharacter);
+        _QueueOfCharacters.Clear();
+        _QueueOfStringArrays.Clear();
+        _QueueOfStrings.Clear();
 
-            foreach (string sentence in nextCharacter.NumOfSentences)
-            {
-                _QueueOfNextSentences.Enqueue(sentence);
-            }
-        }
+        AddCharactersToQueue(newConversation.ListOfCharacterExchanges);
+        AddCharacterDialogueToQueue(_QueueOfCharacters);
+        AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
+        TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
 
         DisplayNextExchange();
     }
 
     public void DisplayNextExchange()
     {
-        if (_QueueOfNextCharacters.Count != 0)
+        if (_QueueOfCharacters.Count == 0 && _QueueOfStrings.Count == 0)
         {
-            NewConversation.NextCharacter nextCharacter = _QueueOfNextCharacters.Dequeue();
-            TextNPCName.text = nextCharacter.CharacterName;
-
-
-
-            if (_QueueOfNextCharacters.Count != 0)
-            {
-                string nextSentence = _QueueOfNextSentences.Dequeue();
-                TextDialogueBox.text = nextSentence;
-
-                StopAllCoroutines();
-                StartCoroutine(TypeSentence(nextSentence));
-            }
-
+            EndDialogue();
         }
-
         else
         {
-            TextContinueDialogue.text = "End";
-            EndDialogue();
 
-            return;
-        } 
+            if (_QueueOfStrings.Count == 0)
+            {
+                AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
+                TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
+            }
+
+            if (_QueueOfStrings.Count != 0)
+            {
+                StopAllCoroutines();
+                StartCoroutine(TypeSentence(TextDialogueBox.text = _QueueOfStrings.Dequeue()));
+            }
+
+            if (_QueueOfCharacters.Count != 0 && _QueueOfStringArrays.Count == 0)
+            {
+                TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
+            }
+
+            if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 0)
+            {
+                TextContinueDialogue.text = "End";
+            }
+
+            Debug.Log(_QueueOfCharacters.Count);
+            Debug.Log(_QueueOfStringArrays.Count);
+            Debug.Log(_QueueOfStrings.Count);
+        }
     }
 
     IEnumerator TypeSentence(string sentence)
@@ -84,6 +95,36 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        // Re-enable the collider of the GO we're speaking to when ending the dialogue
+        currentCollider.enabled = true;
         DialoguePanel.SetActive(false);
     }
+
+    #region Queues
+    /*_________________________________________________________________________*/
+    private void AddCharactersToQueue(List<NewConversation.NextCharacter> characterList)
+    {
+        foreach (NewConversation.NextCharacter character in characterList)
+        {
+            _QueueOfCharacters.Enqueue(character);
+        }
+    }
+
+    private void AddCharacterDialogueToQueue(Queue<NewConversation.NextCharacter> characterQueue)
+    {
+        foreach (NewConversation.NextCharacter characterDialogue in characterQueue)
+        {
+            _QueueOfStringArrays.Enqueue(characterDialogue.NumOfSentences);
+        }
+    }
+
+    private void AddSentencesToQueue(LocalisationTableReference[] characterDialogueQueue)
+    {
+        foreach (LocalisationTableReference item in characterDialogueQueue)
+        {
+            _QueueOfStrings.Enqueue(item.GetLocalisedString());
+        }
+    }
+    /*_________________________________________________________________________*/
+    #endregion
 }
