@@ -17,7 +17,7 @@ public abstract class ItemObject_Sal : ScriptableObject
     public int BuyValue, SellValue;
 
     public Sprite uiDisplay;
-    public Mesh model;
+    public GameObject model;
     public ItemType type;
     [TextArea(10,15)] public string description;
     public bool stackable;

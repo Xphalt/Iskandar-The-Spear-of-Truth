@@ -74,6 +74,7 @@ public class UseFunctions : MonoBehaviour
         set { gemsValue = value; }
     }
 
+
     #region Use Functions 
     public void UseBraceletOfScouting()
     { 
@@ -112,6 +113,11 @@ public class UseFunctions : MonoBehaviour
     public void UseGemsPot()
     {
         playerstats.Gems += gemsValue;
+    }
+
+    public void UseBomb()
+    {
+
     }
     #endregion
 }
