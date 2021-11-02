@@ -221,9 +221,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public void Movement(Vector3 m_Input)
     {
+        // used for the gamepad/touch movement (Will change it in the future once I create the device detection
+        float speedMultiplier = Vector3.Distance(Vector3.zero, m_Input);
+        if (speedMultiplier > 1) speedMultiplier = 1;
 
-            //This prevents player from moving whilst attacking, dashing, falling
-            if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
+        //This prevents player from moving whilst attacking, dashing, falling
+        if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
                 timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted && !respawning && !gettingConsumed)
@@ -259,7 +262,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 }
                 else
                 {
-                    Vector3 newVel = m_Input.normalized * m_Speed;
+                    Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier);
                     newVel.y = m_Rigidbody.velocity.y;
                     m_Rigidbody.velocity = (newVel);
                     Rotation(m_Input);

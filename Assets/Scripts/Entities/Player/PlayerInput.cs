@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,6 @@ public class PlayerInput : MonoBehaviour
 {
     // Reference Variables
     private PlayerActionsAsset _playerActionsAsset;
-    private PlayerAnimationManager playerAnimation;
     private Rigidbody _playerRigidbody;
 
     [Header("Scripts References")]
@@ -20,20 +20,12 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private PlayerCombat_Jerzy _playerCombat_Jerzy;
     //[SerializeField] private Inventory_UI_Script _inventoryUI;
     [SerializeField] private ItemSelectionWheel _itemSelectionWheel;
-    [SerializeField] private ItemSelectionBar _itemSelectionBar; 
+    [SerializeField] private ItemSelectionBar _itemSelectionBar;
     [SerializeField] private PauseMenuManager _pauseMenuManager;
 
-    [Header("Movement Settings")]
-    [SerializeField] private float _movementSpeed;
-
-    [Header("Rotation Settings")]
-    [SerializeField] private GameObject _playerModel;
-    [SerializeField] private float _rotationSpeed;
-
     private void Awake()
-    { 
+    {
         _playerActionsAsset = new PlayerActionsAsset();
-        playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         _playerRigidbody = GetComponent<Rigidbody>();
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
@@ -55,19 +47,16 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
 
         _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
-        _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar(); 
+        _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar();
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
-        //_playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();
         #endregion
     }
 
     private void FixedUpdate()
     {
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
-
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
-
     }
 
 
@@ -102,11 +91,11 @@ public class PlayerInput : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerActionsAsset.Player.Enable();
+        _playerActionsAsset.Enable();
     }
 
     private void OnDisable()
     {
-        _playerActionsAsset.Player.Disable();
+        _playerActionsAsset.Disable();
     }
 }

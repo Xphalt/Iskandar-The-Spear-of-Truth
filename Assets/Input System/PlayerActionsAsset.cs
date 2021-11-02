@@ -103,7 +103,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a09c1073-6ac1-4ef6-b90b-32881d30075d"",
-                    ""path"": """",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -114,7 +114,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""71ff6817-497a-4978-8835-094d9b3e5249"",
-                    ""path"": ""<Keyboard>/p"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & mouse"",
@@ -180,7 +180,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""7d1f179a-5d2e-4b2e-920a-dce71b684220"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -245,8 +245,30 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""a4391480-4c8b-4ed6-98fc-a5e3a7ccb230"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Target"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""478b4868-03f6-46a7-b681-898cc2bdd652"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Target"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""0d19a8e1-8184-4a28-a2a0-f60cab849ea0"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & mouse"",
@@ -257,7 +279,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e26a1943-39ef-406d-9c4a-3c42a206555d"",
-                    ""path"": ""<Gamepad>/start"",
+                    ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
