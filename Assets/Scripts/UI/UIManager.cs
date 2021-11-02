@@ -9,6 +9,7 @@ using System.Collections;
 
 /*
  * Created by Mattie Hilton - 03/10/2021 
+ * Edited by Mattie Hilton - 02/11/2021
  */
 
 public class UIManager : MonoBehaviour
@@ -26,9 +27,9 @@ public class UIManager : MonoBehaviour
     public int heartSegments = 1;
 
     [ContextMenu("Use a postive or negative Int, to affect the health on the next fixed frame")]
-    public void UpdateHealthBar(int healthChange)
+    public void UpdateHealthBar(float healthChange)
     {
-        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().value += healthChange;
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().value += Mathf.CeilToInt(healthChange);
     }
     #endregion
 
@@ -182,7 +183,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments * 3;
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments;
 
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
