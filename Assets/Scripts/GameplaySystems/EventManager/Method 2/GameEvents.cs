@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Morgan S Script
+
 public class GameEvents : MonoBehaviour
 {
     public static GameEvents current; // the current game event
@@ -14,7 +16,7 @@ public class GameEvents : MonoBehaviour
 
 
     //Event 1
-    public event Action<int> onDoorwayTriggerEnter;
+    public event Action<int> onDoorwayTriggerEnter; // Registers this as a public action, the int applies the number based ID (identifier)
     public void DoorwayTriggerEnter(int id)
     {
         if (onDoorwayTriggerEnter != null)
@@ -30,6 +32,17 @@ public class GameEvents : MonoBehaviour
         if (onDoorwayTriggerExit != null)
         {
             onDoorwayTriggerExit(id);
+        }
+    }
+
+    //Event 3
+    public event Action<int> onPlayerHealthSet;
+    public void PlayerHealthSet(int sethealth)
+    {
+        if (onPlayerHealthSet != null)
+        {
+            onPlayerHealthSet(sethealth);
+            print("my health has been set to " + sethealth);
         }
     }
 
