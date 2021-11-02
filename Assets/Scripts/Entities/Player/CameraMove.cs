@@ -77,7 +77,7 @@ public class CameraMove : MonoBehaviour
     {
         panLinger = 0;
         panTarget = transform.position;
-        panDuration = panStart.GetDistance(TargetPos) / panSpeed;
+        panDuration = panStart.GetDistance(panTarget) / panSpeed;
         panTimer = panDuration;
     }
 
