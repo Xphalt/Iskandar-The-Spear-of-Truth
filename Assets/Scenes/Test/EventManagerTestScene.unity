@@ -409,6 +409,7 @@ MonoBehaviour:
       data:
         _displayText: display text
         _displayTextDerived: derived
+        _object: {fileID: 0}
     00000001:
       type: {class: Node, ns: , asm: Assembly-CSharp}
       data:
@@ -418,6 +419,7 @@ MonoBehaviour:
       data:
         _displayText: node 3 A
         _displayTextDerived: node 3 B
+        _object: {fileID: 0}
 --- !u!4 &246016238
 Transform:
   m_ObjectHideFlags: 0
@@ -470,6 +472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  sethealth: 1
 --- !u!65 &306214075
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -691,6 +694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 4
+  sethealth: 5
 --- !u!65 &421073973
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -800,6 +804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
+  sethealth: 2
 --- !u!65 &421360469
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -909,6 +914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 3
+  sethealth: 4
 --- !u!65 &429653410
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1310,7 +1316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 2
@@ -1322,13 +1327,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 3
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -1344,7 +1347,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 1
+  vulnerable: 1
+  despawnTime: 0
 --- !u!54 &549357683
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1488,7 +1494,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &720094777
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1523,7 +1532,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 3
@@ -1535,13 +1543,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 15
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -1653,17 +1659,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Condition:
-    id: 0
   actions:
-  - conditions:
-    - id: 0
-    events:
-    - {fileID: 0}
+  - id: 0
   references:
     version: 1
     00000000:
-      type: {class: , ns: , asm: }
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions: []
+        events: []
+        complete: 0
 --- !u!4 &749602850
 Transform:
   m_ObjectHideFlags: 0
@@ -1906,7 +1911,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b36088d4761aeb46b291cac9b5c663e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   ViewRadius: 0
@@ -2025,6 +2029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 2
+  sethealth: 3
 --- !u!65 &883222216
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2387,7 +2392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 2
@@ -2399,13 +2403,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 3
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -2421,7 +2423,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 1
+  vulnerable: 1
+  despawnTime: 0
 --- !u!54 &1237221925
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2538,7 +2543,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &1340620837
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2573,7 +2581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 3
@@ -2585,13 +2592,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 15
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -2744,7 +2749,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &1366041700
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2779,7 +2787,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 10
@@ -2791,13 +2798,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 0
-  attackDurations:
-  - 0.5
-  - 0
   attackCooldowns:
   - 1
   - 0
   chargeSpeed: 0
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -3085,6 +3090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4371beab758bb5d43aaefa5f20ec6871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 100
   returnSpot: {fileID: 1681935678}
   fleeSpot: {fileID: 1650057761}
@@ -3184,7 +3190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueManager_: {fileID: 1827202630}
-  Conversation: {fileID: 11400000, guid: 85b3e39b441f2394b9b2275e0d7ad7fa, type: 2}
+  Conversation: {fileID: 0}
 --- !u!114 &1671675832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3597,7 +3603,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &2044409779
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3632,7 +3641,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 10
@@ -3644,13 +3652,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 0
-  attackDurations:
-  - 0.5
-  - 0
   attackCooldowns:
   - 1
   - 0
   chargeSpeed: 0
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -3838,7 +3844,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 5
+  vulnerable: 1
+  despawnTime: 0
 --- !u!195 &2107213263
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3873,7 +3882,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 10
@@ -3885,13 +3893,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 0
-  attackDurations:
-  - 0.5
-  - 0
   attackCooldowns:
   - 1
   - 0
   chargeSpeed: 0
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -4037,7 +4043,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade37f23bf0313446a736ff0e6fdbbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeTag: 
   ListOfNodes: []
   pauseTime: 0
   chaseSpeed: 2
@@ -4049,13 +4054,11 @@ MonoBehaviour:
   attackRanges:
   - 1.5
   - 5
-  attackDurations:
-  - 0.5
-  - 0.5
   attackCooldowns:
   - 1
   - 2
   chargeSpeed: 3
+  chargeDistanceMult: 1
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
   minChaseRadius: 0
@@ -4071,7 +4074,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
   health: 1
+  vulnerable: 1
+  despawnTime: 0
 --- !u!54 &2112340527
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4674,6 +4680,30 @@ PrefabInstance:
       propertyPath: TextContinueDialogue
       value: 
       objectReference: {fileID: 486972282}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195589785886576208, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
 --- !u!4 &4762450011334126064

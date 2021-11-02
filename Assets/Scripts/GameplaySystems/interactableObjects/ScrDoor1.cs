@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//morgan
+//morgan S Script
 
 public class ScrDoor1 : MonoBehaviour
 {
