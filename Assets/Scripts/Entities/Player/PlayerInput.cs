@@ -3,9 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions; // Needed to have acess to the Interecations (Hold and PRess interactions) 
 
-//Animations in this script were done by Fate. Please contact me if you have any questions.
+public static class InputActionExtensions
+{
+    public static bool IsPressed(this InputAction inputAction)
+    {
+        return inputAction.ReadValue<float>() > 0f;
+    }
+
+    public static bool WasPressedThisFrame(this InputAction inputAction)
+    {
+        return inputAction.triggered && inputAction.ReadValue<float>() > 0f;
+    }
+
+    public static bool WasReleasedThisFrame(this InputAction inputAction)
+    {
+        return inputAction.triggered && inputAction.ReadValue<float>() == 0f;
+    }
+}
+
 
 public class PlayerInput : MonoBehaviour
 {
@@ -28,23 +44,17 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
 
+
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         _playerActionsAsset.Player.Pause.performed += OnPause;
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
         _playerActionsAsset.Player.Inventory.performed += _ => _pauseMenuManager.TogglePauseState();
 
-        _playerActionsAsset.Player.Attack.performed += ctx =>
-            {
-                if (ctx.interaction is HoldInteraction)
-                    _playerCombat_Jerzy.ThrowAttack();
-                else if (ctx.interaction is PressInteraction)
-                    if (_player_Interaction_Jack.IsInteractionAvailable())
-                        _player_Interaction_Jack.Interact();
-                    else
-                        _playerCombat_Jerzy.Attack();
-            };
+        _playerActionsAsset.Player.Attack.started += _ => _playerCombat_Jerzy.Attack();
+        _playerActionsAsset.Player.Attack.performed += _ => _playerCombat_Jerzy.ThrowAttack();
 
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
+
 
         _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
         _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar();
@@ -87,6 +97,13 @@ public class PlayerInput : MonoBehaviour
         {
             _playerMovement_Jerzy.Dash(_playerRigidbody.velocity);
         }
+    }
+
+    public static Vector3 MousePosition()
+    {
+        Ray ray = GameObject.FindObjectOfType<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
+
+        return ray.origin;
     }
 
     private void OnEnable()
