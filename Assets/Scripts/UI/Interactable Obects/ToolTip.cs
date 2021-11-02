@@ -42,6 +42,8 @@ public class ToolTip : MonoBehaviour
     private void Update()
     {
         CheckInRange();
+        //Sprite always faces camera
+        transform.LookAt(Camera.main.transform.position, Vector3.up);
     }
 
     public void CheckInRange()
