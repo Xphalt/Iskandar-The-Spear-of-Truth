@@ -14,7 +14,9 @@ public class Bomb : MonoBehaviour, ISerializationCallbackReceiver
 
     void Update()
     {
-        currentTime += Time.deltaTime;
+        currentTime += Time.deltaTime; 
+        if (currentTime > (timeBeforeDetonating + 1.0f))
+            Destroy(gameObject);
     }
 
     public void OnBeforeSerialize()
@@ -46,11 +48,7 @@ public class Bomb : MonoBehaviour, ISerializationCallbackReceiver
         Debug.Log(stats);
 
         //takes damage after detonation 
-        if (stats && currentTime > timeBeforeDetonating) 
-            stats.DealDamage(stats, Damage); 
-         
-        //Destroyes the bomb
-        if (currentTime > timeBeforeDetonating) 
-            Destroy(gameObject);
+        if (stats && currentTime > timeBeforeDetonating)
+            stats.DealDamage(stats, Damage);
     }
 }

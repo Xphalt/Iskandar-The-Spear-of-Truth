@@ -10,7 +10,7 @@ public class StaticInterface_Sal : UserInterface_Sal
     public override void CreateSlots()
     {
         slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
-        for (int i = 0; i < inventory.Storage.Slots.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
             var obj = slots[i];
 
