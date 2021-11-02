@@ -27,16 +27,19 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
     public void OnBeforeSerialize()
     {
 #if UNITY_EDITOR
-        if (itemobj)
+        if (itemobj && itemobj.model)
         {
-            GetComponentInChildren<MeshFilter>().mesh = itemobj.model;
-            //This let the editor know that something has changed on that object 
-            EditorUtility.SetDirty(GetComponentInChildren<MeshFilter>());
+            GetComponentInChildren<MeshFilter>().mesh = itemobj.model.GetComponent<MeshFilter>().sharedMesh;
+            GetComponentInChildren<MeshRenderer>().material = itemobj.model.GetComponent<MeshRenderer>().sharedMaterial;
         }
+
+        //This let the editor know that something has changed on that object 
+        EditorUtility.SetDirty(GetComponentInChildren<MeshFilter>()); 
 #else
-        if (itemobj)
-        {
-            GetComponentInChildren<MeshFilter>().mesh = itemobj.model;
+        if (itemobj && itemobj.model)
+        { 
+            GetComponentInChildren<MeshFilter>().mesh = itemobj.model.GetComponent<MeshFilter>().sharedMesh;
+            GetComponentInChildren<MeshRenderer>().material = itemobj.model.GetComponent<MeshRenderer>().sharedMaterial;
         }
 #endif
     }

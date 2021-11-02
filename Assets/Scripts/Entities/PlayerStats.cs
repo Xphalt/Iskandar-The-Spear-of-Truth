@@ -83,7 +83,7 @@ public class PlayerStats : StatsInterface
     {
         if (scriptedKill) amount = health - 1;
         health -= amount;
-        sfx.PlayAudio();
+        //sfx.PlayAudio();
         UIManager.instance.UpdateHealthBar((int)-amount);
 
         // anything that happens when taking damage happens 
