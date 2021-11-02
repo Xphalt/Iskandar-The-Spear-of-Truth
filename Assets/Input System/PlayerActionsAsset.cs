@@ -324,7 +324,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""b83d5f3b-92c2-4125-89b0-5349535e30ab"",
                     ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": ""Hold,Press"",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Attack"",
