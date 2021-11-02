@@ -113,11 +113,11 @@ public class PauseMenuManager : MonoBehaviour
         if (currentPage > numberOfPages - 1)
             currentPage = 0;
 
-        if (pageTurn == -1)
+        if (pageTurn == 1)
             anim.SetTrigger("PanLeft");
         else anim.SetTrigger("PanRight");
 
-        yield return new WaitForSecondsRealtime(0.8f);
+        yield return new WaitForSecondsRealtime(0.25f);
 
         settingsMenu.SetActive(false);
         inventoryMenu.SetActive(false);
