@@ -54,6 +54,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float rootDuration;
     private float timeRooted;
 
+    private bool isSliding = false;
+    private bool online;
+
     private float respawnTime;
     private float timeSinceRespawnStarted;
     private Vector3 respawnPosition;
@@ -226,7 +229,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
-                timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted && !respawning && !gettingConsumed)
+                timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted && !isSliding && !respawning && !gettingConsumed)
             {
                 if (_playerTargetingScript.IsTargeting())
                 {
@@ -339,6 +342,13 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             isRooted = true;
             rootDuration = duration;
         }
+    }
+
+    public void Slide(bool online)
+    {	
+	isSliding = online;
+	if(!isSliding)
+	    LockPlayerMovement();	
     }
 
     public void Respawn(Vector3 position, float time, float damage)
