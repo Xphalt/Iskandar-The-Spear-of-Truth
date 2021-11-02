@@ -17,6 +17,7 @@ public class UseFunctions : MonoBehaviour
     //Variables needed for the functions 
     private PlayerStats playerstats;
     private PlayerCombat_Jerzy playerCombat;
+    public GameObject bomb;
 
     void Awake()
     {
@@ -46,6 +47,9 @@ public class UseFunctions : MonoBehaviour
                     break;
                 case "Gem Pot":
                     database[i].OnUseCurrent += UseGemsPot;
+                    break;
+                case "Bomb Bag":
+                    database[i].OnUseCurrent += UseBombBag;
                     break;
             } 
         }
@@ -115,9 +119,16 @@ public class UseFunctions : MonoBehaviour
         playerstats.Gems += gemsValue;
     }
 
-    public void UseBomb()
+    public void UseBombBag()
     {
+        //Item removal 
+        if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
+            playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
+        else
+            playerstats.equipment.GetSlots[playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id].AddAmount(-1);
 
+        //spawning bomb
+        Instantiate(bomb, playerstats.transform.position, Quaternion.identity);
     }
     #endregion
 }
