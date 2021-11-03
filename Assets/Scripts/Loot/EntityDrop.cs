@@ -11,7 +11,7 @@ public class EntityDrop : MonoBehaviour
     //public float disableDelay = 0;
 
     [Range(1, 100)] public float dropChance;
-    public ItemObject_Sal itemToDrop;
+    public List<ItemObject_Sal> itemsToDrop;
     public EntityType type;
 
     public GameObject groundItem;
@@ -45,7 +45,7 @@ public class EntityDrop : MonoBehaviour
             //Spawn 
             GameObject obj = Instantiate(groundItem, transform.position, Quaternion.identity);
             //Set Item
-            obj.GetComponent<GroundItem>().SetItem(itemToDrop);
+            obj.GetComponent<GroundItem>().SetItem(itemsToDrop[Rnd.Range(0, itemsToDrop.Count)]);
             //Set spawn type
             if (type == EntityType.Chest)
                 obj.GetComponent<GroundItem>().spawn += ChestSpawn;
