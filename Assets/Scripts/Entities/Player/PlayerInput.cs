@@ -85,10 +85,10 @@ public class PlayerInput : MonoBehaviour
             {
                 _playerActionsAsset.Player.Attack.Disable();
             }
-            else
-            {
-                _playerActionsAsset.Player.Attack.Enable();
-            }
+        }
+        else
+        {
+            _playerActionsAsset.Player.Attack.Enable();
         }
     }
 
