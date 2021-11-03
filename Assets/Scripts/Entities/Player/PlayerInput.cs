@@ -76,28 +76,6 @@ public class PlayerInput : MonoBehaviour
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
     }
 
-    // If the cursor is over the UI disable the player interaction
-    private void Update()
-    {
-        PointerEventData pointerData = new PointerEventData(EventSystem.current);
-        pointerData.position = Input.mousePosition;
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerData, results);
-
-        if (results.Count > 0)
-        {
-            if (results[0].gameObject.layer == 5)
-            {
-                _playerActionsAsset.Player.Attack.Disable();
-            }
-        }
-        else
-        {
-            _playerActionsAsset.Player.Attack.Enable();
-        }
-    }
-
-
     private void OnPause(InputAction.CallbackContext ctx)
     {
         Debug.Log("Previous Action Map: " + ctx.action.actionMap.name);
