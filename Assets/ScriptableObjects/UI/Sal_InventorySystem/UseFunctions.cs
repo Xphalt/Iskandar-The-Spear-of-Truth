@@ -133,5 +133,10 @@ public class UseFunctions : MonoBehaviour
             Instantiate(bomb, playerstats.transform.position, Quaternion.identity);
         }
     }
+
+    public void UseWandOfMagnetism()
+    {
+
+    }
     #endregion
 }
