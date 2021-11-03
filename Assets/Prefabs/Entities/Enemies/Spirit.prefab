@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8519497279852475736}
   - component: {fileID: 804710809310069161}
   - component: {fileID: 2339481943653481084}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 2349861094842541599}
   - component: {fileID: 2545605752266844723}
   - component: {fileID: 3417990871145463493}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Spirit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,6 +278,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08823b88a9a21d04caacad2899e9b612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ListOfNodes: []
+  pauseTime: 0
+  chaseSpeed: 0
+  findDelay: 0
+  availableAttacks: 000000
+  attackDamages:
+  - 0
+  - 0
+  - 0
+  attackRanges:
+  - 0
+  - 0
+  - 0
+  attackCooldowns:
+  - 0
+  - 0
+  - 0
+  chargeSpeed: 0
+  chargeDistanceMult: 1
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
+  minChaseRadius: 0
 --- !u!114 &3898141019203386702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,6 +315,7 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 5
   vulnerable: 1
+  despawnTime: 0
 --- !u!114 &8817833240388999042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,7 +401,7 @@ GameObject:
   - component: {fileID: 3942612978310910025}
   - component: {fileID: 2229950467550701056}
   - component: {fileID: 1152171623993405411}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
