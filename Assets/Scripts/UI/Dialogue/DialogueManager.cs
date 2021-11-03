@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -14,9 +15,9 @@ public class DialogueManager : MonoBehaviour
 
     public GameObject DialoguePanel;
     public Button ButtonContinue;
-    public Text TextNPCName;
-    public Text TextDialogueBox;
-    public Text TextContinueDialogue;
+    public TextMeshProUGUI TextNPCName;
+    public TextMeshProUGUI TextDialogueBox;
+    public TextMeshProUGUI TextContinueDialogue;
 
     public void Start()
     {

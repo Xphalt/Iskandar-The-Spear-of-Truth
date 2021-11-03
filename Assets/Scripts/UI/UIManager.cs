@@ -9,6 +9,7 @@ using System.Collections;
 
 /*
  * Created by Mattie Hilton - 03/10/2021 
+ * Edited by Mattie Hilton - 02/11/2021
  */
 
 public class UIManager : MonoBehaviour
@@ -26,9 +27,9 @@ public class UIManager : MonoBehaviour
     public int heartSegments = 1;
 
     [ContextMenu("Use a postive or negative Int, to affect the health on the next fixed frame")]
-    public void UpdateHealthBar(int healthChange)
+    public void UpdateHealthBar(float healthChange)
     {
-        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().value += healthChange;
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().value += Mathf.CeilToInt(healthChange);
     }
     #endregion
 
@@ -182,7 +183,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments * 3;
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments;
 
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
@@ -190,8 +191,11 @@ public class UIManager : MonoBehaviour
         playerStats = GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>();
 
         // At the moment we're using keyboard and mouse to play the game
-        //SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
+#if UNITY_ANDROID
+        SetUIForInput(INPUT_OPTIONS.MOBILE);
+#else
         SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
+#endif
     }
 
 #if DEBUG // Dominique 07-10-2021, Use to test enemy health bar (make sure to SetupEnemyHealthBar first)

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class QuestLogManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class QuestLogManager : MonoBehaviour
         foreach (var item in ListOfQuests)
         {
             ListOfButtons.Add(QuestButton);
-            QuestButton.GetComponentInChildren<Text>().text = item.QuestName;
+            QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = item.QuestName;
             Instantiate(QuestButton, ButtonArea.transform).name = item.QuestName;
         }
     }
