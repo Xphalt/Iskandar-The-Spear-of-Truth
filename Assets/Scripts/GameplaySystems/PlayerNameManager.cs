@@ -5,32 +5,32 @@ using System.IO;
 
 public class PlayerNameManager : MonoBehaviour
 {
-    private void Start()
-    {
-        GetComponent<TMP_InputField>().characterLimit = 8;
-        AssetDatabase.Refresh();
-    }
+    //private void Start()
+    //{
+    //    GetComponent<TMP_InputField>().characterLimit = 8;
+    //    AssetDatabase.Refresh();
+    //}
 
-    public void CreatePlayerData(string name)
-    {
-        DirectoryInfo levelDirectoryPath = new DirectoryInfo("Assets/ScriptableObjects/Player Name");
-        FileInfo[] fileInfo = levelDirectoryPath.GetFiles("*.*", SearchOption.AllDirectories);
+    //public void CreatePlayerData(string name)
+    //{
+    //    DirectoryInfo levelDirectoryPath = new DirectoryInfo("Assets/ScriptableObjects/Player Name");
+    //    FileInfo[] fileInfo = levelDirectoryPath.GetFiles("*.*", SearchOption.AllDirectories);
 
-        //If something is in the folder for the player name, like a previous save, delete it
-        foreach (FileInfo file in fileInfo)
-        {
-            file.Delete();
-        }
+    //    //If something is in the folder for the player name, like a previous save, delete it
+    //    foreach (FileInfo file in fileInfo)
+    //    {
+    //        file.Delete();
+    //    }
 
-        UserData userData = UserData.CreateInstance(name);
+    //    UserData userData = UserData.CreateInstance(name);
 
-        string localPath = "Assets/ScriptableObjects/Player Name/" + name + ".asset";
-        localPath = AssetDatabase.GenerateUniqueAssetPath(localPath);
+    //    string localPath = "Assets/ScriptableObjects/Player Name/" + name + ".asset";
+    //    localPath = AssetDatabase.GenerateUniqueAssetPath(localPath);
 
-        AssetDatabase.CreateAsset(userData, localPath);
-        AssetDatabase.SaveAssets();
+    //    AssetDatabase.CreateAsset(userData, localPath);
+    //    AssetDatabase.SaveAssets();
 
-        Debug.Log("Created Player Asset for: " + name);
-        AssetDatabase.Refresh();
-    }
+    //    Debug.Log("Created Player Asset for: " + name);
+    //    AssetDatabase.Refresh();
+    //}
 }
