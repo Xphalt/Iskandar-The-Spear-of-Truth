@@ -6,9 +6,10 @@ using UnityEngine;
 public class Player_Targeting_Jack : MonoBehaviour
 {
     public Transform playerModelTransform;
+    public CameraMove _cameraLook;
 
     private Transform _targetedTransform = null;
-    private const int TARGETABLE_LAYERMASK = 1 << 7;
+    public LayerMask TARGETABLE_LAYERMASK = 1 << 7;
     [SerializeField]
     private float targetRadius; // Half the x, y & z dimensions for the box cast to detect targetable objects
     [SerializeField]
@@ -27,6 +28,8 @@ public class Player_Targeting_Jack : MonoBehaviour
     {
         _playerMovementScript = GetComponent<PlayerMovement_Jerzy>();
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+
+        if (!_cameraLook) _cameraLook = FindObjectOfType<CameraMove>();
     }
 
     // Update is called once per frame
@@ -92,6 +95,7 @@ public class Player_Targeting_Jack : MonoBehaviour
     // Dominique, modified to use a sphere and the same targeting system as for interactables in Interactable_Object_Jack for UX purposes
     public void TargetObject()
     {
+        print("target");
         // Reset so indicator will regrab on if disabling target
         _lastNearestTargetableCollider = null;
         if (IsTargeting())
@@ -107,10 +111,11 @@ public class Player_Targeting_Jack : MonoBehaviour
                 _targetedTransform = _nearestTargetableCollider.transform;
                 _wasTargeting = true;
 
+                _cameraLook.SetSecondTarget(_targetedTransform);
+
                 // Dominique 07-10-2021, Outline the targeted enemy and move the interactable icon to them
                 ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.yellow);
                 UIManager.instance.EnableTargetingIcon(_targetedTransform, TargetingIcon.TARGETING_TYPE.ACTIVE);
-
             }
             else
             {
@@ -122,14 +127,16 @@ public class Player_Targeting_Jack : MonoBehaviour
 
     private void UnTargetObject()
     {
-        // Dominique 07-10-2021, Clear enemy outline when no longer targeting and remove the interactable icon
-        ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.clear);
-        UIManager.instance.DisableTargetingIcon();
-
         _targetedTransform = null;
         _wasTargeting = false;
 
+        _cameraLook.ClearSecondTarget();
+
         playerAnimation.isStrafing = false;
+        
+        // Dominique 07-10-2021, Clear enemy outline when no longer targeting and remove the interactable icon
+        ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.clear);
+        UIManager.instance.DisableTargetingIcon();
     }
 
     public Transform GetTargetTransform()

@@ -1,16 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions; // Needed to have acess to the Interecations (Hold and PRess interactions) 
 
-//Animations in this script were done by Fate. Please contact me if you have any questions.
+public static class InputActionExtensions
+{
+    public static bool IsPressed(this InputAction inputAction)
+    {
+        return inputAction.ReadValue<float>() > 0f;
+    }
+
+    public static bool WasPressedThisFrame(this InputAction inputAction)
+    {
+        return inputAction.triggered && inputAction.ReadValue<float>() > 0f;
+    }
+
+    public static bool WasReleasedThisFrame(this InputAction inputAction)
+    {
+        return inputAction.triggered && inputAction.ReadValue<float>() == 0f;
+    }
+}
+
 
 public class PlayerInput : MonoBehaviour
 {
     // Reference Variables
     private PlayerActionsAsset _playerActionsAsset;
-    private PlayerAnimationManager playerAnimation;
     private Rigidbody _playerRigidbody;
 
     [Header("Scripts References")]
@@ -20,56 +36,60 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private PlayerCombat_Jerzy _playerCombat_Jerzy;
     //[SerializeField] private Inventory_UI_Script _inventoryUI;
     [SerializeField] private ItemSelectionWheel _itemSelectionWheel;
-    [SerializeField] private ItemSelectionBar _itemSelectionBar; 
+    [SerializeField] private ItemSelectionBar _itemSelectionBar;
     [SerializeField] private PauseMenuManager _pauseMenuManager;
-
-    [Header("Movement Settings")]
-    [SerializeField] private float _movementSpeed;
-
-    [Header("Rotation Settings")]
-    [SerializeField] private GameObject _playerModel;
-    [SerializeField] private float _rotationSpeed;
+    [SerializeField] private ItemSelect _changeItem;
 
     private void Awake()
-    { 
+    {
         _playerActionsAsset = new PlayerActionsAsset();
-        playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         _playerRigidbody = GetComponent<Rigidbody>();
+
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         _playerActionsAsset.Player.Pause.performed += OnPause;
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
         _playerActionsAsset.Player.Inventory.performed += _ => _pauseMenuManager.TogglePauseState();
 
-        _playerActionsAsset.Player.Attack.performed += ctx =>
-            {
-                if (ctx.interaction is HoldInteraction)
-                    _playerCombat_Jerzy.ThrowAttack();
-                else if (ctx.interaction is PressInteraction)
-                    if (_player_Interaction_Jack.IsInteractionAvailable())
-                        _player_Interaction_Jack.Interact();
-                    else
-                        _playerCombat_Jerzy.Attack();
-            };
+        _playerActionsAsset.Player.Attack.started += _ =>
+        {
+            if (_player_Interaction_Jack.IsInteractionAvailable())
+                _player_Interaction_Jack.Interact();
+            else
+                _playerCombat_Jerzy.Attack();
+        };
+
+        _playerActionsAsset.Player.Attack.performed += _ => _playerCombat_Jerzy.ThrowAttack();
 
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
 
+
         _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
-        _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar(); 
+        _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar();
+
+        //Items
+        _playerActionsAsset.Player.ItemToggle.performed += _ => _changeItem.OnClick();
+        _playerActionsAsset.Player.UseItem.performed += use =>
+        {
+            if (_changeItem.inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id > -1)
+                _changeItem.inventory.database.ItemObjects[_changeItem.inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id].UseCurrent();
+        };
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
-        //_playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();
         #endregion
+    }
+
+    public void Start()
+    {
+        GameEvents.current.onLockPlayerInputs += OnDisable;
+        GameEvents.current.onUnLockPlayerInputs += OnEnable;
     }
 
     private void FixedUpdate()
     {
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
-
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
-
     }
-
 
     private void OnPause(InputAction.CallbackContext ctx)
     {
@@ -100,13 +120,20 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    public static Vector3 MousePosition()
+    {
+        Ray ray = GameObject.FindObjectOfType<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
+
+        return ray.origin;
+    }
+
     private void OnEnable()
     {
-        _playerActionsAsset.Player.Enable();
+        _playerActionsAsset.Enable();
     }
 
     private void OnDisable()
     {
-        _playerActionsAsset.Player.Disable();
+        _playerActionsAsset.Disable();
     }
 }
