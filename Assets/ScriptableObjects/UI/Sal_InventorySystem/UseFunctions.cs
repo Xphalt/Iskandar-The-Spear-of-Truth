@@ -18,6 +18,7 @@ public class UseFunctions : MonoBehaviour
     private PlayerStats playerstats;
     private PlayerCombat_Jerzy playerCombat;
     public GameObject bomb;
+    public GameObject wand;
 
     void Awake()
     {
@@ -50,6 +51,9 @@ public class UseFunctions : MonoBehaviour
                     break;
                 case "Bomb Bag":
                     database[i].OnUseCurrent += UseBombBag;
+                    break;
+                case "Wand of Magnetism":
+                    database[i].OnUseCurrent += UseWandOfMagnetism;
                     break;
             } 
         }
@@ -136,7 +140,10 @@ public class UseFunctions : MonoBehaviour
 
     public void UseWandOfMagnetism()
     {
-
+        if (!FindObjectOfType<MagneticWand>())
+        {
+            Instantiate(wand, playerstats.transform.localPosition, playerstats.transform.localRotation); 
+        }
     }
     #endregion
 }
