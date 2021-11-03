@@ -9,9 +9,9 @@ public class PlayerMovement_Jerzy2 : MonoBehaviour
     public float m_Speed;
     public GameObject swordObject;
     public GameObject swordEmpty;
-    Animator swordAnimator;
     public GameObject swordDefaultPosition;
 
+    private Animator swordAnimator;
 
     bool canInteract = false;
 
@@ -44,12 +44,6 @@ public class PlayerMovement_Jerzy2 : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
         swordAnimator = swordObject.GetComponent<Animator>();
         attackCooldown = GetComponent<PlayerStats_Jerzy>().attackCooldown;
-    }
-
-
-    void Update()
-    {
-
     }
 
     void FixedUpdate()
