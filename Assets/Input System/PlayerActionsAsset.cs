@@ -97,13 +97,29 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ItemToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ad272d5-c099-44ca-a612-de50d1bff099"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""UseItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""d518c97e-9ea9-4a8a-8288-01a4e7bc2200"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""a09c1073-6ac1-4ef6-b90b-32881d30075d"",
-                    ""path"": """",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -114,7 +130,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""71ff6817-497a-4978-8835-094d9b3e5249"",
-                    ""path"": ""<Keyboard>/p"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & mouse"",
@@ -180,7 +196,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""7d1f179a-5d2e-4b2e-920a-dce71b684220"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -245,8 +261,30 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""a4391480-4c8b-4ed6-98fc-a5e3a7ccb230"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Target"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""478b4868-03f6-46a7-b681-898cc2bdd652"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Target"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""0d19a8e1-8184-4a28-a2a0-f60cab849ea0"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & mouse"",
@@ -257,7 +295,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e26a1943-39ef-406d-9c4a-3c42a206555d"",
-                    ""path"": ""<Gamepad>/start"",
+                    ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -291,7 +329,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""28b263f5-324c-4ad1-8a7d-5c97ca0ca70d"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold,Press(behavior=2)"",
+                    ""interactions"": ""Press(pressPoint=1,behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard & mouse"",
                     ""action"": ""Attack"",
@@ -302,7 +340,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""b83d5f3b-92c2-4125-89b0-5349535e30ab"",
                     ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": ""Hold,Press(behavior=2)"",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Attack"",
@@ -372,6 +410,50 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard & mouse"",
                     ""action"": ""LoadInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d018aeb5-0453-4848-af29-cb37bacce7cd"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & mouse"",
+                    ""action"": ""ItemToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd93aa8c-29b0-46f8-8bb7-8db37e84f98a"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ItemToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4128502-8d3d-4b1f-a317-a539361a22fc"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41d26983-0120-427f-b6e7-8dec2792df8b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & mouse"",
+                    ""action"": ""UseItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -466,6 +548,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         m_Player_ItemSelectionBar = m_Player.FindAction("ItemSelectionBar", throwIfNotFound: true);
         m_Player_SaveInventory = m_Player.FindAction("SaveInventory", throwIfNotFound: true);
         m_Player_LoadInventory = m_Player.FindAction("LoadInventory", throwIfNotFound: true);
+        m_Player_ItemToggle = m_Player.FindAction("ItemToggle", throwIfNotFound: true);
+        m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -529,6 +613,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_ItemSelectionBar;
     private readonly InputAction m_Player_SaveInventory;
     private readonly InputAction m_Player_LoadInventory;
+    private readonly InputAction m_Player_ItemToggle;
+    private readonly InputAction m_Player_UseItem;
     public struct PlayerActions
     {
         private @PlayerActionsAsset m_Wrapper;
@@ -543,6 +629,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         public InputAction @ItemSelectionBar => m_Wrapper.m_Player_ItemSelectionBar;
         public InputAction @SaveInventory => m_Wrapper.m_Player_SaveInventory;
         public InputAction @LoadInventory => m_Wrapper.m_Player_LoadInventory;
+        public InputAction @ItemToggle => m_Wrapper.m_Player_ItemToggle;
+        public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -582,6 +670,12 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @LoadInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadInventory;
                 @LoadInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadInventory;
                 @LoadInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadInventory;
+                @ItemToggle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemToggle;
+                @ItemToggle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemToggle;
+                @ItemToggle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemToggle;
+                @UseItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
+                @UseItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
+                @UseItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -616,6 +710,12 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @LoadInventory.started += instance.OnLoadInventory;
                 @LoadInventory.performed += instance.OnLoadInventory;
                 @LoadInventory.canceled += instance.OnLoadInventory;
+                @ItemToggle.started += instance.OnItemToggle;
+                @ItemToggle.performed += instance.OnItemToggle;
+                @ItemToggle.canceled += instance.OnItemToggle;
+                @UseItem.started += instance.OnUseItem;
+                @UseItem.performed += instance.OnUseItem;
+                @UseItem.canceled += instance.OnUseItem;
             }
         }
     }
@@ -691,6 +791,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         void OnItemSelectionBar(InputAction.CallbackContext context);
         void OnSaveInventory(InputAction.CallbackContext context);
         void OnLoadInventory(InputAction.CallbackContext context);
+        void OnItemToggle(InputAction.CallbackContext context);
+        void OnUseItem(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

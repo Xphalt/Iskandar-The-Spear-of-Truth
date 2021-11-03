@@ -30,7 +30,7 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Start()
     {
-        Resume();
+        Resume();    
     }
 
     private void FixedUpdate()

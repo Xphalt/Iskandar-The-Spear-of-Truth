@@ -18,6 +18,35 @@ public class Player_Interaction_Jack : MonoBehaviour
     public float interactCooldown;
     float timeSinceLastInteract;
 
+    //morgan's event system edit
+    public bool prevention = false;
+
+    private void Start()
+    {
+        GameEvents.current.onPreventPlayerInteraction += OnPreventPlayerInteraction;
+        GameEvents.current.onAllowPlayerInteraction += OnAllowPlayerInteraction;
+        GameEvents.current.onNPCDialogue += OnNPCDialogue;
+        GameEvents.current.onStopAttacking += OnNPCDialogue;
+        GameEvents.current.onLockPlayerInputs += OnNPCDialogue;
+    }
+
+    public void OnPreventPlayerInteraction()
+    {
+        prevention = true;
+    }
+
+    public void OnAllowPlayerInteraction()
+    {
+        prevention = false;
+    }
+
+    public void OnNPCDialogue()
+    {
+        GameEvents.current.LockPlayerInputs();
+        GameEvents.current.StopAttacking();
+    }
+
+
     // Update is called once per frame
     void Update()
     {
@@ -78,7 +107,7 @@ public class Player_Interaction_Jack : MonoBehaviour
     // Calls the interact function of the nearest interactable object if any are within range
     public void Interact()
     {
-        if (_nearestInteractableCollider)
+        if (_nearestInteractableCollider && (prevention == false))
         {
             _nearestInteractableCollider.GetComponent<Interactable_Object_Jack>().Interact();
         }

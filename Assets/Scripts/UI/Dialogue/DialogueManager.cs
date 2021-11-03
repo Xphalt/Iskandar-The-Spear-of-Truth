@@ -27,6 +27,15 @@ public class DialogueManager : MonoBehaviour
         TextContinueDialogue.text = "";
     }
 
+    //morgan's Event Manager Edit
+    public void update()
+    {
+        //if (DialoguePanel.SetActive(false) = true)
+        //{
+        //    GameEvents.current.onLockPlayerInputs += OnNPCDialogue;
+        //}
+    }
+
     public void StartDialogue(Collider newCollider, NewConversation newDialogue)
     {
         currentCollider = newCollider;

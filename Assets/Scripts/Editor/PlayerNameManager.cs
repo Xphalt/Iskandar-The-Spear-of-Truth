@@ -8,7 +8,7 @@ public class PlayerNameManager : MonoBehaviour
     private void Start()
     {
         GetComponent<TMP_InputField>().characterLimit = 8;
-        AssetDatabase.Refresh();
+        // AssetDatabase.Refresh();
     }
 
     public void CreatePlayerData(string name)

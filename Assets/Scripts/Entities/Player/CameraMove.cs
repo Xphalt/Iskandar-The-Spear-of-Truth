@@ -27,6 +27,10 @@ public class CameraMove : MonoBehaviour
     private float panLinger = 0;
     private float panDuration = 0;
     private float panTimer = 0;
+    public float TotalPanDuration
+    {
+        get => panDuration * 2 + panLinger;
+    }
 
     private bool panning = false;
     private Vector3 panTarget = new Vector3();
@@ -114,9 +118,9 @@ public class CameraMove : MonoBehaviour
             transform.position = Vector3.Lerp(panStart, panTarget, Mathf.SmoothStep(0, 1, panTimer / panDuration));
         else if (panLinger >= 0)
         {
-            if (panTimer > panDuration + panLinger && panTimer < panDuration * 2 + panLinger)
+            if (panTimer > panDuration + panLinger && panTimer < TotalPanDuration)
                 transform.position = Vector3.Lerp(panTarget, TargetPos, Mathf.SmoothStep(0, 1, (panTimer - panDuration - panLinger) / panDuration));
-            else if (panTimer > panDuration * 2 + panLinger)
+            else if (panTimer > TotalPanDuration)
                 panning = false;
         }
     }
