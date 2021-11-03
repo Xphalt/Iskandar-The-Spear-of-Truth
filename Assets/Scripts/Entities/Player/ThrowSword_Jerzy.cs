@@ -48,7 +48,10 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     void FixedUpdate()
     {
-        ThrowingSwordPhysics();
+        if (swordModel.activeInHierarchy)
+        {
+            ThrowingSwordPhysics();
+        }
     }
 
     private void ThrowingSwordPhysics()
@@ -86,18 +89,22 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     public void ThrowSword(Quaternion targetRotation)
     {
-        // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
-        playerAnim.SwordThrowAttack();
 
-        swordModel.GetComponent<BoxCollider>().enabled = true;
-        returning = false;
-        transform.rotation = targetRotation;
-        transform.parent = null;
-        thrown = true;
-        swordRigidBody.isKinematic = false;
+        if (swordModel.activeInHierarchy)
+        {
+            // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
+            playerAnim.SwordThrowAttack();
 
-        // play looped spinning animation
-        swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
+            swordModel.GetComponent<BoxCollider>().enabled = true;
+            returning = false;
+            transform.rotation = targetRotation;
+            transform.parent = null;
+            thrown = true;
+            swordRigidBody.isKinematic = false;
+
+            // play looped spinning animation
+            swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
+        }
     }
 
 

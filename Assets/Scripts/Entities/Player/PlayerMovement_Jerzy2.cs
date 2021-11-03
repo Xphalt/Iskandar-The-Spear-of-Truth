@@ -39,10 +39,6 @@ public class PlayerMovement_Jerzy2 : MonoBehaviour
     public float timeToThrowSword;
     private bool isAttacking = false;
 
-
-
-
-
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
@@ -107,57 +103,56 @@ public class PlayerMovement_Jerzy2 : MonoBehaviour
 
         }
 
-        // canAttack also includes interacting
-        if(canAttack)
+        if (swordObject.activeInHierarchy)
         {
-            if (!canInteract)
+            // canAttack also includes interacting
+            if (canAttack)
             {
-                // if the interact button is held, begin counter to determine if melee or thrown attack
-                if (Input.GetAxis("Interact") > 0)
+                if (!canInteract)
                 {
-                    if (timeSinceLastAttack >= attackCooldown)
+                    // if the interact button is held, begin counter to determine if melee or thrown attack
+                    if (Input.GetAxis("Interact") > 0)
                     {
-                        isAttacking = true;
-                    }
-                    timeInteractHeld += Time.deltaTime;
+                        if (timeSinceLastAttack >= attackCooldown)
+                        {
+                            isAttacking = true;
+                        }
+                        timeInteractHeld += Time.deltaTime;
 
+                    }
+                    // the interact button is no longer held
+                    else
+                    {
+                        if (isAttacking)
+                        {
+                            // if interact has been held long enough to do a throw attack, then throw the sword
+                            if (timeInteractHeld >= timeToThrowSword)
+                            {
+                                swordEmpty.GetComponent<ThrowSword_Jerzy>().ThrowSword(swordLookRotation);
+                            }
+                            // otherwise perform a simple swing attack
+                            else
+                            {
+                                swordAnimator.Play("PlayerSwordSwing");
+                                timeSinceLastAttack = 0;
+                            }
+                        }
+
+                        timeInteractHeld = 0;
+                        isAttacking = false;
+                    }
+                    // prevent player from attacking whilst the sword is mid-air
+                    if (thrown)
+                    {
+                        timeSinceLastAttack = 0;
+                    }
                 }
-                // the interact button is no longer held
                 else
                 {
-                    if (isAttacking)
-                    {
-                        // if interact has been held long enough to do a throw attack, then throw the sword
-                        if (timeInteractHeld >= timeToThrowSword)
-                        {
-                            swordEmpty.GetComponent<ThrowSword_Jerzy>().ThrowSword(swordLookRotation);
-                        }
-                        // otherwise perform a simple swing attack
-                        else
-                        {
-                            swordAnimator.Play("PlayerSwordSwing");
-                            timeSinceLastAttack = 0;
-                        }
-                    }
-
-                    timeInteractHeld = 0;
-                    isAttacking = false;
+                    // interact code goes here
                 }
-                // prevent player from attacking whilst the sword is mid-air
-                if (thrown)
-                {
-                    timeSinceLastAttack = 0;
-                }
-            }
-            else
-            {
-                // interact code goes here
             }
         }
-       
-
-       
-
     }
 
     private void OnTriggerStay(Collider other)

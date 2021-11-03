@@ -55,34 +55,36 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     void FixedUpdate()
     {
-        timeSinceLastPoisonDamage += Time.deltaTime;
-        timeSinceLastAttack += Time.deltaTime;
-        swordLookRotation = playerMovement.swordLookRotation;
-        returning = throwSword.returning;
-        thrown = throwSword.thrown;
+        if (swordObject.activeInHierarchy)
+        {
+            timeSinceLastPoisonDamage += Time.deltaTime;
+            timeSinceLastAttack += Time.deltaTime;
+            swordLookRotation = playerMovement.swordLookRotation;
+            returning = throwSword.returning;
+            thrown = throwSword.thrown;
 
-        if (timeSinceLastAttack >= TIME_BEFORE_DISABLING_COLLIDER && !thrown)
-        {
-            swordCollider.enabled = false;
-        }
-        if (!playerMovement.falling && !playerMovement.knockedBack && playerMovement.timeSinceLastDash > playerMovement.dashDuration && !playerMovement.respawning && !playerMovement.gettingConsumed)
-        {
-            canAttack = true;
-        }
-        else
-            canAttack = false;
+            if (timeSinceLastAttack >= TIME_BEFORE_DISABLING_COLLIDER && !thrown)
+            {
+                swordCollider.enabled = false;
+            }
+            if (!playerMovement.falling && !playerMovement.knockedBack && playerMovement.timeSinceLastDash > playerMovement.dashDuration && !playerMovement.respawning && !playerMovement.gettingConsumed)
+            {
+                canAttack = true;
+            }
+            else
+                canAttack = false;
 
-        if(isPoisoned && timeSinceLastPoisonDamage >= poisonDelay && poisonTicks < maxPoisonTicks)
-        {
-            GetComponent<PlayerStats>().TakeDamage(poisonDamage);
-            timeSinceLastPoisonDamage = 0;
-            poisonTicks++;
+            if (isPoisoned && timeSinceLastPoisonDamage >= poisonDelay && poisonTicks < maxPoisonTicks)
+            {
+                GetComponent<PlayerStats>().TakeDamage(poisonDamage);
+                timeSinceLastPoisonDamage = 0;
+                poisonTicks++;
+            }
+            else if (isPoisoned && poisonTicks >= maxPoisonTicks)
+            {
+                isPoisoned = false;
+            }
         }
-        else if(isPoisoned && poisonTicks >= maxPoisonTicks)
-        {
-            isPoisoned = false;
-        }
-
     }
 
     public void Attack()
