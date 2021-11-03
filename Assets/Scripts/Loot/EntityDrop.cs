@@ -20,18 +20,18 @@ public class EntityDrop : MonoBehaviour
     private Vector3 randomSpawnDir;
 
 
-     
+
 
     public void SpawnLoot()
     {
         CalculateDropProbability();
 
         Vector3 playerToObjDir = transform.position - GameObject.FindObjectOfType<PlayerStats>().transform.position;
-             
 
+        bool canIReset = false;
         for (int i = 0; i < chances.Count; i++)
         {
-            if(chances[i])
+            if (chances[i])
             {
                 do
                 {
@@ -39,7 +39,7 @@ public class EntityDrop : MonoBehaviour
                     float z = Rnd.Range(-1.0f, 1.0f);
                     randomSpawnDir = new Vector3(x, 0.0f, z).normalized;
                 } while (Vector3.Dot(randomSpawnDir, playerToObjDir) < 0); //dirAngle > 180 && dirAngle < 180
-                    
+
                 //Spawn 
                 GameObject obj = Instantiate(groundItem, transform.position, Quaternion.identity);
                 //Set Item
@@ -49,16 +49,20 @@ public class EntityDrop : MonoBehaviour
                     obj.GetComponent<GroundItem>().spawn += ChestSpawn;
                 else
                     obj.GetComponent<GroundItem>().spawn += NormalSpawn;
+
+                canIReset = true;
             }
         }
-             
-        //Reset tentatives to 1
-        DropSystem.Instance.ResetTentativeNum(type);
+
+        if (canIReset)
+            //Reset tentatives to 1
+            DropSystem.Instance.ResetTentativeNum(type);
+        else
+            DropSystem.Instance.IncreaseTentatives(type);
+
         //Destroy
         if (type != EntityType.Chest)
             Destroy(gameObject, disableDelay); //GOING TO HANDLE THIS IN OTHER SCRIPTS
-
-        DropSystem.Instance.IncreaseTentatives(type);
     }
 
     public void CalculateDropProbability()
