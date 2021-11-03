@@ -26,8 +26,6 @@ public class Player_Interaction_Jack : MonoBehaviour
         GameEvents.current.onPreventPlayerInteraction += OnPreventPlayerInteraction;
         GameEvents.current.onAllowPlayerInteraction += OnAllowPlayerInteraction;
         GameEvents.current.onNPCDialogue += OnNPCDialogue;
-        GameEvents.current.onStopAttacking += OnNPCDialogue;
-        GameEvents.current.onLockPlayerInputs += OnNPCDialogue;
     }
 
     public void OnPreventPlayerInteraction()

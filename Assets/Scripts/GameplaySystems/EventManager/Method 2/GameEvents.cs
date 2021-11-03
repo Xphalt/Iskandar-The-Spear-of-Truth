@@ -153,8 +153,6 @@ public class GameEvents : MonoBehaviour
         if (onNPCDialogue != null)
         {
             onNPCDialogue();
-            onStopAttacking();
-            onLockPlayerInputs();
             print("im working");
         }
     }
