@@ -18,8 +18,6 @@ public class EntityDrop : MonoBehaviour
     public GameObject groundItem;
     
     private Vector3 randomSpawnDir;
-
-
      
 
     public void SpawnLoot()
@@ -27,8 +25,8 @@ public class EntityDrop : MonoBehaviour
         CalculateDropProbability();
 
         Vector3 playerToObjDir = transform.position - GameObject.FindObjectOfType<PlayerStats>().transform.position;
-             
 
+        bool canIReset = false;
         for (int i = 0; i < chances.Count; i++)
         {
             if(chances[i])
@@ -43,22 +41,26 @@ public class EntityDrop : MonoBehaviour
                 //Spawn 
                 GameObject obj = Instantiate(groundItem, transform.position, Quaternion.identity);
                 //Set Item
-                obj.GetComponent<GroundItem>().SetItem(itemsToDrop[Rnd.Range(0, itemsToDrop.Count)]);
+                obj.GetComponent<GroundItem>().SetItem(itemsToDrop[i]);
                 //Set spawn type
                 if (type == EntityType.Chest)
                     obj.GetComponent<GroundItem>().spawn += ChestSpawn;
                 else
                     obj.GetComponent<GroundItem>().spawn += NormalSpawn;
+
+                canIReset = true;
             }
         }
-             
-        //Reset tentatives to 1
-        DropSystem.Instance.ResetTentativeNum(type);
+        
+        if(canIReset)
+            //Reset tentatives to 1
+            DropSystem.Instance.ResetTentativeNum(type);
+        else
+            DropSystem.Instance.IncreaseTentatives(type);
+        
         //Destroy
         if (type != EntityType.Chest)
             Destroy(gameObject, disableDelay); //GOING TO HANDLE THIS IN OTHER SCRIPTS
-
-        DropSystem.Instance.IncreaseTentatives(type);
     }
 
     public void CalculateDropProbability()
