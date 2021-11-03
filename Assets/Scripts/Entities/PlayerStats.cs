@@ -55,6 +55,7 @@ public class PlayerStats : StatsInterface
 
         sfx = GetComponentInParent<SoundPlayer>();
 
+        // list event in GameEvents.cs
         GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
     }
 

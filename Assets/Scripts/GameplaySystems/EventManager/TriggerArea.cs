@@ -12,10 +12,14 @@ public class TriggerArea : MonoBehaviour
     {
         GameEvents.current.DoorwayTriggerEnter(id);
         GameEvents.current.PlayerHealthSet(sethealth);
+        GameEvents.current.DisableUI();
+        GameEvents.current.StopAttacking();
     }
 
     private void OnTriggerExit(Collider other)
     {
         GameEvents.current.DoorwayTriggerExit(id);
+        GameEvents.current.EnableUI();
+        GameEvents.current.ContinueAttacking();
     }
 }

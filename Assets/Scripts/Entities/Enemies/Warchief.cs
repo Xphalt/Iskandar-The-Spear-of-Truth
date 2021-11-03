@@ -57,54 +57,54 @@ public class Warchief : EnemyBase
 
     public override void Attack()
     {
-        if (blocking)
-        {
-            blockTimer += Time.deltaTime;
-            if (detector.GetCurTarget()) transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
-            if (blockTimer > blockDuration) EndBlock();
-        }
-        else if (attackEnded && detector.GetCurTarget() != null)
-        {
-            attackUsed = false;
-
-            if (!attackUsed && ParryAvailable && stats.health < stats.MAX_HEALTH / 2)
+            if (blocking)
             {
-                Block();
-                attackUsed = true;
+                blockTimer += Time.deltaTime;
+                if (detector.GetCurTarget()) transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
+                if (blockTimer > blockDuration) EndBlock();
             }
-
-            if (!attackUsed && FlurryAvailable && transform.GetDistance(detector.GetCurTarget()) < meleeRange)
+            else if (attackEnded && detector.GetCurTarget() != null)
             {
-                int rand = Random.Range(0, 101);
-                if (rand > flurryChance)
-                    FlurryAttack();
-                else
-                    MeleeAttack();
-                attackUsed = true;
-            }
+                attackUsed = false;
 
-            if (!attackUsed && LungeAvailable && transform.GetDistance(detector.GetCurTarget()) > minJumpDistance)
-            {
-                LungeAttack();
-                attackUsed = true;
-            }
+                if (!attackUsed && ParryAvailable && stats.health < stats.MAX_HEALTH / 2)
+                {
+                    Block();
+                    attackUsed = true;
+                }
 
-            if (!attackUsed && WarcryAvailable)
-            {
-                WarcryAttack();
-                attackUsed = true;
-            }
+                if (!attackUsed && FlurryAvailable && transform.GetDistance(detector.GetCurTarget()) < meleeRange)
+                {
+                    int rand = Random.Range(0, 101);
+                    if (rand > flurryChance)
+                        FlurryAttack();
+                    else
+                        MeleeAttack();
+                    attackUsed = true;
+                }
 
-            if (attackUsed)
-            {
-                //change state to Attacking
-                curState = EnemyStates.Attacking;
-                //reset cooldown so Enemy can attack again
-                warChiefTimers[(int)warChiefAttack] = 0;
-                attackEnded = false;
+                if (!attackUsed && LungeAvailable && transform.GetDistance(detector.GetCurTarget()) > minJumpDistance)
+                {
+                    LungeAttack();
+                    attackUsed = true;
+                }
+
+                if (!attackUsed && WarcryAvailable)
+                {
+                    WarcryAttack();
+                    attackUsed = true;
+                }
+
+                if (attackUsed)
+                {
+                    //change state to Attacking
+                    curState = EnemyStates.Attacking;
+                    //reset cooldown so Enemy can attack again
+                    warChiefTimers[(int)warChiefAttack] = 0;
+                    attackEnded = false;
+                }
+                //_myAnimator.SetBool("isChasing", !attackUsed);
             }
-            //_myAnimator.SetBool("isChasing", !attackUsed);
-        }
     }
 
     private void EndBlock()
@@ -215,4 +215,5 @@ public class Warchief : EnemyBase
 
         if (other.CompareTag("playerSword") && blocking) EndBlock();
     }
+
 }

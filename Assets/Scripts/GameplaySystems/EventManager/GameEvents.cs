@@ -15,7 +15,7 @@ public class GameEvents : MonoBehaviour
     }
 
 
-    //Event 1
+    //Event 1 (Open Door)
     public event Action<int> onDoorwayTriggerEnter; // Registers this as a public action, the int applies the number based ID (identifier)
     public void DoorwayTriggerEnter(int id)
     {
@@ -25,7 +25,7 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    //Event 2
+    //Event 2 (Exit Door)
     public event Action<int> onDoorwayTriggerExit;
     public void DoorwayTriggerExit(int id)
     {
@@ -35,17 +35,108 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    //Event 3
+    //Event 3 (set player health)
     public event Action<int> onPlayerHealthSet;
     public void PlayerHealthSet(int sethealth)
     {
         if (onPlayerHealthSet != null)
         {
             onPlayerHealthSet(sethealth);
-            print("my health has been set to " + sethealth);
         }
     }
 
+    //Event 4 (Lock Player Inputs)
+    public event Action onLockPlayerInputs; // might want this one to be repetitively spammed as closing the pause menu may mess with this...
+    public void LockPlayerInputs()
+    {
+        if (onLockPlayerInputs != null)
+        {
+            onLockPlayerInputs();
+        }
+    }
+
+    //Event 5 (Unlock Player Inputs)
+    public event Action onUnLockPlayerInputs;
+    public void UnLockPlayerInputs()
+    {
+        if (onUnLockPlayerInputs != null)
+        {
+            onUnLockPlayerInputs();
+        }
+    }
+
+    //Event 6 (Disable UI)
+    public event Action onDisableUI; // might want this one to be repetitively spammed as closing the pause menu may mess with this...
+    public void DisableUI()
+    {
+        if (onDisableUI != null)
+        {
+            onDisableUI();
+            print("im working");
+        }
+    }
+
+    //Event 7 (Enable UI)
+    public event Action onEnableUI;
+    public void EnableUI()
+    {
+        if (onEnableUI != null)
+        {
+            onEnableUI();
+        }
+    }
+
+    //Event 8 (enemy stops attacking)
+    public event Action onStopAttacking;
+    public void StopAttacking()
+    {
+        if (onStopAttacking != null)
+        {
+            onStopAttacking();
+        }
+    }
+
+    //Event 9 (enemy continues attacking)
+    public event Action onContinueAttacking;
+    public void ContinueAttacking()
+    {
+        if (onContinueAttacking != null)
+        {
+            onContinueAttacking();
+        }
+    }
+
+    //Event 10 (Prevent Player interaction???? issue is im geussing this excludes swinging the sword, its gonnna be way harder, if it was just disabling the interact button. period, that's ez)
+    public event Action onPreventPlayerInteraction;
+    public void PreventPlayerInteraction()
+    {
+        if (onPreventPlayerInteraction != null)
+        {
+            onPreventPlayerInteraction();
+        }
+    }
+
+    //Event 11 (Allow Player interaction)
+    public event Action onAllowPlayerInteraction;
+    public void AllowPlayerInteraction()
+    {
+        if (onAllowPlayerInteraction != null)
+        {
+            onAllowPlayerInteraction();
+        }
+    }
+
+    //Event 12 (NPC Dialogue)
+    public event Action onNPCDialogue;
+    public void NPCDialogue()
+    {
+        if (onNPCDialogue != null)
+        {
+            onNPCDialogue();
+            onStopAttacking();
+            onLockPlayerInputs();
+        }
+    }
 
 
 
