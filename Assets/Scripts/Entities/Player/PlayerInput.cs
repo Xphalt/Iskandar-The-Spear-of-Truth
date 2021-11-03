@@ -50,7 +50,14 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
         _playerActionsAsset.Player.Inventory.performed += _ => _pauseMenuManager.TogglePauseState();
 
-        _playerActionsAsset.Player.Attack.started += _ => _playerCombat_Jerzy.Attack();
+        _playerActionsAsset.Player.Attack.started += _ =>
+        {
+            if (_player_Interaction_Jack.IsInteractionAvailable())
+                _player_Interaction_Jack.Interact();
+            else
+                _playerCombat_Jerzy.Attack();
+        };
+
         _playerActionsAsset.Player.Attack.performed += _ => _playerCombat_Jerzy.ThrowAttack();
 
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
