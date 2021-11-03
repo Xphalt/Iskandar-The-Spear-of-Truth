@@ -61,6 +61,11 @@ public class PlayerDetection : MonoBehaviour
         return curTarget;
     }
 
+    public void SetCurrentTarget(Transform target)
+    {
+        curTarget = target;
+    }
+
     public bool IsTarget(Transform check)
     {
         if (!curTarget) return false;
