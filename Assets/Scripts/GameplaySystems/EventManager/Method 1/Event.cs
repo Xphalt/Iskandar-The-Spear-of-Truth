@@ -69,8 +69,8 @@ public class PanCameraWithTargetVectorEvent : PanCameraEvent
 {
 	public override void TriggerEvent()
 	{
-        // DISABLE UI HERE
-        // LOCK PLAYER INPUTS HERE
+        GameEvents.current.DisableUI();
+        GameEvents.current.LockPlayerInputs();
 
         // swap cameras
         _playerCamera.enabled = false;
@@ -114,8 +114,8 @@ public class SwapActiveCameraAfterPanObject : MonoBehaviour
         panCamera.enabled = false;
         playerCamera.enabled = true;
 
-        // ENABLE UI HERE
-        // UNLOCK PLAYER INPUTS HERE
+        GameEvents.current.EnableUI();
+        GameEvents.current.UnLockPlayerInputs();
     }
 }
 
@@ -136,16 +136,51 @@ public class LockPlayerInputsEvent : Event
 {
     public override void TriggerEvent()
     {
-        
+        if (_lockInputs)
+        {
+            GameEvents.current.LockPlayerInputs();
+        }
+        else
+        {
+            GameEvents.current.UnLockPlayerInputs();
+		}
 	}
+
+    [SerializeReference] private bool _lockInputs;
 }
 
 public class UIEvent : Event
 {
     public override void TriggerEvent()
     {
-        throw new System.NotImplementedException();
+        if (_disableUI)
+        {
+            GameEvents.current.DisableUI();
+        }
+        else
+        {
+            GameEvents.current.EnableUI();
+		}
     }
+
+    [SerializeReference] private bool _disableUI;
+}
+
+public class PreventPlayerInteractionEvent : Event
+{
+	public override void TriggerEvent()
+	{
+		if(_disablePlayerInteraction)
+        {
+            GameEvents.current.PreventPlayerInteraction();
+		}
+        else
+        {
+            GameEvents.current.AllowPlayerInteraction();
+		}
+	}
+
+    [SerializeReference] private bool _disablePlayerInteraction;
 }
 
 [System.Serializable]
