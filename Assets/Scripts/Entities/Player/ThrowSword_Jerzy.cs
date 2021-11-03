@@ -74,8 +74,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
                 swordRigidBody.velocity = transform.forward * returningSpeed;
             }
             timeTravelling += Time.deltaTime;
-
-            //playerMovement.LockPlayerMovement();
         }
     }
 
