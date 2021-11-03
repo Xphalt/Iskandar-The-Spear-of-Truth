@@ -70,6 +70,12 @@ public class PlayerInput : MonoBehaviour
         #endregion
     }
 
+    public void Start()
+    {
+        GameEvents.current.onLockPlayerInputs += OnDisable;
+        GameEvents.current.onUnLockPlayerInputs += OnEnable;
+    }
+
     private void FixedUpdate()
     {
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();

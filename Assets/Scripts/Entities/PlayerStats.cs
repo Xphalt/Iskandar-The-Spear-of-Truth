@@ -54,6 +54,9 @@ public class PlayerStats : StatsInterface
         }
 
         sfx = GetComponentInParent<SoundPlayer>();
+
+        // list event in GameEvents.cs
+        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
     }
 
     private void Update()
@@ -216,6 +219,12 @@ public class PlayerStats : StatsInterface
         inventory.LoadStats(num);
     }
 
+    //Morgan's Event Manager: Health Set
+    private void OnPlayerHealthSet(int sethealth)
+    {
+        if (sethealth > 10) { sethealth = 10; }
+        health = sethealth;
+    }
 
     //Clears the invenotories when game closes 
     private void OnApplicationQuit()
