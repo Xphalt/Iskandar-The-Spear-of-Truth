@@ -58,7 +58,13 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
         _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar(); 
 
+        //Items
         _playerActionsAsset.Player.ItemToggle.performed += _ => _changeItem.OnClick();
+        _playerActionsAsset.Player.UseItem.performed += use =>
+        {
+            if (_changeItem.inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id > -1)
+                _changeItem.inventory.database.ItemObjects[_changeItem.inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id].UseCurrent();
+        };
 
         _playerActionsAsset.UI.Pause.performed += OnPause;
         //_playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();

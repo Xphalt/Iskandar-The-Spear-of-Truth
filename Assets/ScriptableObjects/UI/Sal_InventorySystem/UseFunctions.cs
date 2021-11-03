@@ -121,14 +121,17 @@ public class UseFunctions : MonoBehaviour
 
     public void UseBombBag()
     {
-        //Item removal 
-        if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
-            playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
-        else
-            playerstats.equipment.GetSlots[playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id].AddAmount(-1);
+        if(!FindObjectOfType<Bomb>())
+        {
+            //Item removal 
+            if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
+                playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
+            else
+                playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(-1);
 
-        //spawning bomb
-        Instantiate(bomb, playerstats.transform.position, Quaternion.identity);
+            //spawning bomb
+            Instantiate(bomb, playerstats.transform.position, Quaternion.identity);
+        }
     }
     #endregion
 }
