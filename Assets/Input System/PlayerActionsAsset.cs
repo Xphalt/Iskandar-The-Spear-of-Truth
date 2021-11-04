@@ -97,6 +97,22 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ItemToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ad272d5-c099-44ca-a612-de50d1bff099"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""UseItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""d518c97e-9ea9-4a8a-8288-01a4e7bc2200"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -396,6 +412,50 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""action"": ""LoadInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d018aeb5-0453-4848-af29-cb37bacce7cd"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & mouse"",
+                    ""action"": ""ItemToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd93aa8c-29b0-46f8-8bb7-8db37e84f98a"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ItemToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4128502-8d3d-4b1f-a317-a539361a22fc"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41d26983-0120-427f-b6e7-8dec2792df8b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & mouse"",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -488,6 +548,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         m_Player_ItemSelectionBar = m_Player.FindAction("ItemSelectionBar", throwIfNotFound: true);
         m_Player_SaveInventory = m_Player.FindAction("SaveInventory", throwIfNotFound: true);
         m_Player_LoadInventory = m_Player.FindAction("LoadInventory", throwIfNotFound: true);
+        m_Player_ItemToggle = m_Player.FindAction("ItemToggle", throwIfNotFound: true);
+        m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -551,6 +613,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_ItemSelectionBar;
     private readonly InputAction m_Player_SaveInventory;
     private readonly InputAction m_Player_LoadInventory;
+    private readonly InputAction m_Player_ItemToggle;
+    private readonly InputAction m_Player_UseItem;
     public struct PlayerActions
     {
         private @PlayerActionsAsset m_Wrapper;
@@ -565,6 +629,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         public InputAction @ItemSelectionBar => m_Wrapper.m_Player_ItemSelectionBar;
         public InputAction @SaveInventory => m_Wrapper.m_Player_SaveInventory;
         public InputAction @LoadInventory => m_Wrapper.m_Player_LoadInventory;
+        public InputAction @ItemToggle => m_Wrapper.m_Player_ItemToggle;
+        public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -604,6 +670,12 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @LoadInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadInventory;
                 @LoadInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadInventory;
                 @LoadInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadInventory;
+                @ItemToggle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemToggle;
+                @ItemToggle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemToggle;
+                @ItemToggle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemToggle;
+                @UseItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
+                @UseItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
+                @UseItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -638,6 +710,12 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @LoadInventory.started += instance.OnLoadInventory;
                 @LoadInventory.performed += instance.OnLoadInventory;
                 @LoadInventory.canceled += instance.OnLoadInventory;
+                @ItemToggle.started += instance.OnItemToggle;
+                @ItemToggle.performed += instance.OnItemToggle;
+                @ItemToggle.canceled += instance.OnItemToggle;
+                @UseItem.started += instance.OnUseItem;
+                @UseItem.performed += instance.OnUseItem;
+                @UseItem.canceled += instance.OnUseItem;
             }
         }
     }
@@ -713,6 +791,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         void OnItemSelectionBar(InputAction.CallbackContext context);
         void OnSaveInventory(InputAction.CallbackContext context);
         void OnLoadInventory(InputAction.CallbackContext context);
+        void OnItemToggle(InputAction.CallbackContext context);
+        void OnUseItem(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

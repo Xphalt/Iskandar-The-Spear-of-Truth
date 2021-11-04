@@ -18,6 +18,7 @@ public class UseFunctions : MonoBehaviour
     private PlayerStats playerstats;
     private PlayerCombat_Jerzy playerCombat;
     public GameObject bomb;
+    public GameObject wand;
 
     void Awake()
     {
@@ -50,6 +51,12 @@ public class UseFunctions : MonoBehaviour
                     break;
                 case "Bomb Bag":
                     database[i].OnUseCurrent += UseBombBag;
+                    break;
+                case "Wand of Magnetism":
+                    database[i].OnUseCurrent += UseWandOfMagnetism;
+                    break;
+                case "Revival Gem":
+                    database[i].OnUseCurrent += UseRevivalGem;
                     break;
             } 
         }
@@ -121,14 +128,36 @@ public class UseFunctions : MonoBehaviour
 
     public void UseBombBag()
     {
-        //Item removal 
-        if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
-            playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
-        else
-            playerstats.equipment.GetSlots[playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id].AddAmount(-1);
+        if(!FindObjectOfType<Bomb>())
+        {
+            //Item removal 
+            if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
+                playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
+            else
+                playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(-1);
 
-        //spawning bomb
-        Instantiate(bomb, playerstats.transform.position, Quaternion.identity);
+            //spawning bomb
+            Instantiate(bomb, playerstats.transform.position, Quaternion.identity);
+        }
+    }
+
+    public void UseWandOfMagnetism()
+    {
+        if (!FindObjectOfType<MagneticWand>())
+        {
+            Instantiate(wand, playerstats.transform.localPosition, playerstats.transform.localRotation); 
+        }
+    }
+
+    public void UseRevivalGem()
+    {
+        float healPercentage = ((ResourceObject)(playerstats.inventory.database.ItemObjects[playerstats.revivalGem.data.id])).healPercentage;
+
+        //Item removal 
+        playerstats.inventory.RemoveItem(playerstats.revivalGem.data);
+
+        //Heal player
+        playerstats.health = playerstats.MAX_HEALTH * (healPercentage / 100);
     }
     #endregion
 }

@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class UIAndEventsChecks : MonoBehaviour
 {
-    public Image img;
-    public PlayerInput _playerInput;
-    public PlayerDetection _PlayerDetection;
+    [HideInInspector] public Image img;
+    [HideInInspector] public PlayerInput _playerInput;
+    [HideInInspector] public PlayerDetection[] _playerDetectors;
     //public Renderer rend;
     public void Start()
     {
@@ -17,8 +17,8 @@ public class UIAndEventsChecks : MonoBehaviour
         GameEvents.current.onNPCDialogue += OnNPCDialogue;
         GameEvents.current.onLockPlayerInputs += OnLockPlayerInputs;
         GameEvents.current.onUnLockPlayerInputs += OnUnLockPlayerInputs;
-        /*GameEvents.current.onStopAttacking += OnStop;
-        GameEvents.current.onContinueAttacking += OnContinue;*/
+        GameEvents.current.onStopAttacking += OnStop;
+        GameEvents.current.onContinueAttacking += OnContinue;
 
         img = this.GetComponent<Image>();
     }
@@ -26,7 +26,7 @@ public class UIAndEventsChecks : MonoBehaviour
     private void Awake()
     {
         _playerInput = FindObjectOfType<PlayerInput>();
-        _PlayerDetection = FindObjectOfType<PlayerDetection>();
+        _playerDetectors = FindObjectsOfType<PlayerDetection>();
     }
 
     public void DisableUI()
@@ -58,16 +58,16 @@ public class UIAndEventsChecks : MonoBehaviour
         _playerInput.enabled = true;
     }
 
-   /* public void OnStop()
+    public void OnStop()
     {
-        FindObjectOfType<PlayerDetection>().GetComponent<PlayerDetection>().stopAttacking = false;
+        foreach (PlayerDetection detector in _playerDetectors) detector.stopAttacking = false;
         print("functioning");
     }
 
     public void OnContinue()
     {
-        FindObjectOfType<PlayerDetection>().stopAttacking = true;
-    } */
+        foreach (PlayerDetection detector in _playerDetectors) detector.stopAttacking = true;
+    }
 
     public void OnNPCDialogue()
     {

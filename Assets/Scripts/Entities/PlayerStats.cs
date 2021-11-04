@@ -10,7 +10,8 @@ public class PlayerStats : StatsInterface
     public InventoryObject_Sal equipment;
     public GameObject listOfObjs;
 
-    internal AccessoryObject Item;
+    internal AccessoryObject Accessory;
+    public ItemObject_Sal revivalGem;
     #region STATS
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
@@ -65,20 +66,21 @@ public class PlayerStats : StatsInterface
         {
             try
             {
-                Item = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id]));
+                Accessory = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id]));
             }
             catch
             {
-                Item = null;
+                Accessory = null;
             }
-        }
-        if (Item && Item.accessory == Accessories.RingOfVitality)
+        } 
+
+        if (Accessory && Accessory.accessory == AccessoryType.RingOfVitality)
         {
-            Item.UseCurrent(); //Recovers hp every n seconds
+            Accessory.UseCurrent(); //Recovers hp every n seconds
         }
-        if (Item && Item.accessory == Accessories.Goggles)
+        if (Accessory && Accessory.accessory == AccessoryType.Goggles)
         {
-            Item.UseCurrent(); //deactivates objects
+            Accessory.UseCurrent(); //deactivates objects
         }
     }
 
@@ -91,9 +93,18 @@ public class PlayerStats : StatsInterface
 
         // anything that happens when taking damage happens 
         if (health <= 0)
-        {
-            //gameObject.SetActive(false);
-            playerAnimation.Dead();
+        { 
+            //Check if player has revival gem
+            var RevGem = inventory.FindItemOnInventory(revivalGem.data);
+            if (RevGem != null) 
+            {
+                inventory.database.ItemObjects[RevGem.item.id].UseCurrent();
+            }
+            else
+            {
+                //gameObject.SetActive(false);
+                playerAnimation.Dead();
+            }
         }
     }
 
@@ -106,7 +117,7 @@ public class PlayerStats : StatsInterface
     {
         target.TakeDamage(amount, scriptedKill);
         
-        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.NecklaceOfTheLifeStealers) Item.UseCurrent();
+        if (target.HasBeenDefeated && Accessory && Accessory.accessory == AccessoryType.NecklaceOfTheLifeStealers) Accessory.UseCurrent();
     }
 
 
@@ -131,6 +142,7 @@ public class PlayerStats : StatsInterface
                         damage -= ((WeaponObject_Sal)(temp)).damage;
                         spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
                         GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
+
                         break;
                     case ItemType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
@@ -197,11 +209,24 @@ public class PlayerStats : StatsInterface
         }
         else if(item) //It's a resource
         { 
-            gems += ((ResourceObject)(item.itemobj)).gems;
-            UIManager.instance.ShowMoneyPopup();
-            if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
-                ((ResourceObject)(item.itemobj)).UseCurrent();
-            Destroy(other.gameObject);
+            if(((ResourceObject)(item.itemobj)).resourceType == ResourceType.RevivalGem)
+            {
+                if(inventory.FindItemOnInventory(item.itemobj.data) != null)
+                    Debug.Log("Can't take more Revival gems");
+                else
+                {
+                    inventory.AddItem(new Item(item.itemobj), 1);
+                    Destroy(other.gameObject);
+                }
+            }
+            else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
+            {
+                gems += ((ResourceObject)(item.itemobj)).gems;
+                UIManager.instance.ShowMoneyPopup();
+                if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
+                    ((ResourceObject)(item.itemobj)).UseCurrent();
+                Destroy(other.gameObject);
+            }
         }
     }
 

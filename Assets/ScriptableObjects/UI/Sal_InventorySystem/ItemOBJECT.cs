@@ -6,7 +6,6 @@ using UnityEngine;
 public class ItemOBJECT : ItemObject_Sal
 {
     public float healingValue;
-    [Range(1, 100)] public float healPercentage;
 
     public float damage;
     public float explosionRadius;
