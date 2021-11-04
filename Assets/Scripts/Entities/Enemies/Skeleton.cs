@@ -31,7 +31,8 @@ public class Skeleton : EnemyBase
             { 
                 for (int i = 0; i < SkeletonsInAgroRange.Count; i++)
                 {
-                    SkeletonsInAgroRange[i].gameObject.GetComponent<PlayerDetection>().SetCurrentTarget(detector.GetCurTarget());
+                    //disabled this line due to the changes in PlayerDetection, must add the SetCurrentTarget later again -Bernardo
+                    //SkeletonsInAgroRange[i].gameObject.GetComponent<PlayerDetection>().SetCurrentTarget(detector.GetCurTarget());
                     SkeletonsInAgroRange[i].gameObject.GetComponent<Skeleton>().SetStateChasing();
                 }
             }
