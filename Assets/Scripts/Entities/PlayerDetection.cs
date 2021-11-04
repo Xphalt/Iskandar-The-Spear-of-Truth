@@ -16,24 +16,16 @@ public class PlayerDetection : MonoBehaviour
 
     // morgan's event manager
     public bool stopAttacking = false;
-    public float rememberX;
-    public float rememberY;
-    public float rememberZ;
 
     public void Start()
     {
         GameEvents.current.onStopAttacking += OnStop;
         GameEvents.current.onContinueAttacking += OnContinue;
-        rememberX = gameObject.transform.position.x;
-        rememberY = gameObject.transform.position.y;
-        rememberZ = gameObject.transform.position.z;
     }
 
     public void OnStop()
     {
         stopAttacking = true;
-        curTarget = null;
-        this.transform.position = new Vector3(rememberX, rememberY, rememberZ);
     }
 
     public void OnContinue()
@@ -64,9 +56,10 @@ public class PlayerDetection : MonoBehaviour
                     }
                 }
             }
-            rememberX = gameObject.transform.position.x;
-            rememberY = gameObject.transform.position.y;
-            rememberZ = gameObject.transform.position.z;
+        }
+        if (stopAttacking == true)
+        {
+            curTarget = null;
         }
     }
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
