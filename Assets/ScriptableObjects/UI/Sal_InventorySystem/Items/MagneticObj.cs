@@ -29,18 +29,22 @@ public class MagneticObj : MonoBehaviour
     public Vector3 initialPos; 
     public Quaternion initialRot;
 
+    private CameraMove cameraMove;
 
     void Start()
     {
         isControllable = false;
          
-        newDir = Vector2.zero;  
+        newDir = Vector2.zero;
+
+        cameraMove = FindObjectOfType<CameraMove>();
     }
 
     void Update()
     {
         if(isLerping)
         {
+            cameraMove.canMove = false;
             T += Time.deltaTime / lerpDuration;
 
             //lerping
@@ -73,6 +77,8 @@ public class MagneticObj : MonoBehaviour
 
                 //Exit controllable state
                 isControllable = false;
+
+                cameraMove.canMove = true;
             }
         }
     }
