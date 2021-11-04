@@ -9,12 +9,12 @@ using UnityEngine;
 public class GameEvents : MonoBehaviour
 {
     public static GameEvents current; // the current game event
-    public PlayerInput _playerInput ;
+    //public PlayerInput _playerInput ;
 
     private void Awake()
     {
         current = this; // make the current game event this object upon game/room start
-        _playerInput = FindObjectOfType<PlayerInput>();
+        //_playerInput = FindObjectOfType<PlayerInput>();
     }
 
 
@@ -64,7 +64,6 @@ public class GameEvents : MonoBehaviour
     {
         if (onUnLockPlayerInputs != null)
         {
-            _playerInput.enabled = true;
             onUnLockPlayerInputs();
         }
     }
@@ -96,7 +95,6 @@ public class GameEvents : MonoBehaviour
         if (onStopAttacking != null)
         {
             onStopAttacking();
-            print("im ALSO working");
         }
     }
 
@@ -126,13 +124,7 @@ public class GameEvents : MonoBehaviour
     {
         if (onAllowPlayerInteraction != null)
         {
-            _playerInput = FindObjectOfType<PlayerInput>();
             onAllowPlayerInteraction();
-            _playerInput.enabled = true;
-            if (_playerInput.enabled == true)
-            {
-                print("i am false");
-            }
         }
     }
 

@@ -28,7 +28,7 @@ public class Player_Interaction_Jack : MonoBehaviour
         GameEvents.current.onAllowPlayerInteraction += OnAllowPlayerInteraction;
         GameEvents.current.onNPCDialogue += OnNPCDialogue;
         GameEvents.current.onLockPlayerInputs += OnLockPlayerInputs;
-        GameEvents.current.onLockPlayerInputs += OnUnLockPlayerInputs;
+        GameEvents.current.onUnLockPlayerInputs += OnUnLockPlayerInputs;
 
     }
 
@@ -49,6 +49,7 @@ public class Player_Interaction_Jack : MonoBehaviour
     public void OnLockPlayerInputs()
     {
         _playerInput.enabled = false;
+        print("the state of input is " + _playerInput.enabled);
     }
 
     public void OnUnLockPlayerInputs()
