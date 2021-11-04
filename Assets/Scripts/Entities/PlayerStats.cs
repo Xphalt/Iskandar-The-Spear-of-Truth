@@ -72,11 +72,8 @@ public class PlayerStats : StatsInterface
             {
                 Accessory = null;
             }
-        }
-        if (equipment.Storage.Slots[(int)EquipSlot.ItemSlot].item.id > -1)
-        {
-            
-        }
+        } 
+
         if (Accessory && Accessory.accessory == AccessoryType.RingOfVitality)
         {
             Accessory.UseCurrent(); //Recovers hp every n seconds
