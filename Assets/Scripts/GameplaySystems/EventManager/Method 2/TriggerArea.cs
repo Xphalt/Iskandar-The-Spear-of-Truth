@@ -22,7 +22,7 @@ public class TriggerArea : MonoBehaviour
         GameEvents.current.PlayerHealthSet(sethealth); // this works
         GameEvents.current.DisableUI(); // this works
         GameEvents.current.PreventPlayerInteraction(); // this works by the player_interaction script's definition of an interaction
-        //GameEvents.current.StopAttacking();  // this works
+        GameEvents.current.StopAttacking();  // this works
         //GameEvents.current.LockPlayerInputs(); // this works but im cluttering jack's script, will talk
         //GameEvents.current.NPCDialogue(); this works
     }

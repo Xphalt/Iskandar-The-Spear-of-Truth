@@ -21,6 +21,7 @@ public class Player_Interaction_Jack : MonoBehaviour
     //morgan's event system edit
     public bool prevention = false;
     public PlayerInput _playerInput;
+    public PlayerDetection _PlayerDetection;
 
     private void Start()
     {
@@ -29,12 +30,15 @@ public class Player_Interaction_Jack : MonoBehaviour
         GameEvents.current.onNPCDialogue += OnNPCDialogue;
         GameEvents.current.onLockPlayerInputs += OnLockPlayerInputs;
         GameEvents.current.onUnLockPlayerInputs += OnUnLockPlayerInputs;
+        GameEvents.current.onStopAttacking += OnStop;
+        GameEvents.current.onContinueAttacking += OnContinue;
 
     }
 
     private void Awake()
     {
         _playerInput = FindObjectOfType<PlayerInput>();
+        _PlayerDetection = FindObjectOfType<PlayerDetection>();
     }
     public void OnPreventPlayerInteraction()
     {
@@ -55,6 +59,16 @@ public class Player_Interaction_Jack : MonoBehaviour
     public void OnUnLockPlayerInputs()
     {
         _playerInput.enabled = true;
+    }
+
+    public void OnStop()
+    {
+        _PlayerDetection.stopAttacking = false;
+    }
+
+    public void OnContinue()
+    {
+        _PlayerDetection.stopAttacking = true;
     }
 
     public void OnNPCDialogue()
