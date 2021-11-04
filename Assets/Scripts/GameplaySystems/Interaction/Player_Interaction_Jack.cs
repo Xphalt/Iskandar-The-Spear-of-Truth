@@ -20,14 +20,22 @@ public class Player_Interaction_Jack : MonoBehaviour
 
     //morgan's event system edit
     public bool prevention = false;
+    public PlayerInput _playerInput;
 
     private void Start()
     {
         GameEvents.current.onPreventPlayerInteraction += OnPreventPlayerInteraction;
         GameEvents.current.onAllowPlayerInteraction += OnAllowPlayerInteraction;
         GameEvents.current.onNPCDialogue += OnNPCDialogue;
+        GameEvents.current.onLockPlayerInputs += OnLockPlayerInputs;
+        GameEvents.current.onLockPlayerInputs += OnUnLockPlayerInputs;
+
     }
 
+    private void Awake()
+    {
+        _playerInput = FindObjectOfType<PlayerInput>();
+    }
     public void OnPreventPlayerInteraction()
     {
         prevention = true;
@@ -38,11 +46,23 @@ public class Player_Interaction_Jack : MonoBehaviour
         prevention = false;
     }
 
+    public void OnLockPlayerInputs()
+    {
+        _playerInput.enabled = false;
+    }
+
+    public void OnUnLockPlayerInputs()
+    {
+        _playerInput.enabled = true;
+    }
+
     public void OnNPCDialogue()
     {
         GameEvents.current.LockPlayerInputs();
         GameEvents.current.StopAttacking();
     }
+
+    // end of morgan's edits
 
 
     // Update is called once per frame
