@@ -36,6 +36,8 @@ public class CameraMove : MonoBehaviour
     private Vector3 panTarget = new Vector3();
     private Vector3 panStart = new Vector3();
 
+    public bool canMove = true;
+
     private bool Bound => LeftBound != null && RightBound != null && UpBound != null && DownBound != null;
     private Vector3 TargetPos => new Vector3(Target.position.x, Target.position.y + Yoffset, Target.position.z - Zoffset);
 
@@ -47,8 +49,11 @@ public class CameraMove : MonoBehaviour
 
     void Update()
     {
-        if (!panning) FollowPlayerToLimits();
-        else Pan();
+        if (canMove)
+        {
+            if (!panning) FollowPlayerToLimits();
+            else Pan();
+        }
     }
 
     private void FollowPlayerToLimits()

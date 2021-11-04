@@ -2,11 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ResourceType
+{
+    ConduitOre1,
+    ConduitOre2,
+    ConduitOre3,
+    Gems,
+    RevivalGem
+}
+
 [CreateAssetMenu(fileName = "New Resource Object", menuName = "Inventory System/Items/Resource")]
 public class ResourceObject : ItemObject_Sal
 {
+    public ResourceType resourceType;
     public int gems;
-    public string Desc;
+    [Range(1, 100)] public float healPercentage;
+    [TextArea(5, 10)] public string desc;
+
 
     public void Awake()
     {
