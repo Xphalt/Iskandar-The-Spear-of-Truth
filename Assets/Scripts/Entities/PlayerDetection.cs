@@ -17,7 +17,7 @@ public class PlayerDetection : MonoBehaviour
     // morgan's event manager
     public bool stopAttacking = false;
 
-    /*public void Start()
+    public void Start()
     {
         GameEvents.current.onStopAttacking += OnStop;
         GameEvents.current.onContinueAttacking += OnContinue;
@@ -31,7 +31,7 @@ public class PlayerDetection : MonoBehaviour
     public void OnContinue()
     {
         stopAttacking = false;
-    }*/
+    }
 
     public void FindVisibleTargets()
     {

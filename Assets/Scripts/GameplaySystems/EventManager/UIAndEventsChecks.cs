@@ -17,8 +17,8 @@ public class UIAndEventsChecks : MonoBehaviour
         GameEvents.current.onNPCDialogue += OnNPCDialogue;
         GameEvents.current.onLockPlayerInputs += OnLockPlayerInputs;
         GameEvents.current.onUnLockPlayerInputs += OnUnLockPlayerInputs;
-        GameEvents.current.onStopAttacking += OnStop;
-        GameEvents.current.onContinueAttacking += OnContinue;
+        /*GameEvents.current.onStopAttacking += OnStop;
+        GameEvents.current.onContinueAttacking += OnContinue;*/
 
         img = this.GetComponent<Image>();
     }
@@ -58,15 +58,16 @@ public class UIAndEventsChecks : MonoBehaviour
         _playerInput.enabled = true;
     }
 
-    public void OnStop()
+   /* public void OnStop()
     {
-        FindObjectOfType<PlayerDetection>().stopAttacking = false;
+        FindObjectOfType<PlayerDetection>().GetComponent<PlayerDetection>().stopAttacking = false;
+        print("functioning");
     }
 
     public void OnContinue()
     {
         FindObjectOfType<PlayerDetection>().stopAttacking = true;
-    }
+    } */
 
     public void OnNPCDialogue()
     {
