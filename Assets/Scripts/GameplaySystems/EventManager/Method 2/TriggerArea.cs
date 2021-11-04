@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Morgan S Script
+// Morgan S Script
+// Contact me if ya need any help with understanding any of this part / place
 
 public class TriggerArea : MonoBehaviour
 {
@@ -17,21 +18,21 @@ public class TriggerArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameEvents.current.DoorwayTriggerEnter(id);
-        GameEvents.current.PlayerHealthSet(sethealth);
-        GameEvents.current.DisableUI();
-        //GameEvents.current.NPCDialogue();
-        GameEvents.current.PreventPlayerInteraction();
-        GameEvents.current.LockPlayerInputs();
-        _playerInput.enabled = false;
+        //GameEvents.current.DoorwayTriggerEnter(id);
+        GameEvents.current.PlayerHealthSet(sethealth); // this works
+        GameEvents.current.DisableUI(); // this works
+        GameEvents.current.PreventPlayerInteraction(); // this works by the player_interaction script's definition of an interaction
+        //GameEvents.current.StopAttacking();  // this works
+        //GameEvents.current.LockPlayerInputs(); // this works but im cluttering jack's script, will talk
+        //GameEvents.current.NPCDialogue(); this works
     }
-
 
     private void OnTriggerExit(Collider other)
     {
-        GameEvents.current.DoorwayTriggerExit(id);
-        GameEvents.current.EnableUI();
-        GameEvents.current.ContinueAttacking();
-        GameEvents.current.UnLockPlayerInputs();
+        //GameEvents.current.DoorwayTriggerExit(id);
+        GameEvents.current.EnableUI(); // this works
+        //GameEvents.current.ContinueAttacking(); // this works
+        GameEvents.current.AllowPlayerInteraction(); // this works
+        GameEvents.current.UnLockPlayerInputs();// this works
     }
 }

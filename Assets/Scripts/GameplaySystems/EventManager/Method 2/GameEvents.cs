@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Morgan S Script
+// Morgan S Script
+// Contact me if ya need any help with understanding any of this part / place
 
 public class GameEvents : MonoBehaviour
 {
     public static GameEvents current; // the current game event
-
-    public PlayerInput _playerInput ;
+    //public PlayerInput _playerInput ;
 
     private void Awake()
     {
         current = this; // make the current game event this object upon game/room start
-        _playerInput = FindObjectOfType<PlayerInput>();
+        //_playerInput = FindObjectOfType<PlayerInput>();
     }
 
 
@@ -55,12 +55,6 @@ public class GameEvents : MonoBehaviour
         if (onLockPlayerInputs != null)
         {
             onLockPlayerInputs();
-            _playerInput.enabled = false;
-            if (_playerInput.enabled == false)
-            {
-                print("inputs are off");
-            }
-            print("inputs are sorta off");
         }
     }
 
@@ -71,11 +65,6 @@ public class GameEvents : MonoBehaviour
         if (onUnLockPlayerInputs != null)
         {
             onUnLockPlayerInputs();
-            _playerInput.enabled = true;
-            if (_playerInput.enabled == true)
-            {
-                print("inputs are true");
-            }
         }
     }
 
@@ -86,7 +75,6 @@ public class GameEvents : MonoBehaviour
         if (onDisableUI != null)
         {
             onDisableUI();
-            print("im working");
         }
     }
 
@@ -107,7 +95,6 @@ public class GameEvents : MonoBehaviour
         if (onStopAttacking != null)
         {
             onStopAttacking();
-            print("im ALSO working");
         }
     }
 
@@ -121,7 +108,7 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    //Event 10 (Prevent Player interaction???? issue is im geussing this excludes swinging the sword, its gonnna be way harder, if it was just disabling the interact button. period, that's ez)
+    //Event 10 (Prevent Player interaction)
     public event Action onPreventPlayerInteraction;
     public void PreventPlayerInteraction()
     {
@@ -138,11 +125,6 @@ public class GameEvents : MonoBehaviour
         if (onAllowPlayerInteraction != null)
         {
             onAllowPlayerInteraction();
-            _playerInput.enabled = true;
-            if (_playerInput.enabled == true)
-            {
-                print("i am false");
-            }
         }
     }
 
@@ -153,19 +135,13 @@ public class GameEvents : MonoBehaviour
         if (onNPCDialogue != null)
         {
             onNPCDialogue();
-            onStopAttacking();
-            onLockPlayerInputs();
             print("im working");
         }
     }
 
-    //interaction or NPC script
 
 
-
-
-
-    //set this to private so it cant be accidentally assigned twice
+    //set this to private so it can't be accidentally assigned twice
     private Func<List<GameObject>> onRequestListOfDoors;
     public void SetOnRequestListOfDoors(Func<List<GameObject>> returnEvent)
     {
