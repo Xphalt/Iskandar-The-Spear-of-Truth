@@ -99,7 +99,7 @@ public class Skeleton : EnemyBase
 
     public void SetStateChasing()
     {
-        curState = EnemyStates.Chasing;
+        curState = EnemyStates.Aggro;
     }
 
 }

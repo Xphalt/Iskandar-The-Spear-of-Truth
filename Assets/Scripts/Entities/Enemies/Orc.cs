@@ -15,7 +15,7 @@ public class Orc : EnemyBase
         foreach (float damage in attackDamages)
             defaultDamages.Add(damage);
 
-        defaultSpeed = chaseSpeed;
+        defaultSpeed = aggroedMoveSpeed;
     }
 
     public override void Update()
@@ -36,7 +36,7 @@ public class Orc : EnemyBase
                     _myAnimator.SetBool("IsPatrolling", true);
                     _myAnimator.SetBool("IsChasing", false);
                     break;
-                case EnemyStates.Chasing:
+                case EnemyStates.Aggro:
                     _myAnimator.SetBool("IsPatrolling", false);
                     _myAnimator.SetBool("IsChasing", true);
                     break;
@@ -90,7 +90,7 @@ public class Orc : EnemyBase
         for(int d = 0; d < attackDamages.Length; d++)
             attackDamages[d] = defaultDamages[d] * (1 + percent / 100);
 
-        chaseSpeed = defaultSpeed * (1 + percent / 100);
+        aggroedMoveSpeed = defaultSpeed * (1 + percent / 100);
     }
 
     public void Debuff()
@@ -98,7 +98,7 @@ public class Orc : EnemyBase
         for (int d = 0; d < attackDamages.Length; d++)
             attackDamages[d] = defaultDamages[d];
 
-        chaseSpeed = defaultSpeed;
+        aggroedMoveSpeed = defaultSpeed;
     }
 
     protected override void OnCollisionEnter(Collision collision)

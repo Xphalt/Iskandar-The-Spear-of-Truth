@@ -7,7 +7,8 @@ using UnityEngine;
 public class EnemyBase : Patrol
 {
     protected bool isDead = false;
-    public float chaseSpeed;
+    public bool isChaser;
+    public float aggroedMoveSpeed;
     protected EnemyStats stats;
     protected PlayerDetection detector;
     public float findDelay;
@@ -50,7 +51,7 @@ public class EnemyBase : Patrol
     public enum EnemyStates
     {
         Patrolling,
-        Chasing,
+        Aggro,
         Attacking
     };
     protected EnemyStates curState = EnemyStates.Patrolling;
@@ -96,12 +97,23 @@ public class EnemyBase : Patrol
                     agent.stoppingDistance = 0;
 
                     break;
-                case EnemyStates.Chasing:
-                    //seek player position and go to it
+                case EnemyStates.Aggro:
+                    //seek player position and go to it OR if not chaser, keep distance from player
                     transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
-                    agent.destination = detector.GetCurTarget().transform.position;
-                    agent.speed = agent.remainingDistance > minChaseRadius ? chaseSpeed : 0;
-                    agent.stoppingDistance = minChaseRadius;
+                    if (isChaser)
+                    {
+                        agent.destination = detector.GetCurTarget().position;
+                        agent.speed = agent.remainingDistance > minChaseRadius ? aggroedMoveSpeed : 0;
+                        agent.stoppingDistance = minChaseRadius;
+                    }
+                    else
+                    {
+                        agent.destination = transform.position + (transform.position - detector.GetCurTarget().transform.position).normalized;
+                        agent.speed = (transform.position - detector.GetCurTarget().transform.position).magnitude < detector.detectionRadius ? aggroedMoveSpeed : 0;
+                        Debug.Log((transform.position - detector.GetCurTarget().transform.position).magnitude);
+                        Debug.Log((transform.position * detector.detectionRadius).magnitude);
+                    }
+                    
 
                     break;
                 case EnemyStates.Attacking:
@@ -131,14 +143,14 @@ public class EnemyBase : Patrol
             {
                 detector.FindVisibleTargets();
                 if (detector.GetCurTarget() == null) curState = EnemyStates.Patrolling;
-                else curState = EnemyStates.Chasing;
+                else curState = EnemyStates.Aggro;
             }
         }
     }
 
     public void AttackEnd()
     {
-        curState = detector.GetCurTarget() ? EnemyStates.Chasing : EnemyStates.Patrolling;
+        curState = detector.GetCurTarget() ? EnemyStates.Aggro : EnemyStates.Patrolling;
         attackEnded = true;
     }
 
@@ -170,12 +182,12 @@ public class EnemyBase : Patrol
                 MeleeAttack();
             }
 
-            if (!attackUsed && ChargeAvailable && curState == EnemyStates.Chasing)
+            if (!attackUsed && ChargeAvailable && curState == EnemyStates.Aggro)
             {
                 ChargeAttack();
             }
 
-            if (!attackUsed && ShootAvailable && curState == EnemyStates.Chasing)
+            if (!attackUsed && ShootAvailable && curState == EnemyStates.Aggro)
             {
                 ShootAttack();
             }
