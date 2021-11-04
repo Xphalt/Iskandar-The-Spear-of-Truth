@@ -55,6 +55,9 @@ public class UseFunctions : MonoBehaviour
                 case "Wand of Magnetism":
                     database[i].OnUseCurrent += UseWandOfMagnetism;
                     break;
+                case "Revival Gem":
+                    database[i].OnUseCurrent += UseRevivalGem;
+                    break;
             } 
         }
     }
@@ -144,6 +147,17 @@ public class UseFunctions : MonoBehaviour
         {
             Instantiate(wand, playerstats.transform.localPosition, playerstats.transform.localRotation); 
         }
+    }
+
+    public void UseRevivalGem()
+    {
+        float healPercentage = ((ResourceObject)(playerstats.inventory.database.ItemObjects[playerstats.revivalGem.data.id])).healPercentage;
+
+        //Item removal 
+        playerstats.inventory.RemoveItem(playerstats.revivalGem.data);
+
+        //Heal player
+        playerstats.health = playerstats.MAX_HEALTH * (healPercentage / 100);
     }
     #endregion
 }
