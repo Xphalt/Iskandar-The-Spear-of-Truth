@@ -22,6 +22,14 @@ public static class ExtraFunctions
         self.rotation = Quaternion.Euler(0, 0, newRotation);
     }
 
+    public static void RotateAroundPoint(this Transform self, Vector3 targetPoint, Vector3 axis, float angle)
+    {
+        Vector3 direction = self.position - targetPoint;
+        Quaternion rotation = Quaternion.AngleAxis(angle, axis);
+        self.position = targetPoint + rotation * direction;
+        self.Rotate(axis * angle);
+    }
+
     public static Vector2 RandomVector2(float scale=1)
     {
         return new Vector2(Random.value - 0.5f, Random.value - 0.5f).normalized * scale;

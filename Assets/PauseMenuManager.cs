@@ -30,7 +30,7 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Start()
     {
-        Resume();
+        Resume();    
     }
 
     private void FixedUpdate()
@@ -51,7 +51,7 @@ public class PauseMenuManager : MonoBehaviour
 
     public void UpdatePauseUI(int pageTurn)
     {
-        StartCoroutine(ChangeMenu(pageTurn));
+        ChangeMenu(pageTurn);
     }
 
     #region PauseMenu
@@ -103,7 +103,7 @@ public class PauseMenuManager : MonoBehaviour
     }
     #endregion
 
-    IEnumerator ChangeMenu(int pageTurn)
+    void ChangeMenu(int pageTurn)
     {
         currentPage += pageTurn;
 
@@ -113,18 +113,17 @@ public class PauseMenuManager : MonoBehaviour
         if (currentPage > numberOfPages - 1)
             currentPage = 0;
 
-        if (pageTurn == -1)
+        if (pageTurn == 1)
             anim.SetTrigger("PanLeft");
-        else anim.SetTrigger("PanRight");
+        else anim.SetTrigger("PanRight");        
+    }
 
-        yield return new WaitForSecondsRealtime(0.8f);
-
+    public void HideMenu()
+    {
         settingsMenu.SetActive(false);
         inventoryMenu.SetActive(false);
         questsMenu.SetActive(false);
         equipmentMenu.SetActive(false);
-
-        ShowMenu();
     }
 
     public void ShowMenu()

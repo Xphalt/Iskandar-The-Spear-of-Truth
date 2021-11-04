@@ -14,29 +14,60 @@ public class PlayerDetection : MonoBehaviour
 
     public float detectionRadius;
 
+    // morgan's event manager
+    public bool stopAttacking = false;
+    public float rememberX;
+    public float rememberY;
+    public float rememberZ;
+
+    public void Start()
+    {
+        GameEvents.current.onStopAttacking += OnStop;
+        GameEvents.current.onContinueAttacking += OnContinue;
+        rememberX = gameObject.transform.position.x;
+        rememberY = gameObject.transform.position.y;
+        rememberZ = gameObject.transform.position.z;
+    }
+
+    public void OnStop()
+    {
+        stopAttacking = true;
+        curTarget = null;
+        this.transform.position = new Vector3(rememberX, rememberY, rememberZ);
+    }
+
+    public void OnContinue()
+    {
+        stopAttacking = false;
+    }
 
     public void FindVisibleTargets()
     {
-        curTarget = null;
-        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, detectionRadius, targetMask);
-
-        for (int i = 0; i < targetsInViewRadius.Length; i++)
+        if (stopAttacking == false)
         {
-            Transform target = targetsInViewRadius[i].transform;
-            Vector3 dirToTarget = (target.position - transform.position).normalized;
+            curTarget = null;
+            Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, detectionRadius, targetMask);
 
-            if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
+            for (int i = 0; i < targetsInViewRadius.Length; i++)
             {
-                float distance = Vector3.Distance(transform.position, target.position);
+                Transform target = targetsInViewRadius[i].transform;
+                Vector3 dirToTarget = (target.position - transform.position).normalized;
 
-                if (!Physics.Raycast(transform.position, dirToTarget, distance, obstacleMask))
+                if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
                 {
-                    //found you
-                    curTarget = target;
+                    float distance = Vector3.Distance(transform.position, target.position);
+
+                    if (!Physics.Raycast(transform.position, dirToTarget, distance, obstacleMask))
+                    {
+                        //found you
+                        curTarget = target;
+                    }
                 }
             }
+            rememberX = gameObject.transform.position.x;
+            rememberY = gameObject.transform.position.y;
+            rememberZ = gameObject.transform.position.z;
         }
-
     }
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
     {
@@ -59,11 +90,6 @@ public class PlayerDetection : MonoBehaviour
     public Transform GetCurTarget ()
     {
         return curTarget;
-    }
-
-    public void SetCurrentTarget(Transform target)
-    {
-        curTarget = target;
     }
 
     public bool IsTarget(Transform check)

@@ -11,7 +11,8 @@ public enum EquipSlot
 {
     SwordSlot,
     ArmorSlot,
-    AccessorySlot
+    AccessorySlot,
+    ItemSlot
 }
 
 public class EquipPanel : MonoBehaviour

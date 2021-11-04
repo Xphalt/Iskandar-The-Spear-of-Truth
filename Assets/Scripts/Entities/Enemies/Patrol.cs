@@ -45,14 +45,12 @@ public class Patrol : MonoBehaviour
             if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
             {
                 StartCoroutine(Pause(pauseTime));
-                GoToNextNode();
             }
         }
     }
 
     void GoToNextNode()
     {
-        _myAnimator.SetBool("IsPatrolling", true);
         if (ListOfNodes.Length == 0) return;
         agent.destination = ListOfNodes[_currentNode].position;
         _currentNode = (_currentNode + 1) % ListOfNodes.Length;
@@ -63,6 +61,8 @@ public class Patrol : MonoBehaviour
         _myAnimator.SetBool("IsPatrolling", false);
         agent.speed = 0.0f;
         yield return new WaitForSeconds(delay);
+        _myAnimator.SetBool("IsPatrolling", true);
         agent.speed = patrolSpeed;
+        GoToNextNode();
     }
 }

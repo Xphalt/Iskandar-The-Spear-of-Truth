@@ -54,6 +54,9 @@ public class PlayerStats : StatsInterface
         }
 
         sfx = GetComponentInParent<SoundPlayer>();
+
+        // list event in GameEvents.cs
+        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
     }
 
     private void Update()
@@ -83,7 +86,7 @@ public class PlayerStats : StatsInterface
     {
         if (scriptedKill) amount = health - 1;
         health -= amount;
-        sfx.PlayAudio();
+        //sfx.PlayAudio();
         UIManager.instance.UpdateHealthBar((int)-amount);
 
         // anything that happens when taking damage happens 
@@ -128,6 +131,7 @@ public class PlayerStats : StatsInterface
                         damage -= ((WeaponObject_Sal)(temp)).damage;
                         spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
                         GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
+
                         break;
                     case ItemType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
@@ -216,6 +220,12 @@ public class PlayerStats : StatsInterface
         inventory.LoadStats(num);
     }
 
+    //Morgan's Event Manager: Health Set
+    private void OnPlayerHealthSet(int sethealth)
+    {
+        if (sethealth > 10) { sethealth = 10; }
+        health = sethealth;
+    }
 
     //Clears the invenotories when game closes 
     private void OnApplicationQuit()
