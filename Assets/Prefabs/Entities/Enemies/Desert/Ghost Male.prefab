@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6178933417888326365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654329413588596485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disableDelay: 0
+  dropChances:
+  - 50
+  itemsToDrop:
+  - {fileID: 11400000, guid: 5c545e85ed7bef743ad66aa3108929f6, type: 2}
+  type: 0
+  groundItem: {fileID: 0}
 --- !u!1001 &2654329413588502303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9,7 +28,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 127002, guid: 99cdb7462838a6342bd2288456e75888, type: 3}
       propertyPath: m_Name
-      value: Character_Ghost_01
+      value: Ghost Male
       objectReference: {fileID: 0}
     - target: {fileID: 449332, guid: 99cdb7462838a6342bd2288456e75888, type: 3}
       propertyPath: m_RootOrder
@@ -61,3 +80,8 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 0f7fe53221f0ac4459665765c62dac8b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99cdb7462838a6342bd2288456e75888, type: 3}
+--- !u!1 &2654329413588596485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 127002, guid: 99cdb7462838a6342bd2288456e75888, type: 3}
+  m_PrefabInstance: {fileID: 2654329413588502303}
+  m_PrefabAsset: {fileID: 0}

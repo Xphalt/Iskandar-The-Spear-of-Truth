@@ -384,6 +384,7 @@ GameObject:
   - component: {fileID: 2778536449404161079}
   - component: {fileID: 5186969173709602396}
   - component: {fileID: 6673555063974951351}
+  - component: {fileID: 4948355535634157607}
   m_Layer: 0
   m_Name: Warchief
   m_TagString: Untagged
@@ -593,6 +594,7 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 10
   vulnerable: 1
+  despawnTime: 0
 --- !u!114 &2778536449404161079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,6 +685,31 @@ MonoBehaviour:
     m_Bits: 512
   viewAngle: 360
   detectionRadius: 100
+  stopAttacking: 0
+  rememberX: 0
+  rememberY: 0
+  rememberZ: 0
+--- !u!114 &4948355535634157607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118242360396946730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disableDelay: 0
+  dropChances:
+  - 0
+  - 0
+  itemsToDrop:
+  - {fileID: 0}
+  - {fileID: 0}
+  type: 0
+  groundItem: {fileID: 0}
 --- !u!1 &2118242360396947964
 GameObject:
   m_ObjectHideFlags: 0
