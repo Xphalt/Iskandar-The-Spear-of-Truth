@@ -21,8 +21,9 @@ public class ThrowSword_Jerzy : MonoBehaviour
     float throwTimeSpinningInPlace;
 
     float timeTravelling;
+    float startTime;
 
-    float throwSpeed;
+    float minThrowSpeed, maxThrowSpeed;
     float returningSpeed;
 
    // public float pauseBeforeThrow;
@@ -40,13 +41,17 @@ public class ThrowSword_Jerzy : MonoBehaviour
     {
         throwTimeBeforeSpinInPlace = combatScript.throwTimeBeforeSpinInPlace;
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
-        throwSpeed = combatScript.throwSpeed;
+        minThrowSpeed = combatScript.minThrowSpeed;
+        maxThrowSpeed = combatScript.maxThrowSpeed;
         returningSpeed = combatScript.throwReturnSpeed;
     }
 
     void FixedUpdate()
     {
-        ThrowingSwordPhysics();
+        if (swordModel.activeInHierarchy)
+        {
+            ThrowingSwordPhysics();
+        }
     }
 
     private void ThrowingSwordPhysics()
@@ -57,7 +62,10 @@ public class ThrowSword_Jerzy : MonoBehaviour
             // move in specific direction for a specific amount of time (Stage 1 of throw attack)
             if (timeTravelling < throwTimeBeforeSpinInPlace)
             {
-                swordRigidBody.velocity = transform.forward * throwSpeed;
+                //float t = (Time.time - startTime);
+                //swordRigidBody.velocity = transform.forward * throwSpeed;
+                Vector3 smoothVel = new Vector3(Mathf.SmoothStep(minThrowSpeed, maxThrowSpeed, timeTravelling), 0, 0);
+                swordRigidBody.velocity = transform.forward * smoothVel.magnitude;
             }
 
             // spin on the spot for a specific amount of time (Stage 2 of throw attack)
@@ -79,18 +87,22 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     public void ThrowSword(Quaternion targetRotation)
     {
-        // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
-        playerAnim.SwordThrowAttack();
 
-        swordModel.GetComponent<BoxCollider>().enabled = true;
-        returning = false;
-        transform.rotation = targetRotation;
-        transform.parent = null;
-        thrown = true;
-        swordRigidBody.isKinematic = false;
+        if (swordModel.activeInHierarchy)
+        {
+            // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
+            playerAnim.SwordThrowAttack();
 
-        // play looped spinning animation
-        swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
+            swordModel.GetComponent<BoxCollider>().enabled = true;
+            returning = false;
+            transform.rotation = targetRotation;
+            transform.parent = null;
+            thrown = true;
+            swordRigidBody.isKinematic = false;
+
+            // play looped spinning animation
+            swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
+        }
     }
 
 
