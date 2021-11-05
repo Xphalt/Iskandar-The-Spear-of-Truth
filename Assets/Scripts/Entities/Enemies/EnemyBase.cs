@@ -37,10 +37,11 @@ public class EnemyBase : Patrol
     protected float[] attackTimers = new float[(int)AttackTypes.AttackTypesCount];
 
     protected AttackTypes curAttack = AttackTypes.AttackTypesCount;
+    protected float curAttackDmg;
 
     protected bool MeleeAvailable => availableAttacks[(int)AttackTypes.Melee] &&
         (attackTimers[(int)AttackTypes.Melee] >= attackCooldowns[(int)AttackTypes.Melee]);
-    protected bool ChargeAvailable => availableAttacks[(int)AttackTypes.Charge] &&
+    protected bool ChargeAvailable => availableAttacks[(int)AttackTypes.Charge] && (detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge] &&
         (attackTimers[(int)AttackTypes.Charge] >= attackCooldowns[(int)AttackTypes.Charge]);
     protected bool ShootAvailable => availableAttacks[(int)AttackTypes.Shoot] &&
         (attackTimers[(int)AttackTypes.Shoot] >= attackCooldowns[(int)AttackTypes.Shoot]);
@@ -57,9 +58,10 @@ public class EnemyBase : Patrol
     protected EnemyStates curState = EnemyStates.Patrolling;
     protected bool charging = false;
     protected bool attackUsed = false;
-    protected bool CanAttack => !attackUsed && attackEnded && detector.GetCurTarget() != null;
+    protected bool CanAttack => !attackUsed && attackEnded && detector.GetCurTarget() != null && curState == EnemyStates.Aggro;
 
-    public float chargeSpeed, chargeDistanceMult = 1;
+    public float chargeSpeed, chargeDistanceMult = 1, chargeRaycast;
+    public LayerMask chargeLayerMask;
     protected float chargeDistance;
     protected Vector3 chargeStart, chargeDirection;
 
@@ -96,7 +98,8 @@ public class EnemyBase : Patrol
             switch (curState)
             {
                 case EnemyStates.Patrolling:
-                    agent.speed = patrolSpeed;
+                    if(!isPaused)
+                        agent.speed = patrolSpeed;
                     agent.stoppingDistance = 0;
 
                     break;
@@ -126,8 +129,15 @@ public class EnemyBase : Patrol
         }
         else
         {
-            MyRigid.velocity = chargeDirection * chargeSpeed;
-            if (transform.position.GetDistance(chargeStart) > chargeDistance) EndCharge();
+            if(Physics.Raycast(transform.position,transform.forward,chargeRaycast,chargeLayerMask))
+            {
+                EndCharge();
+            }
+            else
+            {
+                MyRigid.velocity = chargeDirection * chargeSpeed;
+                if (transform.position.GetDistance(chargeStart) > chargeDistance) EndCharge();
+            }
         }
 
         Attack();
@@ -148,7 +158,7 @@ public class EnemyBase : Patrol
         }
     }
 
-    public void AttackEnd()
+    public virtual void AttackEnd()
     {
         curState = detector.GetCurTarget() ? EnemyStates.Aggro : EnemyStates.Patrolling;
         attackEnded = true;
@@ -182,12 +192,12 @@ public class EnemyBase : Patrol
                 MeleeAttack();
             }
 
-            if (!attackUsed && ChargeAvailable && curState == EnemyStates.Aggro)
+            if (!attackUsed && ChargeAvailable)
             {
                 ChargeAttack();
             }
 
-            if (!attackUsed && ShootAvailable && curState == EnemyStates.Aggro)
+            if (!attackUsed && ShootAvailable)
             {
                 ShootAttack();
             }
@@ -196,6 +206,7 @@ public class EnemyBase : Patrol
             {
                 //change state to Attacking
                 curState = EnemyStates.Attacking;
+                curAttackDmg = attackDamages[(int)curAttack];
                 //reset cooldown so Enemy can attack again
                 attackTimers[(int)curAttack] = 0;
                 attackEnded = false;
@@ -205,8 +216,6 @@ public class EnemyBase : Patrol
 
     protected virtual void ChargeAttack()
     {
-        if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge])
-        {
             chargeStart = transform.position;
             chargeDirection = detector.GetCurTarget().position - transform.position;
             chargeDistance = chargeDirection.magnitude * chargeDistanceMult;
@@ -216,14 +225,14 @@ public class EnemyBase : Patrol
             attackUsed = true;
             curAttack = AttackTypes.Charge;
             charging = true;
-        }
     }
 
     protected virtual void MeleeAttack()
     {
         if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
         {
-            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
+            _myAnimator.SetTrigger("Hit");
+
             attackUsed = true;
             curAttack = AttackTypes.Melee;
             MyRigid.velocity = Vector3.zero;
@@ -288,9 +297,14 @@ public class EnemyBase : Patrol
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        if (detector.IsTarget(collision.collider.transform) && charging)
+        if(charging)
         {
-            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
+            if (detector.IsTarget(collision.collider.transform))
+            {
+                stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), curAttackDmg);
+            }
+
+            EndCharge();
         }
     }
 
@@ -298,7 +312,7 @@ public class EnemyBase : Patrol
     {
         if (detector.IsTarget(collider.transform))
         {
-            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
+            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), curAttackDmg);
             hitCollider.enabled = false;
         }
     }

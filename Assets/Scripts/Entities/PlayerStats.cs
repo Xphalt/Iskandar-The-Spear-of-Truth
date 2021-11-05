@@ -34,6 +34,12 @@ public class PlayerStats : StatsInterface
     public float damage;
     public float spiritualDamage;
     public float defence;
+    private float bleedDamage;
+    private float maxBleedTicks;
+    private float bleedTicks;
+    private float bleedDelay;
+    private float timeSinceLastBleedDamage;
+    public bool bleeding;
     public bool poisonProtection = false;
     public bool desertProtection = false;
     public bool snowProtection = false;
@@ -89,6 +95,8 @@ public class PlayerStats : StatsInterface
         {
             Accessory.UseCurrent(); //deactivates objects
         }
+
+        Bleed();
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -127,6 +135,31 @@ public class PlayerStats : StatsInterface
         if (target.HasBeenDefeated && Accessory && Accessory.accessory == AccessoryType.NecklaceOfTheLifeStealers) Accessory.UseCurrent();
     }
 
+
+    public void SetBleed(float _bleedDamage ,float _maxBleedTicks, float _bleedDelay)
+    {
+        bleedDamage = _bleedDamage;
+        maxBleedTicks = _maxBleedTicks;
+        bleedDelay = _bleedDelay;
+        timeSinceLastBleedDamage = 0;
+        bleedTicks = 0;
+        bleeding = true;
+    }
+
+    private void Bleed()
+    {
+        timeSinceLastBleedDamage += Time.deltaTime;
+        if (bleeding && timeSinceLastBleedDamage >= bleedDelay && bleedTicks < maxBleedTicks)
+        {
+            GetComponent<PlayerStats>().TakeDamage(bleedDamage);
+            timeSinceLastBleedDamage = 0;
+            bleedTicks++;
+        }
+        else if (bleeding && bleedTicks >= maxBleedTicks)
+        {
+            bleeding = false;
+        }
+    }
 
     //Delegate callbacks
     private void OnBeforeSlotUpdate(InventorySlot p_slot)

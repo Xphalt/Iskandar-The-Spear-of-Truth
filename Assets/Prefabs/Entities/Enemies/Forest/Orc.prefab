@@ -360,8 +360,13 @@ MonoBehaviour:
   - 0
   chargeSpeed: 10
   chargeDistanceMult: 1.5
+  chargeRaycast: 2
+  chargeLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
+  projectileSpeed: 0
   minChaseRadius: 0
 --- !u!114 &2060698989624161962
 MonoBehaviour:
@@ -416,10 +421,6 @@ MonoBehaviour:
     m_Bits: 512
   viewAngle: 360
   detectionRadius: 15
-  stopAttacking: 0
-  rememberX: 0
-  rememberY: 0
-  rememberZ: 0
 --- !u!195 &728890986761776635
 NavMeshAgent:
   m_ObjectHideFlags: 0

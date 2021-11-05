@@ -9,6 +9,7 @@ public class Patrol : MonoBehaviour
     //[SerializeField] private string _nodeTag;
     public Transform[] ListOfNodes;
     private int _currentNode;
+    protected bool isPaused;
 
     protected Animator _myAnimator;
     protected CapsuleCollider _myCapsuleCol;
@@ -30,6 +31,7 @@ public class Patrol : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
 
         _myAnimator = GetComponentInParent<Animator>();
+        _myAnimator.SetBool("IsPatrolling", true);
         _myCapsuleCol = GetComponent<CapsuleCollider>();
 
         agent.autoBraking = false;
@@ -42,9 +44,9 @@ public class Patrol : MonoBehaviour
     {
         if (agent.enabled && ListOfNodes.Length > 0)
         {
-            if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
+            if ((!agent.pathPending && agent.remainingDistance < minRemainingDistance) && !isPaused)
             {
-                StartCoroutine(Pause(pauseTime));
+                 StartCoroutine(Pause(pauseTime));
             }
         }
     }
@@ -54,15 +56,18 @@ public class Patrol : MonoBehaviour
         if (ListOfNodes.Length == 0) return;
         agent.destination = ListOfNodes[_currentNode].position;
         _currentNode = (_currentNode + 1) % ListOfNodes.Length;
+        Debug.Log(agent.destination.ToString()+name);
     }
 
     private IEnumerator Pause(float delay) // Temporarily stop the NPC's speed to allow for idle posing
     {
         _myAnimator.SetBool("IsPatrolling", false);
         agent.speed = 0.0f;
+        isPaused = true;
         yield return new WaitForSeconds(delay);
         _myAnimator.SetBool("IsPatrolling", true);
         agent.speed = patrolSpeed;
+        isPaused = false;
         GoToNextNode();
     }
 }

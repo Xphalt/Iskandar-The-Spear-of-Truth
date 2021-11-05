@@ -1537,6 +1537,7 @@ GameObject:
   - component: {fileID: 3957059731234060631}
   - component: {fileID: 2666183965145485634}
   - component: {fileID: 567223676425354658}
+  - component: {fileID: 5207577716894383019}
   m_Layer: 7
   m_Name: Butcher
   m_TagString: Untagged
@@ -1572,7 +1573,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: ebe92d19e95e2204fad32d32da2f8987, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1735,10 +1736,9 @@ MonoBehaviour:
     m_Bits: 8
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
   viewAngle: 360
-  detectionRadius: 5
-  stopAttacking: 0
+  detectionRadius: 40
 --- !u!114 &3274747756367294792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1771,11 +1771,24 @@ MonoBehaviour:
   - 0
   chargeSpeed: 10
   chargeDistanceMult: 1.5
+  chargeRaycast: 2
+  chargeLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
+  projectileSpeed: 0
   minChaseRadius: 0
+  bleedDamage: 1
+  maxBleedTicks: 4
+  bleedDelay: 0.5
+  minBandaidRadius: 2
+  maxBandaidRadius: 8
+  bandaid: {fileID: 0}
   butcherCooldowns:
   - 4
+  butcherAttackDamages:
+  - 3
 --- !u!195 &3957059731234060631
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1828,6 +1841,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!65 &5207577716894383019
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4543834885586516879}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1.7187805, y: 2.080683, z: 1.0598984}
+  m_Center: {x: 0.14488983, y: 0.9434749, z: 1.0130577}
 --- !u!1001 &4543377862521201857
 PrefabInstance:
   m_ObjectHideFlags: 0

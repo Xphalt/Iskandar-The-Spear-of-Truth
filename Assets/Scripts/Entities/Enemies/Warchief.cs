@@ -144,6 +144,7 @@ public class Warchief : EnemyBase
     protected override void MeleeAttack()
     {
         _myAnimator.SetTrigger("Slash");
+        MyRigid.velocity = Vector3.zero;
         warChiefAttack = WarchiefAttacks.Flurry;
     }
 

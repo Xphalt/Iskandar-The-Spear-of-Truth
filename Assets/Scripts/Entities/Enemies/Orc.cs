@@ -33,7 +33,6 @@ public class Orc : EnemyBase
             switch (curState)
             {
                 case EnemyStates.Patrolling:
-                    _myAnimator.SetBool("IsPatrolling", true);
                     _myAnimator.SetBool("IsChasing", false);
                     break;
                 case EnemyStates.Aggro:
@@ -68,18 +67,6 @@ public class Orc : EnemyBase
 
         if (charging)
             _myAnimator.SetBool("IsCharging", true);
-    }
-
-    protected override void MeleeAttack()
-    {
-        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
-        {
-            _myAnimator.SetTrigger("Hit");
-
-            attackUsed = true;
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector3.zero;
-        }
     }
 
     public void Buff(float percent, float duration)
