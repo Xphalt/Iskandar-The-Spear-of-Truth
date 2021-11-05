@@ -10,14 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15aa6e6145aad6a4e8890fc76e010a37, type: 3}
-  m_Name: VillageFifthConversation
+  m_Name: Village8thConversation
   m_EditorClassIdentifier: 
   ListOfCharacterExchanges:
   - CharacterName: Son
-    NumOfSentences: []
-  - CharacterName: 
-    NumOfSentences: []
-  - CharacterName: 
-    NumOfSentences: []
-  - CharacterName: 
-    NumOfSentences: []
+    NumOfSentences:
+    - tableReference: DialogueStrings
+      entryReference: Opening11SonLine1
+  - CharacterName: Villager
+    NumOfSentences:
+    - tableReference: DialogueStrings
+      entryReference: Opening11NPCLine1
+  - CharacterName: Son
+    NumOfSentences:
+    - tableReference: DialogueStrings
+      entryReference: Opening11SonLine2
