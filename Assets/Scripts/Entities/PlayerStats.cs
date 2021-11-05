@@ -12,6 +12,8 @@ public class PlayerStats : StatsInterface
 
     internal AccessoryObject Accessory;
     public ItemObject_Sal revivalGem;
+    internal AccessoryObject Item;
+    private string noWeaponAddress, weaponAddress;
     #region STATS
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
@@ -44,6 +46,9 @@ public class PlayerStats : StatsInterface
 
     private void Start()
     {
+        noWeaponAddress = "Animation/PlayerAnimations/PlayerAnims/PlayerNoWeapon";
+        weaponAddress = "Animation/PlayerAnimations/PlayerAnims/Player";
+
         damage = BASE_DAMAGE;
         defence = BASE_DEFENCE;
 
@@ -55,6 +60,8 @@ public class PlayerStats : StatsInterface
         }
 
         sfx = GetComponentInParent<SoundPlayer>();
+
+        health = MAX_HEALTH;
 
         // list event in GameEvents.cs
         GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
@@ -178,7 +185,12 @@ public class PlayerStats : StatsInterface
                         case ItemType.Weapon: 
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
-                            GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost; 
+                            GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
+                            //This changes the animator controller from weaponless animations to weapon animations
+                            if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
+                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(weaponAddress);
+                            else
+                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(noWeaponAddress);
                             break;
                         case ItemType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;

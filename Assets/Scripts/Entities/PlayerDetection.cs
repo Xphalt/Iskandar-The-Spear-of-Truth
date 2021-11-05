@@ -13,37 +13,26 @@ public class PlayerDetection : MonoBehaviour
     public float viewAngle;
 
     public float detectionRadius;
-
-    // morgan's event manager
-    public bool stopAttacking = false;
-
     public void FindVisibleTargets()
     {
-        if (stopAttacking == false)
+        curTarget = null;
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, detectionRadius, targetMask);
+
+        for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
-            curTarget = null;
-            Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, detectionRadius, targetMask);
+            Transform target = targetsInViewRadius[i].transform;
+            Vector3 dirToTarget = (target.position - transform.position).normalized;
 
-            for (int i = 0; i < targetsInViewRadius.Length; i++)
+            if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
             {
-                Transform target = targetsInViewRadius[i].transform;
-                Vector3 dirToTarget = (target.position - transform.position).normalized;
+                float distance = Vector3.Distance(transform.position, target.position);
 
-                if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
+                if (!Physics.Raycast(transform.position, dirToTarget, distance, obstacleMask))
                 {
-                    float distance = Vector3.Distance(transform.position, target.position);
-
-                    if (!Physics.Raycast(transform.position, dirToTarget, distance, obstacleMask))
-                    {
-                        //found you
-                        curTarget = target;
-                    }
+                    //found you
+                    curTarget = target;
                 }
             }
-        }
-        if (stopAttacking == true)
-        {
-            curTarget = null;
         }
     }
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)

@@ -8,7 +8,7 @@ public class UIAndEventsChecks : MonoBehaviour
 {
     [HideInInspector] public Image img;
     [HideInInspector] public PlayerInput _playerInput;
-    [HideInInspector] public PlayerDetection[] _playerDetectors;
+    [HideInInspector] public EnemyBase[] _enemies;
     //public Renderer rend;
     public void Start()
     {
@@ -26,7 +26,7 @@ public class UIAndEventsChecks : MonoBehaviour
     private void Awake()
     {
         _playerInput = FindObjectOfType<PlayerInput>();
-        _playerDetectors = FindObjectsOfType<PlayerDetection>();
+        _enemies = FindObjectsOfType<EnemyBase>();
     }
 
     public void DisableUI()
@@ -60,13 +60,13 @@ public class UIAndEventsChecks : MonoBehaviour
 
     public void OnStop()
     {
-        foreach (PlayerDetection detector in _playerDetectors) detector.stopAttacking = false;
+        foreach (EnemyBase enemy in _enemies) enemy.enabled = false;
         print("functioning");
     }
 
     public void OnContinue()
     {
-        foreach (PlayerDetection detector in _playerDetectors) detector.stopAttacking = true;
+        foreach (EnemyBase enemy in _enemies) enemy.enabled = true;
     }
 
     public void OnNPCDialogue()

@@ -31,57 +31,59 @@ public class HeavySnowfall : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.transform.tag == "Player")
+        if (other.TryGetComponent(out PlayerStats stats))
         {
-            Debug.Log("Snowfall is heavy"); 
-            if (!Frosted)
+            if (!stats.snowProtection)
             {
-                CurrentTimer += Time.deltaTime;
-                if (CurrentTimer > AreaInterval)
+                Debug.Log("Snowfall is heavy");
+                if (!Frosted)
                 {
-                    DOT_DEBUFF += 1;
-                    CurrentTimer = 0;
+                    CurrentTimer += Time.deltaTime;
+                    if (CurrentTimer > AreaInterval)
+                    {
+                        DOT_DEBUFF += 1;
+                        CurrentTimer = 0;
+                    }
+                    if (DOT_DEBUFF == 10)
+                    {
+                        Debug.Log("Affected by frost blight");
+                        Frosted = true;
+                        playerMovement.m_Speed -= Movement_Debuff;
+                        playerMovement.dashCooldown += 1;
+                    }
                 }
-                if (DOT_DEBUFF == 10)
-                {
-                    Debug.Log("Affected by frost blight");
-                    Frosted = true;
-                    playerMovement.m_Speed -= Movement_Debuff;
-                    playerMovement.dashCooldown += 1;
-                }
-            }            
+            }
                    
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.tag == "Player")
+        if (other.TryGetComponent(out PlayerStats stats))
         {
-            while (Frosted)
+            if (!stats.snowProtection)
             {
-                CurrentTimer += Time.deltaTime;
-
-                if (CurrentTimer > AreaInterval)
+                while (Frosted) //Bruh?
                 {
-                    CurrentFrostTicks--;
-                    
-                    CurrentTimer = 0;
-                    Frosted = !(CurrentFrostTicks == 0);
-                    if (CurrentFrostTicks == 0)
+                    CurrentTimer += Time.deltaTime;
+
+                    if (CurrentTimer > AreaInterval)
                     {
-                        DOT_DEBUFF = 0;
-                        Frosted = false;
-                        playerMovement.dashCooldown = StartDash;
-                        playerMovement.m_Speed = StartSpeed;
+                        CurrentFrostTicks--;
+
+                        CurrentTimer = 0;
+                        Frosted = !(CurrentFrostTicks == 0);
+                        if (CurrentFrostTicks == 0)
+                        {
+                            DOT_DEBUFF = 0;
+                            Frosted = false;
+                            playerMovement.dashCooldown = StartDash;
+                            playerMovement.m_Speed = StartSpeed;
+                        }
                     }
                 }
-
-                
             }
         }
-        
     }
-
 }
 

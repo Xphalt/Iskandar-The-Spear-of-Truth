@@ -30,6 +30,7 @@ public class MagneticObj : MonoBehaviour
     public Quaternion initialRot;
 
     private CameraMove cameraMove;
+    private PlayerMovement_Jerzy player;
 
     void Start()
     {
@@ -38,6 +39,8 @@ public class MagneticObj : MonoBehaviour
         newDir = Vector2.zero;
 
         cameraMove = FindObjectOfType<CameraMove>();
+
+        player = FindObjectOfType<PlayerMovement_Jerzy>();
     }
 
     void Update()
@@ -55,7 +58,7 @@ public class MagneticObj : MonoBehaviour
             {
                 isLerping = false;
                 IsControllable = true;
-
+                player.usingWand = true;
                 T = 0;
             }
         }
@@ -79,6 +82,8 @@ public class MagneticObj : MonoBehaviour
                 isControllable = false;
 
                 cameraMove.canMove = true;
+
+                player.usingWand = false;
             }
         }
     }
