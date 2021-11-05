@@ -594,7 +594,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   viewAngle: 360
-  detectionRadius: 0
+  detectionRadius: 10
   stopAttacking: 0
   rememberX: 0
   rememberY: 0
@@ -614,7 +614,7 @@ MonoBehaviour:
   ListOfNodes: []
   pauseTime: 0
   isChaser: 0
-  aggroedMoveSpeed: 5
+  aggroedMoveSpeed: 4
   findDelay: 0
   availableAttacks: 010000
   attackDamages:
@@ -622,11 +622,11 @@ MonoBehaviour:
   - 0
   - 0
   attackRanges:
-  - 0
+  - 1.5
   - 0
   - 0
   attackCooldowns:
-  - 0
+  - 1
   - 0
   - 0
   chargeSpeed: 0
@@ -641,7 +641,7 @@ MonoBehaviour:
   trapPrefab: {fileID: 3169118207333170559, guid: 4331b26f06c0ed24386eff703ba98e18, type: 3}
   plantPrefab: {fileID: 782377222411420216, guid: 381fd6b5ce9668d438c9c717daff0f31, type: 3}
   dryadCooldowns:
-  - 0
+  - 4
 --- !u!195 &1675256277858020987
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -24,13 +24,11 @@ public class Dryad : EnemyBase
 
     protected bool SummonAvailable => (dryadTimers[(int)DryadAttacks.SummonSpell] >= dryadCooldowns[(int)DryadAttacks.SummonSpell]);
 
-    // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
@@ -45,19 +43,29 @@ public class Dryad : EnemyBase
             SummonSpellCast();
             attackUsed = true;
         }
+
+        if (attackUsed)
+        {
+            //change state to Attacking
+            curState = EnemyStates.Attacking;
+            //reset cooldown so Enemy can attack again
+            dryadTimers[(int)dryadAttack] = 0;
+            attackEnded = false;
+        }
     }
 
     private void SummonSpellCast()
     {
         dryadAttack = DryadAttacks.SummonSpell;
+
         Vector3 spawnPos = transform.position;
         for (int t = 0; t < numTrapsSpawned; t++)
         {
             spawnPos.x = transform.position.x + Random.Range(minSpawnRadius, maxSpawnRadius);
             spawnPos.z = transform.position.z + Random.Range(minSpawnRadius, maxSpawnRadius);
 
-            GameObject newOrc = Instantiate(trapPrefab);
-            newOrc.transform.position = spawnPos;
+            GameObject newTrap = Instantiate(trapPrefab);
+            newTrap.transform.position = spawnPos;
         }
 
         for(int p = 0; p < numPlantsSpawned; p++)
@@ -65,8 +73,8 @@ public class Dryad : EnemyBase
             spawnPos.x = transform.position.x + Random.Range(minSpawnRadius, maxSpawnRadius);
             spawnPos.z = transform.position.z + Random.Range(minSpawnRadius, maxSpawnRadius);
 
-            GameObject newOrc = Instantiate(plantPrefab);
-            newOrc.transform.position = spawnPos;
+            GameObject newPlant = Instantiate(plantPrefab);
+            newPlant.transform.position = spawnPos;
         }
 
         //_myAnimator.SetTrigger();

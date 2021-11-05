@@ -110,10 +110,7 @@ public class EnemyBase : Patrol
                     {
                         agent.destination = transform.position + (transform.position - detector.GetCurTarget().transform.position).normalized;
                         agent.speed = (transform.position - detector.GetCurTarget().transform.position).magnitude < detector.detectionRadius ? aggroedMoveSpeed : 0;
-                        Debug.Log((transform.position - detector.GetCurTarget().transform.position).magnitude);
-                        Debug.Log((transform.position * detector.detectionRadius).magnitude);
                     }
-                    
 
                     break;
                 case EnemyStates.Attacking:

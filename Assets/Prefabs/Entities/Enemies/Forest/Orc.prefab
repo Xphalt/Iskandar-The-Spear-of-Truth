@@ -343,7 +343,7 @@ MonoBehaviour:
   ListOfNodes: []
   pauseTime: 3
   isChaser: 1
-  aggroedMoveSpeed: 5
+  aggroedMoveSpeed: 4
   findDelay: 0.2
   availableAttacks: 010100
   attackDamages:
@@ -391,8 +391,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropChance: 100
-  itemToDrop: {fileID: 11400000, guid: f4efd135834998a4489e5b55350d5667, type: 2}
+  disableDelay: 0
+  dropChances: []
+  itemsToDrop: []
   type: 0
   groundItem: {fileID: 4138513575415382912, guid: 26d61015829d48c44853d006ecd39a7b, type: 3}
 --- !u!114 &5827328984835578982
@@ -415,6 +416,10 @@ MonoBehaviour:
     m_Bits: 512
   viewAngle: 360
   detectionRadius: 15
+  stopAttacking: 0
+  rememberX: 0
+  rememberY: 0
+  rememberZ: 0
 --- !u!195 &728890986761776635
 NavMeshAgent:
   m_ObjectHideFlags: 0

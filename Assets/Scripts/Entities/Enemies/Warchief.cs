@@ -39,7 +39,6 @@ public class Warchief : EnemyBase
     protected bool LungeAvailable => (warChiefTimers[(int)WarchiefAttacks.Lunge] >= warChiefCooldowns[(int)WarchiefAttacks.Lunge]);
     protected bool ParryAvailable => (warChiefTimers[(int)WarchiefAttacks.Parry] >= warChiefCooldowns[(int)WarchiefAttacks.Parry]);
 
-    // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
@@ -48,7 +47,6 @@ public class Warchief : EnemyBase
         chargeDistance = minJumpDistance;
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
