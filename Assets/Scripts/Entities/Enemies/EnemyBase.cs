@@ -65,6 +65,8 @@ public class EnemyBase : Patrol
 
     public GameObject projectileObj;
     public Transform shootPoint;
+    [Range(0, 1)]
+    public float projectileSpeed;
     protected BoxCollider hitCollider;
 
     public float minChaseRadius;
@@ -232,12 +234,12 @@ public class EnemyBase : Patrol
         }
     }
 
-    protected void ShootAttack()
+    protected virtual void ShootAttack()
     {
         if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Shoot])
         {
             transform.LookAt(detector.GetCurTarget().position, Vector3.up);
-            Vector3 projectileVelocity = CalculateVelocity(detector.GetCurTarget().position, shootPoint.position);
+            Vector3 projectileVelocity = CalculateVelocity(detector.GetCurTarget().position, shootPoint.position, projectileSpeed);
             GameObject projectile = Instantiate(projectileObj, shootPoint.position, Quaternion.identity);
             projectile.GetComponent<Rigidbody>().velocity = projectileVelocity;
             projectile.GetComponent<ProjectileScript>().SetDamageFromParent(attackDamages[(int)AttackTypes.Shoot]);
@@ -248,8 +250,15 @@ public class EnemyBase : Patrol
         }
     }
 
-    protected Vector3 CalculateVelocity(Vector3 startPos, Vector3 target, float time = 1)
+    protected Vector3 CalculateVelocity(Vector3 startPos, Vector3 target, float speed)
     {
+
+        float time = 1 - speed;
+        if (time == 0)
+        {
+            time += 0.10f;
+        }
+
         //find distance x and y first
         Vector3 distance = startPos - target;
 
