@@ -97,8 +97,7 @@ public class PlayerMovement_Jerzy2 : MonoBehaviour
 
         }
 
-        if (swordObject.activeInHierarchy)
-        {
+
             // canAttack also includes interacting
             if (canAttack)
             {
@@ -146,7 +145,7 @@ public class PlayerMovement_Jerzy2 : MonoBehaviour
                     // interact code goes here
                 }
             }
-        }
+        
     }
 
     private void OnTriggerStay(Collider other)

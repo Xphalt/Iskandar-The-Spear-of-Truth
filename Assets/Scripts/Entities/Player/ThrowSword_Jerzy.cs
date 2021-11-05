@@ -56,22 +56,23 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     private void ThrowingSwordPhysics()
     {
-
         if (thrown)
         {
+            Vector3 smoothVel = new Vector3(Mathf.SmoothStep(minThrowSpeed, maxThrowSpeed, timeTravelling), 0, 0);
+
             // move in specific direction for a specific amount of time (Stage 1 of throw attack)
             if (timeTravelling < throwTimeBeforeSpinInPlace)
             {
                 //float t = (Time.time - startTime);
                 //swordRigidBody.velocity = transform.forward * throwSpeed;
-                Vector3 smoothVel = new Vector3(Mathf.SmoothStep(minThrowSpeed, maxThrowSpeed, timeTravelling), 0, 0);
+                
                 swordRigidBody.velocity = transform.forward * smoothVel.magnitude;
             }
 
             // spin on the spot for a specific amount of time (Stage 2 of throw attack)
             else if (timeTravelling >= throwTimeBeforeSpinInPlace && timeTravelling < (throwTimeBeforeSpinInPlace + throwTimeSpinningInPlace))
             {
-                swordRigidBody.velocity = new Vector3(0, 0, 0);
+                swordRigidBody.velocity = Vector3.zero;
             }
 
             // return to the player (Stage 3 of throw attack)
@@ -79,11 +80,12 @@ public class ThrowSword_Jerzy : MonoBehaviour
             {
                 returning = true;
                 transform.LookAt(player.transform);
-                swordRigidBody.velocity = transform.forward * returningSpeed;
+                //swordRigidBody.velocity = transform.forward * returningSpeed;
+                swordRigidBody.velocity = transform.forward * smoothVel.magnitude;
             }
             timeTravelling += Time.deltaTime;
 
-            //playerMovement.LockPlayerMovement();
+            print("smooth vel " + smoothVel);
         }
     }
 

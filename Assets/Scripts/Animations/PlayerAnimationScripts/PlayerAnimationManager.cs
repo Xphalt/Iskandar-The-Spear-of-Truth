@@ -72,13 +72,13 @@ public class PlayerAnimationManager : MonoBehaviour
     public void Strafing()
     {
         if (isStrafing)
-        {
-            animator.SetBool("isIdling", false);
+        { 
+            animator.SetTrigger("isIdling");
             animator.SetBool("isStrafing", true);
         }
         else if (!isStrafing)
         {
-            animator.SetBool("isIdling", true);
+
             animator.SetBool("isStrafing", false);
         }
     }

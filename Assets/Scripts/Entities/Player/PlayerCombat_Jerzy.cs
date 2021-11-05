@@ -9,7 +9,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public float throwTimeBeforeSpinInPlace;
     public float throwTimeSpinningInPlace;
     public float minThrowSpeed, maxThrowSpeed;
-    public float throwReturnSpeed;
+   // public float throwReturnSpeed;
     public bool attackOffCooldown = true;
     public bool canAttack = true;
     Quaternion swordLookRotation;
@@ -109,14 +109,16 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void ThrowAttack()
     {
-        if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
+        if (swordObject.activeInHierarchy)
         {
-            attackOffCooldown = false;
-            StartCoroutine(PauseForThrow());
-            playerMovement.LockPlayerMovement();
-
+            if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
+            {
+                attackOffCooldown = false;
+                StartCoroutine(PauseForThrow());
+                playerMovement.LockPlayerMovement();
+            }
+           
         }
-
     }
 
     IEnumerator PauseForThrow() 
