@@ -57,6 +57,7 @@ public class EnemyBase : Patrol
     protected EnemyStates curState = EnemyStates.Patrolling;
     protected bool charging = false;
     protected bool attackUsed = false;
+    protected bool CanAttack => !attackUsed && attackEnded && detector.GetCurTarget() != null;
 
     public float chargeSpeed, chargeDistanceMult = 1;
     protected float chargeDistance;
@@ -172,9 +173,9 @@ public class EnemyBase : Patrol
     //will be called by other scripts
     public virtual void Attack()
     {
-        if (attackEnded && detector.GetCurTarget() != null)
+        attackUsed = false;
+        if (CanAttack)
         {
-            attackUsed = false;
 
             if (MeleeAvailable)
             {

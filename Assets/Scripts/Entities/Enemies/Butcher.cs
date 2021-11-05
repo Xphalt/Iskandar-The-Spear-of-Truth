@@ -10,6 +10,8 @@ public class Butcher : EnemyBase
         AttackTypesCount
     };
 
+    private bool butcherAttackUsed=false;
+
     [NamedArrayAttribute(new string[] { "BleedSlash" })]
     public float[] butcherCooldowns = new float[(int)ButcherAttacks.AttackTypesCount];
     private float[] butcherTimers = new float[(int)ButcherAttacks.AttackTypesCount];
@@ -33,25 +35,31 @@ public class Butcher : EnemyBase
     {
         base.Attack();
 
-        if (!attackUsed && BleedSlashAvailable)
+        if(CanAttack)
         {
-            BleedSlashAttack();
-            attackUsed = true;
-        }
+            butcherAttackUsed = false;
+            if (!butcherAttackUsed && BleedSlashAvailable)
+            {
+                BleedSlashAttack();
+                butcherAttackUsed = true;
+            }
 
-        if (attackUsed)
-        {
-            //change state to Attacking
-            curState = EnemyStates.Attacking;
-            //reset cooldown so Enemy can attack again
-            butcherTimers[(int)butcherAttack] = 0;
-            attackEnded = false;
+            if (butcherAttackUsed)
+            {
+                //change state to Attacking
+                curState = EnemyStates.Attacking;
+                //reset cooldown so Enemy can attack again
+                butcherTimers[(int)butcherAttack] = 0;
+                attackEnded = false;
+            }
         }
     }
 
     private void BleedSlashAttack()
     {
+        butcherAttack = ButcherAttacks.BleedSlash;
 
+       
     }
 
     protected override void OnCollisionEnter(Collision collision)
