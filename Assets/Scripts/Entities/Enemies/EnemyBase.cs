@@ -301,4 +301,16 @@ public class EnemyBase : Patrol
             hitCollider.enabled = false;
         }
     }
+
+    protected virtual void OnDisable()
+    {
+        if (charging)
+            EndCharge();
+
+        _myAnimator.SetBool("IsChasing", false);
+        _myAnimator.SetBool("IsPatrolling",false);
+        _myAnimator.Play("Idle");
+        agent.speed = 0;
+        agent.enabled = false;
+    }
 }
