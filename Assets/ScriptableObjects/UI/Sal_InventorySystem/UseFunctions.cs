@@ -18,6 +18,7 @@ public class UseFunctions : MonoBehaviour
     private PlayerStats playerstats;
     private PlayerCombat_Jerzy playerCombat;
     public GameObject bomb;
+    public GameObject wand;
 
     void Awake()
     {
@@ -50,6 +51,12 @@ public class UseFunctions : MonoBehaviour
                     break;
                 case "Bomb Bag":
                     database[i].OnUseCurrent += UseBombBag;
+                    break;
+                case "Wand of Magnetism":
+                    database[i].OnUseCurrent += UseWandOfMagnetism;
+                    break;
+                case "Revival Gem":
+                    database[i].OnUseCurrent += UseRevivalGem;
                     break;
             } 
         }
@@ -136,7 +143,21 @@ public class UseFunctions : MonoBehaviour
 
     public void UseWandOfMagnetism()
     {
+        if (!FindObjectOfType<MagneticWand>())
+        {
+            Instantiate(wand, playerstats.transform.localPosition, playerstats.transform.localRotation); 
+        }
+    }
 
+    public void UseRevivalGem()
+    {
+        float healPercentage = ((ResourceObject)(playerstats.inventory.database.ItemObjects[playerstats.revivalGem.data.id])).healPercentage;
+
+        //Item removal 
+        playerstats.inventory.RemoveItem(playerstats.revivalGem.data);
+
+        //Heal player
+        playerstats.health = playerstats.MAX_HEALTH * (healPercentage / 100);
     }
     #endregion
 }

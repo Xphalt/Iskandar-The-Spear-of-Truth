@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Accessories
+public enum AccessoryType
 {
     BraceletOfScouting,
     Goggles,
@@ -31,7 +31,7 @@ public class AccessoryObject : ItemObject_Sal
             return desc2;
         }
     }
-    public Accessories accessory; 
+    public AccessoryType accessory; 
 
     void Awake()
     {
