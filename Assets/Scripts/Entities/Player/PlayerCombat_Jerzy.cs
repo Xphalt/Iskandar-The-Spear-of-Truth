@@ -148,9 +148,9 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Venom")
+        if(other.tag == "Venom" && !playerStats.poisonProtection)
         {
-            GetComponent<PlayerStats>().TakeDamage(other.gameObject.GetComponent<VenomShot>().damage);
+            playerStats.TakeDamage(other.gameObject.GetComponent<VenomShot>().damage);
             poisonDamage = other.gameObject.GetComponent<VenomShot>().poisonDamage;
             poisonDelay = other.gameObject.GetComponent<VenomShot>().poisonDelay;
             maxPoisonTicks = other.gameObject.GetComponent<VenomShot>().amountOfPoisonTicks;
@@ -160,6 +160,4 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-
-
 }

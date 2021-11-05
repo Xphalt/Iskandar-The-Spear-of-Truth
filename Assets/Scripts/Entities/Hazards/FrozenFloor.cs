@@ -11,36 +11,40 @@ public class FrozenFloor : MonoBehaviour
 	public float decreaseRate;
 	private PlayerMovement_Jerzy script;
 
-    	void Start()
-	{ 
-	    script = player.GetComponent<PlayerMovement_Jerzy>();
+	void Start()
+	{
+		script = player.GetComponent<PlayerMovement_Jerzy>();
 	}
 
 
 	private void OnTriggerStay (Collider collision)
 	{
-		if (collision.transform.tag == "Player")
+		if (collision.gameObject.TryGetComponent(out PlayerStats stats))
 		{
-			if(collision.gameObject.GetComponent<Rigidbody>().velocity.magnitude > 2.5f)
-			{
-			    tempdirec = collision.gameObject.GetComponent<Rigidbody>().velocity; 
-			    script.Slide(true);
-			    collision.gameObject.GetComponent<Rigidbody>().velocity *= decreaseRate; 
+			if (!stats.snowProtection)
+            {
+				if (collision.gameObject.GetComponent<Rigidbody>().velocity.magnitude > 2.5f)
+				{
+					tempdirec = collision.gameObject.GetComponent<Rigidbody>().velocity;
+					script.Slide(true);
+					collision.gameObject.GetComponent<Rigidbody>().velocity *= decreaseRate;
+				}
+				else
+				{
+					script.Slide(false);
+				}
 			}
-			else
-			{
- 			   script.Slide(false);
-			}
-			
 		}
-
 	}
 
 	private void OnTriggerExit (Collider collision)
 	{
-	    if (collision.transform.tag == "Player")
+		if (collision.gameObject.TryGetComponent(out PlayerStats stats))
 		{
-	    	    script.Slide(false);
+			if (!stats.snowProtection)
+			{
+				script.Slide(false);
+			}
 		}
 	}
 

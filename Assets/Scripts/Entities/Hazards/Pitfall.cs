@@ -18,9 +18,12 @@ public class Pitfall : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.TryGetComponent(out PlayerStats stats))
         {
-            other.gameObject.GetComponent<PlayerMovement_Jerzy>().Respawn(respawnPosition,respawnDuration,damage);
+            if (!stats.desertProtection)
+            {
+                other.gameObject.GetComponent<PlayerMovement_Jerzy>().Respawn(respawnPosition, respawnDuration, damage);
+            }
         }
     }
 
