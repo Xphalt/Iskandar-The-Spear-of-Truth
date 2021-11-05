@@ -7,7 +7,6 @@ using UnityEngine;
 public class EnemyBase : Patrol
 {
     protected bool isDead = false;
-    public bool isIdling = false;
     public bool isChaser;
     public float aggroedMoveSpeed;
     protected EnemyStats stats;
@@ -87,55 +86,51 @@ public class EnemyBase : Patrol
 
     public override void Update()
     {
-        if(!isIdling)
+        base.Update();
+
+        agent.enabled = curState != EnemyStates.Attacking;
+
+        if (!charging)
         {
-            base.Update();
-
-            agent.enabled = curState != EnemyStates.Attacking;
-
-            if (!charging)
+            switch (curState)
             {
-                switch (curState)
-                {
-                    case EnemyStates.Patrolling:
-                        agent.speed = patrolSpeed;
-                        agent.stoppingDistance = 0;
+                case EnemyStates.Patrolling:
+                    agent.speed = patrolSpeed;
+                    agent.stoppingDistance = 0;
 
-                        break;
-                    case EnemyStates.Aggro:
-                        //seek player position and go to it OR if not chaser, keep distance from player
-                        transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
-                        if (isChaser)
-                        {
-                            agent.destination = detector.GetCurTarget().position;
-                            agent.speed = agent.remainingDistance > minChaseRadius ? aggroedMoveSpeed : 0;
-                            agent.stoppingDistance = minChaseRadius;
-                        }
-                        else
-                        {
-                            agent.destination = transform.position + (transform.position - detector.GetCurTarget().transform.position).normalized;
-                            agent.speed = (transform.position - detector.GetCurTarget().transform.position).magnitude < detector.detectionRadius ? aggroedMoveSpeed : 0;
-                        }
+                    break;
+                case EnemyStates.Aggro:
+                    //seek player position and go to it OR if not chaser, keep distance from player
+                    transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
+                    if (isChaser)
+                    {
+                        agent.destination = detector.GetCurTarget().position;
+                        agent.speed = agent.remainingDistance > minChaseRadius ? aggroedMoveSpeed : 0;
+                        agent.stoppingDistance = minChaseRadius;
+                    }
+                    else
+                    {
+                        agent.destination = transform.position + (transform.position - detector.GetCurTarget().transform.position).normalized;
+                        agent.speed = (transform.position - detector.GetCurTarget().transform.position).magnitude < detector.detectionRadius ? aggroedMoveSpeed : 0;
+                    }
 
-                        break;
-                    case EnemyStates.Attacking:
-                        agent.speed = 0;
-                        break;
-                    default:
-                        //Debug.Log("Error in EnemyBase script, Current State switch statement");
-                        break;
-                }
+                    break;
+                case EnemyStates.Attacking:
+                    agent.speed = 0;
+                    break;
+                default:
+                    //Debug.Log("Error in EnemyBase script, Current State switch statement");
+                    break;
             }
-            else
-            {
-                MyRigid.velocity = chargeDirection * chargeSpeed;
-                if (transform.position.GetDistance(chargeStart) > chargeDistance) EndCharge();
-            }
-
-            Attack();
-            AttackCooldown();
-
         }
+        else
+        {
+            MyRigid.velocity = chargeDirection * chargeSpeed;
+            if (transform.position.GetDistance(chargeStart) > chargeDistance) EndCharge();
+        }
+
+        Attack();
+        AttackCooldown();
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
