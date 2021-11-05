@@ -8,9 +8,12 @@ public class RootTrap : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.TryGetComponent(out PlayerStats stats))
         {
-            other.gameObject.GetComponent<PlayerMovement_Jerzy>().Root(rootDuration);
+            if (!stats.poisonProtection)
+            {
+                other.gameObject.GetComponent<PlayerMovement_Jerzy>().Root(rootDuration);
+            }
         }
     }
 }

@@ -22,10 +22,9 @@ public class AntlionTrap : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.TryGetComponent(out PlayerMovement_Jerzy move) && other.TryGetComponent(out PlayerStats stats))
         {
-            other.gameObject.GetComponent<PlayerMovement_Jerzy>().GetConsumed(respawnPosition,0,damage,consumeDuration, consumeMoveAmt);
-
+            if (!stats.desertProtection) move.GetConsumed(respawnPosition,0,damage,consumeDuration, consumeMoveAmt);
         }
     }
 }

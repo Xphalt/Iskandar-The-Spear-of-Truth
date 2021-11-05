@@ -31,6 +31,11 @@ public class UIManager : MonoBehaviour
     {
         HealthBarUI.transform.GetChild(0).GetComponent<Slider>().value += Mathf.CeilToInt(healthChange);
     }
+
+    public void SetHealthBar(float newHealth)
+    {
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().value = Mathf.CeilToInt(newHealth);
+    }
     #endregion
 
     // Dominique 07-10-2021, We can now setup the health bar for a boss with their name
@@ -183,12 +188,12 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments;
 
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
 
         playerStats = GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>();
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = playerStats.MAX_HEALTH;
 
         // At the moment we're using keyboard and mouse to play the game
 #if UNITY_ANDROID

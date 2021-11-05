@@ -20,26 +20,29 @@ public class FrostFloor : MonoBehaviour
     
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.transform.tag == "Player")
+        if (collision.gameObject.TryGetComponent(out PlayerStats stats))
         {
-            if (veloc.magnitude == 0)
+            if (!stats.snowProtection)
             {
-                CurrentTimer += Time.deltaTime;
-                veloc = tempDirec;
-                if (CurrentTimer > AreaInterval)
+                if (veloc.magnitude == 0)
                 {
-                    DOT_DEBUFF += 1;
-                    CurrentTimer = 0;
-                    if (DOT_DEBUFF == 8)
+                    CurrentTimer += Time.deltaTime;
+                    veloc = tempDirec;
+                    if (CurrentTimer > AreaInterval)
                     {
-                        veloc = Vector3.zero;
+                        DOT_DEBUFF += 1;
+                        CurrentTimer = 0;
+                        if (DOT_DEBUFF == 8)
+                        {
+                            veloc = Vector3.zero;
+                        }
                     }
-                }           
-            }
-            else if (veloc.magnitude != 0) 
-            {
-                tempDirec = veloc;
-                CurrentTimer = 0;
+                }
+                else if (veloc.magnitude != 0)
+                {
+                    tempDirec = veloc;
+                    CurrentTimer = 0;
+                }
             }
         }
     }

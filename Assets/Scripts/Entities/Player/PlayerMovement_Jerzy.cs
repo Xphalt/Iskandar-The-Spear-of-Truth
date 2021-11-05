@@ -13,6 +13,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public bool falling;
     public bool respawning = false;
     public bool gettingConsumed = false;
+    public bool usingWand = false;
 
     public Quaternion swordLookRotation;
 
@@ -45,7 +46,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public bool knockedBack = false;
     Vector3 knockBackDirection;
-    private float knockBackDuraction;
+    private float knockBackDuration;
     private float knockBackSpeed;
     private float timeKnockedBack;
     private float dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
@@ -70,6 +71,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public GameObject FadeUI;
 
     private const int RAYCAST_LAYER_MASK = -1;
+
+    public bool CanMove => (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
+                (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
+                (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
+                timeSinceLastDash >= dashDuration && 
+                !falling && !knockedBack && !isRooted && !isSliding && !respawning && !gettingConsumed && !usingWand;
 
     [SerializeField] private float _rotationSpeed;
 
@@ -184,11 +191,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             m_Rigidbody.velocity = dashDirection * dashForce;// / dashSpeedMultiplier;
         }
 
-        if (timeKnockedBack < knockBackDuraction && knockedBack && !falling)
+        if (timeKnockedBack < knockBackDuration && knockedBack && !falling)
         {
             timeKnockedBack += Time.deltaTime;
             //knockBackDirection * Time.deltaTime * knockBackSpeed * (knockBackDuraction/ timeKnockedBack + KNOCKBACK_DENOMINATOR_ADDITION);
-            m_Rigidbody.velocity = knockBackDirection * knockBackSpeed * (1 - timeKnockedBack / knockBackDuraction * KNOCKBACK_DENOMINATOR_ADDITION);
+            m_Rigidbody.velocity = knockBackDirection * knockBackSpeed * (1 - timeKnockedBack / knockBackDuration * KNOCKBACK_DENOMINATOR_ADDITION);
             playerAnimation.Falling();
         }
         else if (knockedBack)
@@ -229,52 +236,49 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (speedMultiplier > 1) speedMultiplier = 1;
 
         //This prevents player from moving whilst attacking, dashing, falling
-        if ((!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
-                (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
-                (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
-                timeSinceLastDash >= dashDuration && !falling && !knockedBack && !isRooted && !isSliding && !respawning && !gettingConsumed)
+        if (CanMove)
+        {
+            if (_playerTargetingScript.IsTargeting())
             {
-                if (_playerTargetingScript.IsTargeting())
+                Transform tempTransform = _playerTargetingScript.GetTargetTransform();
+                _targetedTransform = tempTransform;
+
+                // Set player rotation to look at targeted object
+                Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
+                                    0.0f,
+                                    _targetedTransform.position.z - transform.position.z);
+
+                playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
+
+                Vector3 direction = playerModel.transform.TransformDirection(m_Input);
+
+                // this block of code ensures that the player does not spiral away from the targeted enemy
+                if (m_Input.x == 0)
                 {
-                    Transform tempTransform = _playerTargetingScript.GetTargetTransform();
-                    _targetedTransform = tempTransform;
-
-                    // Set player rotation to look at targeted object
-                    Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
-                                        0.0f,
-                                        _targetedTransform.position.z - transform.position.z);
-
-                    playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
-
-                    Vector3 direction = playerModel.transform.TransformDirection(m_Input);
-
-                    // this block of code ensures that the player does not spiral away from the targeted enemy
-                    if (m_Input.x == 0)
-                    {
-                        lastMagnitudeFromTarget = playerToTargetVector.magnitude;
-                    }
-                    if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
-                    {
-                        m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE); 
-                    }
-
-                    m_Rigidbody.velocity = (direction * m_Speed);
-
-                    // this line fixes the thrown sword direction when locked onto an enemy
-                    swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
+                    lastMagnitudeFromTarget = playerToTargetVector.magnitude;
                 }
-                else
+                if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
                 {
-                    Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier);
-                    newVel.y = m_Rigidbody.velocity.y;
-                    m_Rigidbody.velocity = (newVel);
-                    Rotation(m_Input);
+                    m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE);
                 }
-                if (timeSinceLastDash >= dashDuration && !canBeDamaged)
-                {
-                    canBeDamaged = true;
-                }
+
+                m_Rigidbody.velocity = (direction * m_Speed);
+
+                // this line fixes the thrown sword direction when locked onto an enemy
+                swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
             }
+            else
+            {
+                Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier);
+                newVel.y = m_Rigidbody.velocity.y;
+                m_Rigidbody.velocity = (newVel);
+                Rotation(m_Input);
+            }
+            if (timeSinceLastDash >= dashDuration && !canBeDamaged)
+            {
+                canBeDamaged = true;
+            }
+        }
         /*_________________________________________________________________________
          * Player animation.
          * ________________________________________________________________________*/
@@ -331,7 +335,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     {
         timeSinceLastDash = dashDuration;
         otherPosition = new Vector3(otherPosition.x, transform.position.y, otherPosition.z);
-        knockBackDuraction = duration;
+        knockBackDuration = duration;
         knockBackSpeed = speed;
         playerModel.transform.LookAt(otherPosition);
         knockBackDirection = (transform.position - otherPosition).normalized;

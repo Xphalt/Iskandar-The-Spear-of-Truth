@@ -158,6 +158,8 @@ public class UseFunctions : MonoBehaviour
 
         //Heal player
         playerstats.health = playerstats.MAX_HEALTH * (healPercentage / 100);
+
+        UIManager.instance.UpdateHealthBar((int)playerstats.health);
     }
     #endregion
 }

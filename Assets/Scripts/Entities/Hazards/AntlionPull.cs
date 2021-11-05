@@ -14,13 +14,16 @@ public class AntlionPull : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && !other.gameObject.GetComponent<PlayerMovement_Jerzy>().respawning && !other.gameObject.GetComponent<PlayerMovement_Jerzy>().gettingConsumed)
+        if (other.TryGetComponent(out PlayerMovement_Jerzy move) && other.TryGetComponent(out PlayerStats stats))
         {
-            if(playerRigidBody is null)
+            if (!move.respawning && !move.gettingConsumed && !stats.desertProtection)
             {
-                playerRigidBody = other.gameObject.GetComponent<Rigidbody>();
+                if (playerRigidBody is null)
+                {
+                    playerRigidBody = other.gameObject.GetComponent<Rigidbody>();
+                }
+                playerRigidBody.AddForce((transform.position - other.gameObject.transform.position).normalized * force);
             }
-            playerRigidBody.AddForce((transform.position-other.gameObject.transform.position).normalized * force);
         }
     }
 }
