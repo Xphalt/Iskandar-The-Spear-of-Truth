@@ -43,7 +43,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
         minThrowSpeed = combatScript.minThrowSpeed;
         maxThrowSpeed = combatScript.maxThrowSpeed;
-        returningSpeed = combatScript.throwReturnSpeed;
+        //returningSpeed = combatScript.throwReturnSpeed;
     }
 
     void FixedUpdate()
