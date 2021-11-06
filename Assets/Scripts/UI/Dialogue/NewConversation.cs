@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Dialogue/NewConversation", fileName = "NewConversation")]
+[CreateAssetMenu(menuName = "UI/Dialogue/NewConversation", fileName = "NewDialogue")]
 [SerializeField]
 public class NewConversation : ScriptableObject
 {
