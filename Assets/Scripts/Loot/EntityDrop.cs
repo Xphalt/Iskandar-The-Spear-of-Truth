@@ -16,6 +16,7 @@ public class EntityDrop : MonoBehaviour
     public EntityType type;
 
     public GameObject groundItem;
+    public ItemObject_Sal gem;
     
     private Vector3 randomSpawnDir;
     
@@ -86,6 +87,8 @@ public class EntityDrop : MonoBehaviour
 
     public void ChestSpawn(GameObject obj)
     {
-        obj.GetComponent<Rigidbody>().velocity = Vector3.up * Time.deltaTime; 
+        //obj.GetComponent<Rigidbody>().velocity = Vector3.up * Time.deltaTime; 
+        GetComponent<LootChest_Jerzy>().SetForces(obj);
+
     }
 }

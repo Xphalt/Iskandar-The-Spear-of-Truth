@@ -46,7 +46,7 @@ public class UseFunctions : MonoBehaviour
                 case "Necklace Of The Life Stealers":
                     database[i].OnUseCurrent += UseBraceletOfTheLifeStealers; 
                     break;
-                case "Gem Pot":
+                case "Gem":
                     database[i].OnUseCurrent += UseGemsPot;
                     break;
                 case "Bomb Bag":

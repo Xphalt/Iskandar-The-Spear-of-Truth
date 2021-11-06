@@ -30,6 +30,8 @@ public class LootChest_Jerzy : MonoBehaviour
     {
         if(isInteractable)
         {
+            GetComponent<EntityDrop>().SpawnLoot();
+
             lootChestLidPivot.GetComponent<Animator>().Play("LootChestLidOpening");
 
             //generate loot (currently only gems)
@@ -39,10 +41,8 @@ public class LootChest_Jerzy : MonoBehaviour
             for (int gems = 0; gems < amountOfGems; gems++)
             {
 
-                GameObject obj = Instantiate(GemPrefab, transform.position + new Vector3(0, gemHeightOffset, 0), transform.rotation);
-                obj.GetComponent<Rigidbody>().AddForce(transform.up * Random.Range(LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootHeightForce);
-                obj.GetComponent<Rigidbody>().AddForce(transform.forward * Random.Range(LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootForwardForce);
-                obj.GetComponent<Rigidbody>().AddForce(transform.right * Random.Range(-LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootSideForce);
+                GameObject obj = Instantiate(GemPrefab, transform.position + new Vector3(0, 0, 0), transform.rotation);
+                SetForces(obj);
 
 
             }
@@ -53,4 +53,13 @@ public class LootChest_Jerzy : MonoBehaviour
         }
 
     }
+
+    public void SetForces(GameObject obj)
+    {
+        obj.transform.position = obj.transform.position + new Vector3(0,gemHeightOffset,0);
+        obj.GetComponent<Rigidbody>().AddForce(transform.up * Random.Range(LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootHeightForce);
+        obj.GetComponent<Rigidbody>().AddForce(transform.forward * Random.Range(LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootForwardForce);
+        obj.GetComponent<Rigidbody>().AddForce(transform.right * Random.Range(-LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootSideForce);
+    }
+
 }
