@@ -51,7 +51,7 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
 
     IEnumerator StopForce()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(5.0f);
         //Stop drop
         Rigidbody objRgdBody = GetComponentInChildren<Rigidbody>();
         objRgdBody.velocity = Vector3.zero;

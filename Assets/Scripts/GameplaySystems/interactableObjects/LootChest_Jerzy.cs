@@ -7,24 +7,19 @@ public class LootChest_Jerzy : MonoBehaviour
 
     public bool isInteractable;
     public GameObject lootChestLidPivot;
-    public int minGems;
-    public int maxGems;
-    public GameObject GemPrefab;
-    public float gemHeightOffset;
+    public float lootHeightOffset;
 
     public float lootHeightForce;
     public float lootForwardForce;
     public float lootSideForce;
 
-    const float LOWER_RANDOM_ANGLE_BOUNDARY = 0.5f;
-    const float UPPER_RANDOM_ANGLE_BOUNDARY = 0.7f;
-
+    const float LOWER_RANDOM_ANGLE_BOUNDARY = 0.3f;
+    const float UPPER_RANDOM_ANGLE_BOUNDARY = 0.8f;
 
     void Start()
     {
         isInteractable = true;
     }
-
 
     public void Interact()
     {
@@ -32,21 +27,7 @@ public class LootChest_Jerzy : MonoBehaviour
         {
             GetComponent<EntityDrop>().SpawnLoot();
 
-            lootChestLidPivot.GetComponent<Animator>().Play("LootChestLidOpening");
-
-            //generate loot (currently only gems)
-            int amountOfGems = Random.Range(minGems, maxGems);
-
-            //display loot
-            for (int gems = 0; gems < amountOfGems; gems++)
-            {
-
-                GameObject obj = Instantiate(GemPrefab, transform.position + new Vector3(0, 0, 0), transform.rotation);
-                SetForces(obj);
-
-
-            }
-
+            lootChestLidPivot.GetComponent<Animator>().Play("ChestLidOpening1");
 
             isInteractable = false;
             gameObject.layer = 0;
@@ -56,10 +37,10 @@ public class LootChest_Jerzy : MonoBehaviour
 
     public void SetForces(GameObject obj)
     {
-        obj.transform.position = obj.transform.position + new Vector3(0,gemHeightOffset,0);
+        obj.transform.position = obj.transform.position + new Vector3(0, lootHeightOffset, 0);
         obj.GetComponent<Rigidbody>().AddForce(transform.up * Random.Range(LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootHeightForce);
         obj.GetComponent<Rigidbody>().AddForce(transform.forward * Random.Range(LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootForwardForce);
-        obj.GetComponent<Rigidbody>().AddForce(transform.right * Random.Range(-LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootSideForce);
+        obj.GetComponent<Rigidbody>().AddForce(transform.right * Random.Range(-UPPER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootSideForce);
     }
 
 }

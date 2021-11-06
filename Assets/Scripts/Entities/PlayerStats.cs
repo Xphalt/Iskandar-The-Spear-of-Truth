@@ -233,10 +233,10 @@ public class PlayerStats : StatsInterface
             }
             else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
             {
-                gems += ((ResourceObject)(item.itemobj)).gems;
-                UIManager.instance.ShowMoneyPopup();
+               // gems += ((ResourceObject)(item.itemobj)).gems;
                 if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
                     ((ResourceObject)(item.itemobj)).UseCurrent();
+                UIManager.instance.ShowMoneyPopup();
                 Destroy(other.gameObject);
             }
         }

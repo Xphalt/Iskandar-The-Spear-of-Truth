@@ -137,7 +137,7 @@ Animator:
   m_GameObject: {fileID: 6209861486168533321}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9f43634bcf2c6c049a61ab8137f681f7, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 6209861486510110492}
   - component: {fileID: -6609961541104427716}
   - component: {fileID: 4910953209237114869}
+  - component: {fileID: -2507093522380141248}
   m_Layer: 8
   m_Name: LootChest
   m_TagString: LootChest
@@ -200,9 +201,11 @@ MonoBehaviour:
   maxGems: 10
   GemPrefab: {fileID: 292970523194260950, guid: 2c7144284f371a34bb63b1cb0261db5e, type: 3}
   gemHeightOffset: 0.4
-  lootHeightForce: 200
+  lootHeightForce: 400
   lootForwardForce: 100
   lootSideForce: 100
+  gemItem: {fileID: 11400000, guid: 325ccace65a6b5e41bf6076826de2740, type: 2}
+  groundItem: {fileID: 4138513575415382912, guid: 26d61015829d48c44853d006ecd39a7b, type: 3}
 --- !u!135 &6209861486510110492
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -242,11 +245,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineColor: {r: 1, g: 0, b: 0, a: 0}
   outlineWidth: 2
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-2507093522380141248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6209861486510110493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disableDelay: 0
+  dropChances:
+  - 100
+  itemsToDrop:
+  - {fileID: 11400000, guid: 325ccace65a6b5e41bf6076826de2740, type: 2}
+  type: 3
+  groundItem: {fileID: 4138513575415382912, guid: 26d61015829d48c44853d006ecd39a7b, type: 3}
 --- !u!1 &6209861486901584631
 GameObject:
   m_ObjectHideFlags: 0
