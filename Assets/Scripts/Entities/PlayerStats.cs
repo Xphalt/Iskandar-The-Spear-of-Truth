@@ -14,6 +14,12 @@ public class PlayerStats : StatsInterface
     public ItemObject_Sal revivalGem;
     internal AccessoryObject Item;
     private string noWeaponAddress, weaponAddress;
+
+    /*______________________________Damage_Flash_Variables_______________________________*/
+    public SkinnedMeshRenderer MeshRenderer;
+    public Color Origin;
+    public float FlashTime;
+    /*___________________________________________________________________________________*/
     #region STATS
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
@@ -46,6 +52,8 @@ public class PlayerStats : StatsInterface
 
     private void Start()
     {
+        Origin = MeshRenderer.material.color;
+
         noWeaponAddress = "Animation/PlayerAnimations/PlayerAnims/PlayerNoWeapon";
         weaponAddress = "Animation/PlayerAnimations/PlayerAnims/Player";
 
@@ -98,6 +106,9 @@ public class PlayerStats : StatsInterface
         //sfx.PlayAudio();
         UIManager.instance.UpdateHealthBar((int)-amount);
 
+        StartCoroutine(EDamageFlash());
+
+
         // anything that happens when taking damage happens 
         if (health <= 0)
         { 
@@ -114,6 +125,15 @@ public class PlayerStats : StatsInterface
             }
         }
     }
+
+    /*______________________________Damage_Flash_________________________________________*/
+    private IEnumerator EDamageFlash()
+    {
+        MeshRenderer.material.color = Color.red;
+        yield return new WaitForSeconds(FlashTime);
+        MeshRenderer.material.color = Origin;
+    }
+    /*___________________________________________________________________________________*/
 
     public void Restart()
     {

@@ -42,7 +42,6 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     private float timeSinceLastPoisonDamage;
     private bool isPoisoned = false;
 
-
     void Start()
     {
         swordAnimator = swordObject.GetComponent<Animator>();
