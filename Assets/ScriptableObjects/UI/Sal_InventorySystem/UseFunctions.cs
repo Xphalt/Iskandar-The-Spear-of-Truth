@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -58,11 +59,20 @@ public class UseFunctions : MonoBehaviour
                 case "Revival Gem":
                     database[i].OnUseCurrent += UseRevivalGem;
                     break;
+                case "Small Potion":
+                    database[i].OnUseCurrent += UsePotion;
+                    break;
+                case "Medium Potion":
+                    database[i].OnUseCurrent += UsePotion;
+                    break;
+                case "Max Potion":
+                    database[i].OnUseCurrent += UsePotion;
+                    break;
             } 
         }
     }
-     
 
+   
     //Usefull variables
     private float current;
     private float regenerationInterval;
@@ -159,6 +169,22 @@ public class UseFunctions : MonoBehaviour
         //Heal player
         playerstats.health = playerstats.MAX_HEALTH * (healPercentage / 100);
 
+        UIManager.instance.UpdateHealthBar((int)playerstats.health);
+    }
+
+    private void UsePotion()
+    {
+        //Your healing code goes here
+
+
+        //Item removal 
+        if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
+            playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
+        else
+            playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(-1);
+        
+
+        //Leave this at the end to update UI
         UIManager.instance.UpdateHealthBar((int)playerstats.health);
     }
     #endregion
