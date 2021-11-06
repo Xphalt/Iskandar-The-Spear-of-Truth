@@ -10,9 +10,8 @@ public class PlayerStats : StatsInterface
     public InventoryObject_Sal equipment;
     public GameObject listOfObjs;
 
-    internal AccessoryObject Accessory;
+    internal AccessoryObject Accessory; 
     public ItemObject_Sal revivalGem;
-    internal AccessoryObject Item;
     private string noWeaponAddress, weaponAddress;
     #region STATS
     private const float BASE_DAMAGE = 0;
@@ -64,31 +63,22 @@ public class PlayerStats : StatsInterface
         health = MAX_HEALTH;
 
         // list event in GameEvents.cs
-        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
+        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet; 
     }
 
     private void Update()
     {
+        //Gets accessory equipped
         if (equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id > -1)
         {
-            try
-            {
-                Accessory = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id]));
-            }
-            catch
-            {
-                Accessory = null;
-            }
+            try { Accessory = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id])); }
+            catch { Accessory = null; }
         } 
 
-        if (Accessory && Accessory.accessory == AccessoryType.RingOfVitality)
+        if (Accessory && (Accessory.accessory == AccessoryType.RingOfVitality || Accessory.accessory == AccessoryType.Goggles))
         {
-            Accessory.UseCurrent(); //Recovers hp every n seconds
-        }
-        if (Accessory && Accessory.accessory == AccessoryType.Goggles)
-        {
-            Accessory.UseCurrent(); //deactivates objects
-        }
+            Accessory.UseCurrent(); //Use either ring or goggles  
+        } 
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -232,12 +222,16 @@ public class PlayerStats : StatsInterface
                 }
             }
             else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
-            {
-                gems += ((ResourceObject)(item.itemobj)).gems;
-                UIManager.instance.ShowMoneyPopup();
+            { 
                 if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
                     ((ResourceObject)(item.itemobj)).UseCurrent();
+                UIManager.instance.ShowMoneyPopup();
                 Destroy(other.gameObject);
+            }
+            else
+            {
+                if (inventory.AddItem(new Item(item.itemobj), 1))
+                    Destroy(other.gameObject);  //Only if the item is picked up
             }
         }
     }

@@ -39,9 +39,7 @@ public class AccessoryObject : ItemObject_Sal
     } 
      
     public override void UseCurrent()
-    {
-        Debug.Log("Accessory Used");
-
+    { 
         //Setting values for the delegate Use
         UseFunctions.Instance.RegenerationInterval = regenerationInterval; 
         UseFunctions.Instance.HealingValue = healingValue; 
