@@ -73,7 +73,7 @@ public class UseFunctions : MonoBehaviour
     }
 
    
-    //Usefull variables
+    //Useful variables
     private float current;
     private float regenerationInterval;
     public float RegenerationInterval
@@ -174,8 +174,16 @@ public class UseFunctions : MonoBehaviour
 
     private void UsePotion()
     {
-        //Your healing code goes here
-
+        //healing code goes here
+        if ((playerstats.health + HealingValue) == playerstats.MAX_HEALTH)
+        {
+            playerstats.health = playerstats.MAX_HEALTH;
+        }
+        else
+        {
+            playerstats.health += healingValue;
+        }
+         
 
         //Item removal 
         if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
