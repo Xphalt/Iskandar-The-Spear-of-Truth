@@ -16,17 +16,15 @@ public class ThrowSword_Jerzy : MonoBehaviour
     private PlayerMovement_Jerzy playerMovement;
     private PlayerStats playerStats;
     private PlayerAnimationManager playerAnim;
-
-    float throwTimeBeforeSpinInPlace;
     float throwTimeSpinningInPlace;
+    float timeSpinningInPlace;
 
-    float timeTravelling;
-    float startTime;
+    private const float ACCELERATION_MULTIPLIER = 1.03f;
+    private const float DECELERATION_MULTIPLIER = 0.97f;
+    private const float MAX_RETURNING_SPEED = 30;
 
-    float minThrowSpeed, maxThrowSpeed;
     float returningSpeed;
-
-   // public float pauseBeforeThrow;
+    float throwSpeed;
 
     private void Awake()
     {
@@ -39,11 +37,10 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     void Start()
     {
-        throwTimeBeforeSpinInPlace = combatScript.throwTimeBeforeSpinInPlace;
+
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
-        minThrowSpeed = combatScript.minThrowSpeed;
-        maxThrowSpeed = combatScript.maxThrowSpeed;
         returningSpeed = combatScript.throwReturnSpeed;
+        throwSpeed = combatScript.throwSpeed;
     }
 
     void FixedUpdate()
@@ -59,35 +56,40 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
         if (thrown)
         {
-            // move in specific direction for a specific amount of time (Stage 1 of throw attack)
-            if (timeTravelling < throwTimeBeforeSpinInPlace)
+            // stage 1 : sword slows down over time until velocity is close to 0 ( less than 1 in this case )
+            if (throwSpeed > 1)
             {
-                //float t = (Time.time - startTime);
-                //swordRigidBody.velocity = transform.forward * throwSpeed;
-                Vector3 smoothVel = new Vector3(Mathf.SmoothStep(minThrowSpeed, maxThrowSpeed, timeTravelling), 0, 0);
-                swordRigidBody.velocity = transform.forward * smoothVel.magnitude;
+                throwSpeed *= DECELERATION_MULTIPLIER;
+                swordRigidBody.velocity = transform.forward * throwSpeed;
             }
-
-            // spin on the spot for a specific amount of time (Stage 2 of throw attack)
-            else if (timeTravelling >= throwTimeBeforeSpinInPlace && timeTravelling < (throwTimeBeforeSpinInPlace + throwTimeSpinningInPlace))
+            // stage 2 : sword spins in place for some time
+            else if (throwSpeed >= 0)
             {
-                swordRigidBody.velocity = new Vector3(0, 0, 0);
-            }
+                throwSpeed = 0;
+                timeSpinningInPlace += Time.deltaTime;
+                if(timeSpinningInPlace >= throwTimeSpinningInPlace)
+                {
+                    throwSpeed = -returningSpeed;
+                    returning = true;
+                }
+            } 
 
-            // return to the player (Stage 3 of throw attack)
-            else if (timeTravelling >= throwTimeBeforeSpinInPlace + throwTimeSpinningInPlace)
+            // stage 3 : sword returns to the player, increaseing velocity over time ( velocity can not be higher than max returning speed )
+            if(throwSpeed < 0)
             {
-                returning = true;
                 transform.LookAt(player.transform);
-                swordRigidBody.velocity = transform.forward * returningSpeed;
+                throwSpeed *= ACCELERATION_MULTIPLIER;
+                swordRigidBody.velocity = -transform.forward * throwSpeed;
+                if (throwSpeed <= -MAX_RETURNING_SPEED) throwSpeed = -MAX_RETURNING_SPEED;
             }
-            timeTravelling += Time.deltaTime;
+
         }
     }
 
     public void ThrowSword(Quaternion targetRotation)
     {
-
+        throwSpeed = combatScript.throwSpeed;
+        timeSpinningInPlace = 0;
         if (swordModel.activeInHierarchy)
         {
             // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
@@ -117,7 +119,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
             thrown = false;
             swordRigidBody.isKinematic = true;
             swordModel.GetComponent<Animator>().Play("PlayerSwordIdle");
-            timeTravelling = 0;
+            //timeTravelling = 0;
         }
     }
 
