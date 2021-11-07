@@ -140,6 +140,7 @@ public class EnemyBase : Patrol
             }
         }
 
+        attackUsed = false;
         Attack();
         AttackCooldown();
     }
@@ -183,10 +184,8 @@ public class EnemyBase : Patrol
     //will be called by other scripts
     public virtual void Attack()
     {
-        attackUsed = false;
         if (CanAttack)
         {
-
             if (MeleeAvailable)
             {
                 MeleeAttack();
@@ -216,15 +215,15 @@ public class EnemyBase : Patrol
 
     protected virtual void ChargeAttack()
     {
-            chargeStart = transform.position;
-            chargeDirection = detector.GetCurTarget().position - transform.position;
-            chargeDistance = chargeDirection.magnitude * chargeDistanceMult;
-            chargeDirection.Normalize();
-            MyRigid.velocity = chargeDirection * chargeSpeed;
+        chargeStart = transform.position;
+        chargeDirection = detector.GetCurTarget().position - transform.position;
+        chargeDistance = chargeDirection.magnitude * chargeDistanceMult;
+        chargeDirection.Normalize();
+        MyRigid.velocity = chargeDirection * chargeSpeed;
 
-            attackUsed = true;
-            curAttack = AttackTypes.Charge;
-            charging = true;
+        attackUsed = true;
+        curAttack = AttackTypes.Charge;
+        charging = true;
     }
 
     protected virtual void MeleeAttack()

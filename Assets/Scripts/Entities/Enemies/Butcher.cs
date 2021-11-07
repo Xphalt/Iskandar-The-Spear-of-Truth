@@ -15,7 +15,10 @@ public class Butcher : EnemyBase
     public float bleedDelay;
     public float minBandaidRadius, maxBandaidRadius;
 
-    private bool butcherAttackUsed=false;
+    public float knockBackSpeed;
+    public float knockBackDuration;
+    public float stunDuration;
+
     public GameObject bandaid;
 
     [NamedArrayAttribute(new string[] { "BleedSlash" })]
@@ -26,7 +29,8 @@ public class Butcher : EnemyBase
     private float[] butcherTimers = new float[(int)ButcherAttacks.AttackTypesCount];
     protected ButcherAttacks butcherAttack = ButcherAttacks.AttackTypesCount;
 
-    protected bool BleedSlashAvailable => (butcherTimers[(int)ButcherAttacks.BleedSlash] >= butcherCooldowns[(int)ButcherAttacks.BleedSlash]);
+    protected bool BleedSlashAvailable => (butcherTimers[(int)ButcherAttacks.BleedSlash] >= butcherCooldowns[(int)ButcherAttacks.BleedSlash])
+        && detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget());
     private bool slashing=false;
 
     // Start is called before the first frame update
@@ -44,18 +48,15 @@ public class Butcher : EnemyBase
 
     public override void Attack()
     {
-        base.Attack();
-
         if(CanAttack)
         {
-            butcherAttackUsed = false;
-            if (!butcherAttackUsed && BleedSlashAvailable)
+            if (BleedSlashAvailable)
             {
                 BleedSlashAttack();
-                butcherAttackUsed = true;
+                attackUsed = true;
             }
 
-            if (butcherAttackUsed)
+            if (attackUsed)
             {
                 //change state to Attacking
                 curState = EnemyStates.Attacking;
@@ -65,6 +66,7 @@ public class Butcher : EnemyBase
                 attackEnded = false;
             }
         }
+        base.Attack();
     }
 
     protected override void AttackCooldown()
@@ -90,9 +92,9 @@ public class Butcher : EnemyBase
 
     protected override void ChargeAttack()
     {
-            _myAnimator.SetBool("IsCharging", true);
-            attackUsed = true;
-            curAttack = AttackTypes.Charge;
+        _myAnimator.SetBool("IsCharging", true);
+        attackUsed = true;
+        curAttack = AttackTypes.Charge;
     }
 
     public void ButcherCharge()
@@ -117,6 +119,7 @@ public class Butcher : EnemyBase
             {
                 //call Jerzy's Knockback thing
                 stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
+                collision.gameObject.GetComponent<PlayerMovement_Jerzy>().KnockBack(transform.position, knockBackSpeed, knockBackDuration, stunDuration);
             }
         }
     }

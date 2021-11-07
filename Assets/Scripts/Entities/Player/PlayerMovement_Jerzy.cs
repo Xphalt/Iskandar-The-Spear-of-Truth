@@ -66,7 +66,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float consumeDuration;
     private float timeSinceConsumed;
     private float consumeMoveAmount;
-    
+
+    private float stunDuration = 0;
+    private float stunTimer = 0;
+    private bool stunned = false;
+    private bool stunnable = false;
 
     public GameObject FadeUI;
 
@@ -76,7 +80,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
                 timeSinceLastDash >= dashDuration && 
-                !falling && !knockedBack && !isRooted && !isSliding && !respawning && !gettingConsumed && !usingWand;
+                !falling && !knockedBack && !isRooted && !isSliding && !respawning && !gettingConsumed && !usingWand && !stunned;
 
     [SerializeField] private float _rotationSpeed;
 
@@ -107,6 +111,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 isRooted = false;
                 timeRooted = 0;
             }
+        }
+
+        if (stunned)
+        {
+            stunTimer += Time.deltaTime;
+            stunned = stunTimer < stunDuration;
         }
 
         if (!gettingConsumed && !respawning)
@@ -200,9 +210,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
         else if (knockedBack)
         {
-            timeKnockedBack = 0;
-            knockedBack = false;
-            playerAnimation.Landing();
+            EndKnockback();
         }
 
     }
@@ -283,10 +291,10 @@ public class PlayerMovement_Jerzy : MonoBehaviour
          * Player animation.
          * ________________________________________________________________________*/
         if (!playerAnimation.isLongIdling)
-            {
-                playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
-                playerAnimation.Strafing();
-            }
+        {
+            playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+            playerAnimation.Strafing();
+        }
 
         else if (playerAnimation.isLongIdling)
             playerAnimation.LongIdling(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
@@ -331,7 +339,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         _targetedTransform = newTargetedTransform;
     }
 
-    public void KnockBack(Vector3 otherPosition, float speed, float duration)
+    public void KnockBack(Vector3 otherPosition, float speed, float duration, float stunTime = 0)
     {
         timeSinceLastDash = dashDuration;
         otherPosition = new Vector3(otherPosition.x, transform.position.y, otherPosition.z);
@@ -340,6 +348,25 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         playerModel.transform.LookAt(otherPosition);
         knockBackDirection = (transform.position - otherPosition).normalized;
         knockedBack = true;
+        stunnable = stunTime > 0;
+        if (stunnable) stunDuration = stunTime;
+    }
+
+    private void EndKnockback()
+    {
+        timeKnockedBack = 0;
+        knockedBack = false;
+        if (stunnable) Stun(stunDuration);
+        stunnable = false;
+        playerAnimation.Landing();
+        m_Rigidbody.velocity = Vector3.zero;
+    }
+
+    public void Stun(float duration = 1)
+    {
+        stunned = true;
+        stunDuration = duration;
+        stunTimer = 0;
     }
 
     public void Root(float duration)
@@ -353,9 +380,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public void Slide(bool online)
     {	
-	isSliding = online;
-	if(!isSliding)
-	    LockPlayerMovement();	
+	    isSliding = online;
+	    if(!isSliding)
+	        LockPlayerMovement();	
     }
 
     public void Respawn(Vector3 position, float time, float damage)
@@ -390,4 +417,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         LockPlayerMovement();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Check for object type??
+
+        if (knockedBack) EndKnockback();
+
+    }
 }
