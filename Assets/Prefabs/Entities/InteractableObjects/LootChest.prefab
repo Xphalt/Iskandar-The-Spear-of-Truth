@@ -137,7 +137,7 @@ Animator:
   m_GameObject: {fileID: 6209861486168533321}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c01e8220809bdd542816817b653520f2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -197,15 +197,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isInteractable: 1
   lootChestLidPivot: {fileID: 6209861486168533321}
-  minGems: 5
-  maxGems: 10
-  GemPrefab: {fileID: 292970523194260950, guid: 2c7144284f371a34bb63b1cb0261db5e, type: 3}
-  gemHeightOffset: 0.4
+  lootHeightOffset: 1
   lootHeightForce: 400
   lootForwardForce: 100
   lootSideForce: 100
-  gemItem: {fileID: 11400000, guid: 325ccace65a6b5e41bf6076826de2740, type: 2}
-  groundItem: {fileID: 4138513575415382912, guid: 26d61015829d48c44853d006ecd39a7b, type: 3}
 --- !u!135 &6209861486510110492
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -269,6 +264,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 325ccace65a6b5e41bf6076826de2740, type: 2}
   type: 3
   groundItem: {fileID: 4138513575415382912, guid: 26d61015829d48c44853d006ecd39a7b, type: 3}
+  minimumGems: 0
+  maximumGems: 0
+  gemItem: {fileID: 0}
 --- !u!1 &6209861486901584631
 GameObject:
   m_ObjectHideFlags: 0
