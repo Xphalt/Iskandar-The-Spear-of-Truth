@@ -20,6 +20,13 @@ public class PauseMenuManager : MonoBehaviour
     public GameObject inventoryMenu;
     public GameObject questsMenu;
     public GameObject settingsMenu;
+
+    public GameObject audioSettings;
+    public GameObject gameplaySettings;
+    public GameObject graphicsSettings;
+    public GameObject keyboardControls;
+    public GameObject quttingConfirmation;
+
     private int numberOfPages = 4;
 
     private int currentPage = 0;
@@ -82,6 +89,12 @@ public class PauseMenuManager : MonoBehaviour
         inventoryMenu.SetActive(false);
         questsMenu.SetActive(false);
 
+        gameplaySettings.SetActive(false);
+        keyboardControls.SetActive(false);
+        quttingConfirmation.SetActive(false);
+        graphicsSettings.SetActive(false);
+        audioSettings.SetActive(false);
+
         equipmentMenu.SetActive(true);
         title.text = "Equipment";
         leftOption.text = "Settings";
@@ -124,6 +137,12 @@ public class PauseMenuManager : MonoBehaviour
         inventoryMenu.SetActive(false);
         questsMenu.SetActive(false);
         equipmentMenu.SetActive(false);
+
+        gameplaySettings.SetActive(false);
+        keyboardControls.SetActive(false);
+        quttingConfirmation.SetActive(false);
+        graphicsSettings.SetActive(false);
+        audioSettings.SetActive(false);
     }
 
     public void ShowMenu()
