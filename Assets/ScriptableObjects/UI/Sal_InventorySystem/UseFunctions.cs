@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -58,12 +59,21 @@ public class UseFunctions : MonoBehaviour
                 case "Revival Gem":
                     database[i].OnUseCurrent += UseRevivalGem;
                     break;
+                case "Small Potion":
+                    database[i].OnUseCurrent += UsePotion;
+                    break;
+                case "Medium Potion":
+                    database[i].OnUseCurrent += UsePotion;
+                    break;
+                case "Max Potion":
+                    database[i].OnUseCurrent += UsePotion;
+                    break;
             } 
         }
     }
-     
 
-    //Usefull variables
+   
+    //Useful variables
     private float current;
     private float regenerationInterval;
     public float RegenerationInterval
@@ -87,46 +97,49 @@ public class UseFunctions : MonoBehaviour
 
 
     #region Use Functions 
-    public void UseBraceletOfScouting()
+    private void UseBraceletOfScouting()
     { 
         Vector3 newPos = playerCombat.swordObject.transform.position;
         newPos.y = playerstats.transform.position.y;
         playerstats.transform.position = newPos;
-    }
-     
-    public void UseGoggles()
+    } 
+
+    private void UseGoggles()
     { 
         if(playerstats.listOfObjs != null && playerstats.listOfObjs.activeSelf) playerstats.listOfObjs.SetActive(false);
     }
-    public void UseGogglesUndo()
+
+    private void UseGogglesUndo()
     { 
         if (playerstats.listOfObjs != null && !playerstats.listOfObjs.activeSelf) playerstats.listOfObjs.SetActive(true);
     }
-     
-    public void UseRingOfVitality()
+
+    private void UseRingOfVitality()
     { 
         current += Time.deltaTime; 
         if (current > regenerationInterval)
         {
             if (playerstats.health < playerstats.MAX_HEALTH) //Magic number (variable needed);
+            {
                 playerstats.health += healingValue;
-
+                UIManager.instance.UpdateHealthBar((int)healingValue);
+            }
             current = 0;
-        }
+        } 
     }
-     
-    public void UseBraceletOfTheLifeStealers()
+
+    private void UseBraceletOfTheLifeStealers()
     { 
         if (playerstats.health < playerstats.MAX_HEALTH) //Magic number (variable needed);
             playerstats.health += healingValue;
     }
 
-    public void UseGemsPot()
+    private void UseGemsPot()
     {
         playerstats.Gems += gemsValue;
     }
 
-    public void UseBombBag()
+    private void UseBombBag()
     {
         if(!FindObjectOfType<Bomb>())
         {
@@ -141,7 +154,7 @@ public class UseFunctions : MonoBehaviour
         }
     }
 
-    public void UseWandOfMagnetism()
+    private void UseWandOfMagnetism()
     {
         if (!FindObjectOfType<MagneticWand>())
         {
@@ -149,17 +162,29 @@ public class UseFunctions : MonoBehaviour
         }
     }
 
-    public void UseRevivalGem()
-    {
-        float healPercentage = ((ResourceObject)(playerstats.inventory.database.ItemObjects[playerstats.revivalGem.data.id])).healPercentage;
-
+    private void UseRevivalGem()
+    { 
         //Item removal 
         playerstats.inventory.RemoveItem(playerstats.revivalGem.data);
 
         //Heal player
-        playerstats.health = playerstats.MAX_HEALTH * (healPercentage / 100);
+        playerstats.health = playerstats.MAX_HEALTH * (healingValue / 100);
 
         UIManager.instance.UpdateHealthBar((int)playerstats.health);
+    }
+
+    private void UsePotion()
+    { 
+        playerstats.health += healingValue;
+        playerstats.health = Mathf.Clamp(playerstats.health, 0.0f, playerstats.MAX_HEALTH);
+        //Update UI
+        UIManager.instance.SetHealthBar((int)playerstats.health);
+
+        //Item removal 
+        if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
+            playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
+        else
+            playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(-1);
     }
     #endregion
 }

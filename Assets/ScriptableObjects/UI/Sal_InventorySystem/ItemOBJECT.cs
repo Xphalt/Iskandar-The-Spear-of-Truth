@@ -5,11 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item Object", menuName = "Inventory System/Items/Item")]
 public class ItemOBJECT : ItemObject_Sal
 {
-    public float healingValue;
-
-    public float damage;
-    public float explosionRadius;
-    public float timeBeforeDetonation;
+    public float healingValue; 
 
     public string Desc;
 
@@ -24,10 +20,16 @@ public class ItemOBJECT : ItemObject_Sal
 
     public override void UseCurrent()
     {
+        //Setting values for the delegate Use
+        UseFunctions.Instance.HealingValue = healingValue;
+
         OnUseCurrent.Invoke();
     }
     public override void UseAfter()
     {
+        //Setting values for the delegate Use
+        UseFunctions.Instance.HealingValue = healingValue;
+
         OnUseAfter.Invoke();
     }
 } 
