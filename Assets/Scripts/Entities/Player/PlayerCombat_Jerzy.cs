@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerCombat_Jerzy : MonoBehaviour
 {
     public GameObject playerModel;
-
-    public float throwTimeBeforeSpinInPlace;
+    
+    
     public float throwTimeSpinningInPlace;
-    public float minThrowSpeed, maxThrowSpeed;
+    public float throwSpeed;
     public float throwReturnSpeed;
     public bool attackOffCooldown = true;
     public bool canAttack = true;
