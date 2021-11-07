@@ -172,6 +172,19 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             CheckGround();
         }
 
+        /*_________________________________________________________________________
+         * Player animation.
+         * ________________________________________________________________________*/
+        if (!playerAnimation.isLongIdling)
+        {
+            playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+            playerAnimation.Strafing();
+        }
+
+        else if (playerAnimation.isLongIdling)
+            playerAnimation.LongIdling(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
+                                                                         //_________________________________________________________________________
+
         // if player has stepped off a ledge, reset only their x and z velocity. This is optional if we want the player to fall directly downwards.
         //if (falling && timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS)
         //{
@@ -336,18 +349,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 playerAnimation.animator.SetFloat("runSpeed", gradualSpeedMultiplier);
         }
 
-        /*_________________________________________________________________________
-         * Player animation.
-         * ________________________________________________________________________*/
-        if (!playerAnimation.isLongIdling)
-        {
-            playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
-            playerAnimation.Strafing();
-        }
-
-        else if (playerAnimation.isLongIdling)
-            playerAnimation.LongIdling(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
-                                                                         //_________________________________________________________________________
     }
 
     void CheckGround()

@@ -31,7 +31,7 @@ public class Patrol : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
 
         _myAnimator = GetComponentInParent<Animator>();
-        _myAnimator.SetBool("IsPatrolling", true);
+        _myAnimator.SetBool("IsPatrolling", ListOfNodes.Length > 0);
         _myCapsuleCol = GetComponent<CapsuleCollider>();
 
         agent.autoBraking = false;
