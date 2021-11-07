@@ -33,12 +33,16 @@ public class ResourceObject : ItemObject_Sal
     {
         //Setting values for the delegate Use
         UseFunctions.Instance.GemsValue = gems;
+        UseFunctions.Instance.HealingValue = healPercentage;
+
         OnUseCurrent.Invoke();
     }
     public override void UseAfter()
     {
         //Setting values for the delegate Use
         UseFunctions.Instance.GemsValue = gems;
+        UseFunctions.Instance.HealingValue = healPercentage;
+
         OnUseAfter.Invoke();
     }
 }

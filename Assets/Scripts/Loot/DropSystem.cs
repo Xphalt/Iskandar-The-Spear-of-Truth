@@ -7,7 +7,8 @@ public enum EntityType
     type1,
     type2,
     type3,
-    Chest
+    Chest,
+    Pot
 }
 
 public class DropSystem : MonoBehaviour

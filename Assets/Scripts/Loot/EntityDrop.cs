@@ -18,6 +18,10 @@ public class EntityDrop : MonoBehaviour
     public GameObject groundItem;
     
     private Vector3 randomSpawnDir;
+
+    public int minimumGems;
+    public int maximumGems;
+    public ItemObject_Sal gemItem;
     
     public void SpawnLoot()
     {
@@ -50,8 +54,20 @@ public class EntityDrop : MonoBehaviour
                 canIReset = true;
             }
         }
+        // Gem spawn
+        int amountOfGems = Random.Range(minimumGems, maximumGems);
+        for (int gems = 0; gems < amountOfGems; gems++)
+        {
+            GameObject obj = Instantiate(groundItem, transform.position, transform.rotation);
+            obj.GetComponent<GroundItem>().SetItem(gemItem);
 
-        if(canIReset)
+            if (type == EntityType.Chest)
+                obj.GetComponent<GroundItem>().spawn += ChestSpawn;
+            else if (type == EntityType.Pot)
+                obj.GetComponent<GroundItem>().spawn += PotSpawn;
+        }
+
+        if (canIReset)
             //Reset tentatives to 1
             DropSystem.Instance.ResetTentativeNum(type);
         else
@@ -86,6 +102,12 @@ public class EntityDrop : MonoBehaviour
 
     public void ChestSpawn(GameObject obj)
     {
-        obj.GetComponent<Rigidbody>().velocity = Vector3.up * Time.deltaTime; 
+        GetComponent<LootChest_Jerzy>().SetForces(obj);
     }
+
+    public void PotSpawn(GameObject obj)
+    {
+        GetComponent<ScrDestructablePot>().SetForces(obj);
+    }
+   
 }
