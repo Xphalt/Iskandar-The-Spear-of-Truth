@@ -84,7 +84,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public bool CanMove => (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
-                timeSinceLastDash >= dashDuration && 
+                timeSinceLastDash >= dashDuration &&
                 !falling && !knockedBack && !isRooted && !isSliding && !respawning && !gettingConsumed && !usingWand && !stunned;
 
     [SerializeField] private float _rotationSpeed;
@@ -95,10 +95,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private const float SPEED_MULTI_CHANGE_DECREASE = 0.95f;
     private const float MAX_SPEED_MULTIPLIER = 1;
     private const float MIN_SPEED_MULTIPLIER = 0.1f;
-
-
-
-
 
     private void Awake()
     {
@@ -119,11 +115,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         timeSinceLastDash += Time.deltaTime;
         dashSpeedMultiplier += Time.deltaTime;
 
-        if(isRooted && timeSinceLastDash > dashDuration)
+        if (isRooted && timeSinceLastDash > dashDuration)
         {
             m_Rigidbody.velocity = Vector3.zero;
             timeRooted += Time.deltaTime;
-            if(timeRooted>=rootDuration)
+            if (timeRooted >= rootDuration)
             {
                 isRooted = false;
                 timeRooted = 0;
@@ -189,7 +185,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             timeSinceConsumed += Time.deltaTime;
 
-            if(timeSinceConsumed <= consumeDuration)
+            if (timeSinceConsumed <= consumeDuration)
             {
                 transform.Translate(Vector3.up * -consumeMoveAmount);
             }
@@ -220,11 +216,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         else
             timeSinceRespawnStarted = 0;
 
-    
+
         if (falling || respawning || gettingConsumed)
             timeSinceLastDash = dashDuration;
 
-        if(timeSinceLastDash < dashDuration && !falling)
+        if (timeSinceLastDash < dashDuration && !falling)
         {
             //m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
             m_Rigidbody.velocity = dashDirection * dashForce;// / dashSpeedMultiplier;
@@ -269,7 +265,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public void Movement(Vector3 m_Input)
     {
         // acceleration and decelereation of player movement
-        if(m_Input.magnitude > 0)
+        if (m_Input.magnitude > 0)
         {
             gradualSpeedMultiplier *= SPEED_MULTI_CHANGE_INCREASE;
             if (gradualSpeedMultiplier > MAX_SPEED_MULTIPLIER) gradualSpeedMultiplier = MAX_SPEED_MULTIPLIER;
@@ -277,7 +273,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         else
         {
             gradualSpeedMultiplier *= SPEED_MULTI_CHANGE_DECREASE;
-            if (gradualSpeedMultiplier <= MIN_SPEED_MULTIPLIER ) gradualSpeedMultiplier = MIN_SPEED_MULTIPLIER;
+            if (gradualSpeedMultiplier <= MIN_SPEED_MULTIPLIER) gradualSpeedMultiplier = MIN_SPEED_MULTIPLIER;
             m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x * gradualSpeedMultiplier, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z * gradualSpeedMultiplier);
         }
 
@@ -320,7 +316,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             }
             else
             {
-                if(m_Input.magnitude > 0)
+                if (m_Input.magnitude > 0)
                 {
                     Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier * gradualSpeedMultiplier);
                     newVel.y = m_Rigidbody.velocity.y;
@@ -334,8 +330,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 canBeDamaged = true;
             }
             // trying this out to match the running animation speed with player speed
-            if(speedMultiplier > 0)
-            playerAnimation.animator.SetFloat("runSpeed",  speedMultiplier*gradualSpeedMultiplier);
+            if (speedMultiplier > 0)
+                playerAnimation.animator.SetFloat("runSpeed", speedMultiplier * gradualSpeedMultiplier);
             else
                 playerAnimation.animator.SetFloat("runSpeed", gradualSpeedMultiplier);
         }
@@ -351,17 +347,17 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         else if (playerAnimation.isLongIdling)
             playerAnimation.LongIdling(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
-       //_________________________________________________________________________
+                                                                         //_________________________________________________________________________
     }
 
     void CheckGround()
-    { 
+    {
         Vector3 newVel = m_Rigidbody.velocity;
 
         if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance, RAYCAST_LAYER_MASK, QueryTriggerInteraction.Ignore))
         {
             fallingSpeedMultiplier += Time.deltaTime;
-            newVel.y = -(fallingSpeed* fallingSpeedMultiplier* fallingSpeedMultiplier);
+            newVel.y = -(fallingSpeed * fallingSpeedMultiplier * fallingSpeedMultiplier);
             onGround = false;
         }
         else
@@ -413,11 +409,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (stunnable) stunDuration = stunTime;
     }
 
-    private void EndKnockback()
+    private void EndKnockback(bool collided = false)
     {
         timeKnockedBack = 0;
         knockedBack = false;
-        if (stunnable) Stun(stunDuration);
+        if (stunnable && collided) Stun(stunDuration);
         stunnable = false;
         playerAnimation.Landing();
         m_Rigidbody.velocity = Vector3.zero;
@@ -432,7 +428,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public void Root(float duration)
     {
-        if(!isRooted)
+        if (!isRooted)
         {
             isRooted = true;
             rootDuration = duration;
@@ -440,10 +436,10 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     }
 
     public void Slide(bool online)
-    {	
-	    isSliding = online;
-	    if(!isSliding)
-	        LockPlayerMovement();	
+    {
+        isSliding = online;
+        if (!isSliding)
+            LockPlayerMovement();
     }
 
     public void Respawn(Vector3 position, float time, float damage)
@@ -481,8 +477,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // Check for object type??
-
-        if (knockedBack) EndKnockback();
-
+        if (knockedBack) EndKnockback(true);
     }
 }
