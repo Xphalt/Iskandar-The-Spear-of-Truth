@@ -27,7 +27,7 @@ public class LootChest_Jerzy : MonoBehaviour
         {
             GetComponent<EntityDrop>().SpawnLoot();
 
-            lootChestLidPivot.GetComponent<Animator>().Play("ChestLidOpening1");
+            lootChestLidPivot.GetComponent<Animator>().Play("LootChestLidOpening");
 
             isInteractable = false;
             gameObject.layer = 0;
