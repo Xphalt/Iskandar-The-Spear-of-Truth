@@ -26,6 +26,7 @@ public class ItemSelect : UserInterface_Sal
         slotsOnInterface.Add(obj, inventory.GetSlots[(int)EquipSlot.ItemSlot]);
 
         uiMask = inventory.GetSlots[(int)EquipSlot.ItemSlot].slotDisplay.transform.GetChild(0).GetComponent<Image>().sprite;
+        inventory.GetSlots[(int)EquipSlot.ItemSlot].OnAfterUpdate(inventory.GetSlots[(int)EquipSlot.ItemSlot]);
     }
 
     public void OnClick()
