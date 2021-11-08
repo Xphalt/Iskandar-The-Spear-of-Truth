@@ -32,25 +32,39 @@ public class Dryad : EnemyBase
     public override void Update()
     {
         base.Update();
+
+        SetMovementAnim();
     }
 
     public override void Attack()
     {
         base.Attack();
-
-        if (!attackUsed && SummonAvailable)
+        
+        if (CanAttack)
         {
-            SummonSpellCast();
-            attackUsed = true;
+            if (SummonAvailable)
+            {
+                SummonSpellCast();
+                attackUsed = true;
+            }
+
+            if (attackUsed)
+            {
+                //change state to Attacking
+                curState = EnemyStates.Attacking;
+                //reset cooldown so Enemy can attack again
+                dryadTimers[(int)dryadAttack] = 0;
+                attackEnded = false;
+            }
         }
+    }
 
-        if (attackUsed)
+    protected override void AttackCooldown()
+    {
+        base.AttackCooldown();
+        for (int a = 0; a < dryadCooldowns.Length; a++)
         {
-            //change state to Attacking
-            curState = EnemyStates.Attacking;
-            //reset cooldown so Enemy can attack again
-            dryadTimers[(int)dryadAttack] = 0;
-            attackEnded = false;
+            dryadTimers[a] += Time.deltaTime;
         }
     }
 
@@ -58,26 +72,22 @@ public class Dryad : EnemyBase
     {
         dryadAttack = DryadAttacks.SummonSpell;
 
+        _myAnimator.SetTrigger("CastSpell");
+    }
+
+    public void SpawnTraps()
+    {
         Vector3 spawnPos = transform.position;
         for (int t = 0; t < numTrapsSpawned; t++)
         {
-            spawnPos.x = transform.position.x + Random.Range(minSpawnRadius, maxSpawnRadius);
-            spawnPos.z = transform.position.z + Random.Range(minSpawnRadius, maxSpawnRadius);
-
             GameObject newTrap = Instantiate(trapPrefab);
-            newTrap.transform.position = spawnPos;
+            newTrap.transform.position = transform.RandomRadiusPoint(minSpawnRadius, maxSpawnRadius);
         }
 
-        for(int p = 0; p < numPlantsSpawned; p++)
+        for (int p = 0; p < numPlantsSpawned; p++)
         {
-            spawnPos.x = transform.position.x + Random.Range(minSpawnRadius, maxSpawnRadius);
-            spawnPos.z = transform.position.z + Random.Range(minSpawnRadius, maxSpawnRadius);
-
             GameObject newPlant = Instantiate(plantPrefab);
-            newPlant.transform.position = spawnPos;
+            newPlant.transform.position = transform.RandomRadiusPoint(minSpawnRadius, maxSpawnRadius);
         }
-
-        //_myAnimator.SetTrigger();
-
     }
 }
