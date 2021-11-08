@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -45,6 +46,10 @@ public class ItemSelect : UserInterface_Sal
             }
             if (inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id > -1)
                 itemlistqueue.Enqueue(inventory.database.ItemObjects[inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id]);
+
+            var a = itemlistqueue.ToList();
+            a.Sort((v1, v2) => v1.data.id.CompareTo(v2.data.id));
+            itemlistqueue = new Queue<ItemObject_Sal>(a);
         }
 
         if (itemlistqueue.Count > 0)//Equip
