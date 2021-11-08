@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using TMPro;
@@ -13,6 +14,8 @@ public class SettingsOptions : MonoBehaviour
 
     private LocaleIdentifier current_locale;
     private bool done_first_setup = false;
+
+    public AudioMixer masterMixer;
 
     private void Start()
     {
@@ -50,4 +53,15 @@ public class SettingsOptions : MonoBehaviour
         qualityDropDown.value = qualityIndex;
         qualityDropDown.RefreshShownValue();
     }
+
+    public void SetMusicVolume(float volume)
+    {
+        masterMixer.SetFloat("musicVol", volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        masterMixer.SetFloat("sfxVol", volume);
+    }
+
 }
