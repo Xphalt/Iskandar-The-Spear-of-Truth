@@ -109,14 +109,16 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void ThrowAttack()
     {
-        if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
+        if (swordObject.activeInHierarchy)
         {
-            attackOffCooldown = false;
-            StartCoroutine(PauseForThrow());
-            playerMovement.LockPlayerMovement();
+            if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
+            {
+                attackOffCooldown = false;
+                StartCoroutine(PauseForThrow());
+                playerMovement.LockPlayerMovement();
+            }
 
         }
-
     }
 
     IEnumerator PauseForThrow() 
