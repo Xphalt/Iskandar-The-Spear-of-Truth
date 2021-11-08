@@ -239,7 +239,12 @@ public class PlayerStats : StatsInterface
         var item = other.GetComponent<GroundItem>();
         if (item && item.itemobj.type != ItemType.Resource)
         {
-            if (inventory.AddItem(new Item(item.itemobj), 1))
+            if(equipment.FindItemOnInventory(item.itemobj.data) != null)
+            {
+                if (equipment.AddItem(new Item(item.itemobj), 1))
+                    Destroy(other.gameObject);
+            }
+            else if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
         }
         else if(item) //It's a resource
@@ -250,8 +255,8 @@ public class PlayerStats : StatsInterface
                     Debug.Log("Can't take more Revival gems");
                 else
                 {
-                    inventory.AddItem(new Item(item.itemobj), 1);
-                    Destroy(other.gameObject);
+                    if (inventory.AddItem(new Item(item.itemobj), 1))
+                        Destroy(other.gameObject);
                 }
             }
             else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
