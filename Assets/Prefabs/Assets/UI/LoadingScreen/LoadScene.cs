@@ -3,16 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+//This script was made by Fate, contact me if you need any help with it.
+
 public class LoadScene : MonoBehaviour
 {
     public GameObject loadingScreen;
     public Slider progressSlider;
-
-    private void Awake()
-    {
-        //loadingScreen = GameObject.Find("Loading Screen");
-       // progressSlider = loadingScreen.GetComponentInChildren<Slider>();
-    }
+    public Text loadingText;
 
     public void Load(int sceneNumber)
     {
@@ -21,14 +18,23 @@ public class LoadScene : MonoBehaviour
 
     IEnumerator LoadInSync(int sceneNumber)
     {
+        /*_____________________________________________________________________________________________________
+         * This line loads the next scene rather than inputting the scene number. I've commented this out for
+         * testing purposes.
+         * _____________________________________________________________________________________________________*/
+        //AsyncOperation operation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        //______________________________________________________________________________________________________
+
         //Save status of loading into operation. This can then be used to get the progress.
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneNumber);
         loadingScreen.SetActive(true);
 
-        if (!operation.isDone)
+        while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            float progressPercent = progress * 100;
 
+            loadingText.text = progressPercent.ToString("F0") + " %"; //F0 removes decimals
             progressSlider.value = progress;
             yield return null; //Waits until next frame before continuing to loop
         }
