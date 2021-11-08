@@ -51,6 +51,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float timeKnockedBack;
     private float dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
 
+    private const float FALLING_SPEED_VALUE = 11;
+
     private bool isRooted = false;
     private float rootDuration;
     private float timeRooted;
@@ -66,7 +68,14 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float consumeDuration;
     private float timeSinceConsumed;
     private float consumeMoveAmount;
-    
+
+    private float stunDuration = 0;
+    private float stunTimer = 0;
+    private bool stunned = false;
+    private bool stunnable = false;
+    private const float FALLING_SPEED_MULTIPLIER = 0.5f;
+
+    Quaternion targetRotation = new Quaternion();
 
     public GameObject FadeUI;
 
@@ -75,10 +84,17 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public bool CanMove => (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) &&
                 (!playerAnimation.animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) &&
-                timeSinceLastDash >= dashDuration && 
-                !falling && !knockedBack && !isRooted && !isSliding && !respawning && !gettingConsumed && !usingWand;
+                timeSinceLastDash >= dashDuration &&
+                !falling && !knockedBack && !isRooted && !isSliding && !respawning && !gettingConsumed && !usingWand && !stunned;
 
     [SerializeField] private float _rotationSpeed;
+
+
+    private float gradualSpeedMultiplier = 0.1f;
+    private const float SPEED_MULTI_CHANGE_INCREASE = 1.2f;
+    private const float SPEED_MULTI_CHANGE_DECREASE = 0.95f;
+    private const float MAX_SPEED_MULTIPLIER = 1;
+    private const float MIN_SPEED_MULTIPLIER = 0.1f;
 
     private void Awake()
     {
@@ -95,18 +111,25 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void Update()
     {
+
         timeSinceLastDash += Time.deltaTime;
         dashSpeedMultiplier += Time.deltaTime;
 
-        if(isRooted && timeSinceLastDash > dashDuration)
+        if (isRooted && timeSinceLastDash > dashDuration)
         {
             m_Rigidbody.velocity = Vector3.zero;
             timeRooted += Time.deltaTime;
-            if(timeRooted>=rootDuration)
+            if (timeRooted >= rootDuration)
             {
                 isRooted = false;
                 timeRooted = 0;
             }
+        }
+
+        if (stunned)
+        {
+            stunTimer += Time.deltaTime;
+            stunned = stunTimer < stunDuration;
         }
 
         if (!gettingConsumed && !respawning)
@@ -114,28 +137,53 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             CheckGround();
         }
 
-
         float verticalVelocity = m_Rigidbody.velocity.y;
 
         // check if player's velocity is less than 0 and not on the ground
         // !onGround is required because the player may be decending a ramp and it may think the player is falling without the check
-        if (verticalVelocity < 0 && !onGround)
+        if (verticalVelocity < -FALLING_SPEED_VALUE && !onGround)
         {
-            falling = true;
+
             if (timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS && !onGround)
+            {
                 playerAnimation.Falling();
+                falling = true;
+                m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x * FALLING_SPEED_MULTIPLIER, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z * FALLING_SPEED_MULTIPLIER);
+
+            }
+
             timeSpentFalling += Time.deltaTime;
         }
         else if (verticalVelocity == 0 && onGround)
         {
             if (falling)
                 playerAnimation.Landing();
-                
+
 
             falling = false;
             timeSpentFalling = 0;
-
         }
+        if (verticalVelocity >= 0 && !onGround)
+        {
+            falling = true;
+        }
+        if (!gettingConsumed && !respawning)
+        {
+            CheckGround();
+        }
+
+        /*_________________________________________________________________________
+         * Player animation.
+         * ________________________________________________________________________*/
+        if (!playerAnimation.isLongIdling)
+        {
+            playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
+            playerAnimation.Strafing();
+        }
+
+        else if (playerAnimation.isLongIdling)
+            playerAnimation.LongIdling(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
+                                                                         //_________________________________________________________________________
 
         // if player has stepped off a ledge, reset only their x and z velocity. This is optional if we want the player to fall directly downwards.
         //if (falling && timeSpentFalling >= TIME_BEFORE_FALLING_DOWNWARDS)
@@ -150,7 +198,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             timeSinceConsumed += Time.deltaTime;
 
-            if(timeSinceConsumed <= consumeDuration)
+            if (timeSinceConsumed <= consumeDuration)
             {
                 transform.Translate(Vector3.up * -consumeMoveAmount);
             }
@@ -181,11 +229,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         else
             timeSinceRespawnStarted = 0;
 
-    
+
         if (falling || respawning || gettingConsumed)
             timeSinceLastDash = dashDuration;
 
-        if(timeSinceLastDash < dashDuration)
+        if (timeSinceLastDash < dashDuration && !falling)
         {
             //m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
             m_Rigidbody.velocity = dashDirection * dashForce;// / dashSpeedMultiplier;
@@ -200,9 +248,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         }
         else if (knockedBack)
         {
-            timeKnockedBack = 0;
-            knockedBack = false;
-            playerAnimation.Landing();
+            EndKnockback();
         }
 
     }
@@ -231,6 +277,20 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public void Movement(Vector3 m_Input)
     {
+        // acceleration and decelereation of player movement
+        if (m_Input.magnitude > 0)
+        {
+            gradualSpeedMultiplier *= SPEED_MULTI_CHANGE_INCREASE;
+            if (gradualSpeedMultiplier > MAX_SPEED_MULTIPLIER) gradualSpeedMultiplier = MAX_SPEED_MULTIPLIER;
+        }
+        else
+        {
+            gradualSpeedMultiplier *= SPEED_MULTI_CHANGE_DECREASE;
+            if (gradualSpeedMultiplier <= MIN_SPEED_MULTIPLIER) gradualSpeedMultiplier = MIN_SPEED_MULTIPLIER;
+            m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x * gradualSpeedMultiplier, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z * gradualSpeedMultiplier);
+        }
+
+
         // used for the gamepad/touch movement (Will change it in the future once I create the device detection
         float speedMultiplier = Vector3.Distance(Vector3.zero, m_Input);
         if (speedMultiplier > 1) speedMultiplier = 1;
@@ -269,38 +329,36 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             }
             else
             {
-                Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier);
-                newVel.y = m_Rigidbody.velocity.y;
-                m_Rigidbody.velocity = (newVel);
+                if (m_Input.magnitude > 0)
+                {
+                    Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier * gradualSpeedMultiplier);
+                    newVel.y = m_Rigidbody.velocity.y;
+                    m_Rigidbody.velocity = (newVel);
+                }
+
                 Rotation(m_Input);
             }
             if (timeSinceLastDash >= dashDuration && !canBeDamaged)
             {
                 canBeDamaged = true;
             }
+            // trying this out to match the running animation speed with player speed
+            if (speedMultiplier > 0)
+                playerAnimation.animator.SetFloat("runSpeed", speedMultiplier * gradualSpeedMultiplier);
+            else
+                playerAnimation.animator.SetFloat("runSpeed", gradualSpeedMultiplier);
         }
-        /*_________________________________________________________________________
-         * Player animation.
-         * ________________________________________________________________________*/
-        if (!playerAnimation.isLongIdling)
-            {
-                playerAnimation.Running(Mathf.Abs(m_Rigidbody.velocity.magnitude));
-                playerAnimation.Strafing();
-            }
 
-        else if (playerAnimation.isLongIdling)
-            playerAnimation.LongIdling(m_Rigidbody.velocity.magnitude);  //call player idle if waiting for too long
-       //_________________________________________________________________________
     }
 
     void CheckGround()
-    { 
+    {
         Vector3 newVel = m_Rigidbody.velocity;
 
         if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance, RAYCAST_LAYER_MASK, QueryTriggerInteraction.Ignore))
         {
             fallingSpeedMultiplier += Time.deltaTime;
-            newVel.y = -(fallingSpeed* fallingSpeedMultiplier* fallingSpeedMultiplier);
+            newVel.y = -(fallingSpeed * fallingSpeedMultiplier * fallingSpeedMultiplier);
             onGround = false;
         }
         else
@@ -310,6 +368,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             fallingSpeedMultiplier = 1;
         }
         m_Rigidbody.velocity = newVel;
+
     }
 
 
@@ -318,11 +377,18 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         //Debug.Log(m_Input);
         if (m_Input != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(m_Input);
+            targetRotation = Quaternion.LookRotation(m_Input);
             playerModel.transform.rotation = Quaternion.Lerp(playerModel.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
             playerAnimation.Turning(playerModel.transform.rotation.x);
             swordLookRotation = playerModel.transform.rotation;
         }
+        else
+        {
+            playerModel.transform.rotation = Quaternion.Lerp(playerModel.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+            playerAnimation.Turning(playerModel.transform.rotation.x);
+            swordLookRotation = playerModel.transform.rotation;
+        }
+
     }
 
 
@@ -331,7 +397,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         _targetedTransform = newTargetedTransform;
     }
 
-    public void KnockBack(Vector3 otherPosition, float speed, float duration)
+    public void KnockBack(Vector3 otherPosition, float speed, float duration, float stunTime = 0)
     {
         timeSinceLastDash = dashDuration;
         otherPosition = new Vector3(otherPosition.x, transform.position.y, otherPosition.z);
@@ -340,11 +406,30 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         playerModel.transform.LookAt(otherPosition);
         knockBackDirection = (transform.position - otherPosition).normalized;
         knockedBack = true;
+        stunnable = stunTime > 0;
+        if (stunnable) stunDuration = stunTime;
+    }
+
+    private void EndKnockback(bool collided = false)
+    {
+        timeKnockedBack = 0;
+        knockedBack = false;
+        if (stunnable && collided) Stun(stunDuration);
+        stunnable = false;
+        playerAnimation.Landing();
+        m_Rigidbody.velocity = Vector3.zero;
+    }
+
+    public void Stun(float duration = 1)
+    {
+        stunned = true;
+        stunDuration = duration;
+        stunTimer = 0;
     }
 
     public void Root(float duration)
     {
-        if(!isRooted)
+        if (!isRooted)
         {
             isRooted = true;
             rootDuration = duration;
@@ -352,10 +437,10 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     }
 
     public void Slide(bool online)
-    {	
-	isSliding = online;
-	if(!isSliding)
-	    LockPlayerMovement();	
+    {
+        isSliding = online;
+        if (!isSliding)
+            LockPlayerMovement();
     }
 
     public void Respawn(Vector3 position, float time, float damage)
@@ -390,4 +475,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         LockPlayerMovement();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Check for object type??
+        if (knockedBack) EndKnockback(true);
+    }
 }
