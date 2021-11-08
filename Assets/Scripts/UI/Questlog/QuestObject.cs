@@ -1,8 +1,6 @@
 using UnityEngine;
-using UnityEditor;
-using UnityEngine.UIElements;
 
-[CreateAssetMenu(menuName = "Questing/Quest", fileName = "NewQuest")]
+[CreateAssetMenu(menuName = "UI/Questing/Quest", fileName = "NewQuest")]
 [System.Serializable]
 public class QuestObject : ScriptableObject
 {
