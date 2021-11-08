@@ -43,6 +43,8 @@ public class ItemSelect : UserInterface_Sal
                         itemlistqueue.Enqueue(item);
                 }
             }
+            if (inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id > -1)
+                itemlistqueue.Enqueue(inventory.database.ItemObjects[inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id]);
         }
 
         if (itemlistqueue.Count > 0)//Equip
