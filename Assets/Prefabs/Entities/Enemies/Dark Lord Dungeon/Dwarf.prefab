@@ -1254,6 +1254,7 @@ GameObject:
   - component: {fileID: 27679777522802987}
   - component: {fileID: 4364249796872431789}
   - component: {fileID: 1872216681871864555}
+  - component: {fileID: 5744890171724973455}
   m_Layer: 7
   m_Name: Dwarf
   m_TagString: Untagged
@@ -1411,6 +1412,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ListOfNodes: []
   pauseTime: 0
+  _stopAtLastWaypoint: 0
+  _scriptToEnable: {fileID: 0}
   isChaser: 0
   aggroedMoveSpeed: 0
   findDelay: 0.2
@@ -1429,6 +1432,10 @@ MonoBehaviour:
   - 1
   chargeSpeed: 0
   chargeDistanceMult: 1
+  chargeRaycast: 0
+  chargeLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   projectileObj: {fileID: 5294740723235483312, guid: 19ddde1f8a5849f439db89d8e31e7e6f, type: 3}
   shootPoint: {fileID: 3817028018263644494}
   projectileSpeed: 0
@@ -1471,7 +1478,6 @@ MonoBehaviour:
     m_Bits: 512
   viewAngle: 360
   detectionRadius: 15
-  stopAttacking: 0
 --- !u!195 &1872216681871864555
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1494,6 +1500,28 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5744890171724973455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820919466449660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disableDelay: 0
+  dropChances:
+  - 50
+  itemsToDrop:
+  - {fileID: 11400000, guid: adaf355eb0f42164b99c625fb5dca520, type: 2}
+  type: 0
+  groundItem: {fileID: 4138513575415382912, guid: 26d61015829d48c44853d006ecd39a7b, type: 3}
+  minimumGems: 0
+  maximumGems: 0
+  gemItem: {fileID: 0}
 --- !u!1 &1833544915534518
 GameObject:
   m_ObjectHideFlags: 0
