@@ -95,7 +95,6 @@ public class Player_Targeting_Jack : MonoBehaviour
     // Dominique, modified to use a sphere and the same targeting system as for interactables in Interactable_Object_Jack for UX purposes
     public void TargetObject()
     {
-        print("target");
         // Reset so indicator will regrab on if disabling target
         _lastNearestTargetableCollider = null;
         if (IsTargeting())
@@ -111,6 +110,7 @@ public class Player_Targeting_Jack : MonoBehaviour
                 _targetedTransform = _nearestTargetableCollider.transform;
                 _wasTargeting = true;
 
+                print("target");
                 _cameraLook.SetSecondTarget(_targetedTransform);
 
                 // Dominique 07-10-2021, Outline the targeted enemy and move the interactable icon to them
@@ -127,6 +127,7 @@ public class Player_Targeting_Jack : MonoBehaviour
 
     private void UnTargetObject()
     {
+        ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.clear);
         _targetedTransform = null;
         _wasTargeting = false;
 
@@ -135,7 +136,6 @@ public class Player_Targeting_Jack : MonoBehaviour
         playerAnimation.isStrafing = false;
         
         // Dominique 07-10-2021, Clear enemy outline when no longer targeting and remove the interactable icon
-        ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.clear);
         UIManager.instance.DisableTargetingIcon();
     }
 
