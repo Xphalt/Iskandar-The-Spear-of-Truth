@@ -21,10 +21,18 @@ public class UseFunctions : MonoBehaviour
     public GameObject bomb;
     public GameObject wand;
 
-    void Awake()
+    void OnDestroy()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        var database = FindObjectOfType<PlayerStats>().inventory.database.ItemObjects;
+        for (int i = 0; i < database.Length; i++)
+        {
+            database[i].OnUseCurrent = null;
+            database[i].OnUseAfter = null;
+        }
+
+        if (this == instance) { instance = null; }
     }
+
     private void Start()
     {    
         var database = FindObjectOfType<PlayerStats>().inventory.database.ItemObjects;
