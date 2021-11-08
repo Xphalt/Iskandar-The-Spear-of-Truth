@@ -73,6 +73,8 @@ public class EnemyBase : Patrol
 
     public float minChaseRadius;
 
+    public bool PatrolAvailable => agent.enabled && ListOfNodes.Length > 0;
+
     [HideInInspector]
 
     public override void Start()
@@ -98,8 +100,7 @@ public class EnemyBase : Patrol
             switch (curState)
             {
                 case EnemyStates.Patrolling:
-                    if(!isPaused)
-                        agent.speed = patrolSpeed;
+                    agent.speed = (PatrolAvailable && !isPaused) ? patrolSpeed : 0;
                     agent.stoppingDistance = 0;
 
                     break;
