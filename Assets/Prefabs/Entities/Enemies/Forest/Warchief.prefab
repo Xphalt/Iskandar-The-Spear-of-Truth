@@ -384,6 +384,7 @@ GameObject:
   - component: {fileID: 2778536449404161079}
   - component: {fileID: 5186969173709602396}
   - component: {fileID: 6673555063974951351}
+  - component: {fileID: 3050446360542702631}
   m_Layer: 7
   m_Name: Warchief
   m_TagString: Untagged
@@ -608,7 +609,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ListOfNodes: []
   pauseTime: 0
-  chaseSpeed: 10
+  _stopAtLastWaypoint: 0
+  _scriptToEnable: {fileID: 0}
+  isChaser: 0
+  aggroedMoveSpeed: 0
   findDelay: 0
   availableAttacks: 000000
   attackDamages:
@@ -625,8 +629,13 @@ MonoBehaviour:
   - 0
   chargeSpeed: 15
   chargeDistanceMult: 0
+  chargeRaycast: 0
+  chargeLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
+  projectileSpeed: 0
   minChaseRadius: 2
   flurryChance: 50
   meleeRange: 2
@@ -684,6 +693,30 @@ MonoBehaviour:
     m_Bits: 512
   viewAngle: 360
   detectionRadius: 100
+--- !u!114 &3050446360542702631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118242360396946730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disableDelay: 0
+  dropChances:
+  - 100
+  - 100
+  itemsToDrop:
+  - {fileID: 11400000, guid: 646af5c49e3955846a15306253907f6b, type: 2}
+  - {fileID: 11400000, guid: 1b074604cbea66d41911e7d1f57d3fa4, type: 2}
+  type: 0
+  groundItem: {fileID: 4138513575415382912, guid: 26d61015829d48c44853d006ecd39a7b, type: 3}
+  minimumGems: 0
+  maximumGems: 0
+  gemItem: {fileID: 0}
 --- !u!1 &2118242360396947964
 GameObject:
   m_ObjectHideFlags: 0
