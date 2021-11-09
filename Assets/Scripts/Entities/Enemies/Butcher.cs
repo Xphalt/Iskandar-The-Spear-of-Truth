@@ -37,7 +37,7 @@ public class Butcher : EnemyBase
     public override void Start()
     {
         base.Start();
-        _myAnimator.SetBool("IsChasing", true);
+        _myAnimator.SetBool("IsAggroed", true);
     }
 
     // Update is called once per frame
@@ -132,10 +132,7 @@ public class Butcher : EnemyBase
             if(slashing)
             {
                 other.GetComponent<PlayerStats>().SetBleed(bleedDamage,maxBleedTicks,bleedDelay);
-                Vector3 spawnPos = transform.position;
-                spawnPos.x = detector.GetCurTarget().position.x + Random.Range(minBandaidRadius, maxBandaidRadius);
-                spawnPos.z = detector.GetCurTarget().position.z + Random.Range(minBandaidRadius, maxBandaidRadius);
-                bandaid.transform.position = spawnPos;
+                bandaid.transform.position = transform.RandomRadiusPoint(minBandaidRadius, maxBandaidRadius);
                 bandaid.SetActive(true);
             }
             hitCollider.enabled = false;

@@ -30,21 +30,7 @@ public class Orc : EnemyBase
         {
             base.Update();
 
-            switch (curState)
-            {
-                case EnemyStates.Patrolling:
-                    _myAnimator.SetBool("IsChasing", false);
-                    break;
-                case EnemyStates.Aggro:
-                    _myAnimator.SetBool("IsPatrolling", false);
-                    _myAnimator.SetBool("IsChasing", true);
-                    break;
-                case EnemyStates.Attacking:
-                    break;
-                default:
-                    break;
-            }
-
+            SetMovementAnim();
 
             if (buffTimer < buffDuration)
             {

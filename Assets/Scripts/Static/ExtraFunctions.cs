@@ -35,9 +35,29 @@ public static class ExtraFunctions
         return new Vector2(Random.value - 0.5f, Random.value - 0.5f).normalized * scale;
     }
 
+    public static Vector2 RandomVector2(float minscale, float maxscale)
+    {
+        return new Vector2(Random.value - 0.5f, Random.value - 0.5f).normalized * Random.Range(minscale, maxscale);
+    }
+
     public static Vector3 RandomVector3(float scale=1)
     {
         return new Vector3(Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f).normalized * scale;
+    }
+
+    public static Vector2 RandomVector3(float minscale, float maxscale)
+    {
+        return new Vector3(Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f).normalized * Random.Range(minscale, maxscale);
+    }
+
+    public static Vector3 RandomRadiusPoint(this Transform self, float minrad, float maxrad)
+    {
+        Vector3 spawnPos = self.position;
+        Vector2 spawnAdd = RandomVector2(minrad, maxrad);
+        spawnPos.x += spawnAdd.x;
+        spawnPos.z += spawnAdd.y;
+
+        return spawnPos;
     }
 
     public static float RandomVariance(float variance)

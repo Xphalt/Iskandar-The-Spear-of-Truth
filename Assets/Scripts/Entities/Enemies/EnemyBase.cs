@@ -73,6 +73,8 @@ public class EnemyBase : Patrol
 
     public float minChaseRadius;
 
+    public bool PatrolAvailable => agent.enabled && ListOfNodes.Length > 0;
+
     [HideInInspector]
 
     public override void Start()
@@ -98,8 +100,7 @@ public class EnemyBase : Patrol
             switch (curState)
             {
                 case EnemyStates.Patrolling:
-                    if(!isPaused)
-                        agent.speed = patrolSpeed;
+                    agent.speed = (PatrolAvailable && !isPaused) ? patrolSpeed : 0;
                     agent.stoppingDistance = 0;
 
                     break;
@@ -114,8 +115,8 @@ public class EnemyBase : Patrol
                     }
                     else
                     {
-                        agent.destination = transform.position + (transform.position - detector.GetCurTarget().transform.position).normalized;
-                        agent.speed = (transform.position - detector.GetCurTarget().transform.position).magnitude < detector.detectionRadius ? aggroedMoveSpeed : 0;
+                        agent.destination = transform.position + (transform.position - detector.GetCurTarget().position).normalized;
+                        agent.speed = (transform.position - detector.GetCurTarget().position).magnitude < detector.detectionRadius ? aggroedMoveSpeed : 0;
                     }
 
                     break;
@@ -143,6 +144,24 @@ public class EnemyBase : Patrol
         attackUsed = false;
         Attack();
         AttackCooldown();
+    }
+
+    public void SetMovementAnim()
+    {
+        switch (curState)
+        {
+            case EnemyStates.Patrolling:
+                _myAnimator.SetBool("IsAggroed", false);
+                break;
+            case EnemyStates.Aggro:
+                _myAnimator.SetBool("IsPatrolling", false);
+                _myAnimator.SetBool("IsAggroed", true);
+                break;
+            case EnemyStates.Attacking:
+                break;
+            default:
+                break;
+        }
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
@@ -321,7 +340,7 @@ public class EnemyBase : Patrol
         if (charging)
             EndCharge();
 
-        _myAnimator.SetBool("IsChasing", false);
+        _myAnimator.SetBool("IsAggroed", false);
         _myAnimator.SetBool("IsPatrolling",false);
         _myAnimator.Play("Idle");
         agent.speed = 0;
