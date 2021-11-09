@@ -13,7 +13,7 @@ public class DwarfExplosive : MonoBehaviour
         Countdown -= Time.deltaTime;
         if (Countdown <= 0)
         {
-            //Explode
+            //explode
         }
     }
 }

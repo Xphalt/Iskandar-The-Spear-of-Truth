@@ -8,84 +8,32 @@ public class Dwarf : EnemyBase
     public GameObject Explosive;
     [Range(0, 100)]
     public int explosiveDropChance;
+    private bool droppedExplosive = false;
 
-    private bool shootUsed = false;
-    private bool meleeUsed = false;
-    private float shootTimer;
-    private float meleeTimer;
-
-    private void Awake()
-    {
-        shootTimer = attackCooldowns[(int)AttackTypes.Shoot];
-        meleeTimer = attackCooldowns[(int)AttackTypes.Melee];
-    }
+    public bool IsDead = false;
 
     // Update is called once per frame
     public override void Update()
     {
-        Attack();
-        ResetAttacks();
-    }
-
-
-    public override void Attack()
-    {
-        if (meleeUsed == false)
+        if (!IsDead)
         {
-            meleeUsed = true;
-            MeleeAttack();
-        }
-        
-        if (shootUsed == false)
-        {
-            shootUsed = true;
-            ShootAttack();
-        }       
-    }
-
-    protected override void MeleeAttack()
-    {
-        base.MeleeAttack();
-        
-    }
-
-    protected override void ShootAttack()
-    {
-        base.ShootAttack();
-        
-    }
-
-    public void ResetAttacks()
-    {
-        if (shootUsed)
-        {
-            shootTimer -= Time.deltaTime;
-            if (shootTimer <= 0)
-            {
-                shootUsed = false;
-                shootTimer = attackCooldowns[(int)AttackTypes.Shoot];
-            }
+            base.Update();
         }
 
-        if (meleeUsed)
+        if (stats.health <= 0 || IsDead)
         {
-            meleeTimer -= Time.deltaTime;
-            if (meleeTimer <= 0)
-            {
-                meleeUsed = false;
-                meleeTimer = attackCooldowns[(int)AttackTypes.Melee];
-            }
+            IsDead = true;
+            OnDeathExplosive(explosiveDropChance);
         }
     }
 
     public void OnDeathExplosive(int chance)
     {
         int percent = Random.Range(0, 101);
-        if (percent < chance)
+        if (percent < chance && !droppedExplosive)
         {
+            droppedExplosive = true;
             Instantiate(Explosive, transform.position, Quaternion.identity);
         }
     }
-
-
 }
