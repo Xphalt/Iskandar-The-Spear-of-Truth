@@ -47,7 +47,8 @@ public class PlayerInput : MonoBehaviour
 
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
-        _playerActionsAsset.Player.Pause.performed += OnPause;
+        // Disable player interaction if pause is set
+        _playerActionsAsset.Player.Pause.performed += _ => TogglePlayerInteraction(false);
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
         _playerActionsAsset.Player.Inventory.performed += _ => _pauseMenuManager.TogglePauseState();
 
@@ -75,7 +76,8 @@ public class PlayerInput : MonoBehaviour
                 _changeItem.inventory.database.ItemObjects[_changeItem.inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id].UseCurrent();
         };
 
-        _playerActionsAsset.UI.Pause.performed += OnPause;
+        // Re-enable player actions if pause is triggered in pause menu
+        _playerActionsAsset.UI.Pause.performed += _ => TogglePlayerInteraction(true);
         #endregion
     }
 
@@ -85,24 +87,16 @@ public class PlayerInput : MonoBehaviour
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
     }
 
-    private void OnPause(InputAction.CallbackContext ctx)
+    // Allow us to enable/disable player interaction so it isn't triggered when UI is being interacted with
+    public void TogglePlayerInteraction(bool enabled)
     {
-        Debug.Log("Previous Action Map: " + ctx.action.actionMap.name);
-
-        switch (ctx.action.actionMap.name)
+        if (enabled)
         {
-            case "Player":
-                _playerActionsAsset.Player.Disable();
-                _playerActionsAsset.UI.Enable();
-                // Call Pause Function
-                break;
-            case "UI":
-                _playerActionsAsset.UI.Disable();
-                _playerActionsAsset.Player.Enable();
-                // Call Pause/Unpause Function
-                break;
-            default:
-                break;
+            _playerActionsAsset.Player.Enable();
+        }
+        else
+        {
+            _playerActionsAsset.Player.Disable();
         }
     }
 

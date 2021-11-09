@@ -2644,7 +2644,7 @@ MonoBehaviour:
   TARGETABLE_LAYERMASK:
     serializedVersion: 2
     m_Bits: 128
-  targetRadius: 0
+  targetRadius: 5
   _wasTargeting: 0
 --- !u!114 &7836609602608423899
 MonoBehaviour:
@@ -2803,10 +2803,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 7836609601897569369}
-  throwTimeBeforeSpinInPlace: 0.5
   throwTimeSpinningInPlace: 0.5
-  minThrowSpeed: 16
-  maxThrowSpeed: 20
+  throwSpeed: 0
   throwReturnSpeed: 24
   attackOffCooldown: 1
   canAttack: 1
@@ -2835,9 +2833,13 @@ MonoBehaviour:
   equipment: {fileID: 11400000, guid: 1404d5272f1fab045a59c4cb3f99e452, type: 2}
   listOfObjs: {fileID: 0}
   revivalGem: {fileID: 11400000, guid: 64a1a7b5eb0366141935f4e257eef560, type: 2}
+  MeshRenderer: {fileID: 7836609602608423919}
+  Origin: {r: 0, g: 0, b: 0, a: 0}
+  FlashTime: 0.5
   damage: 5
   spiritualDamage: 0
   defence: 5
+  bleeding: 0
   poisonProtection: 0
   desertProtection: 0
   snowProtection: 0

@@ -18,16 +18,24 @@ public class UseFunctions : MonoBehaviour
     //Variables needed for the functions 
     private PlayerStats playerstats;
     private PlayerCombat_Jerzy playerCombat;
+    private ItemObject_Sal[] database;
     public GameObject bomb;
     public GameObject wand;
 
-    void Awake()
+    void OnDestroy()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        for (int i = 0; i < database.Length; i++)
+        {
+            database[i].OnUseCurrent = null;
+            database[i].OnUseAfter = null;
+        }
+
+        if (this == instance) { instance = null; }
     }
+
     private void Start()
     {    
-        var database = FindObjectOfType<PlayerStats>().inventory.database.ItemObjects;
+        database = FindObjectOfType<PlayerStats>().inventory.database.ItemObjects;
         playerstats = FindObjectOfType<PlayerStats>();
         playerCombat = FindObjectOfType<PlayerCombat_Jerzy>();
         for (int i = 0; i < database.Length; i++)

@@ -19,8 +19,12 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI TextDialogueBox;
     public TextMeshProUGUI TextContinueDialogue;
 
+    private PlayerInput playerInput;
+
     public void Start()
     {
+        playerInput = GameObject.Find("Player").GetComponent<PlayerInput>();
+
         DialoguePanel.SetActive(false);
         TextNPCName.text = "";
         TextDialogueBox.text = "";
@@ -38,6 +42,8 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(Collider newCollider, NewConversation newDialogue)
     {
+        playerInput.TogglePlayerInteraction(false);
+
         currentCollider = newCollider;
         newConversation = newDialogue;
 
@@ -105,6 +111,7 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        playerInput.TogglePlayerInteraction(true);
         // Re-enable the collider of the GO we're speaking to when ending the dialogue
         currentCollider.enabled = true;
         DialoguePanel.SetActive(false);

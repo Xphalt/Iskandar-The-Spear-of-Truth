@@ -53,7 +53,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     private void ThrowingSwordPhysics()
     {
-
         if (thrown)
         {
             // stage 1 : sword slows down over time until velocity is close to 0 ( less than 1 in this case )
@@ -82,7 +81,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
                 swordRigidBody.velocity = -transform.forward * throwSpeed;
                 if (throwSpeed <= -MAX_RETURNING_SPEED) throwSpeed = -MAX_RETURNING_SPEED;
             }
-
         }
     }
 

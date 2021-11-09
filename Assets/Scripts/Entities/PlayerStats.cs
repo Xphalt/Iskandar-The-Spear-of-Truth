@@ -13,6 +13,12 @@ public class PlayerStats : StatsInterface
     internal AccessoryObject Accessory; 
     public ItemObject_Sal revivalGem;
     private string noWeaponAddress, weaponAddress;
+
+    /*______________________________Damage_Flash_Variables_______________________________*/
+    public SkinnedMeshRenderer MeshRenderer;
+    public Color Origin;
+    public float FlashTime;
+    /*___________________________________________________________________________________*/
     #region STATS
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
@@ -51,6 +57,8 @@ public class PlayerStats : StatsInterface
 
     private void Start()
     {
+        Origin = MeshRenderer.material.color;
+
         noWeaponAddress = "Animation/PlayerAnimations/PlayerAnims/PlayerNoWeapon";
         weaponAddress = "Animation/PlayerAnimations/PlayerAnims/Player";
 
@@ -96,6 +104,9 @@ public class PlayerStats : StatsInterface
         //sfx.PlayAudio();
         UIManager.instance.UpdateHealthBar((int)-amount);
 
+        StartCoroutine(EDamageFlash());
+
+
         // anything that happens when taking damage happens 
         if (health <= 0)
         { 
@@ -112,6 +123,15 @@ public class PlayerStats : StatsInterface
             }
         }
     }
+
+    /*______________________________Damage_Flash_________________________________________*/
+    private IEnumerator EDamageFlash()
+    {
+        MeshRenderer.material.color = Color.red;
+        yield return new WaitForSeconds(FlashTime);
+        MeshRenderer.material.color = Origin;
+    }
+    /*___________________________________________________________________________________*/
 
     public void Restart()
     {
@@ -239,7 +259,12 @@ public class PlayerStats : StatsInterface
         var item = other.GetComponent<GroundItem>();
         if (item && item.itemobj.type != ItemType.Resource)
         {
-            if (inventory.AddItem(new Item(item.itemobj), 1))
+            if(equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
+            {
+                equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
+                Destroy(other.gameObject);
+            }
+            else if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
         }
         else if(item) //It's a resource
@@ -250,8 +275,8 @@ public class PlayerStats : StatsInterface
                     Debug.Log("Can't take more Revival gems");
                 else
                 {
-                    inventory.AddItem(new Item(item.itemobj), 1);
-                    Destroy(other.gameObject);
+                    if (inventory.AddItem(new Item(item.itemobj), 1))
+                        Destroy(other.gameObject);
                 }
             }
             else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
