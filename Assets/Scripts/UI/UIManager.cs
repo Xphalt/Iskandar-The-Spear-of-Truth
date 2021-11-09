@@ -176,6 +176,15 @@ public class UIManager : MonoBehaviour
     #endregion // Money Popup
 
     #region QuestNotification
+    /*____________________________________
+     * To trigger the quest notification
+     * call the instance of the ui manager
+     * and call the TriggerNotification
+     * function. Pass in the correct 
+     * variables to trigger and display
+     * the correct messages
+    _____________________________________*/
+
     public QuestNotification QuestNotif;
 
     public GameObject QuestPopup;
