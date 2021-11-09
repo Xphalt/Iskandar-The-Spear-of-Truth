@@ -259,10 +259,10 @@ public class PlayerStats : StatsInterface
         var item = other.GetComponent<GroundItem>();
         if (item && item.itemobj.type != ItemType.Resource)
         {
-            if(equipment.FindItemOnInventory(item.itemobj.data) != null)
+            if(equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
             {
-                if (equipment.AddItem(new Item(item.itemobj), 1))
-                    Destroy(other.gameObject);
+                equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
+                Destroy(other.gameObject);
             }
             else if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
