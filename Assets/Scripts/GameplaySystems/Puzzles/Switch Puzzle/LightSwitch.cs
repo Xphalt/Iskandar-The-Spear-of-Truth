@@ -8,7 +8,9 @@ public class LightSwitch : MonoBehaviour
 
     private Material myMat;
 
-    public Color activatedCol, deactivatedCol;
+    public Color[] colourCycle;
+
+    public int colourIndex = 0;
 
     //private bool activated = false;
 
@@ -18,12 +20,19 @@ public class LightSwitch : MonoBehaviour
         if (!manager) enabled = false;
 
         myMat = GetComponent<MeshRenderer>().material;
-        myMat.color = deactivatedCol;
+        colourIndex = 0;
+        myMat.color = colourCycle[0];
     }
 
     public void TurnOff()
     {
-        myMat.color = deactivatedCol;
+        colourIndex = 0;
+        SetColour();
+    }
+
+    private void SetColour()
+    {
+        myMat.color = colourCycle[colourIndex];
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,7 +40,8 @@ public class LightSwitch : MonoBehaviour
         if (other.CompareTag("playerSword"))
         {
             manager.RegisterSwitch(this);
-            myMat.color = activatedCol;
+            if (colourIndex < colourCycle.Length) colourIndex++;
+            SetColour();
         }
     }
 }
