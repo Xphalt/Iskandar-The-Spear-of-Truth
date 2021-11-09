@@ -296,10 +296,16 @@ public class PlayerStats : StatsInterface
     }
 
     //Morgan's Save Edits
+    public float X;
+    public float Y;
+    public float Z;
     public void SaveStats(int num)
     {
         SaveManager.SavePlayerStats(this, num);
         inventory.SaveStats(num);
+        X = this.transform.position.x;
+        Y = this.transform.position.y;
+        Z = this.transform.position.z;
     }
 
     public void LoadStats(int num)
@@ -307,6 +313,7 @@ public class PlayerStats : StatsInterface
         SaveData saveData = SaveManager.LoadPlayerStats(num);
         health = saveData.health;
         inventory.LoadStats(num);
+        this.transform.position = new Vector3(X, Y, Z);
     }
 
     //Morgan's Event Manager: Health Set
