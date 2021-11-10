@@ -90,7 +90,7 @@ public class Butcher : EnemyBase
         slashing = false;
     }
 
-    protected override void ChargeAttack()
+    public override void ChargeAttack()
     {
         _myAnimator.SetBool("IsCharging", true);
         attackUsed = true;

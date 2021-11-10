@@ -93,6 +93,12 @@ public class EnemyBase : Patrol
     {
         base.Update();
 
+        if (stats.health <= 0)
+        {
+            _myAnimator.SetTrigger("Dead");
+            _myCapsuleCol.enabled = false;
+        }
+
         agent.enabled = curState != EnemyStates.Attacking;
 
         if (!charging)
@@ -232,7 +238,7 @@ public class EnemyBase : Patrol
         }
     }
 
-    protected virtual void ChargeAttack()
+    public virtual void ChargeAttack()
     {
         chargeStart = transform.position;
         chargeDirection = detector.GetCurTarget().position - transform.position;
