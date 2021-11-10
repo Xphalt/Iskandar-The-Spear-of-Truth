@@ -8,6 +8,7 @@ using UnityEngine;
 public abstract class Condition
 {
 	public abstract bool TestCondition();
+	public Component dataToPass;
 }
 
 
@@ -57,6 +58,45 @@ public class TriggerColliderCondition : Condition
 
 	[SerializeField] private OneTimeTrigger _oneTimeTrigger;
 }
+
+public class TriggerListConditions : Condition
+{
+	public override bool TestCondition()
+	{
+		foreach (var item in oneTimeTriggers)
+		{
+			if (item.HasTriggered)
+			{
+				dataToPass = item.Collider;
+				oneTimeTriggers.Remove(item);
+				return true;
+			}
+		}
+		if(oneTimeTriggers.Count == 0)
+			return false;
+		else
+        {
+			dataToPass = null;
+			return true;
+        }
+	}
+
+	[SerializeField] private List<OneTimeTrigger> oneTimeTriggers; 
+}
+
+public class IsDeadCondition : Condition
+{
+    public override bool TestCondition()
+    {
+		if (playerStats.health <= 0)
+			return true;
+		return false;
+    }
+
+	[SerializeField] private PlayerStats playerStats;
+}
+
+
 
 //[System.Serializable]
 //public class DialogueCondition : Condition

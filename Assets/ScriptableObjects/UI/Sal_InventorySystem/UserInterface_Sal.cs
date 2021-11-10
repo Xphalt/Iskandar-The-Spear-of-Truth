@@ -37,10 +37,10 @@ public abstract class UserInterface_Sal : MonoBehaviour
     }
 
     private void OnSlotUpdate(InventorySlot slot)
-    {
+    { 
         if (slot.item.id >= 0) //has item
         {
-            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = slot.ItemObject.uiDisplay;
+            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.ItemObjects[slot.item.id].uiDisplay;
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
             slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount == 1 ? "" : slot.amount.ToString("n0");
         }
@@ -49,29 +49,8 @@ public abstract class UserInterface_Sal : MonoBehaviour
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = uiMask;
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
             slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = "";
-        }
-    }
-
-
-    public void UpdateSlots()
-    {
-        foreach (KeyValuePair<GameObject, InventorySlot> slot in slotsOnInterface)
-        {
-            if (slot.Value.item.id >= 0) //has item
-            {
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = slot.Value.ItemObject.uiDisplay;
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-                slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = slot.Value.amount == 1 ? "" : slot.Value.amount.ToString("n0");
-            }
-            else //No item
-            {
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-                slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
-            }
-        }
-    }
-
+        } 
+    }  
 
     //Events
     protected void AddEvent(GameObject obj, EventTriggerType type, UnityAction<BaseEventData> action)

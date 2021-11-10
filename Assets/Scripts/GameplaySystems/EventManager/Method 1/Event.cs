@@ -7,6 +7,7 @@ using UnityEngine;
 public abstract class Event
 {
     public abstract void TriggerEvent();
+    public abstract void PassDataFromCondition(Component obj);
 }
 
 [System.Serializable]
@@ -16,6 +17,9 @@ public class DoorLockEvent : Event
     {
         doorScript.Locked = lockDoor;
 	}
+
+    public override void PassDataFromCondition(Component obj)
+    { }
 
     [SerializeReference] public ScrDoor1 doorScript;
     [SerializeReference] public bool lockDoor;
@@ -27,6 +31,9 @@ public class OpenCloseDoorEvent : Event
 	{
         doorScript.SwapDoor();
 	}
+
+    public override void PassDataFromCondition(Component obj)
+    { }
 
     [SerializeReference] public ScrDoor1 doorScript;
 }
@@ -41,6 +48,8 @@ public class SpawnEntityEvent : Event
             gameObject.SetActive(_activateObjects);
 		}
     }
+    public override void PassDataFromCondition(Component obj)
+    { }
 
     [SerializeReference] private List<GameObject> _objectsToActivate;
     [SerializeReference] private bool _activateObjects;
@@ -90,6 +99,9 @@ public class PanCameraWithTargetVectorEvent : PanCameraEvent
         
 	}
 
+    public override void PassDataFromCondition(Component obj)
+    { }
+
     [SerializeReference] private Vector3 _targetVector = new Vector3(0.0f, 0.0f, 0.0f);
     [SerializeReference] private float _linger = -1f;
 
@@ -127,6 +139,9 @@ public class PanCameraWithTargetTransformEvent : PanCameraEvent
         _cameraPanScript.StartPan(_targetTransform);
 	}
 
+    public override void PassDataFromCondition(Component obj)
+    { }
+
     [SerializeReference] private Transform _targetTransform;
 }
 
@@ -146,6 +161,9 @@ public class LockPlayerInputsEvent : Event
 		}
 	}
 
+    public override void PassDataFromCondition(Component obj)
+    { }
+
     [SerializeReference] private bool _lockInputs;
 }
 
@@ -162,6 +180,9 @@ public class UIEvent : Event
             GameEvents.current.EnableUI();
 		}
     }
+
+    public override void PassDataFromCondition(Component obj)
+    { }
 
     [SerializeReference] private bool _disableUI;
 }
@@ -180,6 +201,9 @@ public class PreventPlayerInteractionEvent : Event
 		}
 	}
 
+    public override void PassDataFromCondition(Component obj)
+    { }
+
     [SerializeReference] private bool _disablePlayerInteraction;
 }
 
@@ -190,6 +214,43 @@ public class QuestLogEntryEvent : Event
     {
 
     }
+
+    public override void PassDataFromCondition(Component obj)
+    { }
+}
+
+//---------------- Sal Changes ----------------
+public class FadeInOutScreen : Event
+{
+    public override void TriggerEvent()
+    {
+        fadeScreen.SetTrigger(fadeHash);
+    }
+
+    public override void PassDataFromCondition(Component obj)
+    { }
+
+    [SerializeReference] private Animator fadeScreen;
+    private int fadeHash = Animator.StringToHash("StartTransition");
+}
+
+public class StartDialogue : Event
+{
+    public override void TriggerEvent()
+    {
+        if(data != null)
+        {
+            GameObject.FindObjectOfType<DialogueManager>().DialoguePanel.SetActive(true);
+            GameObject.FindObjectOfType<DialogueManager>().StartDialogue(data.GetComponent<Collider>(), data.GetComponent<TestEventDialogue>().dialogue);
+        }
+    }
+
+    public override void PassDataFromCondition(Component obj)
+    {
+        data = obj;
+    }
+
+    private Component data;
 }
 
 //[System.Serializable]
