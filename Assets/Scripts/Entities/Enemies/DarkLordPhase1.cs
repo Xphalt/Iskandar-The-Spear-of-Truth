@@ -16,6 +16,7 @@ public class DarkLordPhase1 : EnemyBase
     PhaseOneAttacks phaseOneAttack = PhaseOneAttacks.AttackTypesCount;
 
     public float[] meleeAttackDamages = new float[4];
+    public float shieldStunDuration;
     private int curCombo = 0;
 
     public float comboRange;
@@ -23,6 +24,8 @@ public class DarkLordPhase1 : EnemyBase
     public float kickDamage, kickRange;
     public float knockbackForce, knockbackDuration;
     public float lungeDamage, minLungeRange;
+
+    private bool stunning = false;
 
     [NamedArrayAttribute(new string[] { "Combo", "Spin", "Kick", "Lunge" })]
     public float[] phaseOneCooldowns = new float[(int)PhaseOneAttacks.AttackTypesCount];
@@ -42,6 +45,12 @@ public class DarkLordPhase1 : EnemyBase
     {
         base.Start();
         _myAnimator.SetBool("IsAggroed", true);
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        //if (curState == EnemyStates.Attacking) transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
     }
 
     public override void Attack()
@@ -97,6 +106,11 @@ public class DarkLordPhase1 : EnemyBase
         curAttackDmg = meleeAttackDamages[curCombo];
     }
 
+    public void SetStun(int active)
+    {
+        stunning = active > 0;
+    }
+
     public override void ChargeAttack()
     {
         if (LungeAvailable)
@@ -105,6 +119,7 @@ public class DarkLordPhase1 : EnemyBase
             curAttackDmg = 0;
             base.ChargeAttack();
         }
+        else AttackEnd();
     }
 
     protected override void OnTriggerEnter(Collider collider)
@@ -112,7 +127,10 @@ public class DarkLordPhase1 : EnemyBase
         base.OnTriggerEnter(collider);
         if (collider.TryGetComponent(out PlayerMovement_Jerzy move))
         {
-            move.KnockBack(transform.position, knockbackForce, knockbackDuration);
+            if (phaseOneAttack == PhaseOneAttacks.Kick)
+                move.KnockBack(transform.position, knockbackForce, knockbackDuration);
+            if (stunning)
+                move.Stun(shieldStunDuration);
         }
     }
 }
