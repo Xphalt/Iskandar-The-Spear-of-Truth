@@ -11,17 +11,21 @@ public class ToolTip : MonoBehaviour
     #region Variables
     private SpriteRenderer SR;
     private Transform player;
+    private GameObject gamepadUi, talkTip, readTip;
 
     public Sprite lookSprite, useSprite, talkSprite;
-
     public float nearRadius, farRadius;
     [HideInInspector] public bool inRange;
+    [HideInInspector] public bool isTalkType, isReadType;
     #endregion
 
     private void Awake()
     {
         SR = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        gamepadUi = GameObject.Find("GamepadOnlyUI");
+        talkTip = gamepadUi.transform.GetChild(0).gameObject;
+        readTip = gamepadUi.transform.GetChild(1).gameObject;
     }
 
     private void Start() 
@@ -52,6 +56,9 @@ public class ToolTip : MonoBehaviour
 
         if (toolTipRange <= farRadius)
         {
+            /*_________________________________________________________________________
+             * This is for keyboard and mouse UI tips.
+             * ________________________________________________________________________*/
             inRange = true;
 
             if (toolTipRange > nearRadius)
@@ -61,6 +68,14 @@ public class ToolTip : MonoBehaviour
             else if (toolTipRange <= nearRadius)
             {
                 SR.color = Color.white;
+
+                /*_________________________________________________________________________
+                * This is for game pad UI tips.
+                * ________________________________________________________________________*/
+                if (isTalkType)
+                    DisplayGamepadUI("talk");
+                else if (isReadType)
+                    DisplayGamepadUI("read");
             }
         }
         else inRange = false;
@@ -79,6 +94,18 @@ public class ToolTip : MonoBehaviour
             case "Talk":
                 SR.sprite = talkSprite;
                 break;
+        }
+    }
+
+    private void DisplayGamepadUI(string type)
+    {
+        if (gamepadUi.activeInHierarchy && type == "read")
+        {
+            readTip.SetActive(true);
+        }
+        else if (gamepadUi.activeInHierarchy && type == "talk")
+        {
+            talkTip.SetActive(true);
         }
     }
 

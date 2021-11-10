@@ -91,5 +91,24 @@ public class Interactable_Object_Jack : MonoBehaviour
         }
     }
 
+    private void DisplayGamepadUi()
+    {
+        
+        if (GetInteractableType() == InteractableType.NPC_Dialogue ||
+            (GetInteractableType() == InteractableType.Seller))
+        {
+            toolTip.isTalkType = true;
+        }
+        else if (GetInteractableType() == InteractableType.LootChest)
+        {
+            toolTip.isReadType = true;
+        }
+        else
+        {
+            toolTip.isReadType = false;
+            toolTip.isTalkType = false;
+        }
+    }
+
     private void OnMouseExit() { if (toolTip) toolTip.Hide(); }
 }
