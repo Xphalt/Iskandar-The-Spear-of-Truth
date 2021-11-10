@@ -37,7 +37,7 @@ public class EnemyBase : Patrol
     protected float[] attackTimers = new float[(int)AttackTypes.AttackTypesCount];
 
     protected AttackTypes curAttack = AttackTypes.AttackTypesCount;
-    protected float curAttackDmg;
+    protected float curAttackDmg = 0;
 
     protected bool MeleeAvailable => availableAttacks[(int)AttackTypes.Melee] &&
         (attackTimers[(int)AttackTypes.Melee] >= attackCooldowns[(int)AttackTypes.Melee]);

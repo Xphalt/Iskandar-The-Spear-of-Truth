@@ -103,7 +103,6 @@ public class Butcher : EnemyBase
         base.ChargeAttack();
     }
 
-
     private void BleedSlashAttack()
     {
         slashing = true;

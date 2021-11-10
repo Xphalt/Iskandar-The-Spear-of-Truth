@@ -43,8 +43,9 @@ public class PlayerDetection : MonoBehaviour
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
 
-    public bool MeleeRangeCheck(float attackrange, Transform target)
+    public bool MeleeRangeCheck(float attackrange, Transform target = null)
     {
+        if (!target) target = curTarget;
         foreach (RaycastHit targetScan in Physics.RaycastAll(transform.position, transform.forward, attackrange, targetMask))
         {
             if (targetScan.collider.transform == target) return true;
