@@ -14,7 +14,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public bool canAttack = true;
     Quaternion swordLookRotation;
     private float timeInteractHeld = 0f;
-    public float timeToThrowSword, swordReleaseDelay;
+    public float timeToThrowSword;
 
     public GameObject swordObject;
     public GameObject swordEmpty;
@@ -41,6 +41,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     private float poisonDelay;
     private float timeSinceLastPoisonDamage;
     private bool isPoisoned = false;
+    private bool isThrowing = false;
 
 
     void Start()
@@ -114,25 +115,25 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
             {
                 attackOffCooldown = false;
-                StartCoroutine(PauseForThrow());
-                playerMovement.LockPlayerMovement();
-            }
+                //StartCoroutine(PauseForThrow());
+                playerAnimation.SwordThrowAttack();
 
+                playerMovement.LockPlayerMovement();
+                isThrowing = true;
+            }
         }
     }
 
-    IEnumerator PauseForThrow() 
+    public void ReleaseSword()
     {
-        /*___________________________________________________________________________
-         * This makes the attack line up with animation sword release time.
-         * __________________________________________________________________________*/
-        playerAnimation.SwordThrowAttack();
-
-        yield return new WaitForSeconds(swordReleaseDelay);
-        throwSword.ThrowSword(swordLookRotation);
-
-        timeSinceLastAttack = 0;
-
+        //This function is linked to an animation event in PlayerThrow anim
+        if (isThrowing)
+        {
+            throwSword.ThrowSword(swordLookRotation);
+            print("sword release");
+            isThrowing = false;
+            timeSinceLastAttack = 0;
+        } 
     }
 
     private void OnTriggerStay(Collider other)

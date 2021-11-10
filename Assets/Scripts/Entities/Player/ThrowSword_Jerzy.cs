@@ -91,8 +91,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
         if (swordModel.activeInHierarchy)
         {
             // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
-            playerAnim.SwordThrowAttack();
-
             swordModel.GetComponent<BoxCollider>().enabled = true;
             returning = false;
             transform.rotation = targetRotation;

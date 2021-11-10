@@ -45,6 +45,9 @@ public class EquipPanel : MonoBehaviour
                 AddEvent(obj, EventTriggerType.PointerClick, delegate { OnClick(obj); });
 
                 slotItem.Add(obj, inventory.Storage.Slots[i].item);
+
+                //Storing the GameObject in the slot
+                inventory.GetSlots[i].slotDisplay = obj;
             }
         }
     }

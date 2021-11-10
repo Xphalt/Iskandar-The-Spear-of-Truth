@@ -109,8 +109,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 2031506019723138088}
-  activatedCol: {r: 0.50377357, g: 1, b: 0.5019608, a: 1}
-  deactivatedCol: {r: 0, g: 1, b: 0, a: 1}
+  colourCycle:
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 0.5019608, g: 1, b: 0.5019608, a: 1}
+  colourIndex: 0
 --- !u!1 &2031506019723138089
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +232,8 @@ MonoBehaviour:
   - {fileID: 2031506019754766639}
   - {fileID: 2031506019754766639}
   activated: []
-  deactivated: []
+  deactivated:
+  - {fileID: 0}
 --- !u!1 &2031506019754766624
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,8 +343,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 2031506019723138088}
-  activatedCol: {r: 1, g: 1, b: 0.5019608, a: 1}
-  deactivatedCol: {r: 1, g: 1, b: 0, a: 1}
+  colourCycle:
+  - {r: 1, g: 1, b: 0, a: 1}
+  - {r: 1, g: 1, b: 0.2509804, a: 1}
+  - {r: 1, g: 1, b: 0.5019608, a: 1}
+  colourIndex: 0
 --- !u!1 &2031506019785701522
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,8 +457,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 2031506019723138088}
-  activatedCol: {r: 1, g: 0.50377357, b: 0.5019608, a: 1}
-  deactivatedCol: {r: 1, g: 0, b: 0, a: 1}
+  colourCycle:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0.5019608, b: 0.5019608, a: 1}
+  colourIndex: 0
 --- !u!1 &2031506020517664791
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,5 +570,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 2031506019723138088}
-  activatedCol: {r: 0.50377357, g: 0.50377357, b: 1, a: 1}
-  deactivatedCol: {r: 0, g: 0, b: 1, a: 1}
+  colourCycle:
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0.5019608, g: 0.5019608, b: 1, a: 1}
+  colourIndex: 0

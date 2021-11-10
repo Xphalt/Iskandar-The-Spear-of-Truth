@@ -180,6 +180,62 @@ public class UIManager : MonoBehaviour
     }
     #endregion // Money Popup
 
+    #region QuestNotification
+    /*____________________________________
+     * To trigger the quest notification
+     * call the instance of the ui manager
+     * and call the TriggerNotification
+     * function. Pass in the correct 
+     * variables to trigger and display
+     * the correct messages
+    _____________________________________*/
+
+    public QuestNotification QuestNotif;
+
+    public GameObject QuestPopup;
+    public Animator Anim;
+
+    public TMP_Text QName;
+    public TMP_Text QStatus;
+    public TMP_Text QMessage;
+
+    public void TriggerNotification(QuestObject questObject, string questStatus, bool isShown, string questObjective, float screenDuration)
+    {
+        QuestPopup.SetActive(true);
+        SetQuestNotifName(questObject);
+        SetQuestStatus(questStatus);
+        SetQuestObjective(isShown, questObjective);
+        StartCoroutine(LingerOnScreen(screenDuration));
+        QuestPopup.SetActive(false);
+    }
+
+    public void SetQuestNotifName(QuestObject questObject)
+    {
+        QName.SetText(questObject.QuestName);
+    }
+
+    public void SetQuestStatus(string questStatus)
+    {
+        QStatus.SetText(questStatus);
+    }
+
+    public void SetQuestObjective(bool isShown, string questObjective)
+    {
+        if (isShown) { QMessage.gameObject.SetActive(false); }
+
+        else
+        {
+            QMessage.gameObject.SetActive(true);
+            QMessage.SetText(questObjective);
+        }
+    }
+
+    public IEnumerator LingerOnScreen(float screenDuration)
+    {
+        yield return screenDuration;
+    }
+    #endregion
+
     public static UIManager instance;
     private void Awake()
     {
@@ -188,6 +244,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        QuestPopup.SetActive(false);
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments;
 
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
