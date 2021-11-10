@@ -13,7 +13,6 @@ public class MusicManager : MonoBehaviour
 
     private float fadingSpeed = 0.005f;
 
-    public AudioClip startingMusic;
     public AudioClip endingMusic;
 
     private int fadingMusicStage = 0;
@@ -23,12 +22,9 @@ public class MusicManager : MonoBehaviour
     {
         mixer = Resources.Load("Master") as AudioMixer;
 
-        music = gameObject.AddComponent<AudioSource>();
+        music = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
         music.outputAudioMixerGroup = mixer.FindMatchingGroups("Music")[0];
         music.loop = true;       
-        
-        music.clip = startingMusic;
-        music.Play();
     }
 
     private void FixedUpdate()
@@ -70,9 +66,10 @@ public class MusicManager : MonoBehaviour
             }
         }
     }
-
-    public void FadeInMusic(AudioClip audioClip)
+    public void FadeInMusic()
     {
+        Debug.Log("Fading in music");
+
         fadeIn = gameObject.AddComponent<AudioSource>();
         fadeIn.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade In")[0];
         fadeIn.loop = true;
@@ -83,14 +80,25 @@ public class MusicManager : MonoBehaviour
 
         fadeIn.volume = 0f;
 
+        Debug.Log(music.clip.name);
+
         fadeOut.clip = music.clip;
         fadeOut.time = music.time;
 
+        Debug.Log(fadeOut.clip.name);
         fadeOut.Play();
         music.Stop();
 
-        fadeIn.clip = audioClip;
+        fadeIn.clip = endingMusic;
         fadeIn.Play();
         fadingInMusic = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            GetComponent<MusicManager>().FadeInMusic();
+        }
     }
 }
