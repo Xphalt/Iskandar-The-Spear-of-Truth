@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DarkEffigy : EnemyBase
 {
-    [SerializeField] float throwSwordRange;
+    [SerializeField] float minThrowSwordRange;
+    [SerializeField] float maxThrowSwordRange;
     [SerializeField] float spinRange;
 
     public enum DarkEffigyAttacks
@@ -40,14 +41,18 @@ public class DarkEffigy : EnemyBase
 
         if (CanAttack)
         {
-            if (ThrowSwordAvailable && transform.GetDistance(detector.GetCurTarget()) > throwSwordRange)
+            if (ThrowSwordAvailable &&
+                (transform.GetDistance(detector.GetCurTarget()) < maxThrowSwordRange) &&
+                (transform.GetDistance(detector.GetCurTarget()) > minThrowSwordRange))
             {
+                print("Throw Sword");
                 ThrowSwordAttack();
                 attackUsed = true;
             }
 
             if (SpinAvailable && transform.GetDistance(detector.GetCurTarget()) < spinRange)
             {
+                print("Spin");
                 SpinAttack();
                 attackUsed = true;
             }
