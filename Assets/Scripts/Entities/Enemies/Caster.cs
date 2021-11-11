@@ -26,6 +26,7 @@ public class Caster : EnemyBase
     public float pillarFollowTime;
     public float pillarActivateDelay;
     public float pillarActiveTime;
+    public float pillarDmg;
     public GameObject pillarBase;
     public GameObject pillarHitbox;
 
@@ -42,6 +43,7 @@ public class Caster : EnemyBase
     public override void Start()
     {
         base.Start();
+        for(int i=0; i <= casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
     }
 
     public override void Update()
@@ -66,7 +68,7 @@ public class Caster : EnemyBase
                 attackUsed = true;
             }
 
-            if(PillarAvailable)
+            if(!attackUsed && PillarAvailable)
             {
                 MagicPillarCast();
                 attackUsed = true;
@@ -101,8 +103,8 @@ public class Caster : EnemyBase
     private void MagicPillarCast()
     {
         casterAttack = CasterAttacks.Pillar;
+        _myAnimator.SetBool("Channeling",true);
         pillarCast = true;
-        _myAnimator.SetTrigger("CastPillar");
     }
 
     public void SpawnStuff()
@@ -136,8 +138,10 @@ public class Caster : EnemyBase
     private IEnumerator PillarActivation()
     {
         pillarCast = false;
+        _myAnimator.SetBool("Channeling", false);
         yield return new WaitForSeconds(pillarActivateDelay);
         //pillar shoots out of the ground here
+        curAttackDmg = pillarDmg;
         pillarHitbox.SetActive(true);
         yield return new WaitForSeconds(pillarActiveTime);
         pillarHitbox.SetActive(false);
