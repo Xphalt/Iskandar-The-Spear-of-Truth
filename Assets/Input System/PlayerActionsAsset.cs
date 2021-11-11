@@ -412,7 +412,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Potion_0"",
+                    ""name"": ""Large_Potion"",
                     ""type"": ""Button"",
                     ""id"": ""2ef55493-4299-42bf-a8be-b8fc9d7845eb"",
                     ""expectedControlType"": ""Button"",
@@ -420,7 +420,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Potion_1"",
+                    ""name"": ""Medium_Potion"",
                     ""type"": ""Button"",
                     ""id"": ""c11d888f-b210-4f7f-989a-b2e58fc3c17f"",
                     ""expectedControlType"": ""Button"",
@@ -428,9 +428,17 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Potion_2"",
+                    ""name"": ""Small_Potion"",
                     ""type"": ""Button"",
                     ""id"": ""5f104f97-a182-454e-9f55-f3cadb1c0d36"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PotionInterface"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b4db12f-38ec-4cbd-a8dd-9339f6678041"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -466,7 +474,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Potion_0"",
+                    ""action"": ""Large_Potion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -477,7 +485,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Potion_0"",
+                    ""action"": ""Large_Potion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -488,7 +496,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Potion_1"",
+                    ""action"": ""Medium_Potion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -499,7 +507,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Potion_1"",
+                    ""action"": ""Medium_Potion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -510,7 +518,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Potion_2"",
+                    ""action"": ""Small_Potion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -521,7 +529,29 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Potion_2"",
+                    ""action"": ""Small_Potion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f349f48d-f5a5-4e58-835c-c9b0f808875f"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & mouse"",
+                    ""action"": ""PotionInterface"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b1ff7bc5-abdc-4401-bfd6-1fec9622b9e3"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PotionInterface"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -573,9 +603,10 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
-        m_UI_Potion_0 = m_UI.FindAction("Potion_0", throwIfNotFound: true);
-        m_UI_Potion_1 = m_UI.FindAction("Potion_1", throwIfNotFound: true);
-        m_UI_Potion_2 = m_UI.FindAction("Potion_2", throwIfNotFound: true);
+        m_UI_Large_Potion = m_UI.FindAction("Large_Potion", throwIfNotFound: true);
+        m_UI_Medium_Potion = m_UI.FindAction("Medium_Potion", throwIfNotFound: true);
+        m_UI_Small_Potion = m_UI.FindAction("Small_Potion", throwIfNotFound: true);
+        m_UI_PotionInterface = m_UI.FindAction("PotionInterface", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -731,17 +762,19 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_Pause;
-    private readonly InputAction m_UI_Potion_0;
-    private readonly InputAction m_UI_Potion_1;
-    private readonly InputAction m_UI_Potion_2;
+    private readonly InputAction m_UI_Large_Potion;
+    private readonly InputAction m_UI_Medium_Potion;
+    private readonly InputAction m_UI_Small_Potion;
+    private readonly InputAction m_UI_PotionInterface;
     public struct UIActions
     {
         private @PlayerActionsAsset m_Wrapper;
         public UIActions(@PlayerActionsAsset wrapper) { m_Wrapper = wrapper; }
         public InputAction @Pause => m_Wrapper.m_UI_Pause;
-        public InputAction @Potion_0 => m_Wrapper.m_UI_Potion_0;
-        public InputAction @Potion_1 => m_Wrapper.m_UI_Potion_1;
-        public InputAction @Potion_2 => m_Wrapper.m_UI_Potion_2;
+        public InputAction @Large_Potion => m_Wrapper.m_UI_Large_Potion;
+        public InputAction @Medium_Potion => m_Wrapper.m_UI_Medium_Potion;
+        public InputAction @Small_Potion => m_Wrapper.m_UI_Small_Potion;
+        public InputAction @PotionInterface => m_Wrapper.m_UI_PotionInterface;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -754,15 +787,18 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @Pause.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
-                @Potion_0.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_0;
-                @Potion_0.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_0;
-                @Potion_0.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_0;
-                @Potion_1.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_1;
-                @Potion_1.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_1;
-                @Potion_1.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_1;
-                @Potion_2.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_2;
-                @Potion_2.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_2;
-                @Potion_2.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_2;
+                @Large_Potion.started -= m_Wrapper.m_UIActionsCallbackInterface.OnLarge_Potion;
+                @Large_Potion.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnLarge_Potion;
+                @Large_Potion.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnLarge_Potion;
+                @Medium_Potion.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMedium_Potion;
+                @Medium_Potion.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMedium_Potion;
+                @Medium_Potion.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMedium_Potion;
+                @Small_Potion.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSmall_Potion;
+                @Small_Potion.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSmall_Potion;
+                @Small_Potion.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSmall_Potion;
+                @PotionInterface.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPotionInterface;
+                @PotionInterface.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPotionInterface;
+                @PotionInterface.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPotionInterface;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -770,15 +806,18 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
-                @Potion_0.started += instance.OnPotion_0;
-                @Potion_0.performed += instance.OnPotion_0;
-                @Potion_0.canceled += instance.OnPotion_0;
-                @Potion_1.started += instance.OnPotion_1;
-                @Potion_1.performed += instance.OnPotion_1;
-                @Potion_1.canceled += instance.OnPotion_1;
-                @Potion_2.started += instance.OnPotion_2;
-                @Potion_2.performed += instance.OnPotion_2;
-                @Potion_2.canceled += instance.OnPotion_2;
+                @Large_Potion.started += instance.OnLarge_Potion;
+                @Large_Potion.performed += instance.OnLarge_Potion;
+                @Large_Potion.canceled += instance.OnLarge_Potion;
+                @Medium_Potion.started += instance.OnMedium_Potion;
+                @Medium_Potion.performed += instance.OnMedium_Potion;
+                @Medium_Potion.canceled += instance.OnMedium_Potion;
+                @Small_Potion.started += instance.OnSmall_Potion;
+                @Small_Potion.performed += instance.OnSmall_Potion;
+                @Small_Potion.canceled += instance.OnSmall_Potion;
+                @PotionInterface.started += instance.OnPotionInterface;
+                @PotionInterface.performed += instance.OnPotionInterface;
+                @PotionInterface.canceled += instance.OnPotionInterface;
             }
         }
     }
@@ -817,8 +856,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     public interface IUIActions
     {
         void OnPause(InputAction.CallbackContext context);
-        void OnPotion_0(InputAction.CallbackContext context);
-        void OnPotion_1(InputAction.CallbackContext context);
-        void OnPotion_2(InputAction.CallbackContext context);
+        void OnLarge_Potion(InputAction.CallbackContext context);
+        void OnMedium_Potion(InputAction.CallbackContext context);
+        void OnSmall_Potion(InputAction.CallbackContext context);
+        void OnPotionInterface(InputAction.CallbackContext context);
     }
 }

@@ -36,6 +36,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private PlayerCombat_Jerzy _playerCombat_Jerzy;
     [SerializeField] private PauseMenuManager _pauseMenuManager;
     [SerializeField] private ItemSelect _changeItem;
+    [SerializeField] private UIManager _UIManager;
 
     private void Awake()
     {
@@ -48,6 +49,11 @@ public class PlayerInput : MonoBehaviour
         {
             TogglePlayerInteraction(false);
             _pauseMenuManager.TogglePauseState();
+        };
+        _playerActionsAsset.Player.PotionInterface.performed += _ =>
+        {
+            TogglePlayerInteraction(false);
+            _UIManager.TogglePotionInterface();
         };
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
 
@@ -77,6 +83,34 @@ public class PlayerInput : MonoBehaviour
             _pauseMenuManager.TogglePauseState();
             TogglePlayerInteraction(true);
         };
+        _playerActionsAsset.UI.PotionInterface.performed += _ =>
+        {
+            _UIManager.TogglePotionInterface();
+            TogglePlayerInteraction(true);
+        };
+        _playerActionsAsset.UI.Large_Potion.performed += _ =>
+        {
+            if (_UIManager.IsPotionInterfaceOpen())
+            {
+                // Use a large health potion
+            }
+        };
+        _playerActionsAsset.UI.Medium_Potion.performed += _ =>
+        {
+            if (_UIManager.IsPotionInterfaceOpen())
+            {
+                // Use a medium health potion
+            }
+        };
+        _playerActionsAsset.UI.Small_Potion.performed += _ =>
+        {
+            if (_UIManager.IsPotionInterfaceOpen())
+            {
+                // Use a small health potion
+            }
+        };
+
+
         #endregion
     }
 

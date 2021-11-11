@@ -399,7 +399,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Potion_0",
+                    "name": "Large_Potion",
                     "type": "Button",
                     "id": "2ef55493-4299-42bf-a8be-b8fc9d7845eb",
                     "expectedControlType": "Button",
@@ -407,7 +407,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Potion_1",
+                    "name": "Medium_Potion",
                     "type": "Button",
                     "id": "c11d888f-b210-4f7f-989a-b2e58fc3c17f",
                     "expectedControlType": "Button",
@@ -415,9 +415,17 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Potion_2",
+                    "name": "Small_Potion",
                     "type": "Button",
                     "id": "5f104f97-a182-454e-9f55-f3cadb1c0d36",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "PotionInterface",
+                    "type": "Button",
+                    "id": "7b4db12f-38ec-4cbd-a8dd-9339f6678041",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -453,7 +461,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Potion_0",
+                    "action": "Large_Potion",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -464,7 +472,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Potion_0",
+                    "action": "Large_Potion",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -475,7 +483,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Potion_1",
+                    "action": "Medium_Potion",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -486,7 +494,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Potion_1",
+                    "action": "Medium_Potion",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -497,7 +505,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Potion_2",
+                    "action": "Small_Potion",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -508,7 +516,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Potion_2",
+                    "action": "Small_Potion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f349f48d-f5a5-4e58-835c-c9b0f808875f",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & mouse",
+                    "action": "PotionInterface",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1ff7bc5-abdc-4401-bfd6-1fec9622b9e3",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "PotionInterface",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

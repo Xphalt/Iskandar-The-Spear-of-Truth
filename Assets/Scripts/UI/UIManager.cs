@@ -236,6 +236,21 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region Potion Interface
+    [SerializeField] private GameObject keyboardPotionInterface;
+    [SerializeField] private GameObject controllerPotionInterface;
+
+    private bool potionInterfaceOpen = false;
+    public bool IsPotionInterfaceOpen() { return potionInterfaceOpen;  }
+
+    public void TogglePotionInterface()
+    {
+        potionInterfaceOpen = !potionInterfaceOpen;
+        keyboardPotionInterface.SetActive(potionInterfaceOpen);
+        controllerPotionInterface.SetActive(potionInterfaceOpen);
+    }
+    #endregion // Potion Interface
+
     public static UIManager instance;
     private void Awake()
     {
