@@ -45,6 +45,7 @@ public class Warchief : EnemyBase
         _myAnimator.SetBool("IsAggroed", true);
 
         chargeDistance = minJumpDistance;
+        for (int t = 0; t < warChiefTimers.Length; t++) warChiefTimers[t] = warChiefCooldowns[t];
     }
 
     public override void Update()
