@@ -8,7 +8,7 @@ public class QuestObject : ScriptableObject
     [Header("Quest Information")]
 
     [Tooltip("The name of the quest.")]
-    public string QuestName;
+    public LocalisationTableReference QuestName;
 
     [Space(10)]
     [Tooltip("Shows the status of the quest")]
@@ -16,8 +16,7 @@ public class QuestObject : ScriptableObject
 
     [Space(10)]
     [Tooltip("The description shown when a quest is selected in the quest log.")]
-    [TextArea]
-    public string QuestDescription;
+    public LocalisationTableReference QuestDescription;
 
     [Space(10)]
     [Tooltip("The rewards given to the player once the quest is completed.")]

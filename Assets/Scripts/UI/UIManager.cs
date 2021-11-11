@@ -211,7 +211,7 @@ public class UIManager : MonoBehaviour
 
     public void SetQuestNotifName(QuestObject questObject)
     {
-        QName.SetText(questObject.QuestName);
+        QName.SetText(questObject.QuestName.GetLocalisedString());
     }
 
     public void SetQuestStatus(string questStatus)

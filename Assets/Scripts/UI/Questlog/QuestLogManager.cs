@@ -16,8 +16,8 @@ public class QuestLogManager : MonoBehaviour
         foreach (var item in ListOfQuests)
         {
             ListOfButtons.Add(QuestButton);
-            QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = item.QuestName;
-            Instantiate(QuestButton, ButtonArea.transform).name = item.QuestName;
+            QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = item.QuestName.GetLocalisedString();
+            Instantiate(QuestButton, ButtonArea.transform).name = item.QuestName.GetLocalisedString();
         }
     }
 }

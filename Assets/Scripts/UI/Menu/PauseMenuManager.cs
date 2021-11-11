@@ -144,33 +144,50 @@ public class PauseMenuManager : MonoBehaviour
 
     public void ShowMenu()
     {
+        // Dominique 11-11-2021, Ensure navigation strings are localised
+        LocalisationTableReference equipment_string = new LocalisationTableReference();
+        equipment_string.tableReference = "ConstantStrings";
+        equipment_string.entryReference = "Equipment";
+
+        LocalisationTableReference settings_string = new LocalisationTableReference();
+        settings_string.tableReference = "ConstantStrings";
+        settings_string.entryReference = "Settings";
+
+        LocalisationTableReference quests_string = new LocalisationTableReference();
+        quests_string.tableReference = "ConstantStrings";
+        quests_string.entryReference = "Quests";
+
+        LocalisationTableReference inventory_string = new LocalisationTableReference();
+        inventory_string.tableReference = "ConstantStrings";
+        inventory_string.entryReference = "Inventory";
+
         switch (currentPage)
         {
             case 0:
                 equipmentMenu.SetActive(true);
-                title.text = "Equipment";
-                leftOption.text = "Settings";
-                rightOption.text = "Quests";
+                title.text = equipment_string.GetLocalisedString();
+                leftOption.text = settings_string.GetLocalisedString();
+                rightOption.text = quests_string.GetLocalisedString();
                 // Update the money value in the equipment screen
                 equipmentMoney.SetNumber(GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().Gems);
                 break;
             case 1:
                 questsMenu.SetActive(true);
-                title.text = "Quests";
-                leftOption.text = "Equipment";
-                rightOption.text = "Inventory";
+                title.text = quests_string.GetLocalisedString();
+                leftOption.text = equipment_string.GetLocalisedString();
+                rightOption.text = inventory_string.GetLocalisedString();
                 break;
             case 2:
                 inventoryMenu.SetActive(true);
-                title.text = "Inventory";
-                leftOption.text = "Quests";
-                rightOption.text = "Settings";
+                title.text = inventory_string.GetLocalisedString();
+                leftOption.text = quests_string.GetLocalisedString();
+                rightOption.text = settings_string.GetLocalisedString();
                 break;
             case 3:
                 settingsMenu.SetActive(true);
-                title.text = "Settings";
-                leftOption.text = "Inventory";
-                rightOption.text = "Equipment";
+                title.text = settings_string.GetLocalisedString();
+                leftOption.text = inventory_string.GetLocalisedString();
+                rightOption.text = equipment_string.GetLocalisedString();
                 break;
             default:
                 break;
