@@ -1,10 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Localization.Settings;
+using System.Collections;
+using System.Collections.Generic;
 
 public class MenuManager : MonoBehaviour
 {
+    [SerializeField] private TMP_Dropdown dropdown;
+
     public GameObject[] saveSelections;
     public Sprite emptyIcon;
 
@@ -13,14 +17,33 @@ public class MenuManager : MonoBehaviour
 
     int currentSaveFileSelected = 0;
 
-    private void Start()
+    // Populate the locale dropdown
+    IEnumerator Start()
     {
         UpdateSavePanel();
-    }
 
-    private void FixedUpdate()
+        // Wait for the localization system to initialize, loading Locales, preloading etc.
+        yield return LocalizationSettings.InitializationOperation;
+
+        // Generate list of available Locales
+        var options = new List<TMP_Dropdown.OptionData>();
+        int selected = 0;
+        for (int i = 0; i < LocalizationSettings.AvailableLocales.Locales.Count; ++i)
+        {
+            var locale = LocalizationSettings.AvailableLocales.Locales[i];
+            if (LocalizationSettings.SelectedLocale == locale)
+                selected = i;
+            options.Add(new TMP_Dropdown.OptionData(locale.Identifier.CultureInfo.NativeName));
+        }
+        dropdown.options = options;
+
+        dropdown.value = selected;
+        dropdown.onValueChanged.AddListener(LocaleSelected);
+    }
+    // Update the locale when changed with dropdown
+    public void LocaleSelected(int index)
     {
-       
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
     }
 
     public void UpdateSavePanel()
