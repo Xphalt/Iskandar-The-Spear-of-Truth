@@ -45,6 +45,8 @@ public class DarkLordPhase1 : EnemyBase
     {
         base.Start();
         _myAnimator.SetBool("IsAggroed", true);
+
+        for (int t = 0; t < phaseOneTimers.Length; t++) phaseOneTimers[t] = phaseOneCooldowns[t];
     }
 
     public override void Update()
@@ -130,7 +132,11 @@ public class DarkLordPhase1 : EnemyBase
             if (phaseOneAttack == PhaseOneAttacks.Kick)
                 move.KnockBack(transform.position, knockbackForce, knockbackDuration);
             if (stunning)
+            {
                 move.Stun(shieldStunDuration);
+                print("Stun");
+            }
+                
         }
     }
 }

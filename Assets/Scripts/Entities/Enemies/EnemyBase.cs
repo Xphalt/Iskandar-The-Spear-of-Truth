@@ -87,6 +87,8 @@ public class EnemyBase : Patrol
         curState = EnemyStates.Patrolling;
         detector = GetComponent<PlayerDetection>();
         hitCollider = GetComponent<BoxCollider>();
+
+        for (int t = 0; t < attackTimers.Length; t++) attackTimers[t] = attackCooldowns[t];
     }
 
     public override void Update()
