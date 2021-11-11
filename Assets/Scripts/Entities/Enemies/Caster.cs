@@ -21,6 +21,14 @@ public class Caster : EnemyBase
     }
     public PrefabsToSpawn[] prefabsToSpawn;
 
+    private bool pillarCast = false;
+    private float pillarTimer;
+    public float pillarFollowTime;
+    public float pillarActivateDelay;
+    public float pillarActiveTime;
+    public GameObject pillarBase;
+    public GameObject pillarHitbox;
+
     [NamedArrayAttribute(new string[] { "SummonSpell", "Pillar" })]
     public bool[] casterAvailableAttacks = new bool[(int)CasterAttacks.AttackTypesCount];
     [NamedArrayAttribute(new string[] { "SummonSpell", "Pillar" })]
@@ -29,6 +37,7 @@ public class Caster : EnemyBase
     protected CasterAttacks casterAttack = CasterAttacks.AttackTypesCount;
 
     protected bool SummonAvailable => (casterTimers[(int)CasterAttacks.SummonSpell] >= casterCooldowns[(int)CasterAttacks.SummonSpell]);
+    protected bool PillarAvailable => (casterTimers[(int)CasterAttacks.Pillar] >= casterCooldowns[(int)CasterAttacks.Pillar]);
 
     public override void Start()
     {
@@ -40,6 +49,9 @@ public class Caster : EnemyBase
         base.Update();
 
         SetMovementAnim();
+
+        if (pillarCast)
+            PillarTimer();
     }
 
     public override void Attack()
@@ -51,6 +63,12 @@ public class Caster : EnemyBase
             if (SummonAvailable)
             {
                 SummonSpellCast();
+                attackUsed = true;
+            }
+
+            if(PillarAvailable)
+            {
+                MagicPillarCast();
                 attackUsed = true;
             }
 
@@ -78,7 +96,13 @@ public class Caster : EnemyBase
     {
         casterAttack = CasterAttacks.SummonSpell;
 
-        _myAnimator.SetTrigger("CastSpell");
+        _myAnimator.SetTrigger("CastSummon");
+    }
+    private void MagicPillarCast()
+    {
+        casterAttack = CasterAttacks.Pillar;
+        pillarCast = true;
+        _myAnimator.SetTrigger("CastPillar");
     }
 
     public void SpawnStuff()
@@ -93,4 +117,32 @@ public class Caster : EnemyBase
             }
         }
     }
+
+    private void PillarTimer()
+    {
+        pillarTimer += Time.deltaTime;
+        if (pillarTimer >= pillarFollowTime)
+        {
+            StartCoroutine("PillarActivation");
+            pillarTimer = 0;
+        }
+
+        //make AoE appear on the ground and follow player here
+        pillarBase.SetActive(true);
+        pillarBase.transform.position = detector.GetCurTarget().position;
+
+    }
+
+    private IEnumerator PillarActivation()
+    {
+        pillarCast = false;
+        yield return new WaitForSeconds(pillarActivateDelay);
+        //pillar shoots out of the ground here
+        pillarHitbox.SetActive(true);
+        yield return new WaitForSeconds(pillarActiveTime);
+        pillarHitbox.SetActive(false);
+        pillarBase.SetActive(false);
+        AttackEnd();
+    }
+
 }
