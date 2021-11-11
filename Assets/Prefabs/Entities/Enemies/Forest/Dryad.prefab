@@ -630,7 +630,7 @@ MonoBehaviour:
   - 0
   - 0
   chargeSpeed: 0
-  chargeDistanceMult: 1
+  chargeDistanceMult: 0
   chargeRaycast: 0
   chargeLayerMask:
     serializedVersion: 2
@@ -639,14 +639,17 @@ MonoBehaviour:
   shootPoint: {fileID: 0}
   projectileSpeed: 0
   minChaseRadius: 0
-  numTrapsSpawned: 3
-  numPlantsSpawned: 2
   minSpawnRadius: 5
   maxSpawnRadius: 8
-  trapPrefab: {fileID: 3169118207333170559, guid: 4331b26f06c0ed24386eff703ba98e18, type: 3}
-  plantPrefab: {fileID: 782377222411420216, guid: 381fd6b5ce9668d438c9c717daff0f31, type: 3}
-  dryadCooldowns:
-  - 4
+  prefabsToSpawn:
+  - obj: {fileID: 3169118207333170559, guid: 4331b26f06c0ed24386eff703ba98e18, type: 3}
+    howMany: 3
+  - obj: {fileID: 782377222411420216, guid: 381fd6b5ce9668d438c9c717daff0f31, type: 3}
+    howMany: 2
+  casterAvailableAttacks: 0000
+  casterCooldowns:
+  - 0
+  - 0
 --- !u!195 &1675256277858020987
 NavMeshAgent:
   m_ObjectHideFlags: 0

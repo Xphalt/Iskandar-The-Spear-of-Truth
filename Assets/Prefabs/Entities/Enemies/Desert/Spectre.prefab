@@ -1882,12 +1882,13 @@ GameObject:
   - component: {fileID: 7624934383400130549}
   - component: {fileID: 2356501348048138943}
   - component: {fileID: 5282196631660075976}
-  - component: {fileID: 1208909074000575619}
   - component: {fileID: 3088793723610920245}
   - component: {fileID: 7267908887022299868}
   - component: {fileID: 2474860618853918055}
   - component: {fileID: 4339097389821217111}
   - component: {fileID: 7456419081259799613}
+  - component: {fileID: 1502067667369424629}
+  - component: {fileID: 1208909074000575619}
   m_Layer: 7
   m_Name: Spectre
   m_TagString: Untagged
@@ -1923,7 +1924,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 069e2b118a3119f4da9070d79e712bdc, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -2048,19 +2049,6 @@ MonoBehaviour:
   minimumGems: 0
   maximumGems: 0
   gemItem: {fileID: 0}
---- !u!65 &1208909074000575619
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7624934383407468239}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 0.5}
-  m_Center: {x: 0.25, y: 1, z: 0.5}
 --- !u!54 &3088793723610920245
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2149,6 +2137,70 @@ MonoBehaviour:
     m_Bits: 512
   viewAngle: 360
   detectionRadius: 8
+--- !u!114 &1502067667369424629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7624934383407468239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34fdeb3d6a07a8a4eb465dfd0dd2a4b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListOfNodes: []
+  pauseTime: 0
+  _stopAtLastWaypoint: 0
+  _scriptToEnable: {fileID: 0}
+  isChaser: 0
+  aggroedMoveSpeed: 4
+  findDelay: 0
+  availableAttacks: 010000
+  attackDamages:
+  - 1
+  - 0
+  - 0
+  attackRanges:
+  - 1.5
+  - 0
+  - 0
+  attackCooldowns:
+  - 1
+  - 0
+  - 0
+  chargeSpeed: 0
+  chargeDistanceMult: 1
+  chargeRaycast: 0
+  chargeLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  projectileObj: {fileID: 0}
+  shootPoint: {fileID: 0}
+  projectileSpeed: 0
+  minChaseRadius: 0
+  minSpawnRadius: 5
+  maxSpawnRadius: 8
+  prefabsToSpawn:
+  - obj: {fileID: 724559345382510007, guid: ee087aac69faf354dbc00b346293cf5e, type: 3}
+    howMany: 4
+  casterAvailableAttacks: 0100
+  casterCooldowns:
+  - 8
+  - 4
+--- !u!65 &1208909074000575619
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7624934383407468239}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2, z: 0.5}
+  m_Center: {x: 0.25, y: 1, z: 0.5}
 --- !u!1 &7624934383407469079
 GameObject:
   m_ObjectHideFlags: 0

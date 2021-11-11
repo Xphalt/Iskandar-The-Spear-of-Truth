@@ -129,7 +129,7 @@ Transform:
   m_GameObject: {fileID: 6692393670735185832}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 29.8, y: 0.6040009, z: 33.4}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3942612978310910025}
   m_Father: {fileID: 0}
@@ -280,7 +280,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ListOfNodes: []
   pauseTime: 0
-  chaseSpeed: 0
+  _stopAtLastWaypoint: 0
+  _scriptToEnable: {fileID: 0}
+  isChaser: 0
+  aggroedMoveSpeed: 0
   findDelay: 0
   availableAttacks: 000000
   attackDamages:
@@ -297,8 +300,13 @@ MonoBehaviour:
   - 0
   chargeSpeed: 0
   chargeDistanceMult: 1
+  chargeRaycast: 0
+  chargeLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   projectileObj: {fileID: 0}
   shootPoint: {fileID: 0}
+  projectileSpeed: 0
   minChaseRadius: 0
 --- !u!114 &3898141019203386702
 MonoBehaviour:
