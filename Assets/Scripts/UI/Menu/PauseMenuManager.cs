@@ -93,9 +93,24 @@ public class PauseMenuManager : MonoBehaviour
         audioSettings.SetActive(false);
 
         equipmentMenu.SetActive(true);
-        title.text = "Equipment";
-        leftOption.text = "Settings";
-        rightOption.text = "Quests";
+
+        // Localised strings
+        LocalisationTableReference equipment_string = new LocalisationTableReference();
+        equipment_string.tableReference = "ConstantStrings";
+        equipment_string.entryReference = "Equipment";
+
+        LocalisationTableReference settings_string = new LocalisationTableReference();
+        settings_string.tableReference = "ConstantStrings";
+        settings_string.entryReference = "Settings";
+
+        LocalisationTableReference quests_string = new LocalisationTableReference();
+        quests_string.tableReference = "ConstantStrings";
+        quests_string.entryReference = "Quests";
+
+        title.text = equipment_string.GetLocalisedString();
+        leftOption.text = settings_string.GetLocalisedString();
+        rightOption.text = quests_string.GetLocalisedString();
+
         // Update the money value in the equipment screen
         equipmentMoney.SetNumber(GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().Gems);
     }

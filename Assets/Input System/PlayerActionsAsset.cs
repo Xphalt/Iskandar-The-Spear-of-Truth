@@ -43,14 +43,6 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Inventory"",
-                    ""type"": ""Button"",
-                    ""id"": ""545b5370-4c67-4ac2-b6c3-f06524fe263a"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
                     ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""68b87936-120f-489d-b638-d8fe014d77ae"",
@@ -67,15 +59,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ItemSelectionWheel"",
-                    ""type"": ""Button"",
-                    ""id"": ""47d267fe-3a0d-468d-8a4b-abb7cc09cea4"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""ItemSelectionBar"",
+                    ""name"": ""PotionInterface"",
                     ""type"": ""Button"",
                     ""id"": ""e4e57a12-86b0-4380-a41f-c60f6c8e8951"",
                     ""expectedControlType"": ""Button"",
@@ -283,28 +267,6 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0d19a8e1-8184-4a28-a2a0-f60cab849ea0"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard & mouse"",
-                    ""action"": ""Inventory"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e26a1943-39ef-406d-9c4a-3c42a206555d"",
-                    ""path"": ""<Gamepad>/select"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Inventory"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f9616fa0-f67c-43fc-b783-79b8fd4563ed"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -349,45 +311,23 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a80031d4-ae3d-454f-9682-039cd29b5731"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard & mouse"",
-                    ""action"": ""ItemSelectionWheel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""3f9e9fcf-a656-438e-9f3e-c9f95169fb3c"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & mouse"",
-                    ""action"": ""ItemSelectionBar"",
+                    ""action"": ""PotionInterface"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""fd7ffb5f-945a-4e23-85e3-eb3b408d2443"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard & mouse"",
-                    ""action"": ""ItemSelectionBar"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6e573098-fe0c-4637-8f4a-40e70428390a"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard & mouse"",
-                    ""action"": ""ItemSelectionBar"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PotionInterface"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -472,9 +412,25 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Inventory"",
+                    ""name"": ""Potion_0"",
                     ""type"": ""Button"",
-                    ""id"": ""926481af-118a-4eef-a880-c62eaf4dd250"",
+                    ""id"": ""2ef55493-4299-42bf-a8be-b8fc9d7845eb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Potion_1"",
+                    ""type"": ""Button"",
+                    ""id"": ""c11d888f-b210-4f7f-989a-b2e58fc3c17f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Potion_2"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f104f97-a182-454e-9f55-f3cadb1c0d36"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -484,22 +440,88 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a0eda673-76e1-4132-a8b3-71c7b4a2bcaa"",
-                    ""path"": ""<Keyboard>/p"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & mouse"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1e5999cc-134d-400b-8d26-564848bc3818"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""id"": ""c8e970e0-54cf-4fe4-ac88-f6248368ee91"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard & mouse"",
-                    ""action"": ""Inventory"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6297ba4-bc74-48d2-bdf8-76d2ec86e03d"",
+                    ""path"": ""<XInputController>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Potion_0"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""485476f6-bd7d-43fe-8421-9668376ea792"",
+                    ""path"": ""<DualShockGamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Potion_0"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf930343-3889-42b0-b939-fb85f817f222"",
+                    ""path"": ""<XInputController>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Potion_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad051192-abb2-4a79-a862-f75385ce9301"",
+                    ""path"": ""<DualShockGamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Potion_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f527e64-c834-4a3e-a5c6-6d7ddd89cc1f"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Potion_2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ccfbc655-93c9-4bea-8850-9585410c0701"",
+                    ""path"": ""<DualShockGamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Potion_2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -541,11 +563,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Target = m_Player.FindAction("Target", throwIfNotFound: true);
-        m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
-        m_Player_ItemSelectionWheel = m_Player.FindAction("ItemSelectionWheel", throwIfNotFound: true);
-        m_Player_ItemSelectionBar = m_Player.FindAction("ItemSelectionBar", throwIfNotFound: true);
+        m_Player_PotionInterface = m_Player.FindAction("PotionInterface", throwIfNotFound: true);
         m_Player_SaveInventory = m_Player.FindAction("SaveInventory", throwIfNotFound: true);
         m_Player_LoadInventory = m_Player.FindAction("LoadInventory", throwIfNotFound: true);
         m_Player_ItemToggle = m_Player.FindAction("ItemToggle", throwIfNotFound: true);
@@ -553,7 +573,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
-        m_UI_Inventory = m_UI.FindAction("Inventory", throwIfNotFound: true);
+        m_UI_Potion_0 = m_UI.FindAction("Potion_0", throwIfNotFound: true);
+        m_UI_Potion_1 = m_UI.FindAction("Potion_1", throwIfNotFound: true);
+        m_UI_Potion_2 = m_UI.FindAction("Potion_2", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -606,11 +628,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Target;
-    private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Attack;
-    private readonly InputAction m_Player_ItemSelectionWheel;
-    private readonly InputAction m_Player_ItemSelectionBar;
+    private readonly InputAction m_Player_PotionInterface;
     private readonly InputAction m_Player_SaveInventory;
     private readonly InputAction m_Player_LoadInventory;
     private readonly InputAction m_Player_ItemToggle;
@@ -622,11 +642,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @Target => m_Wrapper.m_Player_Target;
-        public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
-        public InputAction @ItemSelectionWheel => m_Wrapper.m_Player_ItemSelectionWheel;
-        public InputAction @ItemSelectionBar => m_Wrapper.m_Player_ItemSelectionBar;
+        public InputAction @PotionInterface => m_Wrapper.m_Player_PotionInterface;
         public InputAction @SaveInventory => m_Wrapper.m_Player_SaveInventory;
         public InputAction @LoadInventory => m_Wrapper.m_Player_LoadInventory;
         public InputAction @ItemToggle => m_Wrapper.m_Player_ItemToggle;
@@ -649,21 +667,15 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @Target.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTarget;
                 @Target.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTarget;
                 @Target.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTarget;
-                @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
-                @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
-                @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                 @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                @ItemSelectionWheel.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionWheel;
-                @ItemSelectionWheel.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionWheel;
-                @ItemSelectionWheel.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionWheel;
-                @ItemSelectionBar.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionBar;
-                @ItemSelectionBar.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionBar;
-                @ItemSelectionBar.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItemSelectionBar;
+                @PotionInterface.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPotionInterface;
+                @PotionInterface.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPotionInterface;
+                @PotionInterface.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPotionInterface;
                 @SaveInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveInventory;
                 @SaveInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveInventory;
                 @SaveInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveInventory;
@@ -689,21 +701,15 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @Target.started += instance.OnTarget;
                 @Target.performed += instance.OnTarget;
                 @Target.canceled += instance.OnTarget;
-                @Inventory.started += instance.OnInventory;
-                @Inventory.performed += instance.OnInventory;
-                @Inventory.canceled += instance.OnInventory;
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
-                @ItemSelectionWheel.started += instance.OnItemSelectionWheel;
-                @ItemSelectionWheel.performed += instance.OnItemSelectionWheel;
-                @ItemSelectionWheel.canceled += instance.OnItemSelectionWheel;
-                @ItemSelectionBar.started += instance.OnItemSelectionBar;
-                @ItemSelectionBar.performed += instance.OnItemSelectionBar;
-                @ItemSelectionBar.canceled += instance.OnItemSelectionBar;
+                @PotionInterface.started += instance.OnPotionInterface;
+                @PotionInterface.performed += instance.OnPotionInterface;
+                @PotionInterface.canceled += instance.OnPotionInterface;
                 @SaveInventory.started += instance.OnSaveInventory;
                 @SaveInventory.performed += instance.OnSaveInventory;
                 @SaveInventory.canceled += instance.OnSaveInventory;
@@ -725,13 +731,17 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_Pause;
-    private readonly InputAction m_UI_Inventory;
+    private readonly InputAction m_UI_Potion_0;
+    private readonly InputAction m_UI_Potion_1;
+    private readonly InputAction m_UI_Potion_2;
     public struct UIActions
     {
         private @PlayerActionsAsset m_Wrapper;
         public UIActions(@PlayerActionsAsset wrapper) { m_Wrapper = wrapper; }
         public InputAction @Pause => m_Wrapper.m_UI_Pause;
-        public InputAction @Inventory => m_Wrapper.m_UI_Inventory;
+        public InputAction @Potion_0 => m_Wrapper.m_UI_Potion_0;
+        public InputAction @Potion_1 => m_Wrapper.m_UI_Potion_1;
+        public InputAction @Potion_2 => m_Wrapper.m_UI_Potion_2;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -744,9 +754,15 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @Pause.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
-                @Inventory.started -= m_Wrapper.m_UIActionsCallbackInterface.OnInventory;
-                @Inventory.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnInventory;
-                @Inventory.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnInventory;
+                @Potion_0.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_0;
+                @Potion_0.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_0;
+                @Potion_0.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_0;
+                @Potion_1.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_1;
+                @Potion_1.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_1;
+                @Potion_1.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_1;
+                @Potion_2.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_2;
+                @Potion_2.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_2;
+                @Potion_2.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPotion_2;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -754,9 +770,15 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
-                @Inventory.started += instance.OnInventory;
-                @Inventory.performed += instance.OnInventory;
-                @Inventory.canceled += instance.OnInventory;
+                @Potion_0.started += instance.OnPotion_0;
+                @Potion_0.performed += instance.OnPotion_0;
+                @Potion_0.canceled += instance.OnPotion_0;
+                @Potion_1.started += instance.OnPotion_1;
+                @Potion_1.performed += instance.OnPotion_1;
+                @Potion_1.canceled += instance.OnPotion_1;
+                @Potion_2.started += instance.OnPotion_2;
+                @Potion_2.performed += instance.OnPotion_2;
+                @Potion_2.canceled += instance.OnPotion_2;
             }
         }
     }
@@ -784,11 +806,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnTarget(InputAction.CallbackContext context);
-        void OnInventory(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
-        void OnItemSelectionWheel(InputAction.CallbackContext context);
-        void OnItemSelectionBar(InputAction.CallbackContext context);
+        void OnPotionInterface(InputAction.CallbackContext context);
         void OnSaveInventory(InputAction.CallbackContext context);
         void OnLoadInventory(InputAction.CallbackContext context);
         void OnItemToggle(InputAction.CallbackContext context);
@@ -797,6 +817,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     public interface IUIActions
     {
         void OnPause(InputAction.CallbackContext context);
-        void OnInventory(InputAction.CallbackContext context);
+        void OnPotion_0(InputAction.CallbackContext context);
+        void OnPotion_1(InputAction.CallbackContext context);
+        void OnPotion_2(InputAction.CallbackContext context);
     }
 }
