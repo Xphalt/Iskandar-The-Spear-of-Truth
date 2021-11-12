@@ -31,8 +31,13 @@ public class Interactable_Object_Jack : MonoBehaviour
         toolTip = GetComponentInChildren<ToolTip>();
     }
 
-	// Runs the logic corresponding with the InteractableType of the object
-	public void Interact()
+    private void Update()
+    {
+        DisplayGamepadUi();
+    }
+
+    // Runs the logic corresponding with the InteractableType of the object
+    public void Interact()
     {
         switch(type)
         {
@@ -93,19 +98,15 @@ public class Interactable_Object_Jack : MonoBehaviour
 
     private void DisplayGamepadUi()
     {
-        
+
         if (GetInteractableType() == InteractableType.NPC_Dialogue ||
             (GetInteractableType() == InteractableType.Seller))
         {
             toolTip.isTalkType = true;
+   
         }
         else if (GetInteractableType() == InteractableType.LootChest)
         {
-            toolTip.isReadType = true;
-        }
-        else
-        {
-            toolTip.isReadType = false;
             toolTip.isTalkType = false;
         }
     }
