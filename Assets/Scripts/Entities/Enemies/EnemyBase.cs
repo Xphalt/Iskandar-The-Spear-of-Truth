@@ -80,7 +80,6 @@ public class EnemyBase : Patrol
     public override void Start()
     {
         base.Start();
-        StartCoroutine("FindTargetsWithDelay", findDelay);
         //defaultToZero = false;
         stats = GetComponent<EnemyStats>();
         for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
@@ -88,6 +87,7 @@ public class EnemyBase : Patrol
         detector = GetComponent<PlayerDetection>();
         hitCollider = GetComponent<BoxCollider>();
 
+        StartCoroutine("FindTargetsWithDelay", findDelay);
         for (int t = 0; t < attackTimers.Length; t++) attackTimers[t] = attackCooldowns[t];
     }
 

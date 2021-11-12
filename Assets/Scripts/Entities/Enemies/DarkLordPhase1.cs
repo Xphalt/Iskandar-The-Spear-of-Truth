@@ -49,12 +49,6 @@ public class DarkLordPhase1 : EnemyBase
         for (int t = 0; t < phaseOneTimers.Length; t++) phaseOneTimers[t] = phaseOneCooldowns[t];
     }
 
-    public override void Update()
-    {
-        base.Update();
-        //if (curState == EnemyStates.Attacking) transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
-    }
-
     public override void Attack()
     {
         base.Attack();
@@ -136,7 +130,6 @@ public class DarkLordPhase1 : EnemyBase
                 move.Stun(shieldStunDuration);
                 print("Stun");
             }
-                
         }
     }
 }
