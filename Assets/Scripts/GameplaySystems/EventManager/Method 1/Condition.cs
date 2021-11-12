@@ -83,6 +83,17 @@ public class DialogueEndedCondition : Condition
 	[SerializeField] private DialogueManager dlgManager;
 }
 
+public class KillnEnemiesCondition : Condition
+{
+	public override bool TestCondition()
+	{
+		if (EnemyStats.EnemiesKilled >= amountToKill)
+			return true;
+		return false;
+	}
+
+	[SerializeField] private int amountToKill;
+}
 
 //[System.Serializable]
 //public class DialogueCondition : Condition

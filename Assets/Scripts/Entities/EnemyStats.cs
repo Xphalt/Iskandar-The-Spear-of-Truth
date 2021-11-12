@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyStats : StatsInterface
 {
+    public static int EnemiesKilled = 0;
+
     public bool vulnerable = true;
     private float deathTimer = 0.0f;
     public float despawnTime;
@@ -23,6 +25,7 @@ public class EnemyStats : StatsInterface
             deathTimer += Time.deltaTime;
             if (deathTimer >= despawnTime)
             {
+                ++EnemiesKilled;
                 drops.SpawnLoot();
                 gameObject.SetActive(false);
             }

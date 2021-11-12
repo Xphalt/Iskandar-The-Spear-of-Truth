@@ -231,7 +231,10 @@ public class PlayerStats : StatsInterface
                             GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
                             //This changes the animator controller from weaponless animations to weapon animations
                             if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
+                            {
+                                Debug.Log(Resources.Load<RuntimeAnimatorController>(weaponAddress));
                                 playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(weaponAddress);
+                            }
                             else
                                 playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(noWeaponAddress);
                             break;
