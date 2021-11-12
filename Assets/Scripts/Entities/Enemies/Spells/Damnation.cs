@@ -90,7 +90,7 @@ public class Damnation : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.SetParent(null);
 
-        spikeGap = (range + (scaleIncrease * rows[0].childCount)) / rows[0].childCount;
+        spikeGap = range / rows[0].childCount - scaleIncrease * (rows[0].childCount - 1);
     }
 
     public void EndCast()

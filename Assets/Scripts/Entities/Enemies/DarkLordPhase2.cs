@@ -121,7 +121,7 @@ public class DarkLordPhase2 : EnemyBase
     public void SpawnProjectile()
     {
         ProjectileScript newProj = Instantiate(projectiles[(int)curAttack], null).GetComponent<ProjectileScript>();
-        newProj.SetTarget(detector.GetCurTarget());
+        //newProj.SetTarget(detector.GetCurTarget());
     }
 
     public void IndicateDamnation()
@@ -131,9 +131,9 @@ public class DarkLordPhase2 : EnemyBase
         {
             indicators[i].rotation = Quaternion.Euler(Vector3.up * (damnationRotation + damnationScript.RowAngle * i));
             Vector3 newScale = indicators[i].localScale;
-            newScale.z = damnationRange;
+            newScale.z = damnationRange / 2;
             indicators[i].localScale = newScale;
-            indicators[i].localPosition = Vector3.zero;
+            indicators[i].position = transform.position + indicators[i].forward * indicators[i].lossyScale.z / 2;
             indicators[i].gameObject.SetActive(true);
         }
     }
