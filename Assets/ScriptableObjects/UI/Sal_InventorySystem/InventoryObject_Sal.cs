@@ -82,7 +82,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
     public void SwapItem(InventorySlot item1, InventorySlot item2)
     {
-        if ((item1 != null && item2 != null))
+        if (item1 != null && item2 != null)
         {
             InventorySlot temp = new InventorySlot(item2.item, item2.amount);
             item2.UpdateSlot(item1.item, item1.amount);

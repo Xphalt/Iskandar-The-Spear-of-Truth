@@ -10,8 +10,7 @@ public class EventAction
 {
     [SerializeReference]    public List<Condition> conditions = new List<Condition>();
     [SerializeReference]    public List<Event> events = new List<Event>();
-    [SerializeField]        public bool complete = false;   
-    [SerializeField]        public bool singleCondition = false;   
+    [SerializeField]        public bool complete = false;      
 }
 
 public class EventManager : MonoBehaviour
@@ -28,54 +27,29 @@ public class EventManager : MonoBehaviour
     void Update()
     {
         foreach (EventAction action in actions)
-        {
-            if(!action.singleCondition) //AND
+        { 
+            if (!action.complete)
             {
-                if (!action.complete)
+                // Test conditions are met
+                action.complete = true;
+                foreach (Condition condition in action.conditions)
                 {
-                    // Test conditions are met
-                    action.complete = true;
-                    foreach (Condition condition in action.conditions)
-                    {
-                        if (!condition.TestCondition())
-                        {
-                            action.complete = false;
-                            break;
-                        }
-                    }
-
-                    // If all conditions are met execute the connected events
-                    if (action.complete)
-                    {
-                        foreach (Event actionEvent in action.events)
-                        {
-                            actionEvent.TriggerEvent();
-                        }
-                    }
-                }
-            }
-            else //OR
-            {
-                if (!action.complete)
-                {
-                    action.complete = true;
-                    // Test conditions are met
-                    foreach (Condition condition in action.conditions)
+                    if (!condition.TestCondition())
                     {
                         action.complete = false;
-                        if (condition.TestCondition())
-                        {
-                            //Pass data to the event 
-                            foreach (Event actionEvent in action.events)
-                            {
-                                actionEvent.PassDataFromCondition(condition.dataToPass);
-                                actionEvent.TriggerEvent();
-                            } 
-                            return;
-                        }
+                        break;
                     }
                 }
-            }
+
+                // If all conditions are met execute the connected events
+                if (action.complete)
+                {
+                    foreach (Event actionEvent in action.events)
+                    {
+                        actionEvent.TriggerEvent();
+                    }
+                }
+            } 
         }
     }
 }

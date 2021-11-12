@@ -38,16 +38,14 @@ public class EquipPanel : MonoBehaviour
                 var obj = Instantiate(slotPrefab, parent);
 
                 obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.ItemObjects[inventory.Storage.Slots[i].item.id].uiDisplay;
+                obj.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = inventory.Storage.Slots[i].amount == 1 ? "" : inventory.Storage.Slots[i].amount.ToString("n0");
 
                 //Adds Events to each slot
                 AddEvent(obj, EventTriggerType.PointerEnter, delegate { OnPointerEnter(obj); });
                 AddEvent(obj, EventTriggerType.PointerExit, delegate { OnPointerExit(obj); });
                 AddEvent(obj, EventTriggerType.PointerClick, delegate { OnClick(obj); });
 
-                slotItem.Add(obj, inventory.Storage.Slots[i].item);
-
-                //Storing the GameObject in the slot
-                inventory.GetSlots[i].slotDisplay = obj;
+                slotItem.Add(obj, inventory.Storage.Slots[i].item); 
             }
         }
     }
