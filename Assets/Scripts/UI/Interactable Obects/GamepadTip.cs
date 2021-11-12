@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/*__________________________________________________________________________________
+ * This script reveals a UI hint on the interaction controls and changes it 
+ * according to its type. This was created by Fate, contact me if you need any help.
+ *__________________________________________________________________________________*/
+
 public class GamepadTip : MonoBehaviour
 {
     public GameObject gamepadUi;
@@ -8,24 +13,18 @@ public class GamepadTip : MonoBehaviour
 
     public Sprite readSprite, talkSprite;
 
-
-    void Start()
+    void Awake()
     {
-        //gamepadUi = GetComponentInParent<GameObject>();
         gamepadUiImage = GetComponent<Image>();
-      ///  gamepadUi = GameObject.Find("GamepadOnlyUI");
     }
 
     public void DisplayGamepadUI(string type)
     {
-        //make sprite visible
+        //Change sprite
+
         if (gamepadUi.activeInHierarchy && type == "read")
-        {
             gamepadUiImage.sprite = readSprite;
-        }
         else if (gamepadUi.activeInHierarchy && type == "talk")
-        {
             gamepadUiImage.sprite = talkSprite;
-        }
     }
 }

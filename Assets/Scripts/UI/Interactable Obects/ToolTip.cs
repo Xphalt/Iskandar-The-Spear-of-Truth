@@ -67,22 +67,22 @@ public class ToolTip : MonoBehaviour
             {
                 SR.color = Color.white;
             }
-            print("in far radius");
-            //bring up ui image here
+
             /*_________________________________________________________________________
             * This is for game pad UI tips.
             * ________________________________________________________________________*/
+            gamepadTip.gamepadUi.SetActive(true);
+
             if (isTalkType)
-            {
                 gamepadTip.DisplayGamepadUI("talk");
-                print("is talking");
-            }
             else if (!isTalkType)
                 gamepadTip.DisplayGamepadUI("read");
-
-            print("isTalkType" + isTalkType);
         }
-        else inRange = false;
+        else
+        {
+            inRange = false;
+            gamepadTip.gamepadUi.SetActive(false);
+        }
     }
 
     public void SetImage(string type)
