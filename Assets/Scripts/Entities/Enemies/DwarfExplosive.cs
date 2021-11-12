@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class DwarfExplosive : MonoBehaviour
 {
-
     public float Countdown;
-
 
     void Update()
     {
