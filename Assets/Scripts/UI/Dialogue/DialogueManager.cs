@@ -12,6 +12,15 @@ public class DialogueManager : MonoBehaviour
 
     private Collider currentCollider;
     private NewConversation newConversation;
+    public NewConversation NewConversation
+    {
+        get => newConversation;
+    }
+    private bool conversationIsEnded = false;
+    public bool ConversationIsEnded
+    {
+        get => conversationIsEnded;
+    }
 
     public GameObject DialoguePanel;
     public Button ButtonContinue;
@@ -44,6 +53,8 @@ public class DialogueManager : MonoBehaviour
     {
         playerInput.TogglePlayerInteraction(false);
 
+        conversationIsEnded = false;
+
         currentCollider = newCollider;
         newConversation = newDialogue;
 
@@ -66,6 +77,7 @@ public class DialogueManager : MonoBehaviour
         if (_QueueOfCharacters.Count == 0 && _QueueOfStrings.Count == 0)
         {
             EndDialogue();
+            conversationIsEnded = true;
         }
         else
         {

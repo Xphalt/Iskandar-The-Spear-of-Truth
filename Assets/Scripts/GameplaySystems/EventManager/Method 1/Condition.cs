@@ -7,8 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public abstract class Condition
 {
-	public abstract bool TestCondition();
-	public Component dataToPass;
+	public abstract bool TestCondition(); 
 }
 
 
@@ -59,31 +58,6 @@ public class TriggerColliderCondition : Condition
 	[SerializeField] private OneTimeTrigger _oneTimeTrigger;
 }
 
-public class TriggerListConditions : Condition
-{
-	public override bool TestCondition()
-	{
-		foreach (var item in oneTimeTriggers)
-		{
-			if (item.HasTriggered)
-			{
-				dataToPass = item.Collider;
-				oneTimeTriggers.Remove(item);
-				return true;
-			}
-		}
-		if(oneTimeTriggers.Count == 0)
-			return false;
-		else
-        {
-			dataToPass = null;
-			return true;
-        }
-	}
-
-	[SerializeField] private List<OneTimeTrigger> oneTimeTriggers; 
-}
-
 public class IsDeadCondition : Condition
 {
     public override bool TestCondition()
@@ -96,7 +70,30 @@ public class IsDeadCondition : Condition
 	[SerializeField] private PlayerStats playerStats;
 }
 
+public class DialogueEndedCondition : Condition
+{
+    public override bool TestCondition()
+    {
+		if (dlgManager.NewConversation == dialogue && dlgManager.ConversationIsEnded)
+			return true;
+		return false;
+    }
 
+	[SerializeField] private NewConversation dialogue;
+	[SerializeField] private DialogueManager dlgManager;
+}
+
+public class KillnEnemiesCondition : Condition
+{
+	public override bool TestCondition()
+	{
+		if (EnemyStats.EnemiesKilled >= amountToKill)
+			return true;
+		return false;
+	}
+
+	[SerializeField] private int amountToKill;
+}
 
 //[System.Serializable]
 //public class DialogueCondition : Condition

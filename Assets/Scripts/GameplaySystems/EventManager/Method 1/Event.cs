@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public abstract class Event
 {
-    public abstract void TriggerEvent();
-    public abstract void PassDataFromCondition(Component obj);
+    public abstract void TriggerEvent(); 
 }
 
 [System.Serializable]
@@ -18,9 +18,6 @@ public class DoorLockEvent : Event
         doorScript.Locked = lockDoor;
 	}
 
-    public override void PassDataFromCondition(Component obj)
-    { }
-
     [SerializeReference] public ScrDoor1 doorScript;
     [SerializeReference] public bool lockDoor;
 }
@@ -30,10 +27,7 @@ public class OpenCloseDoorEvent : Event
 	public override void TriggerEvent()
 	{
         doorScript.SwapDoor();
-	}
-
-    public override void PassDataFromCondition(Component obj)
-    { }
+	} 
 
     [SerializeReference] public ScrDoor1 doorScript;
 }
@@ -47,9 +41,7 @@ public class SpawnEntityEvent : Event
         {
             gameObject.SetActive(_activateObjects);
 		}
-    }
-    public override void PassDataFromCondition(Component obj)
-    { }
+    } 
 
     [SerializeReference] private List<GameObject> _objectsToActivate;
     [SerializeReference] private bool _activateObjects;
@@ -97,15 +89,10 @@ public class PanCameraWithTargetVectorEvent : PanCameraEvent
         spawnedObjectScript.panCamera = _panCamera;
         spawnedObjectScript.timeToPanFor = _cameraPanScript.TotalPanDuration;
         
-	}
-
-    public override void PassDataFromCondition(Component obj)
-    { }
+	} 
 
     [SerializeReference] private Vector3 _targetVector = new Vector3(0.0f, 0.0f, 0.0f);
-    [SerializeReference] private float _linger = -1f;
-
-
+    [SerializeReference] private float _linger = -1f; 
 }
 
 public class SwapActiveCameraAfterPanObject : MonoBehaviour
@@ -138,10 +125,7 @@ public class PanCameraWithTargetTransformEvent : PanCameraEvent
 	{
         _cameraPanScript.StartPan(_targetTransform);
 	}
-
-    public override void PassDataFromCondition(Component obj)
-    { }
-
+     
     [SerializeReference] private Transform _targetTransform;
 }
 
@@ -159,10 +143,7 @@ public class LockPlayerInputsEvent : Event
         {
             GameEvents.current.UnLockPlayerInputs();
 		}
-	}
-
-    public override void PassDataFromCondition(Component obj)
-    { }
+	} 
 
     [SerializeReference] private bool _lockInputs;
 }
@@ -180,10 +161,7 @@ public class UIEvent : Event
             GameEvents.current.EnableUI();
 		}
     }
-
-    public override void PassDataFromCondition(Component obj)
-    { }
-
+     
     [SerializeReference] private bool _disableUI;
 }
 
@@ -199,10 +177,7 @@ public class PreventPlayerInteractionEvent : Event
         {
             GameEvents.current.AllowPlayerInteraction();
 		}
-	}
-
-    public override void PassDataFromCondition(Component obj)
-    { }
+	} 
 
     [SerializeReference] private bool _disablePlayerInteraction;
 }
@@ -214,9 +189,6 @@ public class QuestLogEntryEvent : Event
     {
 
     }
-
-    public override void PassDataFromCondition(Component obj)
-    { }
 }
 
 //---------------- Sal Changes ----------------
@@ -225,10 +197,7 @@ public class FadeInOutScreen : Event
     public override void TriggerEvent()
     {
         fadeScreen.SetTrigger(fadeHash);
-    }
-
-    public override void PassDataFromCondition(Component obj)
-    { }
+    } 
 
     [SerializeReference] private Animator fadeScreen;
     private int fadeHash = Animator.StringToHash("StartTransition");
@@ -238,19 +207,36 @@ public class StartDialogue : Event
 {
     public override void TriggerEvent()
     {
-        if(data != null)
+        if(dialogue != null && convCollider != null)
         {
             GameObject.FindObjectOfType<DialogueManager>().DialoguePanel.SetActive(true);
-            GameObject.FindObjectOfType<DialogueManager>().StartDialogue(data.GetComponent<Collider>(), data.GetComponent<TestEventDialogue>().dialogue);
+            GameObject.FindObjectOfType<DialogueManager>().StartDialogue(convCollider, dialogue);
         }
     }
 
-    public override void PassDataFromCondition(Component obj)
-    {
-        data = obj;
-    }
+    [SerializeReference]private Collider convCollider;
+    [SerializeReference]private NewConversation dialogue;
+}
 
-    private Component data;
+public class SpawnEnemyEvent : Event
+{
+    public override void TriggerEvent()
+    {
+        GameObject.Instantiate(enemyToSpawn, spawnPos.position, spawnPos.rotation);
+    } 
+
+    [SerializeField] Transform spawnPos;
+    [SerializeField] GameObject enemyToSpawn;
+}
+
+public class ChangeSceneEvent : Event
+{
+    public override void TriggerEvent()
+    {
+        SceneManager.LoadScene(sceneIndex);    
+    } 
+
+    [SerializeField] private int sceneIndex;
 }
 
 //[System.Serializable]
