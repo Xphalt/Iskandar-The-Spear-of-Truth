@@ -12,6 +12,7 @@ public class ToolTip : MonoBehaviour
     private SpriteRenderer SR;
     private Transform player;
     private GamepadTip gamepadTip;
+    private int fadeInCounter, fadeOutCounter;
     [HideInInspector] public bool isTalkType = false;//, isReadType;
 
     public Sprite lookSprite, useSprite, talkSprite;
@@ -71,17 +72,26 @@ public class ToolTip : MonoBehaviour
             /*_________________________________________________________________________
             * This is for game pad UI tips.
             * ________________________________________________________________________*/
-            gamepadTip.gamepadUi.SetActive(true);
-
             if (isTalkType)
                 gamepadTip.DisplayGamepadUI("talk");
             else if (!isTalkType)
                 gamepadTip.DisplayGamepadUI("read");
+
+            //Fade counter necessary so function doesn't restart
+            fadeOutCounter = 0;
+            fadeInCounter++;
+
+            if (fadeInCounter == 1)
+                gamepadTip.FadeIn();
         }
         else
         {
             inRange = false;
-            gamepadTip.gamepadUi.SetActive(false);
+
+            fadeInCounter = 0;
+            fadeOutCounter++;
+            if (fadeOutCounter == 1)
+                gamepadTip.FadeOut();
         }
     }
 
