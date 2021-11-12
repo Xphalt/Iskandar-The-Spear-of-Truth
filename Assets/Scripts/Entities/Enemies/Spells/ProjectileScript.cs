@@ -5,11 +5,11 @@ using UnityEngine;
 public class ProjectileScript : MonoBehaviour
 {
     public float damage;
-    private float projectileLifetime;
+    protected float projectileLifetime;
     public float lifetimeMultiplier=2;
-    private float lifetime;
+    protected float lifetime;
 
-    private void Update()
+    public virtual void Update()
     {
         lifetime += Time.deltaTime;
 
@@ -17,15 +17,13 @@ public class ProjectileScript : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public virtual void SetTarget(Transform target) { }
-
-    public void SetDamageFromParent(float dmg, float projlife = 1)
+    public virtual void SetDamageFromParent(float dmg, float projlife = 1)
     {
         projectileLifetime = projlife * lifetimeMultiplier;
         damage = dmg;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected void OnCollisionEnter(Collision collision)
     {
         if(collision.transform.CompareTag("Player"))
         {
