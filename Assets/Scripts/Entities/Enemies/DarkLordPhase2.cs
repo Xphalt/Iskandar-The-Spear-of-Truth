@@ -15,10 +15,10 @@ public class DarkLordPhase2 : EnemyBase
 
     PhaseTwoAttacks phaseTwoAttack = PhaseTwoAttacks.AttackTypesCount;
 
-    public float skullDamage, skullRange;
-    public float burstDamage, burstRange;
+    public int minSkulls = 1, maxSkulls = 3;
+    public float skullDamage, skullRange, skullSpeed, skullArc = 180, skullSeekDelay, healthLostForExtraSkull = 25;
+    public float burstDamage, burstRange, burstSpeed, burstRadius, knockbackForce, knockbackDuration;
     public float damnationDamage, damnationRange;
-    public float knockbackForce, knockbackDuration;
     public float boltDamage, boltRange;
 
     [NamedArray(new string[] { "Skull", "Burst", "Damn", "Bolts" })]
@@ -26,13 +26,14 @@ public class DarkLordPhase2 : EnemyBase
     [NamedArray(new string[] { "Skull", "Burst", "Damn", "Bolts" })]
     public float[] phaseTwoTimers = new float[(int)PhaseTwoAttacks.AttackTypesCount];
 
-    [NamedArray(new string[] { "Skull", "Burst" })]
-    public GameObject[] projectiles;
+    public GameObject skullProjectile, flameProjectile;
     public GameObject damnIndicator;
     private List<Transform> indicators = new List<Transform>();
 
     public Damnation damnationScript;
     private float damnationRotation = 0;
+
+    private bool targeting = false;
 
     protected bool SkullAvailable => (phaseTwoTimers[(int)PhaseTwoAttacks.Skull] >= phaseTwoCooldowns[(int)PhaseTwoAttacks.Skull])
          && transform.GetDistance(detector.GetCurTarget()) < skullRange;
@@ -42,6 +43,7 @@ public class DarkLordPhase2 : EnemyBase
          && transform.GetDistance(detector.GetCurTarget()) < damnationRange && damnationScript.Finished;
     protected bool BoltsAvailable => (phaseTwoTimers[(int)PhaseTwoAttacks.Bolts] >= phaseTwoCooldowns[(int)PhaseTwoAttacks.Bolts])
          && transform.GetDistance(detector.GetCurTarget()) < boltRange;
+    protected int SkullNum => Mathf.Min(minSkulls + Mathf.FloorToInt((1 - stats.health / stats.MAX_HEALTH) * 100 / healthLostForExtraSkull), maxSkulls);
 
     public override void Start()
     {
@@ -60,10 +62,10 @@ public class DarkLordPhase2 : EnemyBase
     {
         base.Update();
 
-        if (curState == EnemyStates.Attacking && phaseTwoAttack == PhaseTwoAttacks.Damn && damnationScript.Finished)
+        if (curState == EnemyStates.Attacking)
         {
-            damnationScript.EndCast();
-            //AttackEnd();
+            if (phaseTwoAttack == PhaseTwoAttacks.Damn && damnationScript.Finished) damnationScript.EndCast();
+            if (targeting) transform.LookAt(detector.GetCurTarget().position);
         }
     }
 
@@ -76,11 +78,13 @@ public class DarkLordPhase2 : EnemyBase
             if (SkullAvailable)
             {
                 SetAttack(PhaseTwoAttacks.Skull);
+                targeting = true;
             }
 
             if (!attackUsed && BurstAvailable)
             {
                 SetAttack(PhaseTwoAttacks.Burst);
+                targeting = true;
             }
 
             if (!attackUsed && DamnationAvailable)
@@ -99,10 +103,7 @@ public class DarkLordPhase2 : EnemyBase
     protected override void AttackCooldown()
     {
         base.AttackCooldown();
-        for (int a = 0; a < phaseTwoCooldowns.Length; a++)
-        {
-            phaseTwoTimers[a] += Time.deltaTime;
-        }
+        for (int a = 0; a < phaseTwoCooldowns.Length; a++)  phaseTwoTimers[a] += Time.deltaTime;
     }
 
     public void SetAttack(PhaseTwoAttacks type)
@@ -118,10 +119,23 @@ public class DarkLordPhase2 : EnemyBase
 
     }
 
-    public void SpawnProjectile()
+    public void SpawnSkull()
     {
-        ProjectileScript newProj = Instantiate(projectiles[(int)curAttack], null).GetComponent<ProjectileScript>();
-        //newProj.SetTarget(detector.GetCurTarget());
+        for (int s = 0; s < SkullNum; s++)
+        {
+            SkullStorm newProj = Instantiate(skullProjectile, shootPoint.position, Quaternion.identity).GetComponent<SkullStorm>();
+            Vector3 skullDir = Quaternion.Euler(Vector3.up * Random.Range(-skullArc / 2, skullArc / 2)) * transform.forward;
+            newProj.SetVariables(detector.GetCurTarget(), skullDamage, skullSpeed, skullSeekDelay, skullDir);
+        }
+
+        targeting = false;
+    }
+
+    public void SpawnFireball()
+    {
+        Fireball newProj = Instantiate(flameProjectile, shootPoint.position, Quaternion.identity).GetComponent<Fireball>();
+        newProj.Launch(shootPoint.position, detector.GetCurTarget().position, burstSpeed, burstDamage, burstRadius, knockbackForce, knockbackDuration);
+        targeting = false;
     }
 
     public void IndicateDamnation()
@@ -140,7 +154,7 @@ public class DarkLordPhase2 : EnemyBase
 
     public void CastDamnation()
     {
-        //foreach (Transform i in indicators) i.gameObject.SetActive(false);
-        damnationScript.Cast(damnationRotation, damnationRange);
+        foreach (Transform i in indicators) i.gameObject.SetActive(false);
+        damnationScript.Cast(damnationRotation, damnationRange, damnationDamage);
     }
 }

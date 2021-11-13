@@ -14,6 +14,7 @@ public class EnemyStats : StatsInterface
 
     private void Start()
     {
+        health = MAX_HEALTH;
         drops = GetComponent<EntityDrop>();
     }
 
@@ -26,7 +27,7 @@ public class EnemyStats : StatsInterface
             if (deathTimer >= despawnTime)
             {
                 ++EnemiesKilled;
-                drops.SpawnLoot();
+                if (drops) drops.SpawnLoot();
                 gameObject.SetActive(false);
             }
         }

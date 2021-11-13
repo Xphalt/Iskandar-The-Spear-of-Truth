@@ -9,7 +9,7 @@ public class Damnation : MonoBehaviour
     public float spikeInterval, scaleIncrease, spikeLifetime;
     public Vector3 defaultScale = Vector3.one;
     private int spawnIndex = 0, despawnIndex = 0;
-    private float spikeGap, spawnTimer = 0, lifeTimer = 0;
+    private float spikeGap, spawnTimer = 0, lifeTimer = 0, spikeDamage;
     private bool casting = false;
 
     private Transform parent;
@@ -75,7 +75,7 @@ public class Damnation : MonoBehaviour
         }
     }
 
-    public void Cast(float rotation, float range)
+    public void Cast(float rotation, float range, float damage)
     {
         for (int r = 0; r < rows.Length; r++)
         {
@@ -91,11 +91,18 @@ public class Damnation : MonoBehaviour
         transform.SetParent(null);
 
         spikeGap = range / rows[0].childCount - scaleIncrease * (rows[0].childCount - 1);
+
+        spikeDamage = damage;
     }
 
     public void EndCast()
     {
         transform.SetParent(parent);
         transform.localScale = startScale;
+    }
+
+    protected void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out PlayerStats player)) player.TakeDamage(spikeDamage);
     }
 }

@@ -82,17 +82,25 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   projectileObj: {fileID: 0}
-  shootPoint: {fileID: 0}
+  shootPoint: {fileID: 2711327630202223721}
   projectileSpeed: 0
   minChaseRadius: 1.5
+  minSkulls: 1
+  maxSkulls: 3
   skullDamage: 0
-  skullRange: 0
+  skullRange: 15
+  skullSpeed: 3
+  skullArc: 180
+  skullSeekDelay: 2
+  healthLostForExtraSkull: 25
   burstDamage: 0
-  burstRange: 0
+  burstRange: 15
+  burstSpeed: 10
+  burstRadius: 5
+  knockbackForce: 15
+  knockbackDuration: 1
   damnationDamage: 0
   damnationRange: 10
-  knockbackForce: 0
-  knockbackDuration: 0
   boltDamage: 0
   boltRange: 0
   phaseTwoCooldowns:
@@ -100,7 +108,13 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  projectiles: []
+  phaseTwoTimers:
+  - 0
+  - 0
+  - 0
+  - 0
+  skullProjectile: {fileID: 6305851067892618043, guid: 572dea30f4a6b924a9a6b24a1823e85c, type: 3}
+  flameProjectile: {fileID: 6728368583049832219, guid: 1151778bd32f3234c9a43dcac45f8317, type: 3}
   damnIndicator: {fileID: 4264025084807483813, guid: 7d63d57cf6dfe0745a3fab51d5a3c63a, type: 3}
   damnationScript: {fileID: 6881504872794994148}
 --- !u!195 &3230206662829079434
@@ -226,6 +240,11 @@ GameObject:
 --- !u!4 &2711281565299989737 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4155741821396558, guid: 3c9c85e47d53d1f4aaa97330d98c0680, type: 3}
+  m_PrefabInstance: {fileID: 2715296294453099175}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2711327630202223721 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4003917648627406, guid: 3c9c85e47d53d1f4aaa97330d98c0680, type: 3}
   m_PrefabInstance: {fileID: 2715296294453099175}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3651486734888410868
