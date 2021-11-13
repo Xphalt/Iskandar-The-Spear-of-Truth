@@ -96,6 +96,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private const float MAX_SPEED_MULTIPLIER = 1;
     private const float MIN_SPEED_MULTIPLIER = 0.1f;
 
+    private float slowMult = 1;
+    private float slowDuration = 0;
+    private float slowTimer = 0;
+    private bool slowed = false;
+
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
@@ -236,7 +241,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (timeSinceLastDash < dashDuration && !falling)
         {
             //m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
-            m_Rigidbody.velocity = dashDirection * dashForce;// / dashSpeedMultiplier;
+            m_Rigidbody.velocity = dashDirection * dashForce * slowMult;// / dashSpeedMultiplier;
         }
 
         if (timeKnockedBack < knockBackDuration && knockedBack && !falling)
@@ -322,7 +327,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                     m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE);
                 }
 
-                m_Rigidbody.velocity = (direction * m_Speed);
+                m_Rigidbody.velocity = (direction * m_Speed * slowMult);
 
                 // this line fixes the thrown sword direction when locked onto an enemy
                 swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
@@ -331,7 +336,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             {
                 if (m_Input.magnitude > 0)
                 {
-                    Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier * gradualSpeedMultiplier);
+                    Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier * gradualSpeedMultiplier * slowMult);
                     newVel.y = m_Rigidbody.velocity.y;
                     m_Rigidbody.velocity = (newVel);
                 }
@@ -425,6 +430,13 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         stunned = true;
         stunDuration = duration;
         stunTimer = 0;
+    }
+
+    public IEnumerator Slow(float newMult, float duration)
+    {
+        slowMult = newMult;
+        yield return new WaitForSeconds(duration);
+        slowMult = 1;
     }
 
     public void Root(float duration)

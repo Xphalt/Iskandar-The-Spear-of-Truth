@@ -25,10 +25,10 @@ BoxCollider:
   m_GameObject: {fileID: 2714197572181778103}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.9125786, y: 2.1685214, z: 0.80569696}
-  m_Center: {x: 0.00000011920929, y: 0.9955113, z: 0.04906304}
+  m_Size: {x: 1.5, y: 2, z: 0.85}
+  m_Center: {x: 0, y: 1, z: 1}
 --- !u!136 &6504567111358318202
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -39,10 +39,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.4562893
+  m_Radius: 0.5
   m_Height: 2.1685214
   m_Direction: 1
-  m_Center: {x: 0.00000011920929, y: 0.9955113, z: 0.04906304}
+  m_Center: {x: 0, y: 1, z: 0.004906304}
 --- !u!114 &772232798184596013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,17 +62,17 @@ MonoBehaviour:
   isChaser: 1
   aggroedMoveSpeed: 5
   findDelay: 0
-  availableAttacks: 000000
+  availableAttacks: 010000
   attackDamages:
   - 0
   - 0
   - 0
   attackRanges:
-  - 0
+  - 2
   - 0
   - 0
   attackCooldowns:
-  - 0
+  - 1
   - 0
   - 0
   chargeSpeed: 0
@@ -101,13 +101,20 @@ MonoBehaviour:
   knockbackDuration: 1
   damnationDamage: 0
   damnationRange: 10
-  boltDamage: 0
-  boltRange: 0
+  boltInnerDamage: 0
+  boltOuterDamage: 0
+  minBoltRange: 3
+  boltRange: 10
+  boltNum: 5
+  boltInnerRadius: 1
+  boltOuterRadius: 3
+  boltSlowPercent: 50
+  boltSlowDuration: 2
   phaseTwoCooldowns:
-  - 0
-  - 0
-  - 0
-  - 0
+  - 20
+  - 12
+  - 6
+  - 9
   phaseTwoTimers:
   - 0
   - 0
@@ -115,7 +122,9 @@ MonoBehaviour:
   - 0
   skullProjectile: {fileID: 6305851067892618043, guid: 572dea30f4a6b924a9a6b24a1823e85c, type: 3}
   flameProjectile: {fileID: 6728368583049832219, guid: 1151778bd32f3234c9a43dcac45f8317, type: 3}
+  propheticBolt: {fileID: 415977062621194276, guid: 68200e2d894be044b9de9740c26ddd3e, type: 3}
   damnIndicator: {fileID: 4264025084807483813, guid: 7d63d57cf6dfe0745a3fab51d5a3c63a, type: 3}
+  boltIndicator: {fileID: 8267230458876906430, guid: 9b4aaa59a6de6d6488e384a907379027, type: 3}
   damnationScript: {fileID: 6881504872794994148}
 --- !u!195 &3230206662829079434
 NavMeshAgent:

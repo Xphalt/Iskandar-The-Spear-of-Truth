@@ -19,19 +19,22 @@ public class DarkLordPhase2 : EnemyBase
     public float skullDamage, skullRange, skullSpeed, skullArc = 180, skullSeekDelay, healthLostForExtraSkull = 25;
     public float burstDamage, burstRange, burstSpeed, burstRadius, knockbackForce, knockbackDuration;
     public float damnationDamage, damnationRange;
-    public float boltDamage, boltRange;
+    public float boltInnerDamage, boltOuterDamage, minBoltRange, boltRange, boltNum, boltInnerRadius, boltOuterRadius, boltSlowPercent, boltSlowDuration;
 
     [NamedArray(new string[] { "Skull", "Burst", "Damn", "Bolts" })]
     public float[] phaseTwoCooldowns = new float[(int)PhaseTwoAttacks.AttackTypesCount];
     [NamedArray(new string[] { "Skull", "Burst", "Damn", "Bolts" })]
     public float[] phaseTwoTimers = new float[(int)PhaseTwoAttacks.AttackTypesCount];
 
-    public GameObject skullProjectile, flameProjectile;
-    public GameObject damnIndicator;
-    private List<Transform> indicators = new List<Transform>();
+    public GameObject skullProjectile, flameProjectile, propheticBolt;
+    public GameObject damnIndicator, boltIndicator;
+    private List<Transform> damnIndicators = new List<Transform>();
+    private List<Transform> boltIndicators = new List<Transform>();
+    private List<Transform> bolts = new List<Transform>();
+    private Vector3 boltIndicatorScale, boltScale;
 
     public Damnation damnationScript;
-    private float damnationRotation = 0;
+    private float damnationRotation = 0, boltLifetime = 0;
 
     private bool targeting = false;
 
@@ -53,8 +56,22 @@ public class DarkLordPhase2 : EnemyBase
         for (int t = 0; t < phaseTwoTimers.Length; t++) phaseTwoTimers[t] = phaseTwoCooldowns[t];
         for (int i = 0; i < damnationScript.rows.Length; i++)
         {
-            indicators.Add(Instantiate(damnIndicator, transform).transform);
-            indicators[i].position = Vector3.zero;
+            damnIndicators.Add(Instantiate(damnIndicator, transform).transform);
+            damnIndicators[i].position = Vector3.zero;
+            damnIndicators[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < boltNum; i++)
+        {
+            boltIndicators.Add(Instantiate(boltIndicator, transform).transform);
+            boltIndicators[i].gameObject.SetActive(false);
+            bolts.Add(Instantiate(propheticBolt, transform).transform);
+            bolts[i].gameObject.SetActive(false);
+        }
+        if (boltNum > 0)
+        {
+            boltIndicatorScale = boltIndicators[0].localScale;
+            boltScale = bolts[0].localScale;
+            boltLifetime = bolts[0].GetComponent<ParticleSystem>().main.duration;
         }
     }
 
@@ -91,7 +108,6 @@ public class DarkLordPhase2 : EnemyBase
             {
                 SetAttack(PhaseTwoAttacks.Damn);
             }
-            else print(DamnationAvailable);
 
             if (!attackUsed && BoltsAvailable)
             {
@@ -108,7 +124,6 @@ public class DarkLordPhase2 : EnemyBase
 
     public void SetAttack(PhaseTwoAttacks type)
     {
-        print(type);
         _myAnimator.SetTrigger(type.ToString());
         attackUsed = true;
         phaseTwoAttack = type;
@@ -121,10 +136,11 @@ public class DarkLordPhase2 : EnemyBase
 
     public void SpawnSkull()
     {
+        float curArc = skullArc / maxSkulls * SkullNum;
         for (int s = 0; s < SkullNum; s++)
         {
             SkullStorm newProj = Instantiate(skullProjectile, shootPoint.position, Quaternion.identity).GetComponent<SkullStorm>();
-            Vector3 skullDir = Quaternion.Euler(Vector3.up * Random.Range(-skullArc / 2, skullArc / 2)) * transform.forward;
+            Vector3 skullDir = Quaternion.Euler(Vector3.up * Random.Range(-curArc / 2, curArc / 2)) * transform.forward;
             newProj.SetVariables(detector.GetCurTarget(), skullDamage, skullSpeed, skullSeekDelay, skullDir);
         }
 
@@ -141,20 +157,64 @@ public class DarkLordPhase2 : EnemyBase
     public void IndicateDamnation()
     {
         damnationRotation = Random.Range(0, damnationScript.RowAngle);
-        for (int i = 0; i < indicators.Count; i++)
+        for (int i = 0; i < damnIndicators.Count; i++)
         {
-            indicators[i].rotation = Quaternion.Euler(Vector3.up * (damnationRotation + damnationScript.RowAngle * i));
-            Vector3 newScale = indicators[i].localScale;
+            damnIndicators[i].rotation = Quaternion.Euler(Vector3.up * (damnationRotation + damnationScript.RowAngle * i));
+            Vector3 newScale = damnIndicators[i].localScale;
             newScale.z = damnationRange / 2;
-            indicators[i].localScale = newScale;
-            indicators[i].position = transform.position + indicators[i].forward * indicators[i].lossyScale.z / 2;
-            indicators[i].gameObject.SetActive(true);
+            damnIndicators[i].localScale = newScale;
+            damnIndicators[i].position = transform.position + damnIndicators[i].forward * damnIndicators[i].lossyScale.z / 2;
+            damnIndicators[i].gameObject.SetActive(true);
         }
     }
 
     public void CastDamnation()
     {
-        foreach (Transform i in indicators) i.gameObject.SetActive(false);
+        foreach (Transform i in damnIndicators) i.gameObject.SetActive(false);
         damnationScript.Cast(damnationRotation, damnationRange, damnationDamage);
+    }
+
+    public void IndicateBolts()
+    {
+        foreach (Transform i in boltIndicators)
+        {
+            i.position = transform.RandomRadiusPoint(minBoltRange, boltRange);
+            i.gameObject.SetActive(true);
+            i.SetParent(null);
+            i.localScale = new Vector3(boltOuterRadius * 2 * boltIndicatorScale.x, i.localScale.y, boltOuterRadius * 2 * boltIndicatorScale.z);
+        }
+    }
+
+    public IEnumerator CastBolts()
+    {
+        for (int i = 0; i < boltNum; i++)
+        {
+            boltIndicators[i].SetParent(transform);
+            boltIndicators[i].localScale = boltIndicatorScale;
+            boltIndicators[i].gameObject.SetActive(false);
+
+            bolts[i].position = boltIndicators[i].position;
+            bolts[i].SetParent(null);
+            bolts[i].gameObject.SetActive(true);
+
+            foreach (Collider c in Physics.OverlapSphere(boltIndicators[i].position, boltOuterRadius))
+            {
+                if (c.TryGetComponent(out PlayerStats player))
+                {
+                    player.TakeDamage(boltOuterDamage);
+                    StartCoroutine(player.GetComponent<PlayerMovement_Jerzy>().Slow(1 - boltSlowPercent / 100.0f, boltSlowDuration));
+                    if (transform.GetDistance(c.transform) < boltInnerRadius) player.TakeDamage(boltInnerDamage);
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(boltLifetime);
+
+        foreach (Transform b in bolts)
+        {
+            b.SetParent(transform);
+            b.localScale = boltScale;
+            b.gameObject.SetActive(false);
+        }
     }
 }
