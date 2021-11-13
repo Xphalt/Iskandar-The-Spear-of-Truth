@@ -130,7 +130,6 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         if (isThrowing)
         {
             throwSword.ThrowSword(swordLookRotation);
-            print("sword release");
             isThrowing = false;
             timeSinceLastAttack = 0;
         } 
@@ -142,7 +141,6 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         if (other.tag == "playerSword" && returning && thrown)
         {
             // end throw cycle, attach sword to player, set appropriate position and rotation for the sword
-            playerAnimation.SwordReturnAttack();
             playerMovement.LockPlayerMovement();
             throwSword.EndThrowCycle();
             swordEmpty.transform.parent = playerModel.transform;

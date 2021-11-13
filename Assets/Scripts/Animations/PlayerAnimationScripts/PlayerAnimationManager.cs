@@ -60,7 +60,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void Running(float speed) 
     {
-        if (speed < 0.2f)
+        if (speed < 0.1f)
         {
             animator.SetTrigger("isIdling");
             animator.SetBool("isRunning", false);
@@ -91,11 +91,6 @@ public class PlayerAnimationManager : MonoBehaviour
     public void SwordThrowAttack() 
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) animator.SetTrigger("isSwordThrowing");
-    }
-
-    public void SwordReturnAttack() 
-    {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Return")) animator.SetTrigger("isSwordReturning"); 
     }
 
     public void Dodging() 
