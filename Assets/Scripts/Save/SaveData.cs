@@ -55,10 +55,24 @@ public class SaveData
 
 
     /// extra functions needed to be added
-    //player position
+    //player position (done)
     //if enemies are dead
     //if chest open
     //if pot destroyed
     //quest log / progression
+    //check if text is done
+    //stop text from loading again if in a returning room
+
+
+    //if questname.IsQuestActive = true
+
+    /*public void SaveStats(int num)
+    {
+        if QuestName.IsQuestActive = true
+    {
+        
+    }
+    }
+    */
 }
 

@@ -296,6 +296,8 @@ public class PlayerStats : StatsInterface
     }
 
     //Morgan's Save Edits
+    Scene m_Scene;
+    string sceneName;
     public float X;
     public float Y;
     public float Z;
@@ -306,6 +308,8 @@ public class PlayerStats : StatsInterface
         X = this.transform.position.x;
         Y = this.transform.position.y;
         Z = this.transform.position.z;
+        m_Scene = SceneManager.GetActiveScene();
+        sceneName = m_Scene.name;
     }
 
     public void LoadStats(int num)

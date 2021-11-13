@@ -14,6 +14,8 @@ public class ScrDestructablePot : MonoBehaviour
     const float LOWER_RANDOM_ANGLE_BOUNDARY = 0.3f;
     const float UPPER_RANDOM_ANGLE_BOUNDARY = 0.8f;
 
+    public float ID;
+
     private void Start()
     {
         drop = GetComponent<EntityDrop>();
