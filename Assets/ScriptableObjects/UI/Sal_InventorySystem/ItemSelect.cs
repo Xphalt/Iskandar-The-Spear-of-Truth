@@ -26,6 +26,9 @@ public class ItemSelect : UserInterface_Sal
         //Link database to that obj
         slotsOnInterface.Add(obj, inventory.GetSlots[(int)EquipSlot.ItemSlot]);
 
+        //Storing the GameObject in the slot
+        inventory.GetSlots[(int)EquipSlot.ItemSlot].slotDisplay = obj;
+
         uiMask = inventory.GetSlots[(int)EquipSlot.ItemSlot].slotDisplay.transform.GetChild(0).GetComponent<Image>().sprite;
         inventory.GetSlots[(int)EquipSlot.ItemSlot].OnAfterUpdate(inventory.GetSlots[(int)EquipSlot.ItemSlot]);
     }

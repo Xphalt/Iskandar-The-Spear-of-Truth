@@ -10,7 +10,7 @@ public class EventAction
 {
     [SerializeReference]    public List<Condition> conditions = new List<Condition>();
     [SerializeReference]    public List<Event> events = new List<Event>();
-    [SerializeField]        public bool complete = false;   
+    [SerializeField]        public bool complete = false;      
 }
 
 public class EventManager : MonoBehaviour
@@ -27,7 +27,7 @@ public class EventManager : MonoBehaviour
     void Update()
     {
         foreach (EventAction action in actions)
-        {
+        { 
             if (!action.complete)
             {
                 // Test conditions are met
@@ -49,7 +49,7 @@ public class EventManager : MonoBehaviour
                         actionEvent.TriggerEvent();
                     }
                 }
-            }
+            } 
         }
     }
 }

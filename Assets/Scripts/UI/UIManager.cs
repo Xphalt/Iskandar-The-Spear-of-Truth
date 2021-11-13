@@ -211,7 +211,7 @@ public class UIManager : MonoBehaviour
 
     public void SetQuestNotifName(QuestObject questObject)
     {
-        QName.SetText(questObject.QuestName);
+        QName.SetText(questObject.QuestName.GetLocalisedString());
     }
 
     public void SetQuestStatus(string questStatus)
@@ -235,6 +235,21 @@ public class UIManager : MonoBehaviour
         yield return screenDuration;
     }
     #endregion
+
+    #region Potion Interface
+    [SerializeField] private GameObject keyboardPotionInterface;
+    [SerializeField] private GameObject controllerPotionInterface;
+
+    private bool potionInterfaceOpen = false;
+    public bool IsPotionInterfaceOpen() { return potionInterfaceOpen;  }
+
+    public void TogglePotionInterface()
+    {
+        potionInterfaceOpen = !potionInterfaceOpen;
+        keyboardPotionInterface.SetActive(potionInterfaceOpen);
+        controllerPotionInterface.SetActive(potionInterfaceOpen);
+    }
+    #endregion // Potion Interface
 
     public static UIManager instance;
     private void Awake()

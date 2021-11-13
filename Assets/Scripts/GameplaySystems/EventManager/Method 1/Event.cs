@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public abstract class Event
 {
-    public abstract void TriggerEvent();
+    public abstract void TriggerEvent(); 
 }
 
 [System.Serializable]
@@ -26,7 +27,7 @@ public class OpenCloseDoorEvent : Event
 	public override void TriggerEvent()
 	{
         doorScript.SwapDoor();
-	}
+	} 
 
     [SerializeReference] public ScrDoor1 doorScript;
 }
@@ -40,7 +41,7 @@ public class SpawnEntityEvent : Event
         {
             gameObject.SetActive(_activateObjects);
 		}
-    }
+    } 
 
     [SerializeReference] private List<GameObject> _objectsToActivate;
     [SerializeReference] private bool _activateObjects;
@@ -88,12 +89,10 @@ public class PanCameraWithTargetVectorEvent : PanCameraEvent
         spawnedObjectScript.panCamera = _panCamera;
         spawnedObjectScript.timeToPanFor = _cameraPanScript.TotalPanDuration;
         
-	}
+	} 
 
     [SerializeReference] private Vector3 _targetVector = new Vector3(0.0f, 0.0f, 0.0f);
-    [SerializeReference] private float _linger = -1f;
-
-
+    [SerializeReference] private float _linger = -1f; 
 }
 
 public class SwapActiveCameraAfterPanObject : MonoBehaviour
@@ -126,7 +125,7 @@ public class PanCameraWithTargetTransformEvent : PanCameraEvent
 	{
         _cameraPanScript.StartPan(_targetTransform);
 	}
-
+     
     [SerializeReference] private Transform _targetTransform;
 }
 
@@ -144,7 +143,7 @@ public class LockPlayerInputsEvent : Event
         {
             GameEvents.current.UnLockPlayerInputs();
 		}
-	}
+	} 
 
     [SerializeReference] private bool _lockInputs;
 }
@@ -162,7 +161,7 @@ public class UIEvent : Event
             GameEvents.current.EnableUI();
 		}
     }
-
+     
     [SerializeReference] private bool _disableUI;
 }
 
@@ -178,7 +177,7 @@ public class PreventPlayerInteractionEvent : Event
         {
             GameEvents.current.AllowPlayerInteraction();
 		}
-	}
+	} 
 
     [SerializeReference] private bool _disablePlayerInteraction;
 }
@@ -190,6 +189,54 @@ public class QuestLogEntryEvent : Event
     {
 
     }
+}
+
+//---------------- Sal Changes ----------------
+public class FadeInOutScreen : Event
+{
+    public override void TriggerEvent()
+    {
+        fadeScreen.SetTrigger(fadeHash);
+    } 
+
+    [SerializeReference] private Animator fadeScreen;
+    private int fadeHash = Animator.StringToHash("StartTransition");
+}
+
+public class StartDialogue : Event
+{
+    public override void TriggerEvent()
+    {
+        if(dialogue != null && convCollider != null)
+        {
+            GameObject.FindObjectOfType<DialogueManager>().DialoguePanel.SetActive(true);
+            GameObject.FindObjectOfType<DialogueManager>().StartDialogue(convCollider, dialogue);
+        }
+    }
+
+    [SerializeReference]private Collider convCollider;
+    [SerializeReference]private NewConversation dialogue;
+}
+
+public class SpawnEnemyEvent : Event
+{
+    public override void TriggerEvent()
+    {
+        GameObject.Instantiate(enemyToSpawn, spawnPos.position, spawnPos.rotation);
+    } 
+
+    [SerializeField] Transform spawnPos;
+    [SerializeField] GameObject enemyToSpawn;
+}
+
+public class ChangeSceneEvent : Event
+{
+    public override void TriggerEvent()
+    {
+        SceneManager.LoadScene(sceneIndex);    
+    } 
+
+    [SerializeField] private int sceneIndex;
 }
 
 //[System.Serializable]

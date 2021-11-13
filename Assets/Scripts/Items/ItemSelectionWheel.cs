@@ -3,17 +3,13 @@ using UnityEngine.UI;
 
 public class ItemSelectionWheel : MonoBehaviour
 {
-    public EquipPanel equipment;
     public Animator anim;
     private bool itemWheelSelected = false;
-    public Image selectedItem;
-    public Sprite noImage;
-    public static int itemID;
-    public ItemWheelButtonController[] itemWheelButtons;
+    public bool IsItemWheelSelected() { return itemWheelSelected; }
+    [HideInInspector] public int itemID = -1;
 
     private void Update()
     {
-
         if (itemWheelSelected)
         {
             anim.SetBool("OpenItemWheel", true);
@@ -29,8 +25,8 @@ public class ItemSelectionWheel : MonoBehaviour
         itemWheelSelected = !itemWheelSelected;
     }
 
-    public void ShowItem(Item item)
+    public void UseItem()
     {
-        //itemWheelButtons[item.id].icon = item.icon?????
+        // Use selected item or potion (they are on seperate wheels)
     }        
 }

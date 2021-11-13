@@ -34,23 +34,28 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private Player_Targeting_Jack _playerTargeting;
     [SerializeField] private Player_Interaction_Jack _player_Interaction_Jack;
     [SerializeField] private PlayerCombat_Jerzy _playerCombat_Jerzy;
-    //[SerializeField] private Inventory_UI_Script _inventoryUI;
-    [SerializeField] private ItemSelectionWheel _itemSelectionWheel;
-    [SerializeField] private ItemSelectionBar _itemSelectionBar;
     [SerializeField] private PauseMenuManager _pauseMenuManager;
     [SerializeField] private ItemSelect _changeItem;
+    [SerializeField] private UIManager _UIManager;
 
     private void Awake()
     {
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
 
-
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         // Disable player interaction if pause is set
-        _playerActionsAsset.Player.Pause.performed += _ => TogglePlayerInteraction(false);
+        _playerActionsAsset.Player.Pause.performed += _ =>
+        {
+            TogglePlayerInteraction(false);
+            _pauseMenuManager.TogglePauseState();
+        };
+        _playerActionsAsset.Player.PotionInterface.performed += _ =>
+        {
+            TogglePlayerInteraction(false);
+            _UIManager.TogglePotionInterface();
+        };
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
-        _playerActionsAsset.Player.Inventory.performed += _ => _pauseMenuManager.TogglePauseState();
 
         _playerActionsAsset.Player.Attack.started += _ =>
         {
@@ -64,10 +69,6 @@ public class PlayerInput : MonoBehaviour
 
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
 
-
-        _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
-        _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar();
-
         //Items
         _playerActionsAsset.Player.ItemToggle.performed += _ => _changeItem.OnClick();
         _playerActionsAsset.Player.UseItem.performed += use =>
@@ -77,8 +78,46 @@ public class PlayerInput : MonoBehaviour
         };
 
         // Re-enable player actions if pause is triggered in pause menu
-        _playerActionsAsset.UI.Pause.performed += _ => TogglePlayerInteraction(true);
+        _playerActionsAsset.UI.Pause.performed += _ =>
+        {
+            _pauseMenuManager.TogglePauseState();
+            TogglePlayerInteraction(true);
+        };
+        _playerActionsAsset.UI.PotionInterface.performed += _ =>
+        {
+            _UIManager.TogglePotionInterface();
+            TogglePlayerInteraction(true);
+        };
+        _playerActionsAsset.UI.Large_Potion.performed += _ =>
+        {
+            if (_UIManager.IsPotionInterfaceOpen())
+            {
+                // Use a large health potion
+            }
+        };
+        _playerActionsAsset.UI.Medium_Potion.performed += _ =>
+        {
+            if (_UIManager.IsPotionInterfaceOpen())
+            {
+                // Use a medium health potion
+            }
+        };
+        _playerActionsAsset.UI.Small_Potion.performed += _ =>
+        {
+            if (_UIManager.IsPotionInterfaceOpen())
+            {
+                // Use a small health potion
+            }
+        };
+
+
         #endregion
+    }
+
+    // UI Interaction is disabled upon starting
+    private void Start()
+    {
+        _playerActionsAsset.UI.Disable();
     }
 
     private void FixedUpdate()
@@ -93,10 +132,12 @@ public class PlayerInput : MonoBehaviour
         if (enabled)
         {
             _playerActionsAsset.Player.Enable();
+            _playerActionsAsset.UI.Disable();
         }
         else
         {
             _playerActionsAsset.Player.Disable();
+            _playerActionsAsset.UI.Enable();
         }
     }
 
