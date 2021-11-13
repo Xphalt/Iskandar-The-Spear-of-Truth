@@ -2637,6 +2637,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 483780, guid: aa03ca6a3953ccc4397f5f35d2aa0a6d, type: 3}
   m_PrefabInstance: {fileID: 108918368}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &108918370 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 2886299520836456166, guid: aa03ca6a3953ccc4397f5f35d2aa0a6d, type: 3}
+  m_PrefabInstance: {fileID: 108918368}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &115696503
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3632,7 +3637,6 @@ GameObject:
   - component: {fileID: 146562001}
   - component: {fileID: 146562000}
   - component: {fileID: 146561999}
-  - component: {fileID: 146562004}
   - component: {fileID: 146562003}
   - component: {fileID: 146562002}
   m_Layer: 0
@@ -3745,39 +3749,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0554387b768ef94cae40645d15b2b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &146562004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 146561997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 146562003}
-    00000002:
-      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
-      data:
-        spawnPos: {fileID: 146561998}
-        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
 --- !u!1 &152765320
 GameObject:
   m_ObjectHideFlags: 0
@@ -4676,6 +4647,11 @@ PrefabInstance:
 --- !u!4 &186855864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4599720690659914, guid: 8549abe3859269745a95380e270df83e, type: 3}
+  m_PrefabInstance: {fileID: 186855863}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &186855865 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3974325872872799243, guid: 8549abe3859269745a95380e270df83e, type: 3}
   m_PrefabInstance: {fileID: 186855863}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &188766769
@@ -9133,39 +9109,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 119458, guid: a6ebdfa58063c6e40a19612fc9013404, type: 3}
   m_PrefabInstance: {fileID: 1569919386}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &359344824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 359344823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 359344825}
-    00000002:
-      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
-      data:
-        convCollider: {fileID: 359344826}
-        dialogue: {fileID: 11400000, guid: 11252d7f4379ea44ba25427223104e6b, type: 2}
 --- !u!114 &359344825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12554,7 +12497,6 @@ GameObject:
   - component: {fileID: 462372760}
   - component: {fileID: 462372759}
   - component: {fileID: 462372758}
-  - component: {fileID: 462372763}
   - component: {fileID: 462372762}
   - component: {fileID: 462372761}
   m_Layer: 0
@@ -12667,39 +12609,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0.000000059604645, y: 0.0000019073486, z: 0.0000018179417}
---- !u!114 &462372763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 462372756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 462372761}
-    00000002:
-      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
-      data:
-        spawnPos: {fileID: 462372757}
-        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
 --- !u!1001 &466143800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14510,39 +14419,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1492352555855718, guid: 8549abe3859269745a95380e270df83e, type: 3}
   m_PrefabInstance: {fileID: 186855863}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &532447085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 532447084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 532447087}
-    00000002:
-      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
-      data:
-        convCollider: {fileID: 532447086}
-        dialogue: {fileID: 11400000, guid: aede842e0b815e446a35bed407fd0688, type: 2}
 --- !u!135 &532447086
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -17328,7 +17204,6 @@ GameObject:
   - component: {fileID: 630333309}
   - component: {fileID: 630333314}
   - component: {fileID: 630333313}
-  - component: {fileID: 630333312}
   m_Layer: 0
   m_Name: Enem_Tier2
   m_TagString: Untagged
@@ -17414,39 +17289,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630333307}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &630333312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 630333307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 630333313}
-    00000002:
-      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
-      data:
-        spawnPos: {fileID: 630333308}
-        enemyToSpawn: {fileID: 5112796633581186112, guid: c89d306dec44b464eb1efe36b5c44f81, type: 3}
 --- !u!114 &630333313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17523,6 +17365,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2291525581876481898, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1363151339}
+    - target: {fileID: 2291525581876481898, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DisplayNextExchange
+      objectReference: {fileID: 0}
     - target: {fileID: 3051482907971841114, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -17545,7 +17395,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 101.59564
+      value: 180.38206
       objectReference: {fileID: 0}
     - target: {fileID: 3054451402402017905, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.y
@@ -17913,7 +17763,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7476119130418811455, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 7476119130418811455, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25721,39 +25571,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 196394, guid: aa03ca6a3953ccc4397f5f35d2aa0a6d, type: 3}
   m_PrefabInstance: {fileID: 108918368}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &872817719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872817718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 872817721}
-    00000002:
-      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
-      data:
-        convCollider: {fileID: 872817720}
-        dialogue: {fileID: 11400000, guid: da3e8f088d726834bb6b575c84ef0b48, type: 2}
 --- !u!135 &872817720
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -30082,7 +29899,6 @@ GameObject:
   - component: {fileID: 1026174775}
   - component: {fileID: 1026174774}
   - component: {fileID: 1026174773}
-  - component: {fileID: 1026174778}
   - component: {fileID: 1026174777}
   - component: {fileID: 1026174776}
   m_Layer: 0
@@ -30195,39 +30011,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0554387b768ef94cae40645d15b2b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1026174778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1026174771}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 1026174777}
-    00000002:
-      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
-      data:
-        spawnPos: {fileID: 1026174772}
-        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
 --- !u!1001 &1027482883
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33677,39 +33460,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1151067163792368, guid: 2e75b803e4467054788c11f49c6c098f, type: 3}
   m_PrefabInstance: {fileID: 431936053}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1136505314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1136505313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 1136505315}
-    00000002:
-      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
-      data:
-        convCollider: {fileID: 1136505316}
-        dialogue: {fileID: 11400000, guid: da3e8f088d726834bb6b575c84ef0b48, type: 2}
 --- !u!114 &1136505315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34107,39 +33857,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.88
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1147406634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1147406631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 1147406632}
-    00000002:
-      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
-      data:
-        convCollider: {fileID: 1147406633}
-        dialogue: {fileID: 11400000, guid: da3e8f088d726834bb6b575c84ef0b48, type: 2}
 --- !u!1001 &1152517996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34626,6 +34343,317 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4825834909521966, guid: ac42f59b9c44c274b9612f7df5333cf3, type: 3}
   m_PrefabInstance: {fileID: 1162273660}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1164971101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1164971104}
+  - component: {fileID: 1164971103}
+  - component: {fileID: 1164971102}
+  m_Layer: 0
+  m_Name: GameEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1164971102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164971101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+  - id: 0
+  - id: 1
+  - id: 2
+  - id: 3
+  - id: 4
+  - id: 5
+  - id: 6
+  - id: 7
+  - id: 8
+  - id: 9
+  - id: 10
+  - id: 11
+  - id: 12
+  - id: 13
+  references:
+    version: 1
+    00000000:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 14
+        events:
+        - id: 15
+        complete: 0
+    00000001:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 16
+        events:
+        - id: 17
+        complete: 0
+    00000002:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 18
+        events:
+        - id: 19
+        complete: 0
+    00000003:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 20
+        events:
+        - id: 21
+        complete: 0
+    00000004:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 22
+        events:
+        - id: 23
+        complete: 0
+    00000005:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 24
+        events:
+        - id: 25
+        complete: 0
+    00000006:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 26
+        events:
+        - id: 27
+        complete: 0
+    00000007:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 28
+        events:
+        - id: 29
+        complete: 0
+    00000008:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 30
+        events:
+        - id: 31
+        complete: 0
+    00000009:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 32
+        events:
+        - id: 33
+        complete: 0
+    0000000A:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 34
+        events:
+        - id: 35
+        complete: 0
+    0000000B:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 36
+        events:
+        - id: 37
+        complete: 0
+    0000000C:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 38
+        events:
+        - id: 39
+        complete: 0
+    0000000D:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 40
+        events:
+        - id: 41
+        complete: 0
+    0000000E:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 1279145228}
+    0000000F:
+      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
+      data:
+        convCollider: {fileID: 1279145227}
+        dialogue: {fileID: 11400000, guid: 336df68be8fc12e41919abc1a9043287, type: 2}
+    00000010:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 532447087}
+    00000011:
+      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
+      data:
+        convCollider: {fileID: 186855865}
+        dialogue: {fileID: 11400000, guid: aede842e0b815e446a35bed407fd0688, type: 2}
+    00000012:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 1136505315}
+    00000013:
+      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
+      data:
+        convCollider: {fileID: 1136505316}
+        dialogue: {fileID: 11400000, guid: da3e8f088d726834bb6b575c84ef0b48, type: 2}
+    00000014:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 1497537076}
+    00000015:
+      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
+      data:
+        convCollider: {fileID: 1497537077}
+        dialogue: {fileID: 11400000, guid: 11252d7f4379ea44ba25427223104e6b, type: 2}
+    00000016:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 359344825}
+    00000017:
+      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
+      data:
+        convCollider: {fileID: 1569919388}
+        dialogue: {fileID: 11400000, guid: 11252d7f4379ea44ba25427223104e6b, type: 2}
+    00000018:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 872817721}
+    00000019:
+      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
+      data:
+        convCollider: {fileID: 108918370}
+        dialogue: {fileID: 11400000, guid: da3e8f088d726834bb6b575c84ef0b48, type: 2}
+    0000001A:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 1147406632}
+    0000001B:
+      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
+      data:
+        convCollider: {fileID: 1597632573}
+        dialogue: {fileID: 11400000, guid: da3e8f088d726834bb6b575c84ef0b48, type: 2}
+    0000001C:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 1026174777}
+    0000001D:
+      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
+      data:
+        spawnPos: {fileID: 1026174772}
+        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
+    0000001E:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 1461522255}
+    0000001F:
+      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
+      data:
+        spawnPos: {fileID: 1461522249}
+        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
+    00000020:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 462372761}
+    00000021:
+      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
+      data:
+        spawnPos: {fileID: 462372757}
+        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
+    00000022:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 1934039076}
+    00000023:
+      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
+      data:
+        spawnPos: {fileID: 1934039072}
+        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
+    00000024:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 146562003}
+    00000025:
+      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
+      data:
+        spawnPos: {fileID: 146561998}
+        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
+    00000026:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 630333313}
+    00000027:
+      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
+      data:
+        spawnPos: {fileID: 630333308}
+        enemyToSpawn: {fileID: 5112796633581186112, guid: c89d306dec44b464eb1efe36b5c44f81, type: 3}
+    00000028:
+      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _oneTimeTrigger: {fileID: 1313960069}
+    00000029:
+      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
+      data:
+        spawnPos: {fileID: 1313960064}
+        enemyToSpawn: {fileID: 2463939360772356892, guid: 7403b2b6f815aeb49a40078184bcb567, type: 3}
+--- !u!114 &1164971103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164971101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 729f3f362c944b24c8724461c431d4cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1164971104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164971101}
+  m_LocalRotation: {x: 0.4298401, y: -0.23177992, z: 0.11517527, w: 0.8650146}
+  m_LocalPosition: {x: 478, y: 200.7, z: 25.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1166433800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34688,52 +34716,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4825834909521966, guid: ac42f59b9c44c274b9612f7df5333cf3, type: 3}
   m_PrefabInstance: {fileID: 1166433800}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1166441798
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1166441800}
-  - component: {fileID: 1166441799}
-  m_Layer: 0
-  m_Name: EventManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1166441799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1166441798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: add40aaca54da094ab550739cb85aa65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  img: {fileID: 0}
-  _playerInput: {fileID: 0}
-  _enemies: []
---- !u!4 &1166441800
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1166441798}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 538.0811, y: -68.49199, z: 205.75558}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1166932877
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38450,39 +38432,11 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2.02
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1279145227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!136 &1279145227 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3974325872872799243, guid: 8549abe3859269745a95380e270df83e, type: 3}
+  m_PrefabInstance: {fileID: 1279145224}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1279145225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 1279145228}
-    00000002:
-      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
-      data:
-        convCollider: {fileID: 1279145226}
-        dialogue: {fileID: 11400000, guid: 336df68be8fc12e41919abc1a9043287, type: 2}
 --- !u!114 &1279145228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39710,7 +39664,6 @@ GameObject:
   - component: {fileID: 1313960065}
   - component: {fileID: 1313960070}
   - component: {fileID: 1313960069}
-  - component: {fileID: 1313960068}
   m_Layer: 0
   m_Name: Enem_Miniboss
   m_TagString: Untagged
@@ -39796,39 +39749,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313960063}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1313960068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1313960063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 1313960069}
-    00000002:
-      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
-      data:
-        spawnPos: {fileID: 1313960064}
-        enemyToSpawn: {fileID: 2463939360772356892, guid: 7403b2b6f815aeb49a40078184bcb567, type: 3}
 --- !u!114 &1313960069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40734,6 +40654,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4034673564863644, guid: 5443f442824346441b5af0d84ae05120, type: 3}
   m_PrefabInstance: {fileID: 1357825469}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1363151339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8137896228233560739, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+  m_PrefabInstance: {fileID: 631851975}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 871ca64bb0313834295596c3f015973b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1365830220
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43980,7 +43911,6 @@ GameObject:
   - component: {fileID: 1461522250}
   - component: {fileID: 1461522255}
   - component: {fileID: 1461522254}
-  - component: {fileID: 1461522253}
   m_Layer: 0
   m_Name: Enem_Tier1 1
   m_TagString: Untagged
@@ -44066,39 +43996,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461522248}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1461522253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1461522248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 1461522255}
-    00000002:
-      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
-      data:
-        spawnPos: {fileID: 1461522249}
-        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
 --- !u!135 &1461522254
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -44788,39 +44685,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.88
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1497537078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1497537075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 1497537076}
-    00000002:
-      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
-      data:
-        convCollider: {fileID: 1497537077}
-        dialogue: {fileID: 11400000, guid: 11252d7f4379ea44ba25427223104e6b, type: 2}
 --- !u!1001 &1497638703
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45593,6 +45457,80 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9083414, y: 2.5683136, z: 0.81249267}
   m_Center: {x: -0.07441133, y: 1.2841568, z: 0.09676606}
+--- !u!1 &1522506464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1522506467}
+  - component: {fileID: 1522506466}
+  - component: {fileID: 1522506465}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1522506465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522506464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 2064916234097673511, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: -1967631576421560919, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 8056856818456041789, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: 3279352641294131588, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: 3837173908680883260, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 4754684134866288074, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+--- !u!114 &1522506466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522506464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &1522506467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522506464}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1524884974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47127,6 +47065,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 425282, guid: a6ebdfa58063c6e40a19612fc9013404, type: 3}
   m_PrefabInstance: {fileID: 1569919386}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &1569919388 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 8569962375298812411, guid: a6ebdfa58063c6e40a19612fc9013404, type: 3}
+  m_PrefabInstance: {fileID: 1569919386}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1570102794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47891,6 +47834,11 @@ PrefabInstance:
 --- !u!4 &1597632572 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 483780, guid: aa03ca6a3953ccc4397f5f35d2aa0a6d, type: 3}
+  m_PrefabInstance: {fileID: 1597632571}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &1597632573 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 2886299520836456166, guid: aa03ca6a3953ccc4397f5f35d2aa0a6d, type: 3}
   m_PrefabInstance: {fileID: 1597632571}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1598071370
@@ -59089,7 +59037,6 @@ GameObject:
   - component: {fileID: 1934039075}
   - component: {fileID: 1934039074}
   - component: {fileID: 1934039073}
-  - component: {fileID: 1934039078}
   - component: {fileID: 1934039077}
   - component: {fileID: 1934039076}
   m_Layer: 0
@@ -59202,39 +59149,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0.000003874302, y: 0.0000019073486, z: 0.0000018179417}
---- !u!114 &1934039078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934039071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d6341888fcf76448039f910ec357d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 1
-        events:
-        - id: 2
-        complete: 0
-    00000001:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 1934039076}
-    00000002:
-      type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
-      data:
-        spawnPos: {fileID: 1934039072}
-        enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
 --- !u!1001 &1935790587
 PrefabInstance:
   m_ObjectHideFlags: 0
