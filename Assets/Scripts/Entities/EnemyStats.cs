@@ -7,7 +7,7 @@ public class EnemyStats : StatsInterface
     public bool vulnerable = true;
     private float deathTimer = 0.0f;
     public float despawnTime;
-    private bool isDead = false;
+    public bool isDead = false;
     EntityDrop drops;
 
     private void Start()

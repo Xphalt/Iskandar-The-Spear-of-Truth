@@ -346,4 +346,10 @@ public class EnemyBase : Patrol
         agent.speed = 0;
         agent.enabled = false;
     }
+
+    //Morgan Save Edit
+    public virtual bool getIsDead()
+    {
+        return (stats.isDead);
+    }
 }
