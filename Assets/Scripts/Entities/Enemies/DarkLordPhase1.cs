@@ -123,13 +123,8 @@ public class DarkLordPhase1 : EnemyBase
         base.OnTriggerEnter(collider);
         if (collider.TryGetComponent(out PlayerMovement_Jerzy move))
         {
-            if (phaseOneAttack == PhaseOneAttacks.Kick)
-                move.KnockBack(transform.position, knockbackForce, knockbackDuration);
-            if (stunning)
-            {
-                move.Stun(shieldStunDuration);
-                print("Stun");
-            }
+            if (phaseOneAttack == PhaseOneAttacks.Kick) move.KnockBack(transform.position, knockbackForce, knockbackDuration);
+            if (stunning) move.Stun(shieldStunDuration);
         }
     }
 }

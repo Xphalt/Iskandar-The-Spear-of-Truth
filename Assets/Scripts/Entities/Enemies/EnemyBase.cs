@@ -60,9 +60,9 @@ public class EnemyBase : Patrol
     protected bool attackUsed = false;
     protected bool CanAttack => !attackUsed && attackEnded && detector.GetCurTarget() != null && curState == EnemyStates.Aggro;
 
-    public float chargeSpeed, chargeDistanceMult = 1, chargeRaycast;
+    public float chargeSpeed, chargeDistanceMult = 1, chargeRaycast, chargeSelfDamage;
     public LayerMask chargeLayerMask;
-    protected float chargeDistance;
+    protected float chargeDistance, chargeDuration, chargeTimer;
     protected Vector3 chargeStart, chargeDirection;
 
     public GameObject projectileObj;
@@ -138,14 +138,15 @@ public class EnemyBase : Patrol
         }
         else
         {
-            if(Physics.Raycast(transform.position,transform.forward,chargeRaycast,chargeLayerMask))
+            if (Physics.Raycast(transform.position, transform.forward, chargeRaycast, chargeLayerMask)
+                || transform.position.GetDistance(chargeStart) > chargeDistance || chargeTimer > chargeDuration)
             {
                 EndCharge();
             }
             else
             {
                 MyRigid.velocity = chargeDirection * chargeSpeed;
-                if (transform.position.GetDistance(chargeStart) > chargeDistance) EndCharge();
+                chargeTimer += Time.deltaTime;
             }
         }
 
@@ -166,6 +167,8 @@ public class EnemyBase : Patrol
                 _myAnimator.SetBool("IsAggroed", true);
                 break;
             case EnemyStates.Attacking:
+                _myAnimator.SetBool("IsPatrolling", false);
+                _myAnimator.SetBool("IsAggroed", true);
                 break;
             default:
                 break;
@@ -245,6 +248,8 @@ public class EnemyBase : Patrol
         chargeStart = transform.position;
         chargeDirection = detector.GetCurTarget().position - transform.position;
         chargeDistance = chargeDirection.magnitude * chargeDistanceMult;
+        chargeDuration = chargeDistance / chargeSpeed;
+        chargeTimer = 0;
         chargeDirection.Normalize();
         MyRigid.velocity = chargeDirection * chargeSpeed;
 
@@ -329,6 +334,7 @@ public class EnemyBase : Patrol
             {
                 stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), curAttackDmg);
             }
+            else stats.TakeDamage(chargeSelfDamage);
 
             EndCharge();
         }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 545090394420414367}
   - component: {fileID: 8816635587552105279}
   - component: {fileID: 3848791228755512054}
+  - component: {fileID: -6223419537943986230}
   m_Layer: 0
   m_Name: Venom
   m_TagString: Venom
@@ -125,7 +126,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09425e613a7b3654f91d798543afa983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0.5
-  poisonDamage: 0.25
-  poisonDelay: 2
+--- !u!114 &-6223419537943986230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2960378007352524850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98bac6d486d44d64aa5f84331b9d5a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  poisonDamage: 1
+  poisonDelay: 1
   amountOfPoisonTicks: 3

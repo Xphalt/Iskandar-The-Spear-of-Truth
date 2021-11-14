@@ -315,7 +315,7 @@ public class PlayerStats : StatsInterface
     //Morgan's Event Manager: Health Set
     private void OnPlayerHealthSet(int sethealth)
     {
-        if (sethealth > 10) { sethealth = 10; }
+        if (sethealth > MAX_HEALTH) { sethealth = (int)MAX_HEALTH; }
         health = sethealth;
     }
 

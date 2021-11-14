@@ -11,10 +11,6 @@ public class VenomShot : MonoBehaviour
     Rigidbody m_Rigidbody;
     private float timeExisted;
     private const float LIFE_TIME = 2;
-    public float damage;
-    public float poisonDamage;
-    public float poisonDelay;
-    public float amountOfPoisonTicks;
 
     void Start()
     {
@@ -25,7 +21,7 @@ public class VenomShot : MonoBehaviour
     {
         m_Rigidbody.velocity = projectileDirection * projectileSpeed;
         timeExisted += Time.deltaTime;
-        if(timeExisted>=LIFE_TIME)
+        if (timeExisted >= LIFE_TIME)
         {
             Destroy(gameObject);
         }

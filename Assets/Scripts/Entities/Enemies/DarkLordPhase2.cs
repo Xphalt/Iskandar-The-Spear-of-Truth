@@ -178,7 +178,7 @@ public class DarkLordPhase2 : EnemyBase
     {
         foreach (Transform i in boltIndicators)
         {
-            i.position = transform.RandomRadiusPoint(minBoltRange, boltRange);
+            i.position = transform.RandomRadiusPoint(minBoltRange, boltRange); // Use random navmesh point to avoid buildig/edges?
             i.gameObject.SetActive(true);
             i.SetParent(null);
             i.localScale = new Vector3(boltOuterRadius * 2 * boltIndicatorScale.x, i.localScale.y, boltOuterRadius * 2 * boltIndicatorScale.z);

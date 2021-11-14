@@ -45,6 +45,7 @@ public class Warchief : EnemyBase
         _myAnimator.SetBool("IsAggroed", true);
 
         chargeDistance = minJumpDistance;
+        chargeDuration = chargeDistance / chargeSpeed;
         for (int t = 0; t < warChiefTimers.Length; t++) warChiefTimers[t] = warChiefCooldowns[t];
     }
 
@@ -156,6 +157,7 @@ public class Warchief : EnemyBase
     {
         chargeStart = transform.position;
         chargeDirection = (detector.GetCurTarget().position - transform.position).normalized;
+        chargeTimer = 0;
         MyRigid.velocity = chargeDirection * chargeSpeed;
         charging = true;
 

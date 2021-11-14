@@ -77,7 +77,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
             if (isPoisoned && timeSinceLastPoisonDamage >= poisonDelay && poisonTicks < maxPoisonTicks)
             {
-                GetComponent<PlayerStats>().TakeDamage(poisonDamage);
+                playerStats.TakeDamage(poisonDamage);
                 timeSinceLastPoisonDamage = 0;
                 poisonTicks++;
             }
@@ -151,18 +151,16 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Poison(Poison poisoner)
     {
-        if(other.tag == "Venom" && !playerStats.poisonProtection)
-        {
-            playerStats.TakeDamage(other.gameObject.GetComponent<VenomShot>().damage);
-            poisonDamage = other.gameObject.GetComponent<VenomShot>().poisonDamage;
-            poisonDelay = other.gameObject.GetComponent<VenomShot>().poisonDelay;
-            maxPoisonTicks = other.gameObject.GetComponent<VenomShot>().amountOfPoisonTicks;
-            timeSinceLastPoisonDamage = 0;
-            poisonTicks = 0;
-            isPoisoned = true;
-            Destroy(other.gameObject);
-        }
+        if (playerStats.poisonProtection) return;
+
+        playerStats.TakeDamage(poisoner.damage);
+        poisonDamage = poisoner.poisonDamage;
+        poisonDelay = poisoner.poisonDelay;
+        maxPoisonTicks = poisoner.amountOfPoisonTicks;
+        timeSinceLastPoisonDamage = 0;
+        poisonTicks = 0;
+        isPoisoned = true;
     }
 }
