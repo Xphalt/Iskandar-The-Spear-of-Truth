@@ -98,7 +98,7 @@ public class SaveData
 
     /// extra functions needed to be added
     //player position (done)
-    //if enemies are dead
+    //if enemies are dead (attempted... wondering if save system isnt fully working judging from player position upon scene reload)
     //if chest open
     //if pot destroyed
     //quest log / progression
