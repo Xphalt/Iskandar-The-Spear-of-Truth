@@ -11,9 +11,11 @@ public class ToolTip : MonoBehaviour
     #region Variables
     private SpriteRenderer SR;
     private Transform player;
+    private GamepadTip gamepadTip;
+    private int fadeInCounter, fadeOutCounter;
+    [HideInInspector] public bool isTalkType = false;//, isReadType;
 
     public Sprite lookSprite, useSprite, talkSprite;
-
     public float nearRadius, farRadius;
     [HideInInspector] public bool inRange;
     #endregion
@@ -22,6 +24,7 @@ public class ToolTip : MonoBehaviour
     {
         SR = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        gamepadTip = FindObjectOfType<GamepadTip>();
     }
 
     private void Start() 
@@ -52,6 +55,9 @@ public class ToolTip : MonoBehaviour
 
         if (toolTipRange <= farRadius)
         {
+            /*_________________________________________________________________________
+             * This is for keyboard and mouse UI tips.
+             * ________________________________________________________________________*/
             inRange = true;
 
             if (toolTipRange > nearRadius)
@@ -62,8 +68,31 @@ public class ToolTip : MonoBehaviour
             {
                 SR.color = Color.white;
             }
+
+            /*_________________________________________________________________________
+            * This is for game pad UI tips.
+            * ________________________________________________________________________*/
+            if (isTalkType)
+                gamepadTip.DisplayGamepadUI("talk");
+            else if (!isTalkType)
+                gamepadTip.DisplayGamepadUI("read");
+
+            //Fade counter necessary so function doesn't restart
+            fadeOutCounter = 0;
+            fadeInCounter++;
+
+            if (fadeInCounter == 1)
+                gamepadTip.FadeIn();
         }
-        else inRange = false;
+        else
+        {
+            inRange = false;
+
+            fadeInCounter = 0;
+            fadeOutCounter++;
+            if (fadeOutCounter == 1)
+                gamepadTip.FadeOut();
+        }
     }
 
     public void SetImage(string type)
