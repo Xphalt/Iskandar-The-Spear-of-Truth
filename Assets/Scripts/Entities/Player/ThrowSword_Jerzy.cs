@@ -26,6 +26,8 @@ public class ThrowSword_Jerzy : MonoBehaviour
     float returningSpeed;
     float throwSpeed;
 
+    public List<Collider> puzzlesHit = new List<Collider>();
+
     private void Awake()
     {
         swordRigidBody = GetComponent<Rigidbody>(); 
@@ -97,13 +99,12 @@ public class ThrowSword_Jerzy : MonoBehaviour
             transform.parent = null;
             thrown = true;
             swordRigidBody.isKinematic = false;
+            puzzlesHit.Clear();
 
             // play looped spinning animation
             swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
         }
     }
-
-
 
     public void EndThrowCycle()
     {
@@ -115,8 +116,19 @@ public class ThrowSword_Jerzy : MonoBehaviour
             thrown = false;
             swordRigidBody.isKinematic = true;
             swordModel.GetComponent<Animator>().Play("PlayerSwordIdle");
+            puzzlesHit.Clear();
             //timeTravelling = 0;
         }
+    }
+
+    public bool PuzzleHit(Collider puzzle)
+    {
+        return puzzlesHit.Contains(puzzle);
+    }
+
+    public void ClearPuzzles()
+    {
+        puzzlesHit.Clear();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -126,5 +138,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
         {
             playerStats.DealDamage(statsInterface, swordDamage);
         }
+
+        if (other.CompareTag("PuzzleTrigger")) puzzlesHit.Add(other);
     }
 }

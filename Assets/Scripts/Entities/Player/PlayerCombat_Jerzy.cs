@@ -106,6 +106,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public void SetSwordCollider(int active)
     {
         swordCollider.enabled = active > 0;
+        throwSword.ClearPuzzles();
     }
 
     public void ThrowAttack()
@@ -130,7 +131,6 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         if (isThrowing)
         {
             throwSword.ThrowSword(swordLookRotation);
-            print("sword release");
             isThrowing = false;
             timeSinceLastAttack = 0;
         } 
@@ -139,7 +139,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         // when the sword returns to the player
-        if (other.tag == "playerSword" && returning && thrown)
+        if (other.CompareTag("playerSword") && returning && thrown)
         {
             // end throw cycle, attach sword to player, set appropriate position and rotation for the sword
             playerAnimation.SwordReturnAttack();
