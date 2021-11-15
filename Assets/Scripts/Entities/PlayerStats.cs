@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStats : StatsInterface
 {
+    public float X;
+    public float Y;
+    public float Z;
     private PlayerAnimationManager playerAnimation;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
@@ -77,7 +80,7 @@ public class PlayerStats : StatsInterface
         health = MAX_HEALTH;
 
         // list event in GameEvents.cs
-        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet; 
+        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
     }
 
     private void Update()
@@ -298,16 +301,13 @@ public class PlayerStats : StatsInterface
     //Morgan's Save Edits
     Scene m_Scene;
     string sceneName;
-    public float X;
-    public float Y;
-    public float Z;
     public void SaveStats(int num)
     {
+        //SaveData saveData;
         SaveManager.SavePlayerStats(this, num);
         inventory.SaveStats(num);
-        X = this.transform.position.x;
-        Y = this.transform.position.y;
-        Z = this.transform.position.z;
+        
+
         m_Scene = SceneManager.GetActiveScene();
         sceneName = m_Scene.name;
     }
@@ -317,7 +317,10 @@ public class PlayerStats : StatsInterface
         SaveData saveData = SaveManager.LoadPlayerStats(num);
         health = saveData.health;
         inventory.LoadStats(num);
-        this.transform.position = new Vector3(X, Y, Z);
+        X = saveData.X; print("Xpos is" + X);
+        Y = saveData.Y; print("Ypos is" + Y);
+        Z = saveData.Z; print("Zpos is" + Z);
+        transform.position = new Vector3(X, Y, Z);
     }
 
     //Morgan's Event Manager: Health Set

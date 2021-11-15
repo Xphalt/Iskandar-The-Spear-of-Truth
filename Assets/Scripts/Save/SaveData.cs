@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class SaveData
 {
+    //PlayerStats Playerstats;
     Scene m_Scene;
     public string scenename;
     public float health;
@@ -17,18 +18,18 @@ public class SaveData
 
     public Inventory Storage;
 
-    List<EnemyData> enemyDataList = new List<EnemyData>();
+    //List<EnemyData> enemyDataList = new List<EnemyData>();
 
     public SaveData(PlayerStats playerstats)
     {
         health = playerstats.health;
-        m_Scene = SceneManager.GetActiveScene();
-        scenename = m_Scene.name;
         X = playerstats.X;
         Y = playerstats.Y;
         Z = playerstats.Z;
+        //m_Scene = SceneManager.GetActiveScene();
+        //scenename = m_Scene.name;
 
-        SaveEnemies();
+        //SaveEnemies();
     }
 
     public SaveData()
@@ -56,7 +57,7 @@ public class SaveData
     }*/
 
     // Morgan S
-    public void SaveEnemies()
+    /*public void SaveEnemies()
     {
         EnemyBase[] enemies = GameObject.FindObjectsOfType<EnemyBase>();
 
@@ -84,7 +85,7 @@ public class SaveData
     [System.Serializable]
     public class EnemyData : SaveData
     {
-        public bool isDead;
+        public bool isDead;*/
         // Declare new variables to hold position of enemy
 
         /*
@@ -121,5 +122,5 @@ public class SaveData
     {
 
     }
-    */
-}
+    
+}*/

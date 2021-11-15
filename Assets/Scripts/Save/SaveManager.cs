@@ -47,6 +47,8 @@ public static class SaveManager
             SaveData saveData = bf.Deserialize(fs) as SaveData;
             fs.Close();
 
+            Debug.Log(saveData.X);
+
             return saveData;
         }
         else
