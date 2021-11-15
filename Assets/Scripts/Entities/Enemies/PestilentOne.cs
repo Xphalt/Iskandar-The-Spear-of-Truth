@@ -150,7 +150,10 @@ public class PestilentOne : EnemyBase
     public void ReleaseSpores()
     {
         for (int s = 0; s < sporesReleased; s++)
-            spores[s].StartArc(shootPoint.position, transform.RandomRadiusPoint(minSporeRad, maxSporesRad), sporeSpeed);
+        {
+            spores[0].StartArc(shootPoint.position, transform.RandomRadiusPoint(minSporeRad, maxSporesRad), sporeSpeed);
+            spores.RemoveAt(0);
+        }
     }
 
     public IEnumerator ChannelWind()

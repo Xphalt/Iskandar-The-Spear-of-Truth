@@ -6,7 +6,7 @@ public class Mushroom : MonoBehaviour
 {
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.TryGetComponent<StatsInterface>(out _))
         {
             FinalBurst explosion = transform.GetComponentInChildren<FinalBurst>(true);
             if (explosion) explosion.Burst();
