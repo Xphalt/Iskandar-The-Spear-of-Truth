@@ -10,7 +10,7 @@ public class RotatingBridge : MonoBehaviour
     public float rotationSpeed = 45.0f;
     public float rotationAngle = 90;
 
-    private float angleRotated = 0;
+    private float angleRotated = 90;
 
     private void Start()
     {

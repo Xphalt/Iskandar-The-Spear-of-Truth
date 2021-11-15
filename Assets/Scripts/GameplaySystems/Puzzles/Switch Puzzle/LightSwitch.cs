@@ -39,9 +39,9 @@ public class LightSwitch : MonoBehaviour
     {
         if (other.CompareTag("playerSword"))
         {
-            manager.RegisterSwitch(this);
-            if (colourIndex < colourCycle.Length) colourIndex++;
+            if (colourIndex + 1 < colourCycle.Length) colourIndex++;
             SetColour();
+            manager.RegisterSwitch(this);
         }
     }
 }
