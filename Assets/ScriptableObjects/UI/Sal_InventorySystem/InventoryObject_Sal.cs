@@ -174,7 +174,7 @@ public delegate void SlotUpdated(InventorySlot p_slot);
 [System.Serializable]
 public class InventorySlot
 {
-    public ItemType[] allowedItems = new ItemType[0];
+    public ObjectType[] allowedItems = new ObjectType[0];
    
     [System.NonSerialized] //Prevents the save system from trying to save this variable (cause scriptable objects can't be saved)
     public UserInterface_Sal parent;
@@ -239,7 +239,7 @@ public class InventorySlot
             return true;
         for (int i = 0; i < allowedItems.Length; i++)
         {
-            if (p_itemObj.type == allowedItems[i]) //Can be equipped
+            if (p_itemObj.objType == allowedItems[i]) //Can be equipped
                 return true;
         }
         return false;
