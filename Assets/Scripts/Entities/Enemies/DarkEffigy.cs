@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class DarkEffigy : EnemyBase
 {
-    [SerializeField] float minThrowSwordRange;
-    [SerializeField] float maxThrowSwordRange;
-    [SerializeField] float spinRange;
-    [SerializeField] GameObject _sword;
+    [SerializeField] float _minThrowSwordRange;
+    [SerializeField] float _maxThrowSwordRange;
+    [SerializeField] float _spinRange;
+    [SerializeField] float _spinDamage;
+    public float throwSwordDamage;
 
     public enum DarkEffigyAttacks
     {
@@ -38,19 +39,18 @@ public class DarkEffigy : EnemyBase
 
     public override void Attack()
     {
-
         if (CanAttack)
         {
             if (ThrowSwordAvailable &&
-                (transform.GetDistance(detector.GetCurTarget()) < maxThrowSwordRange) &&
-                (transform.GetDistance(detector.GetCurTarget()) > minThrowSwordRange))
+                (transform.GetDistance(detector.GetCurTarget()) < _maxThrowSwordRange) &&
+                (transform.GetDistance(detector.GetCurTarget()) > _minThrowSwordRange))
             {
                 print("Throw Sword");
                 ThrowSwordAttack();
                 attackUsed = true;
             }
 
-            if (SpinAvailable && transform.GetDistance(detector.GetCurTarget()) < spinRange)
+            if (SpinAvailable && transform.GetDistance(detector.GetCurTarget()) < _spinRange)
             {
                 print("Spin");
                 SpinAttack();
@@ -97,10 +97,22 @@ public class DarkEffigy : EnemyBase
         _myAnimator.SetTrigger("Spin");
     }
 
-    private void LaunchSword()
+    protected override void ShootAttack()
     {
-        _sword.SetActive(false);
-        base.ShootAttack();
+        transform.LookAt(detector.GetCurTarget().position, Vector3.up);
+        GameObject projectile = Instantiate(projectileObj, transform);
+        attackUsed = true;
+        curAttack = AttackTypes.Shoot;
+        MyRigid.velocity = Vector3.zero;
     }
 
+    protected override void OnTriggerEnter(Collider collider)
+    {
+        base.OnTriggerEnter(collider);
+
+        if (collider.gameObject.layer == )
+        {
+
+        }
+    }
 }
