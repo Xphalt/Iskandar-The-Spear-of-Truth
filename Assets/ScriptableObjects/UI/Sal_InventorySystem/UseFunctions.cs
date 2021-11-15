@@ -66,16 +66,7 @@ public class UseFunctions : MonoBehaviour
                     break;
                 case "Revival Gem":
                     database[i].OnUseCurrent += UseRevivalGem;
-                    break;
-                case "Small Potion":
-                    database[i].OnUseCurrent += UsePotion;
-                    break;
-                case "Medium Potion":
-                    database[i].OnUseCurrent += UsePotion;
-                    break;
-                case "Max Potion":
-                    database[i].OnUseCurrent += UsePotion;
-                    break;
+                    break; 
             } 
         }
     }
@@ -179,20 +170,6 @@ public class UseFunctions : MonoBehaviour
         playerstats.health = playerstats.MAX_HEALTH * (healingValue / 100);
 
         UIManager.instance.UpdateHealthBar((int)playerstats.health);
-    }
-
-    private void UsePotion()
-    { 
-        playerstats.health += healingValue;
-        playerstats.health = Mathf.Clamp(playerstats.health, 0.0f, playerstats.MAX_HEALTH);
-        //Update UI
-        UIManager.instance.SetHealthBar((int)playerstats.health);
-
-        //Item removal 
-        if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
-            playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
-        else
-            playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(-1);
-    }
+    } 
     #endregion
 }

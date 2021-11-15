@@ -17,7 +17,7 @@ public enum EquipSlot
 
 public class EquipPanel : MonoBehaviour
 {
-    public ItemType type;
+    public ObjectType type;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
 
@@ -33,7 +33,7 @@ public class EquipPanel : MonoBehaviour
     { 
         for (int i = 0; i < inventory.Storage.Slots.Length; i++)
         {
-            if(inventory.Storage.Slots[i].item.id > -1 && inventory.database.ItemObjects[inventory.Storage.Slots[i].item.id].type == type)
+            if(inventory.Storage.Slots[i].item.id > -1 && inventory.database.ItemObjects[inventory.Storage.Slots[i].item.id].objType == type)
             {
                 var obj = Instantiate(slotPrefab, parent);
 
@@ -68,15 +68,15 @@ public class EquipPanel : MonoBehaviour
          
         //Stats
         string values = string.Empty; 
-        switch(inventory.database.ItemObjects[slotItem[obj].id].type)
+        switch(inventory.database.ItemObjects[slotItem[obj].id].objType)
         {
-            case ItemType.Weapon: //Weapon 
+            case ObjectType.Weapon: //Weapon 
                 values = ((WeaponObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc; 
                 break;
-            case ItemType.Armor: //Armor
+            case ObjectType.Armor: //Armor
                 values = ((ArmorObject_Sal)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
                 break;
-            case ItemType.Accessory: //Default
+            case ObjectType.Accessory: //Default
                 values = ((AccessoryObject)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
                 break; 
         } 
@@ -97,14 +97,14 @@ public class EquipPanel : MonoBehaviour
     private void OnClick(GameObject obj)
     {
         //Equip
-        if (inventory.database.ItemObjects[slotItem[obj].id].type == ItemType.Weapon)
+        if (inventory.database.ItemObjects[slotItem[obj].id].objType == ObjectType.Weapon)
         {
             inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.SwordSlot], inventory.FindItemOnInventory(slotItem[obj]));   //Weapon
 
             ClearObjects();
             SpawnPanel();
         }
-        else if (inventory.database.ItemObjects[slotItem[obj].id].type == ItemType.Armor)
+        else if (inventory.database.ItemObjects[slotItem[obj].id].objType == ObjectType.Armor)
         {
             inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.ArmorSlot], inventory.FindItemOnInventory(slotItem[obj]));   //Armor
 

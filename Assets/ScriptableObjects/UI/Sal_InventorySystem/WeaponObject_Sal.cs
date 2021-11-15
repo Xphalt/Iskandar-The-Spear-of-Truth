@@ -35,7 +35,7 @@ public class WeaponObject_Sal : ItemObject_Sal
 
     public void Awake()
     {
-        type = ItemType.Weapon; 
+        objType = ObjectType.Weapon; 
     }
 
     public override void UseCurrent()

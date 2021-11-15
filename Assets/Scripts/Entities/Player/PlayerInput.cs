@@ -92,7 +92,13 @@ public class PlayerInput : MonoBehaviour
         {
             if (_UIManager.IsPotionInterfaceOpen())
             {
-                // Use a large health potion
+                // Use a large health potion 
+                var interfaces = FindObjectsOfType<PotionInterface>();
+                foreach (var item in interfaces)
+                {
+                    if (item.gameObject.activeSelf)
+                        item.UseItem(item.largePotion);
+                }
             }
         };
         _playerActionsAsset.UI.Medium_Potion.performed += _ =>
@@ -100,6 +106,12 @@ public class PlayerInput : MonoBehaviour
             if (_UIManager.IsPotionInterfaceOpen())
             {
                 // Use a medium health potion
+                var interfaces = FindObjectsOfType<PotionInterface>();
+                foreach (var item in interfaces)
+                {
+                    if (item.gameObject.activeSelf)
+                        item.UseItem(item.mediumPotion);
+                }
             }
         };
         _playerActionsAsset.UI.Small_Potion.performed += _ =>
@@ -107,6 +119,12 @@ public class PlayerInput : MonoBehaviour
             if (_UIManager.IsPotionInterfaceOpen())
             {
                 // Use a small health potion
+                var interfaces = FindObjectsOfType<PotionInterface>();
+                foreach (var item in interfaces)
+                {
+                    if (item.gameObject.activeSelf)
+                        item.UseItem(item.smallPotion);
+                }
             }
         };
 
