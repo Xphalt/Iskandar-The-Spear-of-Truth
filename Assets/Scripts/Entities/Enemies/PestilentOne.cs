@@ -18,12 +18,12 @@ public class PestilentOne : EnemyBase
     public int sporesReleased;
     public float minSporeRad, maxSporesRad, sporeSpeed;
     public float rollDamage, rollRange, rollMinDistance, runUpSpeed, rollAnimDuration = 1.45f;
-    public float windRange, windAngle;
+    public float windRange, windAngle, channelDuration;
     public float knockbackForce, knockbackDuration, regenAmount, regenInterval;
     public GameObject sporePrefab, windFX;
     private List<Spore> spores = new List<Spore>();
 
-    private float regenTimer = 0;
+    private float regenTimer = 0, channelTimer = 0;
     private bool windUp = false;
 
     [NamedArray(new string[] { "Roll", "Wind" })]
@@ -100,6 +100,7 @@ public class PestilentOne : EnemyBase
             if (!attackUsed && WindAvailable)
             {
                 SetAttack(PestilentAttacks.Wind);
+                StartCoroutine(ChannelWind());
                 curAttackDmg = 0;
             }
         }
@@ -150,6 +151,12 @@ public class PestilentOne : EnemyBase
     {
         for (int s = 0; s < sporesReleased; s++)
             spores[s].StartArc(shootPoint.position, transform.RandomRadiusPoint(minSporeRad, maxSporesRad), sporeSpeed);
+    }
+
+    public IEnumerator ChannelWind()
+    {
+        yield return new WaitForSeconds(channelDuration);
+        _myAnimator.SetTrigger("WindCast");
     }
 
     public void WindAttack()
