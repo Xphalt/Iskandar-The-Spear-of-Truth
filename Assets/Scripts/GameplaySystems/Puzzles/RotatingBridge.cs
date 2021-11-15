@@ -11,11 +11,13 @@ public class RotatingBridge : MonoBehaviour
     public float rotationAngle = 90;
 
     private float angleRotated = 90;
+    private Collider puzzleCollider;
 
     private void Start()
     {
         rotatePoint = transform.position;
         rotatePoint.y = bridge.position.y;
+        puzzleCollider = GetComponent<Collider>();
     }
 
     private void Update()
@@ -24,15 +26,15 @@ public class RotatingBridge : MonoBehaviour
         {
             float newAngle = Mathf.Min(rotationAngle - angleRotated, rotationAngle * Time.deltaTime);
             angleRotated += newAngle;
-            bridge.RotateAroundPoint(rotatePoint, Vector3.up, newAngle);
+            transform.parent.Rotate(Vector3.up, newAngle);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("playerSword"))
+        if (other.attachedRigidbody.TryGetComponent(out ThrowSword_Jerzy sword))
         {
-            angleRotated = 0;
+            if (!sword.PuzzleHit(puzzleCollider)) angleRotated = 0;
         }
     }
 }

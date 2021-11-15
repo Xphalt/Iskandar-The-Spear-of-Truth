@@ -10,13 +10,18 @@ public class PlatformAttach : MonoBehaviour
     public Transform parentTransform;
     public bool playerOnly = true;
 
+    private void Awake()
+    {
+        if (!parentTransform) parentTransform = transform;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!objectsPreviousParents.ContainsKey(collision.transform) && (collision.transform.CompareTag("Player") || !playerOnly))
         {
             objectsPreviousParents.Add(collision.transform, collision.transform.parent);
             previousScales.Add(collision.transform, collision.transform.localScale);
-            collision.transform.SetParent(transform);
+            collision.transform.SetParent(parentTransform, true);
         }
     }
 

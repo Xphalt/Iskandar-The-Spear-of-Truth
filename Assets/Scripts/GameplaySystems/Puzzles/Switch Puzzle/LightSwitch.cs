@@ -37,9 +37,9 @@ public class LightSwitch : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("playerSword"))
+        if (other.CompareTag("playerSword") && colourIndex + 1 < colourCycle.Length)
         {
-            if (colourIndex + 1 < colourCycle.Length) colourIndex++;
+            colourIndex++;
             SetColour();
             manager.RegisterSwitch(this);
         }
