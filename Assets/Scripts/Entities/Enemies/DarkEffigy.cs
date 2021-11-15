@@ -7,6 +7,7 @@ public class DarkEffigy : EnemyBase
     [SerializeField] float minThrowSwordRange;
     [SerializeField] float maxThrowSwordRange;
     [SerializeField] float spinRange;
+    [SerializeField] GameObject _sword;
 
     public enum DarkEffigyAttacks
     {
@@ -87,7 +88,6 @@ public class DarkEffigy : EnemyBase
 
         _myAnimator.SetTrigger("SwordThrow");
 
-        MyRigid.velocity = Vector3.zero;
     }
 
     private void SpinAttack()
@@ -97,10 +97,10 @@ public class DarkEffigy : EnemyBase
         _myAnimator.SetTrigger("Spin");
     }
 
-    private void SwordInstantiate()
+    private void LaunchSword()
     {
-        transform.LookAt(detector.GetCurTarget().position, Vector3.up);
-        Vector3 projectileVelocity = CalculateVelocity(detector.GetCurTarget().position, shootPoint.position, projectileSpeed);
-        GameObject projectile = Instantiate(projectileObj, shootPoint.position, Quaternion.identity);
+        _sword.SetActive(false);
+        base.ShootAttack();
     }
+
 }
