@@ -112,9 +112,9 @@ public class DarkEffigy : EnemyBase
     {
         base.OnTriggerEnter(collider);
 
-        if (collider.gameObject.layer == _swordLayer)
+        if (collider.gameObject.CompareTag(_swordTag) && GetComponentInChildren<DarkEffigyThrowSword>()._returnToSender)
         {
-
+            _myAnimator.SetTrigger("SwordReturn");
         }
     }
 }

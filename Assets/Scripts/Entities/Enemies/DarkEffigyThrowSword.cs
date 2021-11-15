@@ -8,8 +8,9 @@ public class DarkEffigyThrowSword : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private LayerMask _effigyLayer;
+    [SerializeField] private LayerMask _boundaryLayer;
     private float _currentTime;
-    private bool _returnToSender;
+    public bool _returnToSender;
     private Rigidbody _myRigid;
 
     private EnemyStats stats;
@@ -17,11 +18,8 @@ public class DarkEffigyThrowSword : MonoBehaviour
 
     private Vector3 _startingPosition;
 
-    public bool _swordReturned;
-
     void Start()
     {
-        _swordReturned = false;
         _returnToSender = false;
         _startingPosition = transform.position;
         _myRigid = GetComponent<Rigidbody>();
@@ -50,11 +48,9 @@ public class DarkEffigyThrowSword : MonoBehaviour
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(),
                 GetComponentInParent<DarkEffigy>().attackDamages[(int)GetComponentInParent<DarkEffigy>().throwSwordDamage]);
         }
-        if (other.gameObject.layer == _effigyLayer)
-        {
-            _swordReturned = true;
+        if (other.gameObject.layer == _effigyLayer && _returnToSender)
             Destroy(gameObject);
-        }
-        _returnToSender = true;
+        if (other.gameObject.layer == _boundaryLayer)
+            _returnToSender = true;
     }
 }
