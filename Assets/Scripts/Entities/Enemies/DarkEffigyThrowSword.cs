@@ -4,21 +4,40 @@ using UnityEngine;
 
 public class DarkEffigyThrowSword : MonoBehaviour
 {
-    [SerializeField] private float _throwSpeed;
-    [SerializeField] private float _spinSpeed;
-    [SerializeField] private float _maxThrowDistance;
+    [SerializeField] private float _maxTimeLimit;
+    [SerializeField] private float _speed;
+    private float _currentTime;
+    private bool _returnToSender;
+    private Rigidbody _myRigid;
 
     private Vector3 _startingPosition;
 
-    // Start is called before the first frame update
     void Start()
     {
+        _returnToSender = false;
         _startingPosition = transform.position;
+        _myRigid = GetComponent<Rigidbody>();
+        _currentTime = 0.0f;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        transform.Rotate(Vector3.right * _spinSpeed, Space.Self);
+        _currentTime += Time.deltaTime;
+
+        _returnToSender = (_currentTime > _maxTimeLimit) ? true : false;
+
+        if (!_returnToSender)
+        {
+            _myRigid.velocity = transform.forward * _speed;
+            _currentTime = 0.0f;
+        }
+        else
+        {
+            _myRigid.velocity = transform.forward * -_speed;
+            _currentTime = 0.0f;
+        }
+
+        if (_returnToSender && (transform.position == _startingPosition))
+            gameObject.SetActive(false);
     }
 }
