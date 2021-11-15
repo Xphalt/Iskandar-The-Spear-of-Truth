@@ -37,7 +37,6 @@ public class DarkEffigy : EnemyBase
 
     public override void Attack()
     {
-        base.Attack();
 
         if (CanAttack)
         {
@@ -55,6 +54,10 @@ public class DarkEffigy : EnemyBase
                 print("Spin");
                 SpinAttack();
                 attackUsed = true;
+            }
+            else
+            {
+                base.Attack();
             }
 
             if (attackUsed)
@@ -83,6 +86,8 @@ public class DarkEffigy : EnemyBase
         darkEffigyAttack = DarkEffigyAttacks.ThrowSword;
 
         _myAnimator.SetTrigger("SwordThrow");
+
+        MyRigid.velocity = Vector3.zero;
     }
 
     private void SpinAttack()
@@ -90,5 +95,12 @@ public class DarkEffigy : EnemyBase
         darkEffigyAttack = DarkEffigyAttacks.Spin;
 
         _myAnimator.SetTrigger("Spin");
+    }
+
+    private void SwordInstantiate()
+    {
+        transform.LookAt(detector.GetCurTarget().position, Vector3.up);
+        Vector3 projectileVelocity = CalculateVelocity(detector.GetCurTarget().position, shootPoint.position, projectileSpeed);
+        GameObject projectile = Instantiate(projectileObj, shootPoint.position, Quaternion.identity);
     }
 }
