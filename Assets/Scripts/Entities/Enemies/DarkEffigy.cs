@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class DarkEffigy : EnemyBase
 {
-    [SerializeField] float _minThrowSwordRange;
-    [SerializeField] float _maxThrowSwordRange;
-    [SerializeField] float _spinRange;
-    [SerializeField] float _spinDamage;
+    [SerializeField] private float _minThrowSwordRange;
+    [SerializeField] private float _maxThrowSwordRange;
+    [SerializeField] private float _spinRange;
+    [SerializeField] private float _spinDamage;
     public float throwSwordDamage;
+
+    private string _swordTag = "DarkEffigySword";
 
     public enum DarkEffigyAttacks
     {
@@ -110,7 +112,7 @@ public class DarkEffigy : EnemyBase
     {
         base.OnTriggerEnter(collider);
 
-        if (collider.gameObject.layer == )
+        if (collider.gameObject.layer == _swordLayer)
         {
 
         }
