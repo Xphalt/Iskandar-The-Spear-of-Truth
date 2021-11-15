@@ -51,6 +51,7 @@ public class ToolTip : MonoBehaviour
 
     public void CheckInRange()
     {
+        bool gamepadInUse = UIManager.instance.GetCurrentInput() == UIManager.INPUT_OPTIONS.GAMEPAD;
         float toolTipRange = Vector3.Distance(player.position, transform.position);
 
         if (toolTipRange <= farRadius)
@@ -72,19 +73,22 @@ public class ToolTip : MonoBehaviour
             /*_________________________________________________________________________
             * This is for game pad UI tips.
             * ________________________________________________________________________*/
-            if (isTalkType)
-                gamepadTip.DisplayGamepadUI("talk");
-            else if (!isTalkType)
-                gamepadTip.DisplayGamepadUI("read");
+            if (gamepadInUse)
+            {
+                if (isTalkType)
+                    gamepadTip.DisplayGamepadUI("talk");
+                else if (!isTalkType)
+                    gamepadTip.DisplayGamepadUI("read");
 
-            //Fade counter necessary so function doesn't restart
-            fadeOutCounter = 0;
-            fadeInCounter++;
+                //Fade counter necessary so function doesn't restart
+                fadeOutCounter = 0;
+                fadeInCounter++;
 
-            if (fadeInCounter == 1)
-                gamepadTip.FadeIn();
+                if (fadeInCounter == 1)
+                    gamepadTip.FadeIn();
+            }
         }
-        else
+        else if(gamepadInUse)
         {
             inRange = false;
 
