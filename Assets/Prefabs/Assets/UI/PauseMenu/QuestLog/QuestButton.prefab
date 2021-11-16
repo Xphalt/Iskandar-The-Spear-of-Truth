@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 646096245255678706}
   - component: {fileID: 3114132590496737242}
   - component: {fileID: 5470239962942700534}
-  - component: {fileID: 1441296661412515392}
   m_Layer: 5
   m_Name: QuestButton
   m_TagString: Untagged
@@ -122,8 +121,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1441296661412515392}
-        m_TargetAssemblyTypeName: QuestInfoChanger, Assembly-CSharp
+      - m_Target: {fileID: 1774709644044807377, guid: 2bf35be0bec67254880a4f8a439d0676, type: 3}
+        m_TargetAssemblyTypeName: QuestLogManager, Assembly-CSharp
         m_MethodName: ChangeQuestInfo
         m_Mode: 1
         m_Arguments:
@@ -134,19 +133,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1441296661412515392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2649477084312363481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffaa6cbfecc8d6c49b1f34b720ed9157, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  QuestLog: {fileID: 1774709644044807377, guid: 2bf35be0bec67254880a4f8a439d0676, type: 3}
 --- !u!1 &4976855575529132888
 GameObject:
   m_ObjectHideFlags: 0
