@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStats : StatsInterface
 {
-    public float X;
-    public float Y;
-    public float Z;
     private PlayerAnimationManager playerAnimation;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
@@ -26,7 +23,7 @@ public class PlayerStats : StatsInterface
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
 
-    private int gems;
+    public int gems;
     public int Gems
     {
         get
@@ -96,6 +93,11 @@ public class PlayerStats : StatsInterface
         {
             Accessory.UseCurrent(); //Use either ring or goggles  
         }
+
+        //MORGAN EDIT
+        X = this.transform.position.x;
+        Y = this.transform.position.y;
+        Z = this.transform.position.z;
 
         Bleed();
     }
@@ -284,7 +286,7 @@ public class PlayerStats : StatsInterface
             }
             else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
             {
-               // gems += ((ResourceObject)(item.itemobj)).gems;
+                gems += ((ResourceObject)(item.itemobj)).gems; // edited eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
                     ((ResourceObject)(item.itemobj)).UseCurrent();
                 UIManager.instance.ShowMoneyPopup();
@@ -301,13 +303,16 @@ public class PlayerStats : StatsInterface
     //Morgan's Save Edits
     Scene m_Scene;
     string sceneName;
+    public float X;
+    public float Y;
+    public float Z;
     public void SaveStats(int num)
     {
+        
         //SaveData saveData;
         SaveManager.SavePlayerStats(this, num);
         inventory.SaveStats(num);
-        
-
+        //equipment.SaveStats(num);
         m_Scene = SceneManager.GetActiveScene();
         sceneName = m_Scene.name;
     }
@@ -315,11 +320,14 @@ public class PlayerStats : StatsInterface
     public void LoadStats(int num)
     {
         SaveData saveData = SaveManager.LoadPlayerStats(num);
+        //SceneManager.LoadScene(saveData.scenename, LoadSceneMode.Single);
         health = saveData.health;
+        gems = saveData.gemcount;
         inventory.LoadStats(num);
-        X = saveData.X; print("Xpos is" + X);
-        Y = saveData.Y; print("Ypos is" + Y);
-        Z = saveData.Z; print("Zpos is" + Z);
+        //equipment.LoadStats(num);
+        X = saveData.xpos;
+        Y = saveData.ypos;
+        Z = saveData.zpos;
         transform.position = new Vector3(X, Y, Z);
     }
 
