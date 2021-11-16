@@ -7,7 +7,8 @@ using UnityEngine;
 public class EnemyBase : Patrol
 {
     protected bool isDead = false;
-    public float chaseSpeed;
+    public bool isChaser;
+    public float aggroedMoveSpeed;
     protected EnemyStats stats;
     protected PlayerDetection detector;
     public float findDelay;
@@ -36,10 +37,11 @@ public class EnemyBase : Patrol
     protected float[] attackTimers = new float[(int)AttackTypes.AttackTypesCount];
 
     protected AttackTypes curAttack = AttackTypes.AttackTypesCount;
+    protected float curAttackDmg = 0;
 
     protected bool MeleeAvailable => availableAttacks[(int)AttackTypes.Melee] &&
         (attackTimers[(int)AttackTypes.Melee] >= attackCooldowns[(int)AttackTypes.Melee]);
-    protected bool ChargeAvailable => availableAttacks[(int)AttackTypes.Charge] &&
+    protected bool ChargeAvailable => availableAttacks[(int)AttackTypes.Charge] && (detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge] &&
         (attackTimers[(int)AttackTypes.Charge] >= attackCooldowns[(int)AttackTypes.Charge]);
     protected bool ShootAvailable => availableAttacks[(int)AttackTypes.Shoot] &&
         (attackTimers[(int)AttackTypes.Shoot] >= attackCooldowns[(int)AttackTypes.Shoot]);
@@ -50,40 +52,54 @@ public class EnemyBase : Patrol
     public enum EnemyStates
     {
         Patrolling,
-        Chasing,
+        Aggro,
         Attacking
     };
     protected EnemyStates curState = EnemyStates.Patrolling;
     protected bool charging = false;
     protected bool attackUsed = false;
+    protected bool CanAttack => !attackUsed && attackEnded && detector.GetCurTarget() != null && curState == EnemyStates.Aggro;
 
-    public float chargeSpeed, chargeDistanceMult = 1;
-    protected float chargeDistance;
+    public float chargeSpeed, chargeDistanceMult = 1, chargeRaycast, chargeSelfDamage;
+    public LayerMask chargeLayerMask;
+    protected float chargeDistance, chargeDuration, chargeTimer;
     protected Vector3 chargeStart, chargeDirection;
 
     public GameObject projectileObj;
     public Transform shootPoint;
+    [Range(0, 1)]
+    public float projectileSpeed;
     protected BoxCollider hitCollider;
 
     public float minChaseRadius;
+
+    public bool PatrolAvailable => agent.enabled && ListOfNodes.Length > 0;
 
     [HideInInspector]
 
     public override void Start()
     {
         base.Start();
-        StartCoroutine("FindTargetsWithDelay", findDelay);
         //defaultToZero = false;
         stats = GetComponent<EnemyStats>();
         for (int at = 0; at < attackTimers.Length; at++) attackTimers[at] = attackCooldowns[at];
         curState = EnemyStates.Patrolling;
         detector = GetComponent<PlayerDetection>();
         hitCollider = GetComponent<BoxCollider>();
+
+        StartCoroutine("FindTargetsWithDelay", findDelay);
+        for (int t = 0; t < attackTimers.Length; t++) attackTimers[t] = attackCooldowns[t];
     }
 
     public override void Update()
     {
         base.Update();
+
+        if (stats.health <= 0)
+        {
+            _myAnimator.SetTrigger("Dead");
+            _myCapsuleCol.enabled = false;
+        }
 
         agent.enabled = curState != EnemyStates.Attacking;
 
@@ -92,16 +108,24 @@ public class EnemyBase : Patrol
             switch (curState)
             {
                 case EnemyStates.Patrolling:
-                    agent.speed = patrolSpeed;
+                    agent.speed = (PatrolAvailable && !isPaused) ? patrolSpeed : 0;
                     agent.stoppingDistance = 0;
 
                     break;
-                case EnemyStates.Chasing:
-                    //seek player position and go to it
+                case EnemyStates.Aggro:
+                    //seek player position and go to it OR if not chaser, keep distance from player
                     transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
-                    agent.destination = detector.GetCurTarget().transform.position;
-                    agent.speed = agent.remainingDistance > minChaseRadius ? chaseSpeed : 0;
-                    agent.stoppingDistance = minChaseRadius;
+                    if (isChaser)
+                    {
+                        agent.destination = detector.GetCurTarget().position;
+                        agent.speed = agent.remainingDistance > minChaseRadius ? aggroedMoveSpeed : 0;
+                        agent.stoppingDistance = minChaseRadius;
+                    }
+                    else
+                    {
+                        agent.destination = transform.position + (transform.position - detector.GetCurTarget().position).normalized;
+                        agent.speed = (transform.position - detector.GetCurTarget().position).magnitude < detector.detectionRadius ? aggroedMoveSpeed : 0;
+                    }
 
                     break;
                 case EnemyStates.Attacking:
@@ -114,12 +138,41 @@ public class EnemyBase : Patrol
         }
         else
         {
-            MyRigid.velocity = chargeDirection * chargeSpeed;
-            if (transform.position.GetDistance(chargeStart) > chargeDistance) EndCharge();
+            if (Physics.Raycast(transform.position, transform.forward, chargeRaycast, chargeLayerMask)
+                || transform.position.GetDistance(chargeStart) > chargeDistance || chargeTimer > chargeDuration)
+            {
+                EndCharge();
+            }
+            else
+            {
+                MyRigid.velocity = chargeDirection * chargeSpeed;
+                chargeTimer += Time.deltaTime;
+            }
         }
 
+        attackUsed = false;
         Attack();
         AttackCooldown();
+    }
+
+    public void SetMovementAnim()
+    {
+        switch (curState)
+        {
+            case EnemyStates.Patrolling:
+                _myAnimator.SetBool("IsAggroed", false);
+                break;
+            case EnemyStates.Aggro:
+                _myAnimator.SetBool("IsPatrolling", false);
+                _myAnimator.SetBool("IsAggroed", true);
+                break;
+            case EnemyStates.Attacking:
+                _myAnimator.SetBool("IsPatrolling", false);
+                _myAnimator.SetBool("IsAggroed", true);
+                break;
+            default:
+                break;
+        }
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
@@ -131,14 +184,14 @@ public class EnemyBase : Patrol
             {
                 detector.FindVisibleTargets();
                 if (detector.GetCurTarget() == null) curState = EnemyStates.Patrolling;
-                else curState = EnemyStates.Chasing;
+                else curState = EnemyStates.Aggro;
             }
         }
     }
 
-    public void AttackEnd()
+    public virtual void AttackEnd()
     {
-        curState = detector.GetCurTarget() ? EnemyStates.Chasing : EnemyStates.Patrolling;
+        curState = detector.GetCurTarget() ? EnemyStates.Aggro : EnemyStates.Patrolling;
         attackEnded = true;
     }
 
@@ -161,21 +214,19 @@ public class EnemyBase : Patrol
     //will be called by other scripts
     public virtual void Attack()
     {
-        if (attackEnded && detector.GetCurTarget() != null)
+        if (CanAttack)
         {
-            attackUsed = false;
-
             if (MeleeAvailable)
             {
                 MeleeAttack();
             }
 
-            if (!attackUsed && ChargeAvailable && curState == EnemyStates.Chasing)
+            if (!attackUsed && ChargeAvailable)
             {
                 ChargeAttack();
             }
 
-            if (!attackUsed && ShootAvailable && curState == EnemyStates.Chasing)
+            if (!attackUsed && ShootAvailable)
             {
                 ShootAttack();
             }
@@ -184,6 +235,7 @@ public class EnemyBase : Patrol
             {
                 //change state to Attacking
                 curState = EnemyStates.Attacking;
+                curAttackDmg = attackDamages[(int)curAttack];
                 //reset cooldown so Enemy can attack again
                 attackTimers[(int)curAttack] = 0;
                 attackEnded = false;
@@ -191,39 +243,39 @@ public class EnemyBase : Patrol
         }
     }
 
-    protected virtual void ChargeAttack()
+    public virtual void ChargeAttack()
     {
-        if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge])
-        {
-            chargeStart = transform.position;
-            chargeDirection = detector.GetCurTarget().position - transform.position;
-            chargeDistance = chargeDirection.magnitude * chargeDistanceMult;
-            chargeDirection.Normalize();
-            MyRigid.velocity = chargeDirection * chargeSpeed;
+        chargeStart = transform.position;
+        chargeDirection = detector.GetCurTarget().position - transform.position;
+        chargeDistance = chargeDirection.magnitude * chargeDistanceMult;
+        chargeDuration = chargeDistance / chargeSpeed;
+        chargeTimer = 0;
+        chargeDirection.Normalize();
+        MyRigid.velocity = chargeDirection * chargeSpeed;
 
-            attackUsed = true;
-            curAttack = AttackTypes.Charge;
-            charging = true;
-        }
+        attackUsed = true;
+        curAttack = AttackTypes.Charge;
+        charging = true;
     }
 
     protected virtual void MeleeAttack()
     {
         if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
         {
-            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
+            _myAnimator.SetTrigger("Hit");
+
             attackUsed = true;
             curAttack = AttackTypes.Melee;
             MyRigid.velocity = Vector3.zero;
         }
     }
 
-    protected void ShootAttack()
+    protected virtual void ShootAttack()
     {
         if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Shoot])
         {
             transform.LookAt(detector.GetCurTarget().position, Vector3.up);
-            Vector3 projectileVelocity = CalculateVelocity(detector.GetCurTarget().position, shootPoint.position);
+            Vector3 projectileVelocity = CalculateVelocity(detector.GetCurTarget().position, shootPoint.position, projectileSpeed);
             GameObject projectile = Instantiate(projectileObj, shootPoint.position, Quaternion.identity);
             projectile.GetComponent<Rigidbody>().velocity = projectileVelocity;
             projectile.GetComponent<ProjectileScript>().SetDamageFromParent(attackDamages[(int)AttackTypes.Shoot]);
@@ -234,8 +286,15 @@ public class EnemyBase : Patrol
         }
     }
 
-    protected Vector3 CalculateVelocity(Vector3 startPos, Vector3 target, float time = 1)
+    protected Vector3 CalculateVelocity(Vector3 startPos, Vector3 target, float speed)
     {
+
+        float time = 1 - speed;
+        if (time == 0)
+        {
+            time += 0.10f;
+        }
+
         //find distance x and y first
         Vector3 distance = startPos - target;
 
@@ -269,9 +328,15 @@ public class EnemyBase : Patrol
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        if (detector.IsTarget(collision.collider.transform) && charging)
+        if(charging)
         {
-            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Charge]);
+            if (detector.IsTarget(collision.collider.transform))
+            {
+                stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), curAttackDmg);
+            }
+            else stats.TakeDamage(chargeSelfDamage);
+
+            EndCharge();
         }
     }
 
@@ -279,8 +344,20 @@ public class EnemyBase : Patrol
     {
         if (detector.IsTarget(collider.transform))
         {
-            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), attackDamages[(int)AttackTypes.Melee]);
+            stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), curAttackDmg);
             hitCollider.enabled = false;
         }
+    }
+
+    protected virtual void OnDisable()
+    {
+        if (charging)
+            EndCharge();
+
+        _myAnimator.SetBool("IsAggroed", false);
+        _myAnimator.SetBool("IsPatrolling",false);
+        _myAnimator.Play("Idle");
+        agent.speed = 0;
+        agent.enabled = false;
     }
 }

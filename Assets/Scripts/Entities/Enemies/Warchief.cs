@@ -39,16 +39,16 @@ public class Warchief : EnemyBase
     protected bool LungeAvailable => (warChiefTimers[(int)WarchiefAttacks.Lunge] >= warChiefCooldowns[(int)WarchiefAttacks.Lunge]);
     protected bool ParryAvailable => (warChiefTimers[(int)WarchiefAttacks.Parry] >= warChiefCooldowns[(int)WarchiefAttacks.Parry]);
 
-    // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
-        _myAnimator.SetBool("isChasing", true);
+        _myAnimator.SetBool("IsAggroed", true);
 
         chargeDistance = minJumpDistance;
+        chargeDuration = chargeDistance / chargeSpeed;
+        for (int t = 0; t < warChiefTimers.Length; t++) warChiefTimers[t] = warChiefCooldowns[t];
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
@@ -103,7 +103,7 @@ public class Warchief : EnemyBase
                 warChiefTimers[(int)warChiefAttack] = 0;
                 attackEnded = false;
             }
-            //_myAnimator.SetBool("isChasing", !attackUsed);
+            //_myAnimator.SetBool("IsAggroed", !attackUsed);
         }
     }
 
@@ -111,7 +111,7 @@ public class Warchief : EnemyBase
     {
         blocking = false;
         stats.vulnerable = true;
-        _myAnimator.SetBool("isBlocking", false);
+        _myAnimator.SetBool("IsBlocking", false);
     }
 
     protected override void AttackCooldown()
@@ -125,14 +125,10 @@ public class Warchief : EnemyBase
     private void WarcryAttack()
     {
         warChiefAttack = WarchiefAttacks.Warcry;
-        Vector3 spawnPos = transform.position;
         for (int o = 0; o < numOrcsSpawned; o++)
         {
-            spawnPos.x = transform.position.x + Random.Range(minSpawnRadius, maxSpawnRadius);
-            spawnPos.z = transform.position.z + Random.Range(minSpawnRadius, maxSpawnRadius);
-
             GameObject newOrc = Instantiate(orcPrefabs[Random.Range(0, orcPrefabs.Count)]);
-            newOrc.transform.position = spawnPos;
+            newOrc.transform.position = transform.RandomRadiusPoint(minSpawnRadius, maxSpawnRadius);
 
             minions.Add(newOrc.GetComponent<Orc>());
         }
@@ -146,12 +142,14 @@ public class Warchief : EnemyBase
     protected override void MeleeAttack()
     {
         _myAnimator.SetTrigger("Slash");
+        MyRigid.velocity = Vector3.zero;
         warChiefAttack = WarchiefAttacks.Flurry;
     }
 
     private void FlurryAttack()
     {
         _myAnimator.SetTrigger("Flurry");
+        MyRigid.velocity = Vector3.zero;
         warChiefAttack = WarchiefAttacks.Flurry;
     }
 
@@ -159,6 +157,7 @@ public class Warchief : EnemyBase
     {
         chargeStart = transform.position;
         chargeDirection = (detector.GetCurTarget().position - transform.position).normalized;
+        chargeTimer = 0;
         MyRigid.velocity = chargeDirection * chargeSpeed;
         charging = true;
 
@@ -171,7 +170,7 @@ public class Warchief : EnemyBase
         blocking = true;
         blockTimer = 0;
         stats.vulnerable = false;
-        _myAnimator.SetBool("isBlocking", true);
+        _myAnimator.SetBool("IsBlocking", true);
         _myAnimator.SetTrigger("Taunt");
         warChiefAttack = WarchiefAttacks.Parry;
     }

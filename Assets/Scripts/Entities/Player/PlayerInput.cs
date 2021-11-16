@@ -1,17 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions; // Needed to have acess to the Interecations (Hold and PRess interactions) 
-using UnityEngine.EventSystems;
 
-//Animations in this script were done by Fate. Please contact me if you have any questions.
+public static class InputActionExtensions
+{
+    public static bool IsPressed(this InputAction inputAction)
+    {
+        return inputAction.ReadValue<float>() > 0f;
+    }
+
+    public static bool WasPressedThisFrame(this InputAction inputAction)
+    {
+        return inputAction.triggered && inputAction.ReadValue<float>() > 0f;
+    }
+
+    public static bool WasReleasedThisFrame(this InputAction inputAction)
+    {
+        return inputAction.triggered && inputAction.ReadValue<float>() == 0f;
+    }
+}
+
 
 public class PlayerInput : MonoBehaviour
 {
     // Reference Variables
     private PlayerActionsAsset _playerActionsAsset;
-    private PlayerAnimationManager playerAnimation;
     private Rigidbody _playerRigidbody;
 
     [Header("Scripts References")]
@@ -19,98 +34,128 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private Player_Targeting_Jack _playerTargeting;
     [SerializeField] private Player_Interaction_Jack _player_Interaction_Jack;
     [SerializeField] private PlayerCombat_Jerzy _playerCombat_Jerzy;
-    //[SerializeField] private Inventory_UI_Script _inventoryUI;
-    [SerializeField] private ItemSelectionWheel _itemSelectionWheel;
-    [SerializeField] private ItemSelectionBar _itemSelectionBar; 
     [SerializeField] private PauseMenuManager _pauseMenuManager;
-
-    [Header("Movement Settings")]
-    [SerializeField] private float _movementSpeed;
-
-    [Header("Rotation Settings")]
-    [SerializeField] private GameObject _playerModel;
-    [SerializeField] private float _rotationSpeed;
+    [SerializeField] private ItemSelect _changeItem;
+    [SerializeField] private UIManager _UIManager;
 
     private void Awake()
-    { 
+    {
         _playerActionsAsset = new PlayerActionsAsset();
-        playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         _playerRigidbody = GetComponent<Rigidbody>();
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
-        _playerActionsAsset.Player.Pause.performed += OnPause;
+        // Disable player interaction if pause is set
+        _playerActionsAsset.Player.Pause.performed += _ =>
+        {
+            TogglePlayerInteraction(false);
+            _pauseMenuManager.TogglePauseState();
+        };
+        _playerActionsAsset.Player.PotionInterface.performed += _ =>
+        {
+            TogglePlayerInteraction(false);
+            _UIManager.TogglePotionInterface();
+        };
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
-        _playerActionsAsset.Player.Inventory.performed += _ => _pauseMenuManager.TogglePauseState();
 
-        _playerActionsAsset.Player.Attack.performed += ctx =>
-            {
-                if (ctx.interaction is HoldInteraction)
-                    _playerCombat_Jerzy.ThrowAttack();
-                else if (ctx.interaction is PressInteraction)
-                    if (_player_Interaction_Jack.IsInteractionAvailable())
-                        _player_Interaction_Jack.Interact();
-                    else
-                        _playerCombat_Jerzy.Attack();
-            };
+        _playerActionsAsset.Player.Attack.started += _ =>
+        {
+            if (_player_Interaction_Jack.IsInteractionAvailable())
+                _player_Interaction_Jack.Interact();
+            else
+                _playerCombat_Jerzy.Attack();
+        };
+
+        _playerActionsAsset.Player.Attack.performed += _ => _playerCombat_Jerzy.ThrowAttack();
 
         _playerActionsAsset.Player.Dash.performed += _ => Dash();
 
-        _playerActionsAsset.Player.ItemSelectionWheel.performed += _ => _itemSelectionWheel.ToggleItemSelectionWheel();
-        _playerActionsAsset.Player.ItemSelectionBar.performed += _ => _itemSelectionBar.ShowHotbar(); 
+        //Items
+        _playerActionsAsset.Player.ItemToggle.performed += _ => _changeItem.OnClick();
+        _playerActionsAsset.Player.UseItem.performed += use =>
+        {
+            if (_changeItem.inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id > -1)
+                _changeItem.inventory.database.ItemObjects[_changeItem.inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id].UseCurrent();
+        };
 
-        _playerActionsAsset.UI.Pause.performed += OnPause;
-        //_playerActionsAsset.UI.Inventory.performed += _ => _inventoryUI.ToggleInventory();
+        // Re-enable player actions if pause is triggered in pause menu
+        _playerActionsAsset.UI.Pause.performed += _ =>
+        {
+            _pauseMenuManager.TogglePauseState();
+            TogglePlayerInteraction(true);
+        };
+        _playerActionsAsset.UI.PotionInterface.performed += _ =>
+        {
+            _UIManager.TogglePotionInterface();
+            TogglePlayerInteraction(true);
+        };
+        _playerActionsAsset.UI.Large_Potion.performed += _ =>
+        {
+            if (_UIManager.IsPotionInterfaceOpen())
+            {
+                // Use a large health potion 
+                var interfaces = FindObjectsOfType<PotionInterface>();
+                foreach (var item in interfaces)
+                {
+                    if (item.gameObject.activeSelf)
+                        item.UseItem(item.largePotion);
+                }
+            }
+        };
+        _playerActionsAsset.UI.Medium_Potion.performed += _ =>
+        {
+            if (_UIManager.IsPotionInterfaceOpen())
+            {
+                // Use a medium health potion
+                var interfaces = FindObjectsOfType<PotionInterface>();
+                foreach (var item in interfaces)
+                {
+                    if (item.gameObject.activeSelf)
+                        item.UseItem(item.mediumPotion);
+                }
+            }
+        };
+        _playerActionsAsset.UI.Small_Potion.performed += _ =>
+        {
+            if (_UIManager.IsPotionInterfaceOpen())
+            {
+                // Use a small health potion
+                var interfaces = FindObjectsOfType<PotionInterface>();
+                foreach (var item in interfaces)
+                {
+                    if (item.gameObject.activeSelf)
+                        item.UseItem(item.smallPotion);
+                }
+            }
+        };
+
+
         #endregion
+    }
+
+    // UI Interaction is disabled upon starting
+    private void Start()
+    {
+        _playerActionsAsset.UI.Disable();
     }
 
     private void FixedUpdate()
     {
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
-
         _playerMovement_Jerzy.Movement(new Vector3(inputVector.x, 0.0f, inputVector.y));
-
     }
 
-    // If the cursor is over the UI disable the player interaction
-    private void Update()
+    // Allow us to enable/disable player interaction so it isn't triggered when UI is being interacted with
+    public void TogglePlayerInteraction(bool enabled)
     {
-        PointerEventData pointerData = new PointerEventData(EventSystem.current);
-        pointerData.position = Input.mousePosition;
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerData, results);
-
-        if (results.Count > 0)
+        if (enabled)
         {
-            if (results[0].gameObject.layer == 5)
-            {
-                _playerActionsAsset.Player.Attack.Disable();
-            }
+            _playerActionsAsset.Player.Enable();
+            _playerActionsAsset.UI.Disable();
         }
         else
         {
-            _playerActionsAsset.Player.Attack.Enable();
-        }
-    }
-
-
-    private void OnPause(InputAction.CallbackContext ctx)
-    {
-        Debug.Log("Previous Action Map: " + ctx.action.actionMap.name);
-
-        switch (ctx.action.actionMap.name)
-        {
-            case "Player":
-                _playerActionsAsset.Player.Disable();
-                _playerActionsAsset.UI.Enable();
-                // Call Pause Function
-                break;
-            case "UI":
-                _playerActionsAsset.UI.Disable();
-                _playerActionsAsset.Player.Enable();
-                // Call Pause/Unpause Function
-                break;
-            default:
-                break;
+            _playerActionsAsset.Player.Disable();
+            _playerActionsAsset.UI.Enable();
         }
     }
 
@@ -122,13 +167,20 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    public static Vector3 MousePosition()
+    {
+        Ray ray = GameObject.FindObjectOfType<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
+
+        return ray.origin;
+    }
+
     private void OnEnable()
     {
-        _playerActionsAsset.Player.Enable();
+        _playerActionsAsset.Enable();
     }
 
     private void OnDisable()
     {
-        _playerActionsAsset.Player.Disable();
+        _playerActionsAsset.Disable();
     }
 }

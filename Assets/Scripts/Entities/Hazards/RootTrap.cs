@@ -5,12 +5,27 @@ using UnityEngine;
 public class RootTrap : MonoBehaviour
 {
     public float rootDuration;
+    private Animator anim;
+
+    void Start()
+    {
+        anim = GetComponentInChildren<Animator>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.TryGetComponent(out PlayerStats stats))
         {
-            other.gameObject.GetComponent<PlayerMovement_Jerzy>().Root(rootDuration);
+            if (!stats.poisonProtection)
+            {
+                other.gameObject.GetComponent<PlayerMovement_Jerzy>().Root(rootDuration);
+            }
+
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Default"))
+            {
+                anim.Play("EnviromentalHazardsRoot");
+                other.gameObject.GetComponent<PlayerMovement_Jerzy>().Root(rootDuration);
+            }
         }
     }
 }

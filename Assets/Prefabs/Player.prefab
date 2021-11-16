@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!65 &7914231431892723068
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917620529337182812}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 26.9722, y: 137.17957, z: 11.967478}
+  m_Center: {x: 0.39059693, y: 48.33105, z: -0.43693542}
+--- !u!95 &7914231431892723071
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917620529337182812}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fd53396981920a8468d2125f5f837e71, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7836609601897569305
 GameObject:
   m_ObjectHideFlags: 0
@@ -2584,6 +2616,7 @@ MonoBehaviour:
   falling: 0
   respawning: 0
   gettingConsumed: 0
+  usingWand: 0
   swordLookRotation: {x: 0, y: 0, z: 0, w: 0}
   canBeDamaged: 1
   dashCooldown: 2
@@ -2607,7 +2640,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModelTransform: {fileID: 0}
-  targetRadius: 0
+  _cameraLook: {fileID: 0}
+  TARGETABLE_LAYERMASK:
+    serializedVersion: 2
+    m_Bits: 128
+  targetRadius: 5
   _wasTargeting: 0
 --- !u!114 &7836609602608423899
 MonoBehaviour:
@@ -2623,6 +2660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionRadius: 10
   interactCooldown: 0
+  prevention: 0
 --- !u!82 &7836609602608423897
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2748,12 +2786,9 @@ MonoBehaviour:
   _playerTargeting: {fileID: 7836609602608423898}
   _player_Interaction_Jack: {fileID: 7836609602608423899}
   _playerCombat_Jerzy: {fileID: 7836609602608423901}
-  _itemSelectionWheel: {fileID: 0}
-  _itemSelectionBar: {fileID: 0}
   _pauseMenuManager: {fileID: 0}
-  _movementSpeed: 10
-  _playerModel: {fileID: 0}
-  _rotationSpeed: 10
+  _changeItem: {fileID: 0}
+  _UIManager: {fileID: 0}
 --- !u!114 &7836609602608423901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2767,14 +2802,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 7836609601897569369}
-  throwTimeBeforeSpinInPlace: 0.5
   throwTimeSpinningInPlace: 0.5
   throwSpeed: 18
   throwReturnSpeed: 24
   attackOffCooldown: 1
   canAttack: 1
   timeToThrowSword: 1
-  swordReleaseDelay: 0.25
   swordObject: {fileID: 6917620529337182812}
   swordEmpty: {fileID: 7914231432291813669}
   swordDefaultPosition: {fileID: 7914231431960018541}
@@ -2797,9 +2830,14 @@ MonoBehaviour:
   inventory: {fileID: 11400000, guid: 26754aa56798a1244bc66bcb0018782c, type: 2}
   equipment: {fileID: 11400000, guid: 1404d5272f1fab045a59c4cb3f99e452, type: 2}
   listOfObjs: {fileID: 0}
+  revivalGem: {fileID: 11400000, guid: 64a1a7b5eb0366141935f4e257eef560, type: 2}
+  MeshRenderer: {fileID: 7836609602608423919}
+  Origin: {r: 0, g: 0, b: 0, a: 0}
+  FlashTime: 0.5
   damage: 5
   spiritualDamage: 0
   defence: 5
+  bleeding: 0
   poisonProtection: 0
   desertProtection: 0
   snowProtection: 0
@@ -2954,38 +2992,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 85.93463, z: -7.749631}
     m_Extent: {x: 102.455925, y: 96.043976, z: 26.803024}
   m_DirtyAABB: 0
---- !u!65 &7914231431892723068
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6917620529337182812}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 13.486105, y: 124.70875, z: 5.9837394}
-  m_Center: {x: 0.39059693, y: 48.33105, z: -0.43693542}
---- !u!95 &7914231431892723071
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6917620529337182812}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fd53396981920a8468d2125f5f837e71, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7914231431960018541
 GameObject:
   m_ObjectHideFlags: 0
@@ -3179,13 +3185,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1cd4710f83075b43a1df18bfc9dc6d2, type: 3}
---- !u!4 &7731417861228851430 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d1cd4710f83075b43a1df18bfc9dc6d2, type: 3}
-  m_PrefabInstance: {fileID: 7836609601185945357}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6917620529337182812 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d1cd4710f83075b43a1df18bfc9dc6d2, type: 3}
+  m_PrefabInstance: {fileID: 7836609601185945357}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7731417861228851430 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d1cd4710f83075b43a1df18bfc9dc6d2, type: 3}
   m_PrefabInstance: {fileID: 7836609601185945357}
   m_PrefabAsset: {fileID: 0}

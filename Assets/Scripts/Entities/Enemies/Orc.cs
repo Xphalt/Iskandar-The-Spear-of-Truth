@@ -15,37 +15,16 @@ public class Orc : EnemyBase
         foreach (float damage in attackDamages)
             defaultDamages.Add(damage);
 
-        defaultSpeed = chaseSpeed;
+        defaultSpeed = aggroedMoveSpeed;
     }
 
     public override void Update()
     {
-        if(stats.health <= 0)
-        {
-            _myAnimator.SetBool("IsDead", true);
-            _myCapsuleCol.enabled = false;
-        }
-
         if(!isDead)
         {
             base.Update();
 
-            switch (curState)
-            {
-                case EnemyStates.Patrolling:
-                    _myAnimator.SetBool("IsPatrolling", true);
-                    _myAnimator.SetBool("IsChasing", false);
-                    break;
-                case EnemyStates.Chasing:
-                    _myAnimator.SetBool("IsPatrolling", false);
-                    _myAnimator.SetBool("IsChasing", true);
-                    break;
-                case EnemyStates.Attacking:
-                    break;
-                default:
-                    break;
-            }
-
+            SetMovementAnim();
 
             if (buffTimer < buffDuration)
             {
@@ -62,24 +41,12 @@ public class Orc : EnemyBase
         base.EndCharge();
     }
 
-    protected override void ChargeAttack()
+    public override void ChargeAttack()
     {
         base.ChargeAttack();
 
         if (charging)
             _myAnimator.SetBool("IsCharging", true);
-    }
-
-    protected override void MeleeAttack()
-    {
-        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
-        {
-            _myAnimator.SetTrigger("Hit");
-
-            attackUsed = true;
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector3.zero;
-        }
     }
 
     public void Buff(float percent, float duration)
@@ -90,7 +57,7 @@ public class Orc : EnemyBase
         for(int d = 0; d < attackDamages.Length; d++)
             attackDamages[d] = defaultDamages[d] * (1 + percent / 100);
 
-        chaseSpeed = defaultSpeed * (1 + percent / 100);
+        aggroedMoveSpeed = defaultSpeed * (1 + percent / 100);
     }
 
     public void Debuff()
@@ -98,7 +65,7 @@ public class Orc : EnemyBase
         for (int d = 0; d < attackDamages.Length; d++)
             attackDamages[d] = defaultDamages[d];
 
-        chaseSpeed = defaultSpeed;
+        aggroedMoveSpeed = defaultSpeed;
     }
 
     protected override void OnCollisionEnter(Collision collision)

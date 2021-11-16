@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class StaticInterface_Sal : UserInterface_Sal
 {
@@ -27,5 +28,7 @@ public class StaticInterface_Sal : UserInterface_Sal
             //Link database to that obj
             slotsOnInterface.Add(obj, inventory.Storage.Slots[i]);
         }
-    } 
+
+        uiMask = inventory.GetSlots[0].slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite;
+    }
 }

@@ -14,6 +14,6 @@ public class QuestInfoChanger : MonoBehaviour
 
     public void ChangeQuestInfo()
     {
-        QuestInfoText.GetComponent<TextMeshProUGUI>().text = QuestLog.ListOfQuests.Find(QuestObject => QuestObject.name == gameObject.name).QuestDescription;
+        QuestInfoText.GetComponent<TextMeshProUGUI>().text = QuestLog.ListOfQuests.Find(QuestObject => QuestObject.name == gameObject.name).QuestDescription.GetLocalisedString();
     }
 }

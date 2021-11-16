@@ -16,16 +16,17 @@ public class ThrowSword_Jerzy : MonoBehaviour
     private PlayerMovement_Jerzy playerMovement;
     private PlayerStats playerStats;
     private PlayerAnimationManager playerAnim;
-
-    float throwTimeBeforeSpinInPlace;
     float throwTimeSpinningInPlace;
+    float timeSpinningInPlace;
 
-    float timeTravelling;
+    private const float ACCELERATION_MULTIPLIER = 1.03f;
+    private const float DECELERATION_MULTIPLIER = 0.97f;
+    private const float MAX_RETURNING_SPEED = 30;
 
-    float throwSpeed;
     float returningSpeed;
+    float throwSpeed;
 
-   // public float pauseBeforeThrow;
+    public List<Collider> puzzlesHit = new List<Collider>();
 
     private void Awake()
     {
@@ -38,64 +39,72 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     void Start()
     {
-        throwTimeBeforeSpinInPlace = combatScript.throwTimeBeforeSpinInPlace;
+
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
-        throwSpeed = combatScript.throwSpeed;
         returningSpeed = combatScript.throwReturnSpeed;
+        throwSpeed = combatScript.throwSpeed;
     }
 
     void FixedUpdate()
     {
-        ThrowingSwordPhysics();
+        if (swordModel.activeInHierarchy)
+        {
+            ThrowingSwordPhysics();
+        }
     }
 
     private void ThrowingSwordPhysics()
     {
-
         if (thrown)
         {
-            // move in specific direction for a specific amount of time (Stage 1 of throw attack)
-            if (timeTravelling < throwTimeBeforeSpinInPlace)
+            // stage 1 : sword slows down over time until velocity is close to 0 ( less than 1 in this case )
+            if (throwSpeed > 1)
             {
+                throwSpeed *= DECELERATION_MULTIPLIER;
                 swordRigidBody.velocity = transform.forward * throwSpeed;
             }
-
-            // spin on the spot for a specific amount of time (Stage 2 of throw attack)
-            else if (timeTravelling >= throwTimeBeforeSpinInPlace && timeTravelling < (throwTimeBeforeSpinInPlace + throwTimeSpinningInPlace))
+            // stage 2 : sword spins in place for some time
+            else if (throwSpeed >= 0)
             {
-                swordRigidBody.velocity = new Vector3(0, 0, 0);
-            }
+                throwSpeed = 0;
+                timeSpinningInPlace += Time.deltaTime;
+                if(timeSpinningInPlace >= throwTimeSpinningInPlace)
+                {
+                    throwSpeed = -returningSpeed;
+                    returning = true;
+                }
+            } 
 
-            // return to the player (Stage 3 of throw attack)
-            else if (timeTravelling >= throwTimeBeforeSpinInPlace + throwTimeSpinningInPlace)
+            // stage 3 : sword returns to the player, increaseing velocity over time ( velocity can not be higher than max returning speed )
+            if(throwSpeed < 0)
             {
-                returning = true;
                 transform.LookAt(player.transform);
-                swordRigidBody.velocity = transform.forward * returningSpeed;
+                throwSpeed *= ACCELERATION_MULTIPLIER;
+                swordRigidBody.velocity = -transform.forward * throwSpeed;
+                if (throwSpeed <= -MAX_RETURNING_SPEED) throwSpeed = -MAX_RETURNING_SPEED;
             }
-            timeTravelling += Time.deltaTime;
-
-            //playerMovement.LockPlayerMovement();
         }
     }
 
     public void ThrowSword(Quaternion targetRotation)
     {
-        // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
-        playerAnim.SwordThrowAttack();
+        throwSpeed = combatScript.throwSpeed;
+        timeSpinningInPlace = 0;
+        if (swordModel.activeInHierarchy)
+        {
+            // when throw attack is initiated, set the throw direction, unparent the sword, create rigidbody with appropriate settings
+            swordModel.GetComponent<BoxCollider>().enabled = true;
+            returning = false;
+            transform.rotation = targetRotation;
+            transform.parent = null;
+            thrown = true;
+            swordRigidBody.isKinematic = false;
+            puzzlesHit.Clear();
 
-        swordModel.GetComponent<BoxCollider>().enabled = true;
-        returning = false;
-        transform.rotation = targetRotation;
-        transform.parent = null;
-        thrown = true;
-        swordRigidBody.isKinematic = false;
-
-        // play looped spinning animation
-        swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
+            // play looped spinning animation
+            swordModel.GetComponent<Animator>().Play("PlayerSwordSpin");
+        }
     }
-
-
 
     public void EndThrowCycle()
     {
@@ -107,8 +116,19 @@ public class ThrowSword_Jerzy : MonoBehaviour
             thrown = false;
             swordRigidBody.isKinematic = true;
             swordModel.GetComponent<Animator>().Play("PlayerSwordIdle");
-            timeTravelling = 0;
+            puzzlesHit.Clear();
+            //timeTravelling = 0;
         }
+    }
+
+    public bool PuzzleHit(Collider puzzle)
+    {
+        return puzzlesHit.Contains(puzzle);
+    }
+
+    public void ClearPuzzles()
+    {
+        puzzlesHit.Clear();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -118,5 +138,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
         {
             playerStats.DealDamage(statsInterface, swordDamage);
         }
+
+        if (other.CompareTag("PuzzleTrigger")) puzzlesHit.Add(other);
     }
 }

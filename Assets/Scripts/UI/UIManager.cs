@@ -31,6 +31,11 @@ public class UIManager : MonoBehaviour
     {
         HealthBarUI.transform.GetChild(0).GetComponent<Slider>().value += Mathf.CeilToInt(healthChange);
     }
+
+    public void SetHealthBar(float newHealth)
+    {
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().value = Mathf.CeilToInt(newHealth);
+    }
     #endregion
 
     // Dominique 07-10-2021, We can now setup the health bar for a boss with their name
@@ -175,6 +180,77 @@ public class UIManager : MonoBehaviour
     }
     #endregion // Money Popup
 
+    #region QuestNotification
+    /*____________________________________
+     * To trigger the quest notification
+     * call the instance of the ui manager
+     * and call the TriggerNotification
+     * function. Pass in the correct 
+     * variables to trigger and display
+     * the correct messages
+    _____________________________________*/
+
+    public QuestNotification QuestNotif;
+
+    public GameObject QuestPopup;
+    public Animator Anim;
+
+    public TMP_Text QName;
+    public TMP_Text QStatus;
+    public TMP_Text QMessage;
+
+    public void TriggerNotification(QuestObject questObject, string questStatus, bool isShown, string questObjective, float screenDuration)
+    {
+        QuestPopup.SetActive(true);
+        SetQuestNotifName(questObject);
+        SetQuestStatus(questStatus);
+        SetQuestObjective(isShown, questObjective);
+        StartCoroutine(LingerOnScreen(screenDuration));
+        QuestPopup.SetActive(false);
+    }
+
+    public void SetQuestNotifName(QuestObject questObject)
+    {
+        QName.SetText(questObject.QuestName.GetLocalisedString());
+    }
+
+    public void SetQuestStatus(string questStatus)
+    {
+        QStatus.SetText(questStatus);
+    }
+
+    public void SetQuestObjective(bool isShown, string questObjective)
+    {
+        if (isShown) { QMessage.gameObject.SetActive(false); }
+
+        else
+        {
+            QMessage.gameObject.SetActive(true);
+            QMessage.SetText(questObjective);
+        }
+    }
+
+    public IEnumerator LingerOnScreen(float screenDuration)
+    {
+        yield return screenDuration;
+    }
+    #endregion
+
+    #region Potion Interface
+    [SerializeField] private GameObject keyboardPotionInterface;
+    [SerializeField] private GameObject controllerPotionInterface;
+
+    private bool potionInterfaceOpen = false;
+    public bool IsPotionInterfaceOpen() { return potionInterfaceOpen;  }
+
+    public void TogglePotionInterface()
+    {
+        potionInterfaceOpen = !potionInterfaceOpen;
+        keyboardPotionInterface.SetActive(potionInterfaceOpen);
+        controllerPotionInterface.SetActive(potionInterfaceOpen);
+    }
+    #endregion // Potion Interface
+
     public static UIManager instance;
     private void Awake()
     {
@@ -183,15 +259,21 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        QuestPopup.SetActive(false);
         HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments;
 
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
 
         playerStats = GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>();
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = playerStats.MAX_HEALTH;
 
         // At the moment we're using keyboard and mouse to play the game
+#if UNITY_ANDROID
+        SetUIForInput(INPUT_OPTIONS.MOBILE);
+#else
         SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
+#endif
     }
 
 #if DEBUG // Dominique 07-10-2021, Use to test enemy health bar (make sure to SetupEnemyHealthBar first)

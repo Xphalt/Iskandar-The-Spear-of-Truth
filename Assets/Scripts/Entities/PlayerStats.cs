@@ -10,7 +10,15 @@ public class PlayerStats : StatsInterface
     public InventoryObject_Sal equipment;
     public GameObject listOfObjs;
 
-    internal AccessoryObject Item;
+    internal AccessoryObject Accessory; 
+    public ItemObject_Sal revivalGem;
+    private string noWeaponAddress, weaponAddress;
+
+    /*______________________________Damage_Flash_Variables_______________________________*/
+    public SkinnedMeshRenderer MeshRenderer;
+    public Color Origin;
+    public float FlashTime;
+    /*___________________________________________________________________________________*/
     #region STATS
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
@@ -31,6 +39,12 @@ public class PlayerStats : StatsInterface
     public float damage;
     public float spiritualDamage;
     public float defence;
+    private float bleedDamage;
+    private float maxBleedTicks;
+    private float bleedTicks;
+    private float bleedDelay;
+    private float timeSinceLastBleedDamage;
+    public bool bleeding;
     public bool poisonProtection = false;
     public bool desertProtection = false;
     public bool snowProtection = false;
@@ -43,6 +57,11 @@ public class PlayerStats : StatsInterface
 
     private void Start()
     {
+        Origin = MeshRenderer.material.color;
+
+        noWeaponAddress = "Animation/PlayerAnimations/PlayerAnims/PlayerNoWeapon";
+        weaponAddress = "Animation/PlayerAnimations/PlayerAnims/Player";
+
         damage = BASE_DAMAGE;
         defence = BASE_DEFENCE;
 
@@ -54,29 +73,28 @@ public class PlayerStats : StatsInterface
         }
 
         sfx = GetComponentInParent<SoundPlayer>();
+
+        health = MAX_HEALTH;
+
+        // list event in GameEvents.cs
+        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet; 
     }
 
     private void Update()
     {
+        //Gets accessory equipped
         if (equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id > -1)
         {
-            try
-            {
-                Item = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id]));
-            }
-            catch
-            {
-                Item = null;
-            }
+            try { Accessory = ((AccessoryObject)(equipment.database.ItemObjects[equipment.Storage.Slots[(int)EquipSlot.AccessorySlot].item.id])); }
+            catch { Accessory = null; }
         }
-        if (Item && Item.accessory == Accessories.RingOfVitality)
+
+        if (Accessory && (Accessory.accessory == AccessoryType.RingOfVitality || Accessory.accessory == AccessoryType.Goggles))
         {
-            Item.UseCurrent(); //Recovers hp every n seconds
+            Accessory.UseCurrent(); //Use either ring or goggles  
         }
-        if (Item && Item.accessory == Accessories.Goggles)
-        {
-            Item.UseCurrent(); //deactivates objects
-        }
+
+        Bleed();
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -86,13 +104,34 @@ public class PlayerStats : StatsInterface
         //sfx.PlayAudio();
         UIManager.instance.UpdateHealthBar((int)-amount);
 
+        StartCoroutine(EDamageFlash());
+
+
         // anything that happens when taking damage happens 
         if (health <= 0)
-        {
-            //gameObject.SetActive(false);
-            playerAnimation.Dead();
+        { 
+            //Check if player has revival gem
+            var RevGem = inventory.FindItemOnInventory(revivalGem.data);
+            if (RevGem != null) 
+            {
+                inventory.database.ItemObjects[RevGem.item.id].UseCurrent();
+            }
+            else
+            {
+                //gameObject.SetActive(false);
+                playerAnimation.Dead();
+            }
         }
     }
+
+    /*______________________________Damage_Flash_________________________________________*/
+    private IEnumerator EDamageFlash()
+    {
+        MeshRenderer.material.color = Color.red;
+        yield return new WaitForSeconds(FlashTime);
+        MeshRenderer.material.color = Origin;
+    }
+    /*___________________________________________________________________________________*/
 
     public void Restart()
     {
@@ -103,9 +142,34 @@ public class PlayerStats : StatsInterface
     {
         target.TakeDamage(amount, scriptedKill);
         
-        if (target.HasBeenDefeated && Item && Item.accessory == Accessories.NecklaceOfTheLifeStealers) Item.UseCurrent();
+        if (target.HasBeenDefeated && Accessory && Accessory.accessory == AccessoryType.NecklaceOfTheLifeStealers) Accessory.UseCurrent();
     }
 
+
+    public void SetBleed(float _bleedDamage ,float _maxBleedTicks, float _bleedDelay)
+    {
+        bleedDamage = _bleedDamage;
+        maxBleedTicks = _maxBleedTicks;
+        bleedDelay = _bleedDelay;
+        timeSinceLastBleedDamage = 0;
+        bleedTicks = 0;
+        bleeding = true;
+    }
+
+    private void Bleed()
+    {
+        timeSinceLastBleedDamage += Time.deltaTime;
+        if (bleeding && timeSinceLastBleedDamage >= bleedDelay && bleedTicks < maxBleedTicks)
+        {
+            GetComponent<PlayerStats>().TakeDamage(bleedDamage);
+            timeSinceLastBleedDamage = 0;
+            bleedTicks++;
+        }
+        else if (bleeding && bleedTicks >= maxBleedTicks)
+        {
+            bleeding = false;
+        }
+    }
 
     //Delegate callbacks
     private void OnBeforeSlotUpdate(InventorySlot p_slot)
@@ -122,14 +186,15 @@ public class PlayerStats : StatsInterface
                 print(string.Concat("Removed ", p_slot.ItemObject, " on ", p_slot.parent.inventory.type, ", Allowed Items: ", string.Join(", ", p_slot.allowedItems)));
 
                 ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
-                switch (p_slot.ItemObject.type)
+                switch (p_slot.ItemObject.objType)
                 {
-                    case ItemType.Weapon: 
+                    case ObjectType.Weapon: 
                         damage -= ((WeaponObject_Sal)(temp)).damage;
                         spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
                         GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
+
                         break;
-                    case ItemType.Armor:
+                    case ObjectType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
                         poisonProtection = false;
                         desertProtection = false;
@@ -158,14 +223,22 @@ public class PlayerStats : StatsInterface
                 if (p_slot.ItemObject != null)
                 {
                     ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
-                    switch (p_slot.ItemObject.type)
+                    switch (p_slot.ItemObject.objType)
                     {
-                        case ItemType.Weapon: 
+                        case ObjectType.Weapon: 
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
-                            GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost; 
+                            GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
+                            //This changes the animator controller from weaponless animations to weapon animations
+                            if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
+                            {
+                                Debug.Log(Resources.Load<RuntimeAnimatorController>(weaponAddress));
+                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(weaponAddress);
+                            }
+                            else
+                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(noWeaponAddress);
                             break;
-                        case ItemType.Armor:
+                        case ObjectType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
                             poisonProtection = ((ArmorObject_Sal)(temp)).defValues.poisonProtection;
                             desertProtection = ((ArmorObject_Sal)(temp)).defValues.desertProtection;
@@ -187,18 +260,41 @@ public class PlayerStats : StatsInterface
     private void OnTriggerEnter(Collider other)
     {
         var item = other.GetComponent<GroundItem>();
-        if (item && item.itemobj.type != ItemType.Resource)
+        if (item && item.itemobj.objType != ObjectType.Resource)
         {
-            if (inventory.AddItem(new Item(item.itemobj), 1))
+            if(equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
+            {
+                equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
+                Destroy(other.gameObject);
+            }
+            else if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
         }
         else if(item) //It's a resource
         { 
-            gems += ((ResourceObject)(item.itemobj)).gems;
-            UIManager.instance.ShowMoneyPopup();
-            if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
-                ((ResourceObject)(item.itemobj)).UseCurrent();
-            Destroy(other.gameObject);
+            if(((ResourceObject)(item.itemobj)).resourceType == ResourceType.RevivalGem)
+            {
+                if(inventory.FindItemOnInventory(item.itemobj.data) != null)
+                    Debug.Log("Can't take more Revival gems");
+                else
+                {
+                    if (inventory.AddItem(new Item(item.itemobj), 1))
+                        Destroy(other.gameObject);
+                }
+            }
+            else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
+            {
+               // gems += ((ResourceObject)(item.itemobj)).gems;
+                if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
+                    ((ResourceObject)(item.itemobj)).UseCurrent();
+                UIManager.instance.ShowMoneyPopup();
+                Destroy(other.gameObject);
+            }
+            else
+            {
+                if (inventory.AddItem(new Item(item.itemobj), 1))
+                    Destroy(other.gameObject);  //Only if the item is picked up
+            }
         }
     }
 
@@ -216,6 +312,12 @@ public class PlayerStats : StatsInterface
         inventory.LoadStats(num);
     }
 
+    //Morgan's Event Manager: Health Set
+    private void OnPlayerHealthSet(int sethealth)
+    {
+        if (sethealth > MAX_HEALTH) { sethealth = (int)MAX_HEALTH; }
+        health = sethealth;
+    }
 
     //Clears the invenotories when game closes 
     private void OnApplicationQuit()

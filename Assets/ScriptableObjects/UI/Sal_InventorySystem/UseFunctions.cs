@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,15 +18,24 @@ public class UseFunctions : MonoBehaviour
     //Variables needed for the functions 
     private PlayerStats playerstats;
     private PlayerCombat_Jerzy playerCombat;
+    private ItemObject_Sal[] database;
     public GameObject bomb;
+    public GameObject wand;
 
-    void Awake()
+    void OnDestroy()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        for (int i = 0; i < database.Length; i++)
+        {
+            database[i].OnUseCurrent = null;
+            database[i].OnUseAfter = null;
+        }
+
+        if (this == instance) { instance = null; }
     }
+
     private void Start()
     {    
-        var database = FindObjectOfType<PlayerStats>().inventory.database.ItemObjects;
+        database = FindObjectOfType<PlayerStats>().inventory.database.ItemObjects;
         playerstats = FindObjectOfType<PlayerStats>();
         playerCombat = FindObjectOfType<PlayerCombat_Jerzy>();
         for (int i = 0; i < database.Length; i++)
@@ -45,18 +55,24 @@ public class UseFunctions : MonoBehaviour
                 case "Necklace Of The Life Stealers":
                     database[i].OnUseCurrent += UseBraceletOfTheLifeStealers; 
                     break;
-                case "Gem Pot":
+                case "Gem":
                     database[i].OnUseCurrent += UseGemsPot;
                     break;
                 case "Bomb Bag":
                     database[i].OnUseCurrent += UseBombBag;
                     break;
+                case "Wand of Magnetism":
+                    database[i].OnUseCurrent += UseWandOfMagnetism;
+                    break;
+                case "Revival Gem":
+                    database[i].OnUseCurrent += UseRevivalGem;
+                    break; 
             } 
         }
     }
-     
 
-    //Usefull variables
+   
+    //Useful variables
     private float current;
     private float regenerationInterval;
     public float RegenerationInterval
@@ -80,55 +96,80 @@ public class UseFunctions : MonoBehaviour
 
 
     #region Use Functions 
-    public void UseBraceletOfScouting()
+    private void UseBraceletOfScouting()
     { 
         Vector3 newPos = playerCombat.swordObject.transform.position;
         newPos.y = playerstats.transform.position.y;
         playerstats.transform.position = newPos;
-    }
-     
-    public void UseGoggles()
+    } 
+
+    private void UseGoggles()
     { 
         if(playerstats.listOfObjs != null && playerstats.listOfObjs.activeSelf) playerstats.listOfObjs.SetActive(false);
     }
-    public void UseGogglesUndo()
+
+    private void UseGogglesUndo()
     { 
         if (playerstats.listOfObjs != null && !playerstats.listOfObjs.activeSelf) playerstats.listOfObjs.SetActive(true);
     }
-     
-    public void UseRingOfVitality()
+
+    private void UseRingOfVitality()
     { 
         current += Time.deltaTime; 
         if (current > regenerationInterval)
         {
             if (playerstats.health < playerstats.MAX_HEALTH) //Magic number (variable needed);
+            {
                 playerstats.health += healingValue;
-
+                UIManager.instance.UpdateHealthBar((int)healingValue);
+            }
             current = 0;
-        }
+        } 
     }
-     
-    public void UseBraceletOfTheLifeStealers()
+
+    private void UseBraceletOfTheLifeStealers()
     { 
         if (playerstats.health < playerstats.MAX_HEALTH) //Magic number (variable needed);
             playerstats.health += healingValue;
     }
 
-    public void UseGemsPot()
+    private void UseGemsPot()
     {
         playerstats.Gems += gemsValue;
     }
 
-    public void UseBombBag()
+    private void UseBombBag()
     {
-        //Item removal 
-        if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
-            playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
-        else
-            playerstats.equipment.GetSlots[playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id].AddAmount(-1);
+        if(!FindObjectOfType<Bomb>())
+        {
+            //Item removal 
+            if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].amount == 1)
+                playerstats.equipment.RemoveItem(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item);
+            else
+                playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(-1);
 
-        //spawning bomb
-        Instantiate(bomb, playerstats.transform.position, Quaternion.identity);
+            //spawning bomb
+            Instantiate(bomb, playerstats.transform.position, Quaternion.identity);
+        }
     }
+
+    private void UseWandOfMagnetism()
+    {
+        if (!FindObjectOfType<MagneticWand>())
+        {
+            Instantiate(wand, playerstats.transform.localPosition, playerstats.transform.localRotation); 
+        }
+    }
+
+    private void UseRevivalGem()
+    { 
+        //Item removal 
+        playerstats.inventory.RemoveItem(playerstats.revivalGem.data);
+
+        //Heal player
+        playerstats.health = playerstats.MAX_HEALTH * (healingValue / 100);
+
+        UIManager.instance.UpdateHealthBar((int)playerstats.health);
+    } 
     #endregion
 }

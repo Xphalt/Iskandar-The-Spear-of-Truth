@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyStats : StatsInterface
 {
+    public static int EnemiesKilled = 0;
+
     public bool vulnerable = true;
     private float deathTimer = 0.0f;
     public float despawnTime;
@@ -12,6 +14,7 @@ public class EnemyStats : StatsInterface
 
     private void Start()
     {
+        health = MAX_HEALTH;
         drops = GetComponent<EntityDrop>();
     }
 
@@ -23,7 +26,8 @@ public class EnemyStats : StatsInterface
             deathTimer += Time.deltaTime;
             if (deathTimer >= despawnTime)
             {
-                drops.SpawnLoot();
+                ++EnemiesKilled;
+                if (drops) drops.SpawnLoot();
                 gameObject.SetActive(false);
             }
         }

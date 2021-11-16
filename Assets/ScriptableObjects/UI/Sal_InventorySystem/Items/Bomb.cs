@@ -31,24 +31,11 @@ public class Bomb : MonoBehaviour, ISerializationCallbackReceiver
     private void OnTriggerStay(Collider other)
     {
         //Gets the right componento to deal damage
-        StatsInterface stats = null;
-        try
-        {
-            stats = other.GetComponent<PlayerStats>();
-        }
-        catch
-        {
-            try
-            {
-                stats = other.GetComponent<EnemyStats>();
-            }
-            catch { } 
-        }
-
-        Debug.Log(stats);
-
-        //takes damage after detonation 
+        StatsInterface stats = null; 
+        other.TryGetComponent<StatsInterface>(out stats); 
+         
+        //takes damage after detonation  
         if (stats && currentTime > timeBeforeDetonating)
-            stats.DealDamage(stats, Damage);
+            stats.DealDamage(stats, Damage); 
     }
 }

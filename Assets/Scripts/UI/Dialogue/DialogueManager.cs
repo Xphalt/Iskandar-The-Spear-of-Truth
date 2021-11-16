@@ -12,6 +12,15 @@ public class DialogueManager : MonoBehaviour
 
     private Collider currentCollider;
     private NewConversation newConversation;
+    public NewConversation NewConversation
+    {
+        get => newConversation;
+    }
+    private bool conversationIsEnded = false;
+    public bool ConversationIsEnded
+    {
+        get => conversationIsEnded;
+    }
 
     public GameObject DialoguePanel;
     public Button ButtonContinue;
@@ -19,16 +28,33 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI TextDialogueBox;
     public TextMeshProUGUI TextContinueDialogue;
 
+    private PlayerInput playerInput;
+
     public void Start()
     {
+        playerInput = GameObject.Find("Player").GetComponent<PlayerInput>();
+
         DialoguePanel.SetActive(false);
         TextNPCName.text = "";
         TextDialogueBox.text = "";
         TextContinueDialogue.text = "";
     }
 
+    //morgan's Event Manager Edit
+    public void update()
+    {
+        //if (DialoguePanel.SetActive(false) = true)
+        //{
+        //    GameEvents.current.onLockPlayerInputs += OnNPCDialogue;
+        //}
+    }
+
     public void StartDialogue(Collider newCollider, NewConversation newDialogue)
     {
+        playerInput.TogglePlayerInteraction(false);
+
+        conversationIsEnded = false;
+
         currentCollider = newCollider;
         newConversation = newDialogue;
 
@@ -51,6 +77,7 @@ public class DialogueManager : MonoBehaviour
         if (_QueueOfCharacters.Count == 0 && _QueueOfStrings.Count == 0)
         {
             EndDialogue();
+            conversationIsEnded = true;
         }
         else
         {
@@ -96,6 +123,7 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        playerInput.TogglePlayerInteraction(true);
         // Re-enable the collider of the GO we're speaking to when ending the dialogue
         currentCollider.enabled = true;
         DialoguePanel.SetActive(false);

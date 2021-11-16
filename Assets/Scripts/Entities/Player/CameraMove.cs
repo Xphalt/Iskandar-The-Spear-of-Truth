@@ -10,6 +10,14 @@ public class CameraMove : MonoBehaviour
     public Transform RightBound;
     public Transform Target;
 
+    public bool autoRotate = true;
+
+    private Transform secondTarget = null;
+    private Vector3 secondTargetEnd = new Vector3();
+    public float secondTargetWeight = 0.5f, secondTargetTransition = 0.0f;
+
+    private float secondTargetTimer = 0.0f;
+
     private bool XFollowing, ZFollowing;
     public float Yoffset = 10, Zoffset = 5;
 
@@ -19,10 +27,16 @@ public class CameraMove : MonoBehaviour
     private float panLinger = 0;
     private float panDuration = 0;
     private float panTimer = 0;
+    public float TotalPanDuration
+    {
+        get => panDuration * 2 + panLinger;
+    }
 
     private bool panning = false;
     private Vector3 panTarget = new Vector3();
     private Vector3 panStart = new Vector3();
+
+    public bool canMove = true;
 
     private bool Bound => LeftBound != null && RightBound != null && UpBound != null && DownBound != null;
     private Vector3 TargetPos => new Vector3(Target.position.x, Target.position.y + Yoffset, Target.position.z - Zoffset);
@@ -35,27 +49,47 @@ public class CameraMove : MonoBehaviour
 
     void Update()
     {
-        if (!panning) FollowPlayerToLimits();
-        else Pan();
+        if (canMove)
+        {
+            if (!panning) FollowPlayerToLimits();
+            else Pan();
+        }
     }
 
     private void FollowPlayerToLimits()
     {
-        float newX = Target.position.x, newZ = Target.position.z;
+        Vector3 lookTarget = Target.position;
 
-        if (Bound)
+        if (secondTarget)
         {
-            XFollowing = RightBound.position.x - LeftBound.position.x > Limits.x * 2; //Can be done in awake if boundaries do not change mid-level
-            ZFollowing = UpBound.position.z - DownBound.position.z > Limits.z * 2;
-
-            float Xmid = (RightBound.position.x + LeftBound.position.x) / 2;
-            float Zmid = (UpBound.position.z + DownBound.position.z) / 2;
-
-            newX = XFollowing ? Mathf.Clamp(Target.position.x, LeftBound.position.x + Limits.x, RightBound.position.x - Limits.x) : Xmid;
-            newZ = ZFollowing ? Mathf.Clamp(Target.position.z, DownBound.position.z + Limits.z, UpBound.position.z - Limits.z) : Zmid;
+            secondTargetTimer += Time.deltaTime;
+            lookTarget = Vector3.Lerp(lookTarget, secondTarget.position, 
+                secondTargetWeight * Mathf.Min(secondTargetTimer / secondTargetTransition, 1));
+            secondTargetEnd = lookTarget;
         }
-        
-        transform.position = new Vector3(newX, Target.position.y + Yoffset, newZ - Zoffset);
+        else
+        {
+            if (Bound)
+            {
+                XFollowing = RightBound.position.x - LeftBound.position.x > Limits.x * 2; //Can be done in awake if boundaries do not change mid-level
+                ZFollowing = UpBound.position.z - DownBound.position.z > Limits.z * 2;
+
+                float Xmid = (RightBound.position.x + LeftBound.position.x) / 2;
+                float Zmid = (UpBound.position.z + DownBound.position.z) / 2;
+
+                lookTarget.x = XFollowing ? Mathf.Clamp(Target.position.x, LeftBound.position.x + Limits.x, RightBound.position.x - Limits.x) : Xmid;
+                lookTarget.z = ZFollowing ? Mathf.Clamp(Target.position.z, DownBound.position.z + Limits.z, UpBound.position.z - Limits.z) : Zmid;
+            }
+
+            if (secondTargetEnd != new Vector3() && secondTargetTimer < secondTargetTransition)
+            {
+                secondTargetTimer += Time.deltaTime;
+                lookTarget = Vector3.Lerp(secondTargetEnd, lookTarget, Mathf.Min(secondTargetTimer / secondTargetTransition, 1));
+            }
+        }
+
+        transform.position = new Vector3(lookTarget.x, lookTarget.y + Yoffset, lookTarget.z - Zoffset);
+        if (autoRotate) transform.LookAt(lookTarget);
     }
 
     public void StartPan(Vector3 newPan, float linger)
@@ -89,11 +123,24 @@ public class CameraMove : MonoBehaviour
             transform.position = Vector3.Lerp(panStart, panTarget, Mathf.SmoothStep(0, 1, panTimer / panDuration));
         else if (panLinger >= 0)
         {
-            if (panTimer > panDuration + panLinger && panTimer < panDuration * 2 + panLinger)
+            if (panTimer > panDuration + panLinger && panTimer < TotalPanDuration)
                 transform.position = Vector3.Lerp(panTarget, TargetPos, Mathf.SmoothStep(0, 1, (panTimer - panDuration - panLinger) / panDuration));
-            else if (panTimer > panDuration * 2 + panLinger)
+            else if (panTimer > TotalPanDuration)
                 panning = false;
         }
+    }
+
+    public void SetSecondTarget(Transform newTarget, float weight = -1)
+    {
+        secondTarget = newTarget;
+        if (weight > 0) secondTargetWeight = weight;
+        secondTargetTimer = 0;
+    }
+
+    public void ClearSecondTarget()
+    {
+        secondTarget = null;
+        secondTargetTimer = Mathf.Max(secondTargetTransition - secondTargetTimer, 0);
     }
 
     public void TestPan()

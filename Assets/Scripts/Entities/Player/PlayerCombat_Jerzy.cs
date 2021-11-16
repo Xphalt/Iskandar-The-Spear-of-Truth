@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerCombat_Jerzy : MonoBehaviour
 {
     public GameObject playerModel;
-
-    public float throwTimeBeforeSpinInPlace;
+    
+    
     public float throwTimeSpinningInPlace;
     public float throwSpeed;
     public float throwReturnSpeed;
@@ -14,7 +14,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public bool canAttack = true;
     Quaternion swordLookRotation;
     private float timeInteractHeld = 0f;
-    public float timeToThrowSword, swordReleaseDelay;
+    public float timeToThrowSword;
 
     public GameObject swordObject;
     public GameObject swordEmpty;
@@ -41,6 +41,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     private float poisonDelay;
     private float timeSinceLastPoisonDamage;
     private bool isPoisoned = false;
+    private bool isThrowing = false;
 
 
     void Start()
@@ -55,41 +56,43 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     void FixedUpdate()
     {
-        timeSinceLastPoisonDamage += Time.deltaTime;
-        timeSinceLastAttack += Time.deltaTime;
-        swordLookRotation = playerMovement.swordLookRotation;
-        returning = throwSword.returning;
-        thrown = throwSword.thrown;
+        if (swordObject.activeInHierarchy)
+        {
+            timeSinceLastPoisonDamage += Time.deltaTime;
+            timeSinceLastAttack += Time.deltaTime;
+            swordLookRotation = playerMovement.swordLookRotation;
+            returning = throwSword.returning;
+            thrown = throwSword.thrown;
 
-        if (timeSinceLastAttack >= TIME_BEFORE_DISABLING_COLLIDER && !thrown)
-        {
-            swordCollider.enabled = false;
-        }
-        if (!playerMovement.falling && !playerMovement.knockedBack && playerMovement.timeSinceLastDash > playerMovement.dashDuration && !playerMovement.respawning && !playerMovement.gettingConsumed)
-        {
-            canAttack = true;
-        }
-        else
-            canAttack = false;
+            if (timeSinceLastAttack >= TIME_BEFORE_DISABLING_COLLIDER && !thrown)
+            {
+                swordCollider.enabled = false;
+            }
+            if (!playerMovement.falling && !playerMovement.knockedBack && playerMovement.timeSinceLastDash > playerMovement.dashDuration && !playerMovement.respawning && !playerMovement.gettingConsumed)
+            {
+                canAttack = true;
+            }
+            else
+                canAttack = false;
 
-        if(isPoisoned && timeSinceLastPoisonDamage >= poisonDelay && poisonTicks < maxPoisonTicks)
-        {
-            GetComponent<PlayerStats>().TakeDamage(poisonDamage);
-            timeSinceLastPoisonDamage = 0;
-            poisonTicks++;
+            if (isPoisoned && timeSinceLastPoisonDamage >= poisonDelay && poisonTicks < maxPoisonTicks)
+            {
+                playerStats.TakeDamage(poisonDamage);
+                timeSinceLastPoisonDamage = 0;
+                poisonTicks++;
+            }
+            else if (isPoisoned && poisonTicks >= maxPoisonTicks)
+            {
+                isPoisoned = false;
+            }
         }
-        else if(isPoisoned && poisonTicks >= maxPoisonTicks)
-        {
-            isPoisoned = false;
-        }
-
     }
 
     public void Attack()
     {
-        if (throwSword.thrown && playerStats.Item && playerStats.Item.accessory == Accessories.BraceletOfScouting)
+        if (throwSword.thrown && playerStats.Accessory && playerStats.Accessory.accessory == AccessoryType.BraceletOfScouting)
         {
-            playerStats.Item.UseCurrent();    //Teleport
+            playerStats.Accessory.UseCurrent();    //Teleport
         }
         if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
         {
@@ -103,38 +106,40 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public void SetSwordCollider(int active)
     {
         swordCollider.enabled = active > 0;
+        throwSword.ClearPuzzles();
     }
 
     public void ThrowAttack()
     {
-        if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
+        if (swordObject.activeInHierarchy)
         {
-            attackOffCooldown = false;
-            StartCoroutine(PauseForThrow());
-            playerMovement.LockPlayerMovement();
+            if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
+            {
+                attackOffCooldown = false;
+                //StartCoroutine(PauseForThrow());
+                playerAnimation.SwordThrowAttack();
 
+                playerMovement.LockPlayerMovement();
+                isThrowing = true;
+            }
         }
-
     }
 
-    IEnumerator PauseForThrow() 
+    public void ReleaseSword()
     {
-        /*___________________________________________________________________________
-         * This makes the attack line up with animation sword release time.
-         * __________________________________________________________________________*/
-        playerAnimation.SwordThrowAttack();
-
-        yield return new WaitForSeconds(swordReleaseDelay);
-        throwSword.ThrowSword(swordLookRotation);
-
-        timeSinceLastAttack = 0;
-
+        //This function is linked to an animation event in PlayerThrow anim
+        if (isThrowing)
+        {
+            throwSword.ThrowSword(swordLookRotation);
+            isThrowing = false;
+            timeSinceLastAttack = 0;
+        } 
     }
 
     private void OnTriggerStay(Collider other)
     {
         // when the sword returns to the player
-        if (other.tag == "playerSword" && returning && thrown)
+        if (other.CompareTag("playerSword") && returning && thrown)
         {
             // end throw cycle, attach sword to player, set appropriate position and rotation for the sword
             playerAnimation.SwordReturnAttack();
@@ -146,20 +151,16 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Poison(Poison poisoner)
     {
-        if(other.tag == "Venom")
-        {
-            GetComponent<PlayerStats>().TakeDamage(other.gameObject.GetComponent<VenomShot>().damage);
-            poisonDamage = other.gameObject.GetComponent<VenomShot>().poisonDamage;
-            poisonDelay = other.gameObject.GetComponent<VenomShot>().poisonDelay;
-            maxPoisonTicks = other.gameObject.GetComponent<VenomShot>().amountOfPoisonTicks;
-            timeSinceLastPoisonDamage = 0;
-            poisonTicks = 0;
-            isPoisoned = true;
-            Destroy(other.gameObject);
-        }
+        if (playerStats.poisonProtection) return;
+
+        playerStats.TakeDamage(poisoner.damage);
+        poisonDamage = poisoner.poisonDamage;
+        poisonDelay = poisoner.poisonDelay;
+        maxPoisonTicks = poisoner.amountOfPoisonTicks;
+        timeSinceLastPoisonDamage = 0;
+        poisonTicks = 0;
+        isPoisoned = true;
     }
-
-
 }

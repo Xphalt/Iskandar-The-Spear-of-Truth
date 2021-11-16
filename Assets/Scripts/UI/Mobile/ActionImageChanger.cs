@@ -30,19 +30,15 @@ public class ActionImageChanger : MonoBehaviour
         {
             case Interactable_Object_Jack.InteractableType.NPC_Dialogue:
                 actionImage.sprite = dialogueSprite;
-                print("npc talk near");
                 break;
             case Interactable_Object_Jack.InteractableType.Seller:
                 actionImage.sprite = sellerSprite;
-                print("talk seller near");
                 break;
             case Interactable_Object_Jack.InteractableType.LootChest:
                 actionImage.sprite = lootSprite;
-                print("use chest near");
                 break;
             case Interactable_Object_Jack.InteractableType.Item:
                 actionImage.sprite = itemSprite;
-                print("use item near");
                 break;
             default:
                 actionImage.sprite = attackSprite;
