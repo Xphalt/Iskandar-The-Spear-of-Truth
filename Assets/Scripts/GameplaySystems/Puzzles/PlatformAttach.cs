@@ -29,7 +29,7 @@ public class PlatformAttach : MonoBehaviour
     {
         if (objectsPreviousParents.ContainsKey(collision.transform) && (collision.transform.CompareTag("Player") || !playerOnly))
         {
-            collision.transform.SetParent(objectsPreviousParents[collision.transform]);
+            collision.transform.SetParent(/*objectsPreviousParents[collision.transform]*/null);
             collision.transform.localScale = previousScales[collision.transform];
             objectsPreviousParents.Remove(collision.transform);
             previousScales.Remove(collision.transform);
