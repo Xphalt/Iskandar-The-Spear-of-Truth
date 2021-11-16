@@ -51,12 +51,14 @@ public class DarkEffigy : EnemyBase
             {
                 ThrowSwordAttack();
                 attackUsed = true;
+                curAttackDmg = throwSwordDamage;
             }
 
             if (SpinAvailable && transform.GetDistance(detector.GetCurTarget()) < _spinRange)
             {
                 SpinAttack();
                 attackUsed = true;
+                curAttackDmg = _spinDamage;
             }
             else
                 base.Attack();
@@ -85,7 +87,6 @@ public class DarkEffigy : EnemyBase
         darkEffigyAttack = DarkEffigyAttacks.ThrowSword;
 
         _myAnimator.SetTrigger("SwordThrow");
-
     }
 
     private void SpinAttack()
@@ -98,7 +99,7 @@ public class DarkEffigy : EnemyBase
     protected override void ShootAttack()
     {
         transform.LookAt(detector.GetCurTarget().position, Vector3.up);
-        GameObject projectile = Instantiate(projectileObj, transform);
+        projectileObj.SetActive(true);
         attackUsed = true;
         curAttack = AttackTypes.Shoot;
         MyRigid.velocity = Vector3.zero;
@@ -107,27 +108,6 @@ public class DarkEffigy : EnemyBase
     protected override void OnTriggerEnter(Collider collider)
     {
         base.OnTriggerEnter(collider);
-
-        if (collider.gameObject.CompareTag(_swordTag) && GetComponentInChildren<DarkEffigyThrowSword>()._returnToSender)
-            _myAnimator.SetTrigger("SwordReturn");
+        print("Hit");
     }
-
-    //private void StopMovingTrigger()
-    //{
-    //    float currentSpeed = agent.speed;
-
-    //    _stopMoving = !_stopMoving;
-
-    //    if (_stopMoving)
-    //    {
-    //        print("StopMoving");
-    //        agent.speed = 0.0f;
-    //    }
-    //    else
-    //    {
-    //        print("StartMoving");
-    //        agent.speed = aggroedMoveSpeed;
-    //    }
-    //}    
-
 }
