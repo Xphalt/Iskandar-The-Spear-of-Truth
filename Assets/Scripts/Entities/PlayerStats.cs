@@ -15,9 +15,8 @@ public class PlayerStats : StatsInterface
     public ItemObject_Sal revivalGem;
 
     #region Weapon Model Variables
-    private GameObject playerWeapon;
-    public GameObject weaponDefaultTransform;
-    private Vector3 weaponSize = new Vector3(100, 100, 100);
+    private GameObject swordEmpty;
+    public GameObject propSwordHolder, ironSword, falchion, stick;
     #endregion
 
     /*______________________________Damage_Flash_Variables_______________________________*/
@@ -65,7 +64,7 @@ public class PlayerStats : StatsInterface
     private void Start()
     {
          //Assigning variable to the referrenced variable
-        playerWeapon = playerCombat.swordEmpty;
+        swordEmpty = playerCombat.swordEmpty;
 
         Origin = MeshRenderer.material.color;
 
@@ -239,12 +238,13 @@ public class PlayerStats : StatsInterface
                             #region Update Weapon Mesh
                             if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
                             {
-                                playerWeapon.GetComponentInChildren<MeshFilter>().mesh = temp.model.GetComponent<MeshFilter>().sharedMesh;
-                                //playerWeapon.transform.position = weaponDefaultTransform.transform.position;
-                                playerWeapon.transform.localScale = weaponSize;
-                                playerWeapon.SetActive(true);
+                                swordEmpty.SetActive(true);
+                                propSwordHolder.SetActive(true);
+                                if (temp.name == "Iron Sword") ironSword.SetActive(true);
+                                else if (temp.name == "Sword of the Soulless Ones") falchion.SetActive(true);
+                                else stick.SetActive(true);
                             }
-                            else playerWeapon.SetActive(false);
+                            else swordEmpty.SetActive(false);
                             #endregion
                             break;
                         case ObjectType.Armor:
