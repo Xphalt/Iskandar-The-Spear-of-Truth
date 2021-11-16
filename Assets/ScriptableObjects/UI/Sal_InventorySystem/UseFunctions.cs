@@ -154,9 +154,18 @@ public class UseFunctions : MonoBehaviour
     }
 
     private void UseWandOfMagnetism()
-    {
+    { 
         if (!FindObjectOfType<MagneticWand>())
         {
+            bool isControllable = false;
+            var objs = FindObjectsOfType<MagneticObj>();
+            foreach (var item in objs)
+            {
+                if (item.IsControllable)
+                    isControllable = item.IsControllable;
+            }
+
+            if(!isControllable)
             Instantiate(wand, playerstats.transform.localPosition, playerstats.transform.localRotation); 
         }
     }

@@ -12,7 +12,7 @@ public class MagneticObj : MonoBehaviour
         set { isControllable = value; }
     }
 
-    private Vector2 newDir;
+    private Vector3 newDir;
 
     public Transform cameraPoint; 
     public float movementSpeed;
@@ -30,7 +30,9 @@ public class MagneticObj : MonoBehaviour
     public Quaternion initialRot;
 
     private CameraMove cameraMove;
-    private PlayerMovement_Jerzy player;
+    private PlayerMovement_Jerzy playerMovement;
+
+    private PlayerInput playerInput;
 
     void Start()
     {
@@ -40,7 +42,9 @@ public class MagneticObj : MonoBehaviour
 
         cameraMove = FindObjectOfType<CameraMove>();
 
-        player = FindObjectOfType<PlayerMovement_Jerzy>();
+        playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
+
+        playerInput = FindObjectOfType<PlayerInput>();
     }
 
     void Update()
@@ -56,35 +60,19 @@ public class MagneticObj : MonoBehaviour
 
             if (T >= lerpDuration)
             {
+                playerMovement.LockPlayerMovement();
+
                 isLerping = false;
                 IsControllable = true;
-                player.usingWand = true;
+                playerMovement.usingWand = true;
                 T = 0;
             }
         }
         else if(isControllable)
-        {
-            newDir = Mouse.current.delta.ReadValue().normalized; 
+        { 
+            newDir =  playerInput.GetMovementVector().normalized; 
 
-            transform.position += new Vector3(newDir.x, 0.0f, newDir.y) * movementSpeed * Time.deltaTime; 
-
-            if(Mouse.current.leftButton.isPressed)
-            {
-                //Reset cursor visibility
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-
-                //Reset camera pos
-                Camera.main.transform.position = initialPos;
-                Camera.main.transform.rotation = initialRot;
-
-                //Exit controllable state
-                isControllable = false;
-
-                cameraMove.canMove = true;
-
-                player.usingWand = false;
-            }
+            transform.position += newDir * movementSpeed * Time.deltaTime; 
         }
     }
 
@@ -94,6 +82,28 @@ public class MagneticObj : MonoBehaviour
         {
             Camera.main.transform.position = cameraPoint.position;
             Camera.main.transform.rotation = cameraPoint.rotation;
+        }
+    }
+
+
+    public void StopInteraction()
+    {
+        if (isControllable)
+        {
+            //Reset cursor visibility
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
+            //Reset camera pos
+            Camera.main.transform.position = initialPos;
+            Camera.main.transform.rotation = initialRot;
+
+            //Exit controllable state
+            isControllable = false;
+
+            cameraMove.canMove = true;
+
+            playerMovement.usingWand = false;
         }
     }
 }

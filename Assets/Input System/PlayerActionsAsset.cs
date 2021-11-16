@@ -97,6 +97,14 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""UseWand"",
+                    ""type"": ""Button"",
+                    ""id"": ""c27afdaf-5dd7-4a42-98e6-6f2b04545111"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -396,6 +404,28 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""action"": ""UseItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f0cef387-43d6-4291-9de9-7d0828080743"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""UseWand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd36bc35-5f84-480a-b3a6-a512d4023231"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & mouse"",
+                    ""action"": ""UseWand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -600,6 +630,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         m_Player_LoadInventory = m_Player.FindAction("LoadInventory", throwIfNotFound: true);
         m_Player_ItemToggle = m_Player.FindAction("ItemToggle", throwIfNotFound: true);
         m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
+        m_Player_UseWand = m_Player.FindAction("UseWand", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -666,6 +697,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_LoadInventory;
     private readonly InputAction m_Player_ItemToggle;
     private readonly InputAction m_Player_UseItem;
+    private readonly InputAction m_Player_UseWand;
     public struct PlayerActions
     {
         private @PlayerActionsAsset m_Wrapper;
@@ -680,6 +712,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         public InputAction @LoadInventory => m_Wrapper.m_Player_LoadInventory;
         public InputAction @ItemToggle => m_Wrapper.m_Player_ItemToggle;
         public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
+        public InputAction @UseWand => m_Wrapper.m_Player_UseWand;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -719,6 +752,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @UseItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
                 @UseItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
                 @UseItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
+                @UseWand.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseWand;
+                @UseWand.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseWand;
+                @UseWand.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseWand;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -753,6 +789,9 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @UseItem.started += instance.OnUseItem;
                 @UseItem.performed += instance.OnUseItem;
                 @UseItem.canceled += instance.OnUseItem;
+                @UseWand.started += instance.OnUseWand;
+                @UseWand.performed += instance.OnUseWand;
+                @UseWand.canceled += instance.OnUseWand;
             }
         }
     }
@@ -852,6 +891,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         void OnLoadInventory(InputAction.CallbackContext context);
         void OnItemToggle(InputAction.CallbackContext context);
         void OnUseItem(InputAction.CallbackContext context);
+        void OnUseWand(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
