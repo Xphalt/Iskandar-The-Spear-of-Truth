@@ -3,7 +3,7 @@ using UnityEngine;
 /*________________________________________________________________________
  * This script was created by Fate. Contact me if you need help with it :)
  * _______________________________________________________________________*/
- 
+
 public class PlayerAnimationManager : MonoBehaviour
 {
     #region Variables
@@ -13,6 +13,12 @@ public class PlayerAnimationManager : MonoBehaviour
     [HideInInspector] public bool isStrafing = false;
     [HideInInspector] public bool isSwordThrowing = false;
 
+    public RuntimeAnimatorController noSwordController, swordController; 
+
+    private PlayerCombat_Jerzy playerCombat;
+    private AnimatorOverrideController overrideController;
+
+    private bool hasWeapon;
     private Vector2 input;
     private float time = 0; 
     #endregion
@@ -20,12 +26,21 @@ public class PlayerAnimationManager : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        playerCombat = GetComponent<PlayerCombat_Jerzy>();
+
+        overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        animator.runtimeAnimatorController = overrideController;
     }
 
     private void Update()
     {
         UpdateAxisValues();
         Strafing();
+
+        hasWeapon = playerCombat.swordEmpty.activeInHierarchy;
+
+        if (hasWeapon) animator.runtimeAnimatorController = swordController;
+        else animator.runtimeAnimatorController = noSwordController;
     }
 
     public void Turning(float rotation)
@@ -65,32 +80,39 @@ public class PlayerAnimationManager : MonoBehaviour
             animator.SetTrigger("isIdling");
             animator.SetBool("isRunning", false);
         }
-        else
-            animator.SetBool("isRunning", true);
+        else animator.SetBool("isRunning", true);
     }
 
     public void Strafing()
     {
-        if (isStrafing)
-        { 
-            animator.SetTrigger("isIdling");
-            animator.SetBool("isStrafing", true);
-        }
-        else if (!isStrafing)
+        if (hasWeapon)
         {
-
-            animator.SetBool("isStrafing", false);
+            if (isStrafing)
+            {
+                animator.SetTrigger("isIdling");
+                animator.SetBool("isStrafing", true);
+            }
+            else 
+                animator.SetBool("isStrafing", false);
         }
     }
 
     public void SimpleAttack() 
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack")) animator.SetTrigger("isSimpleAttacking"); 
+        if (hasWeapon)
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack"))
+                animator.SetTrigger("isSimpleAttacking");
+        }
     }
 
     public void SwordThrowAttack() 
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw")) animator.SetTrigger("isSwordThrowing");
+        if (hasWeapon)
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw"))
+                animator.SetTrigger("isSwordThrowing");
+        }
     }
 
     public void Dodging() 
