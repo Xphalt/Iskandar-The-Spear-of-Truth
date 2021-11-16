@@ -51,7 +51,7 @@ public class QuestLogManager : MonoBehaviour
     _____________________________________*/
 
     //Trigger for when a quest objective is required
-    public void TriggerNotification(QuestObject questObject, string questStatus, bool isShown, string questObjective, float screenDuration)
+    public void TriggerNotification(QuestObject questObject, LocalisationTableReference questStatus, bool isShown, LocalisationTableReference questObjective, float screenDuration)
     {
         QuestPopup.SetActive(true);
         SetQuestNotifName(questObject);
@@ -62,7 +62,7 @@ public class QuestLogManager : MonoBehaviour
     }
 
     //Overloaded trigger for when quest objective is not required
-    public void TriggerNotification(QuestObject questObject, string questStatus, float screenDuration)
+    public void TriggerNotification(QuestObject questObject, LocalisationTableReference questStatus, float screenDuration)
     {
         QuestPopup.SetActive(true);
         SetQuestNotifName(questObject);
@@ -77,15 +77,15 @@ public class QuestLogManager : MonoBehaviour
         QName.SetText(questObject.QuestName.GetLocalisedString());
     }
 
-    public void SetQuestStatus(string questStatus)
+    public void SetQuestStatus(LocalisationTableReference questStatus)
     {
-        QStatus.SetText(questStatus);
+        QStatus.SetText(questStatus.GetLocalisedString());
     }
 
-    public void SetQuestObjective(string questObjective)
+    public void SetQuestObjective(LocalisationTableReference questObjective)
     {
         QMessage.gameObject.SetActive(true);
-        QMessage.SetText(questObjective);
+        QMessage.SetText(questObjective.GetLocalisedString());
     }
 
     public IEnumerator LingerOnScreen(float screenDuration)
