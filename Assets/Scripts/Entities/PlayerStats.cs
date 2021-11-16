@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class PlayerStats : StatsInterface
 {
@@ -329,6 +330,25 @@ public class PlayerStats : StatsInterface
         Y = saveData.ypos;
         Z = saveData.zpos;
         transform.position = new Vector3(X, Y, Z);
+
+        var dlist = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (var Enemy in dlist)
+        {
+            foreach (var ID in saveData.enemydeadlist)
+            {
+                if (Enemy.GetInstanceID() == ID)
+                    Destroy(Enemy);
+            }
+        }
+
+        /*int deadenemycount = GetComponent<SaveData>().enemydeadlist.Count;
+        if (deadenemycount > 0)
+        {
+            for (int i = 0; i < deadenemycount; i++)
+            {
+                Destroy(GameObject.FindGameObjectsWithTag("Enemy").GetComponent<SaveData>().enemydeadlist[i]);
+            }
+        }*/
     }
 
     //Morgan's Event Manager: Health Set

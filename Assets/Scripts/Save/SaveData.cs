@@ -20,8 +20,8 @@ public class SaveData
 
     public Inventory Storage;
 
-    public List<GameObject> enemyarray;
-    public Array enemydeadarray;
+    public List<int> enemylist = new List<int>();
+    public List<int> enemydeadlist = new List<int>();
 
     //public List<EnemyData> enemyDataList = new List<EnemyData>();
 
@@ -35,18 +35,18 @@ public class SaveData
         zpos = playerstats.Z;
         gemcount = playerstats.gems;
 
-        //list save enemies
-        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-        {
-            enemyarray.Add(enemy);
-            Debug.Log(enemyarray);
-        }
-        Debug.Log(enemyarray);
+        //Debug.Log(GameObject.FindGameObjectsWithTag("Enemy").Length );
 
-        for (int i = 0; i < enemyarray.Count; i++)
+        //list save enemies
+        foreach (var enemy in GameObject.FindObjectsOfType<EnemyStats>())
         {
-            Debug.Log(i);
+            enemylist.Add(enemy.gameObject.GetInstanceID());
+            if (enemy.isDead)
+            {
+                enemydeadlist.Add(enemy.gameObject.GetInstanceID());
+            }
         }
+        Debug.Log(enemydeadlist);
 
         //outline for saving the enemies
         /*foreach (GameObject enemy in enemyarray)
@@ -143,7 +143,7 @@ public class SaveData
 
 
     /// extra functions needed to be added
-    //if enemies are dead
+    //if enemies are dead - WORKS BUT NEED TO ADD ID NUMBER TO EACH ENEMY
     //if chest open
     //if pot destroyed
     //quest log / progression

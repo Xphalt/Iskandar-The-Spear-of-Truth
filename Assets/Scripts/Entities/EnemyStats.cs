@@ -46,16 +46,4 @@ public class EnemyStats : StatsInterface
     {
         target.TakeDamage(amount, scriptedKill);
     }
-
-    /*public void SaveStats(int num)
-    {
-        SaveData saveData;
-        SaveManager.SaveEnemyStats(this, num);
-    }
-
-    public void LoadStats(int num)
-    {
-        SaveData saveData = SaveManager.LoadPlayerStats(num);
-        isDead = saveData.EnemyisDead;
-    }*/
 }
