@@ -21,7 +21,6 @@ public class DarkEffigyThrowSword : MonoBehaviour
     void Start()
     {
         _returnToSender = false;
-        _startingPosition = transform.position;
         _myRigid = GetComponent<Rigidbody>();
         _currentTime = 0.0f;
         _myRigid.velocity = transform.forward * _speed;
@@ -29,16 +28,30 @@ public class DarkEffigyThrowSword : MonoBehaviour
 
     void FixedUpdate()
     {
+        _startingPosition = transform.parent.position;
+
         if (_currentTime >= _maxTimeLimit || _returnToSender)
         {
-            _myRigid.velocity = -transform.forward * _speed;
+            //_myRigid.velocity = new Vector3(_startingPosition.x, _startingPosition.y, _startingPosition.z) * _speed * Time.deltaTime;
+
+            //Vector3 direction = (transform.position - _startingPosition).normalized;
+
+            //_myRigid.MovePosition(_startingPosition + direction * _speed * Time.deltaTime);
+
+            //transform.position = Vector3.MoveTowards(transform.position, _startingPosition, _speed * Time.deltaTime);
+
+            //_myRigid.velocity = transform.forward * -_speed;
+
             _currentTime = 0.0f;
         }
         else
             _currentTime += Time.deltaTime;
 
         if (_returnToSender && (transform.position == _startingPosition))
-            gameObject.SetActive(false);
+        {
+            print("Position");
+            Destroy(gameObject);
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -49,7 +62,10 @@ public class DarkEffigyThrowSword : MonoBehaviour
                 GetComponentInParent<DarkEffigy>().attackDamages[(int)GetComponentInParent<DarkEffigy>().throwSwordDamage]);
         }
         if (other.gameObject.layer == _effigyLayer && _returnToSender)
+        {
+            print("Effigy");
             Destroy(gameObject);
+        }
         if (other.gameObject.layer == _boundaryLayer)
             _returnToSender = true;
     }

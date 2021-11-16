@@ -11,6 +11,7 @@ public class DarkEffigy : EnemyBase
     public float throwSwordDamage;
 
     private string _swordTag = "DarkEffigySword";
+    private bool _stopMoving;
 
     public enum DarkEffigyAttacks
     {
@@ -30,6 +31,7 @@ public class DarkEffigy : EnemyBase
     public override void Start()
     {
         base.Start();
+        _stopMoving = false;
     }
 
     public override void Update()
@@ -47,21 +49,17 @@ public class DarkEffigy : EnemyBase
                 (transform.GetDistance(detector.GetCurTarget()) < _maxThrowSwordRange) &&
                 (transform.GetDistance(detector.GetCurTarget()) > _minThrowSwordRange))
             {
-                print("Throw Sword");
                 ThrowSwordAttack();
                 attackUsed = true;
             }
 
             if (SpinAvailable && transform.GetDistance(detector.GetCurTarget()) < _spinRange)
             {
-                print("Spin");
                 SpinAttack();
                 attackUsed = true;
             }
             else
-            {
                 base.Attack();
-            }
 
             if (attackUsed)
             {
@@ -79,9 +77,7 @@ public class DarkEffigy : EnemyBase
         base.AttackCooldown();
 
         for (int a = 0; a < darkEffigyCooldowns.Length; a++)
-        {
             darkEffigyTimer[a] += Time.deltaTime;
-        }
     }
 
     private void ThrowSwordAttack()
@@ -113,8 +109,25 @@ public class DarkEffigy : EnemyBase
         base.OnTriggerEnter(collider);
 
         if (collider.gameObject.CompareTag(_swordTag) && GetComponentInChildren<DarkEffigyThrowSword>()._returnToSender)
-        {
             _myAnimator.SetTrigger("SwordReturn");
-        }
     }
+
+    //private void StopMovingTrigger()
+    //{
+    //    float currentSpeed = agent.speed;
+
+    //    _stopMoving = !_stopMoving;
+
+    //    if (_stopMoving)
+    //    {
+    //        print("StopMoving");
+    //        agent.speed = 0.0f;
+    //    }
+    //    else
+    //    {
+    //        print("StartMoving");
+    //        agent.speed = aggroedMoveSpeed;
+    //    }
+    //}    
+
 }
