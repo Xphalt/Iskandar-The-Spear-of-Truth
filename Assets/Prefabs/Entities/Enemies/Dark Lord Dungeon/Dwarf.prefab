@@ -1255,6 +1255,8 @@ GameObject:
   - component: {fileID: 4364249796872431789}
   - component: {fileID: 1872216681871864555}
   - component: {fileID: 5744890171724973455}
+  - component: {fileID: 527740386515174540}
+  - component: {fileID: 9170036840001042174}
   m_Layer: 7
   m_Name: Dwarf
   m_TagString: Untagged
@@ -1433,6 +1435,7 @@ MonoBehaviour:
   chargeSpeed: 0
   chargeDistanceMult: 1
   chargeRaycast: 0
+  chargeSelfDamage: 0
   chargeLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -1440,8 +1443,12 @@ MonoBehaviour:
   shootPoint: {fileID: 3817028018263644494}
   projectileSpeed: 0
   minChaseRadius: 0
-  Explosive: {fileID: 0}
+  Explosive: {fileID: 1795199988996474522, guid: 5ea0dbd557bc5584aa3c61ba67049736, type: 3}
   explosiveDropChance: 20
+  IsDead: 0
+  dwarfCooldowns:
+  - 0
+  - 0
 --- !u!114 &27679777522802987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1522,6 +1529,36 @@ MonoBehaviour:
   minimumGems: 0
   maximumGems: 0
   gemItem: {fileID: 0}
+--- !u!136 &527740386515174540
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820919466449660}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.4546255
+  m_Height: 2.1778722
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0.9959277, z: 0.012999177}
+--- !u!54 &9170036840001042174
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820919466449660}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1833544915534518
 GameObject:
   m_ObjectHideFlags: 0
