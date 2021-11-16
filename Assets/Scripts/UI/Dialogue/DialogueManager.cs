@@ -127,6 +127,7 @@ public class DialogueManager : MonoBehaviour
         // Re-enable the collider of the GO we're speaking to when ending the dialogue
         currentCollider.enabled = true;
         DialoguePanel.SetActive(false);
+        GameEvents.current.ContinueAttacking();
     }
 
     #region Queues

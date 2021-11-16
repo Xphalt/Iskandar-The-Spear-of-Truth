@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class DarkEffigy : EnemyBase
 {
-    [SerializeField] float minThrowSwordRange;
-    [SerializeField] float maxThrowSwordRange;
-    [SerializeField] float spinRange;
+    [SerializeField] private float _minThrowSwordRange;
+    [SerializeField] private float _maxThrowSwordRange;
+    [SerializeField] private float _spinRange;
+    [SerializeField] private float _spinDamage;
+    public float throwSwordDamage;
+
+    private string _swordTag = "DarkEffigySword";
+    private bool _stopMoving;
 
     public enum DarkEffigyAttacks
     {
@@ -26,6 +31,7 @@ public class DarkEffigy : EnemyBase
     public override void Start()
     {
         base.Start();
+        _stopMoving = false;
     }
 
     public override void Update()
@@ -37,25 +43,25 @@ public class DarkEffigy : EnemyBase
 
     public override void Attack()
     {
-        base.Attack();
-
         if (CanAttack)
         {
             if (ThrowSwordAvailable &&
-                (transform.GetDistance(detector.GetCurTarget()) < maxThrowSwordRange) &&
-                (transform.GetDistance(detector.GetCurTarget()) > minThrowSwordRange))
+                (transform.GetDistance(detector.GetCurTarget()) < _maxThrowSwordRange) &&
+                (transform.GetDistance(detector.GetCurTarget()) > _minThrowSwordRange))
             {
-                print("Throw Sword");
                 ThrowSwordAttack();
                 attackUsed = true;
+                curAttackDmg = throwSwordDamage;
             }
 
-            if (SpinAvailable && transform.GetDistance(detector.GetCurTarget()) < spinRange)
+            if (SpinAvailable && transform.GetDistance(detector.GetCurTarget()) < _spinRange)
             {
-                print("Spin");
                 SpinAttack();
                 attackUsed = true;
+                curAttackDmg = _spinDamage;
             }
+            else
+                base.Attack();
 
             if (attackUsed)
             {
@@ -73,9 +79,7 @@ public class DarkEffigy : EnemyBase
         base.AttackCooldown();
 
         for (int a = 0; a < darkEffigyCooldowns.Length; a++)
-        {
             darkEffigyTimer[a] += Time.deltaTime;
-        }
     }
 
     private void ThrowSwordAttack()
@@ -90,5 +94,20 @@ public class DarkEffigy : EnemyBase
         darkEffigyAttack = DarkEffigyAttacks.Spin;
 
         _myAnimator.SetTrigger("Spin");
+    }
+
+    protected override void ShootAttack()
+    {
+        transform.LookAt(detector.GetCurTarget().position, Vector3.up);
+        projectileObj.SetActive(true);
+        attackUsed = true;
+        curAttack = AttackTypes.Shoot;
+        MyRigid.velocity = Vector3.zero;
+    }
+
+    protected override void OnTriggerEnter(Collider collider)
+    {
+        base.OnTriggerEnter(collider);
+        print("Hit");
     }
 }

@@ -29,6 +29,9 @@ public class EnemyStats : StatsInterface
                 ++EnemiesKilled;
                 if (drops) drops.SpawnLoot();
                 gameObject.SetActive(false);
+
+                FinalBurst explosion = transform.GetComponentInChildren<FinalBurst>(true);
+                if (explosion) explosion.Burst();
             }
         }
     }

@@ -99,6 +99,7 @@ public class EnemyBase : Patrol
         {
             _myAnimator.SetTrigger("Dead");
             _myCapsuleCol.enabled = false;
+            agent.enabled = false;
         }
 
         agent.enabled = curState != EnemyStates.Attacking;
@@ -193,6 +194,7 @@ public class EnemyBase : Patrol
     {
         curState = detector.GetCurTarget() ? EnemyStates.Aggro : EnemyStates.Patrolling;
         attackEnded = true;
+        SetWeaponActive(0);
     }
 
     protected virtual void AttackCooldown()
