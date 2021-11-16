@@ -193,6 +193,7 @@ public class EnemyBase : Patrol
     {
         curState = detector.GetCurTarget() ? EnemyStates.Aggro : EnemyStates.Patrolling;
         attackEnded = true;
+        SetWeaponActive(0);
     }
 
     protected virtual void AttackCooldown()
