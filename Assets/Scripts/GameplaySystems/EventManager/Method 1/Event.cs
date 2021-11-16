@@ -209,6 +209,8 @@ public class StartDialogue : Event
     {
         if(dialogue != null && convCollider != null)
         {
+            GameEvents.current.StopAttacking();
+            Debug.Log("They should stop attacking");
             GameObject.FindObjectOfType<DialogueManager>().DialoguePanel.SetActive(true);
             GameObject.FindObjectOfType<DialogueManager>().StartDialogue(convCollider, dialogue);
         }
