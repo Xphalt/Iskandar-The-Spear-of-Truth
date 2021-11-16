@@ -39,6 +39,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
         hasWeapon = playerCombat.swordEmpty.activeInHierarchy;
 
+        //This changes the player controller depending on if weapon is equipped
         if (hasWeapon) animator.runtimeAnimatorController = swordController;
         else animator.runtimeAnimatorController = noSwordController;
     }

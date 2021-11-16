@@ -6,13 +6,19 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : StatsInterface
 {
     private PlayerAnimationManager playerAnimation;
+    private PlayerCombat_Jerzy playerCombat;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
     public GameObject listOfObjs;
 
     internal AccessoryObject Accessory; 
     public ItemObject_Sal revivalGem;
-    private string noWeaponAddress, weaponAddress;
+
+    #region Weapon Model Variables
+    private GameObject playerWeapon;
+    public GameObject weaponDefaultTransform;
+    private Vector3 weaponSize = new Vector3(100, 100, 100);
+    #endregion
 
     /*______________________________Damage_Flash_Variables_______________________________*/
     public SkinnedMeshRenderer MeshRenderer;
@@ -53,10 +59,14 @@ public class PlayerStats : StatsInterface
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+        playerCombat = GetComponent<PlayerCombat_Jerzy>();
     }
 
     private void Start()
     {
+         //Assigning variable to the referrenced variable
+        playerWeapon = playerCombat.swordEmpty;
+
         Origin = MeshRenderer.material.color;
 
         damage = BASE_DAMAGE;
@@ -122,7 +132,7 @@ public class PlayerStats : StatsInterface
     }
 
     /*______________________________Damage_Flash_________________________________________*/
-    private IEnumerator EDamageFlash()
+        private IEnumerator EDamageFlash()
     {
         MeshRenderer.material.color = Color.red;
         yield return new WaitForSeconds(FlashTime);
@@ -226,6 +236,16 @@ public class PlayerStats : StatsInterface
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
                             GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
+                            #region Update Weapon Mesh
+                            if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
+                            {
+                                playerWeapon.GetComponentInChildren<MeshFilter>().mesh = temp.model.GetComponent<MeshFilter>().sharedMesh;
+                                //playerWeapon.transform.position = weaponDefaultTransform.transform.position;
+                                playerWeapon.transform.localScale = weaponSize;
+                                playerWeapon.SetActive(true);
+                            }
+                            else playerWeapon.SetActive(false);
+                            #endregion
                             break;
                         case ObjectType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
