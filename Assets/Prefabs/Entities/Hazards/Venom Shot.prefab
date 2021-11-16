@@ -9641,6 +9641,7 @@ GameObject:
   - component: {fileID: 5878119222471682471}
   - component: {fileID: -2579159703659925287}
   - component: {fileID: -3311014788576606338}
+  - component: {fileID: 999678556704259868}
   m_Layer: 0
   m_Name: Venom Shot
   m_TagString: Venom
@@ -9675,10 +9676,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09425e613a7b3654f91d798543afa983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  poisonDamage: 0.5
-  poisonDelay: 1
-  amountOfPoisonTicks: 3
 --- !u!54 &-2579159703659925287
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9708,6 +9705,23 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.4
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &999678556704259868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7137505957946678934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98bac6d486d44d64aa5f84331b9d5a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  poisonDamage: 1
+  poisonDelay: 1
+  amountOfPoisonTicks: 3
+  destroyOnContact: 1
 --- !u!1 &7137505958660250350
 GameObject:
   m_ObjectHideFlags: 0
