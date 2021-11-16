@@ -15,6 +15,7 @@ public class VenomShot : MonoBehaviour
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+
     }
 
     void Update()
@@ -27,9 +28,10 @@ public class VenomShot : MonoBehaviour
         }
     }
 
-    public void SetDirection(Vector3 direction, float speed)
+    public void SetDirection(Vector3 direction, float speed, Vector3 pos)
     {
         projectileDirection = direction;
         projectileSpeed = speed;
+        transform.LookAt(pos);
     }
 }
