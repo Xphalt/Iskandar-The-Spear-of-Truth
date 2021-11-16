@@ -11,9 +11,10 @@ public class MusicManager : MonoBehaviour
 
     private bool fadingInMusic = false;
 
-    private float fadingSpeed = 0.005f;
+    public float fadingSpeed = 0.005f;
+    public bool playOneTime = false;
 
-    public AudioClip endingMusic;
+    public AudioClip musicToFadeTo;
 
     private int fadingMusicStage = 0;
 
@@ -62,6 +63,8 @@ public class MusicManager : MonoBehaviour
 
                     fadingMusicStage = 0;
                     fadingInMusic = false;
+                    if (playOneTime)
+                        Destroy(gameObject);
                     break;
             }
         }
@@ -89,7 +92,7 @@ public class MusicManager : MonoBehaviour
         fadeOut.Play();
         music.Stop();
 
-        fadeIn.clip = endingMusic;
+        fadeIn.clip = musicToFadeTo;
         fadeIn.Play();
         fadingInMusic = true;
     }
@@ -98,7 +101,7 @@ public class MusicManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            GetComponent<MusicManager>().FadeInMusic();
+            FadeInMusic();
         }
     }
 }

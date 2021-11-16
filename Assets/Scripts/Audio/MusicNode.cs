@@ -1,0 +1,97 @@
+using UnityEngine;
+using UnityEngine.Audio;
+
+public class MusicNode : MonoBehaviour
+{
+    internal AudioSource music;
+    private AudioSource fadeIn;
+    private AudioSource fadeOut;
+
+    internal AudioMixer mixer;
+
+    private bool fadingInMusic = false;
+
+    public float fadingSpeed = 0.005f;
+    public bool playOneTime = false;
+
+    public AudioClip musicToFadeTo;
+
+    private int fadingMusicStage = 0;
+
+    internal bool overridden = false;
+
+
+    private void FixedUpdate()
+    {
+        if (fadingInMusic )
+        {
+            switch (fadingMusicStage)
+            {
+                case 0:
+                    if (fadeOut.volume <= 0)
+                    {
+                        fadingMusicStage++;
+                        break;
+                    }
+                    fadeOut.volume -= fadingSpeed;
+                    break;
+
+                case 1:
+                    if (fadeIn.volume >= 1)
+                    {
+                        fadingMusicStage++;
+                        break;
+                    }
+                    fadeIn.volume += fadingSpeed;
+                    break;
+
+                case 2:
+                    music.clip = fadeIn.clip;
+                    music.time = fadeIn.time;
+                    music.Play();
+                    fadeIn.Stop();
+
+                    Destroy(fadeIn);
+                    Destroy(fadeOut);
+
+                    fadingMusicStage = 0;
+                    fadingInMusic = false;
+                    if (playOneTime)
+                        Destroy(gameObject);
+                    break;
+            }
+        }
+    }
+    public void FadeInMusic()
+    {
+        Debug.Log("Fading in music");
+
+        fadeIn = gameObject.AddComponent<AudioSource>();
+        fadeIn.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade In")[0];
+        fadeIn.loop = true;
+
+        fadeOut = gameObject.AddComponent<AudioSource>();
+        fadeOut.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade Out")[0];
+        fadeOut.loop = true;
+
+        fadeIn.volume = 0f;
+
+        fadeOut.clip = music.clip;
+        fadeOut.time = music.time;
+
+        fadeOut.Play();
+        music.Stop();
+
+        fadeIn.clip = musicToFadeTo;
+        fadeIn.Play();
+        fadingInMusic = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player" && !overridden)
+        {
+            FadeInMusic();
+        }
+    }
+}
