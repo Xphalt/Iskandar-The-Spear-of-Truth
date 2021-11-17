@@ -505,4 +505,22 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         // Check for object type??
         if (knockedBack) EndKnockback(true);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+       if(other.tag.Contains("Floor"))
+        {
+            string tag = other.tag.Substring(6);
+            switch (tag)
+            {
+                case "stone":
+                    GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.stone;
+                    break;
+                case "dirt":
+                    GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.dirt;
+                    break;
+            }
+        }
+        
+    }
 }

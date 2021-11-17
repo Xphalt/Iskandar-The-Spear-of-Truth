@@ -12,7 +12,12 @@ public class SoundPlayer : MonoBehaviour
     public AudioClip audioClip;
     internal AudioSource aSource;
     internal AudioMixer mixer;
-      
+
+    private void Start()
+    {
+        mixer = Resources.Load("Master") as AudioMixer;
+    }
+
     public void PlayAudio()
     {
         StartCoroutine(PlayAudioClip());
@@ -31,8 +36,8 @@ public class SoundPlayer : MonoBehaviour
 
     private void AddAudioSource()
     {
-        aSource = gameObject.AddComponent<AudioSource>();
-        //aSource.outputAudioMixerGroup = mixer.FindMatchingGroups("SFX")[0];
+        aSource = Camera.main.gameObject.AddComponent<AudioSource>();
+        aSource.outputAudioMixerGroup = mixer.FindMatchingGroups("SFX")[0];
         aSource.loop = false;
         aSource.playOnAwake = false;
     }
