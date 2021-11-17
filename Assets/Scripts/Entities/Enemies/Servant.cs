@@ -4,111 +4,96 @@ using UnityEngine;
 
 public class Servant : EnemyBase
 {
+    public enum ServantAttacks
+    {
+        Slash,
+        Swing,
+        Taunt,
+        AttackTypesCount
+    };
+
+    public float blockDuration;
+    private bool blocking = false;
+    private float blockTimer;
+
+    [NamedArrayAttribute(new string[] { "Warcry", "Flurry", "Lunge", "Parry" })]
+    public float[] servantCooldowns = new float[(int)ServantAttacks.AttackTypesCount];
+
+    private float[] servantTimers = new float[(int)ServantAttacks.AttackTypesCount];
+
+    protected ServantAttacks servantAttack = ServantAttacks.AttackTypesCount;
+
+    protected bool SlashAvailable => (servantTimers[(int)ServantAttacks.Slash] >= servantCooldowns[(int)ServantAttacks.Slash]);
+    protected bool SwingAvailable => (servantTimers[(int)ServantAttacks.Swing] >= servantCooldowns[(int)ServantAttacks.Swing]);
+    protected bool TauntAvailable => (servantTimers[(int)ServantAttacks.Taunt] >= servantCooldowns[(int)ServantAttacks.Taunt]);
 
     public float slashDamage;
-    public float slashCooldown;
-    private float slashTimer;
-
     public float swingDamage;
-    public float swingCooldown;
-    private float swingTimer;
-
     public float counterDamage;
-    public float tauntCooldown;
-    private float tauntTimer;
 
-    private bool slashUsed = false;
-    private bool swingUsed = false;
-    private bool tauntUsed = false;
-    private bool canAttack = true;
-
-    private void Awake()
-    {
-        slashTimer = slashCooldown;
-        swingTimer = swingCooldown;
-        tauntTimer = tauntCooldown;
-    }
 
     // Update is called once per frame
     public override void Update()
     {
         base.Update();
-        AttackCycle();
-        ManageCooldowns();
+        Attack();
     }
 
-    public void AttackCycle()
+    public override void Attack()
     {
-        canAttack = true;
-
-        if (!tauntUsed && canAttack)
+        if (blocking)
         {
-            Taunt();
+            blockTimer += Time.deltaTime;
+            if (detector.GetCurTarget()) transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
+            if (blockTimer > blockDuration) EndBlock();
         }
-
-        if (!swingUsed && canAttack)
+        else if (detector.GetCurTarget() != null)
         {
-            MeleeSwing();
-        }
-
-        if (!slashUsed && canAttack)
-        {
-            MeleeSlash();
+            base.Attack();
+            if (TauntAvailable && !attackUsed)
+            {
+                Taunt();
+            }
+            else if (SwingAvailable && !attackUsed)
+            {
+                MeleeSwing();
+            }
+            else if (SlashAvailable && !attackUsed)
+            {
+                MeleeSlash();
+            }
         }
     }
 
     public void MeleeSlash()
     {
-        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
-        {
-            //play melee animation
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector3.zero;
-            slashUsed = true;
-            canAttack = false;
-        }
+        attackUsed = true;
+        Debug.Log("slash");
     }
 
     public void MeleeSwing()
     {
-        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
-        {
-            //play swing animation
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector3.zero;
-            swingUsed = true;
-            canAttack = false;
-        }
+        attackUsed = true;
+        Debug.Log("swing");
     }
 
     public void Taunt()
     {
-        //play taunt animation
-        tauntUsed = true;
-        canAttack = false;
+        attackUsed = true;
+        Debug.Log("taunt");
+        blocking = true;
     }
 
-    public void ManageCooldowns()
+    public void EndBlock()
     {
-        
-        slashTimer -= Time.deltaTime;
-        if (slashTimer == 0)
-        {
-            slashUsed = false;
-        }
+        blocking = false;
+    }
 
-        
-        swingTimer -= Time.deltaTime;
-        if (swingTimer == 0)
+    protected override void AttackCooldown()
+    {
+        for (int a = 0; a < servantCooldowns.Length; a++)
         {
-            swingUsed = false;
-        }
-
-        
-        tauntTimer -= Time.deltaTime;
-        if (tauntTimer == 0)
-        {
-            tauntUsed = false;
+            servantTimers[a] += Time.deltaTime;
         }
     }
 

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class ItemSelect : UserInterface_Sal
 {
-    public InventoryObject_Sal playerInvenotory;
+    public InventoryObject_Sal playerInventory;
     public GameObject slot;
     public Queue<ItemObject_Sal> itemlistqueue = new Queue<ItemObject_Sal>();
 
@@ -38,12 +38,12 @@ public class ItemSelect : UserInterface_Sal
         //Create list of items 
         if (itemlistqueue.Count == 0)
         {
-            for (int i = 0; i < playerInvenotory.GetSlots.Length; i++)
+            for (int i = 0; i < playerInventory.GetSlots.Length; i++)
             {
-                if (playerInvenotory.GetSlots[i].item.id > -1)
+                if (playerInventory.GetSlots[i].item.id > -1)
                 {
-                    ItemObject_Sal item = playerInvenotory.database.ItemObjects[playerInvenotory.GetSlots[i].item.id];
-                    if (item.type == ItemType.Item)
+                    ItemObject_Sal item = playerInventory.database.ItemObjects[playerInventory.GetSlots[i].item.id];
+                    if (item.objType == ObjectType.Item && ((ItemOBJECT)(playerInventory.database.ItemObjects[item.data.id])).itemType == ItemType.Item)
                         itemlistqueue.Enqueue(item);
                 }
             }
@@ -56,6 +56,6 @@ public class ItemSelect : UserInterface_Sal
         }
 
         if (itemlistqueue.Count > 0)//Equip
-            inventory.SwapItem(inventory.Storage.Slots[(int)EquipSlot.ItemSlot], playerInvenotory.FindItemOnInventory(itemlistqueue.Dequeue().data));
+            inventory.SwapItem(inventory.Storage.Slots[(int)EquipSlot.ItemSlot], playerInventory.FindItemOnInventory(itemlistqueue.Dequeue().data));
     }
 }

@@ -22,7 +22,7 @@ public class ResourceObject : ItemObject_Sal
 
     public void Awake()
     {
-        type = ItemType.Resource;
+        objType = ObjectType.Resource;
         //Desc = string.Concat(
         //    "<b><color=red>Physical Defence</color></b>: ", defValues.physicalDef,
         //    "\n<b><color=red>Fire Defence</color></b>: ", defValues.fireDef,
