@@ -240,15 +240,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         if (timeSinceLastDash < dashDuration && !falling)
         {
-            //m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
-            m_Rigidbody.velocity = dashDirection * dashForce * slowMult;// / dashSpeedMultiplier;
+            m_Rigidbody.velocity = dashDirection * dashForce * slowMult;
         }
 
-        if (timeKnockedBack < knockBackDuration && knockedBack && !falling)
+        if (timeKnockedBack < knockBackDuration && knockedBack)
         {
             timeKnockedBack += Time.deltaTime;
-            //knockBackDirection * Time.deltaTime * knockBackSpeed * (knockBackDuraction/ timeKnockedBack + KNOCKBACK_DENOMINATOR_ADDITION);
-            m_Rigidbody.velocity = knockBackDirection * knockBackSpeed * (1 - timeKnockedBack / knockBackDuration * KNOCKBACK_DENOMINATOR_ADDITION);
+            Vector3 newVel = knockBackDirection * knockBackSpeed * (1 - timeKnockedBack / knockBackDuration * KNOCKBACK_DENOMINATOR_ADDITION);
+            newVel.y = m_Rigidbody.velocity.y;
+            m_Rigidbody.velocity = newVel;
             playerAnimation.Falling();
         }
         else if (knockedBack)
@@ -363,12 +363,13 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance, RAYCAST_LAYER_MASK, QueryTriggerInteraction.Ignore))
         {
             fallingSpeedMultiplier += Time.deltaTime;
-            newVel.y = -(fallingSpeed * fallingSpeedMultiplier * fallingSpeedMultiplier);
+            if (knockedBack) newVel.y -= fallingSpeed * Time.deltaTime;
+            else newVel.y = -(fallingSpeed * fallingSpeedMultiplier * fallingSpeedMultiplier);
             onGround = false;
         }
         else
         {
-            newVel.y = 0;
+            if (newVel.y < 0) newVel.y = 0;
             onGround = true;
             fallingSpeedMultiplier = 1;
         }
@@ -402,7 +403,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         _targetedTransform = newTargetedTransform;
     }
 
-    public void KnockBack(Vector3 otherPosition, float speed, float duration, float stunTime = 0)
+    public void KnockBack(Vector3 otherPosition, float speed, float duration, float stunTime = 0, float verticalVel = 0)
     {
         timeSinceLastDash = dashDuration;
         otherPosition = new Vector3(otherPosition.x, transform.position.y, otherPosition.z);
@@ -413,6 +414,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         knockedBack = true;
         stunnable = stunTime > 0;
         if (stunnable) stunDuration = stunTime;
+        if (verticalVel != 0)
+        {
+            knockBackDuration = verticalVel / fallingSpeed;
+            Launch(verticalVel);
+        }
     }
 
     private void EndKnockback(bool collided = false)
@@ -422,7 +428,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (stunnable && collided) Stun(stunDuration);
         stunnable = false;
         playerAnimation.Landing();
-        m_Rigidbody.velocity = Vector3.zero;
+        Vector3 newVel = Vector3.zero;
+        newVel.y = m_Rigidbody.velocity.y;
+        m_Rigidbody.velocity = newVel;
     }
 
     public void Stun(float duration = 1)
@@ -485,6 +493,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         GetComponent<CapsuleCollider>().enabled = false;
         if (FadeUI) FadeUI.FadeOut();
         LockPlayerMovement();
+    }
+
+    public void Launch(float yVel)
+    {
+        m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, yVel, m_Rigidbody.velocity.z);
     }
 
     private void OnCollisionEnter(Collision collision)

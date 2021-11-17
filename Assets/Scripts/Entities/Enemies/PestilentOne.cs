@@ -18,12 +18,12 @@ public class PestilentOne : EnemyBase
     public int sporesReleased;
     public float minSporeRad, maxSporesRad, sporeSpeed;
     public float rollDamage, rollRange, rollMinDistance, runUpSpeed, rollAnimDuration = 1.45f;
-    public float windRange, windAngle;
+    public float windRange, windAngle, channelDuration;
     public float knockbackForce, knockbackDuration, regenAmount, regenInterval;
     public GameObject sporePrefab, windFX;
     private List<Spore> spores = new List<Spore>();
 
-    private float regenTimer = 0;
+    private float regenTimer = 0, channelTimer = 0;
     private bool windUp = false;
 
     [NamedArray(new string[] { "Roll", "Wind" })]
@@ -74,10 +74,11 @@ public class PestilentOne : EnemyBase
             regenTimer = 0;
         }
 
-        if (curState == EnemyStates.Aggro && healthSporeTriggers.Count > 0)
+        if (curState != EnemyStates.Patrolling && healthSporeTriggers.Count > 0)
         {
-            if (stats.health / stats.MAX_HEALTH * 100 < healthSporeTriggers[0])
+            if (stats.health / stats.MAX_HEALTH * 100 <= healthSporeTriggers[0])
             {
+                if (!attackEnded) AttackEnd();
                 SetAttack(PestilentAttacks.Spores);
                 healthSporeTriggers.RemoveAt(0);
             }
@@ -100,6 +101,7 @@ public class PestilentOne : EnemyBase
             if (!attackUsed && WindAvailable)
             {
                 SetAttack(PestilentAttacks.Wind);
+                StartCoroutine(ChannelWind());
                 curAttackDmg = 0;
             }
         }
@@ -149,7 +151,16 @@ public class PestilentOne : EnemyBase
     public void ReleaseSpores()
     {
         for (int s = 0; s < sporesReleased; s++)
-            spores[s].StartArc(shootPoint.position, transform.RandomRadiusPoint(minSporeRad, maxSporesRad), sporeSpeed);
+        {
+            spores[0].StartArc(shootPoint.position, transform.RandomRadiusPoint(minSporeRad, maxSporesRad), sporeSpeed);
+            spores.RemoveAt(0);
+        }
+    }
+
+    public IEnumerator ChannelWind()
+    {
+        yield return new WaitForSeconds(channelDuration);
+        _myAnimator.SetTrigger("WindCast");
     }
 
     public void WindAttack()

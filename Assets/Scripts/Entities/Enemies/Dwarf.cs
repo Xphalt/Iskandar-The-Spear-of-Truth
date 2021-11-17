@@ -4,33 +4,15 @@ using UnityEngine;
 
 public class Dwarf : EnemyBase
 {
-
     public GameObject Explosive;
     [Range(0, 100)]
     public int explosiveDropChance;
     private bool droppedExplosive = false;
 
-    public bool IsDead = false;
-
-    // Update is called once per frame
-    public override void Update()
-    {
-        if (!IsDead)
-        {
-            base.Update();
-        }
-
-        if (stats.health <= 0 || IsDead)
-        {
-            IsDead = true;
-            OnDeathExplosive(explosiveDropChance);
-        }
-    }
-
-    public void OnDeathExplosive(int chance)
+    public void OnDeathExplosive()
     {
         int percent = Random.Range(0, 101);
-        if (percent < chance && !droppedExplosive)
+        if (percent < explosiveDropChance && !droppedExplosive)
         {
             droppedExplosive = true;
             Instantiate(Explosive, transform.position, Quaternion.identity);
