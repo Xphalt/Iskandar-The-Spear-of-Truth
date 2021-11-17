@@ -10,13 +10,18 @@ public class Poison : MonoBehaviour
     public float amountOfPoisonTicks;
 
     public bool destroyOnContact = true;
+    private bool firstCollision = false;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out PlayerCombat_Jerzy combat))
         {
             combat.Poison(this);
-            if (destroyOnContact) Destroy(gameObject);
         }
+        if (destroyOnContact)
+        {
+            if (!firstCollision) firstCollision = true;
+            else Destroy(gameObject);
+        };
     }
 }

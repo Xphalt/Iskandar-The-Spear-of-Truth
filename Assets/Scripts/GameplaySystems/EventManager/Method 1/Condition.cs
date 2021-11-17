@@ -70,6 +70,18 @@ public class IsDeadCondition : Condition
 	[SerializeField] private PlayerStats playerStats;
 }
 
+public class EnemyDiedCondition : Condition
+{
+	public override bool TestCondition()
+	{
+		if (enemyStats.IsDead())
+			return true;
+		return false;
+	}
+
+	[SerializeField] private EnemyStats enemyStats;
+}
+
 public class DialogueEndedCondition : Condition
 {
     public override bool TestCondition()
