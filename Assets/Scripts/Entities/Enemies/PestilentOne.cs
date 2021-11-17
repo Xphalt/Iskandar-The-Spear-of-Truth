@@ -15,13 +15,13 @@ public class PestilentOne : EnemyBase
     PestilentAttacks pestilentAttack = PestilentAttacks.AttackTypesCount;
 
     public List<float> healthSporeTriggers;
-    public int discsReleased;
-    public float minSporeRad, maxSporesRad, discSpeed;
+    public int sporesReleased;
+    public float minSporeRad, maxSporesRad, sporeSpeed;
     public float rollDamage, rollRange, rollMinDistance, runUpSpeed, rollAnimDuration = 1.45f;
     public float windRange, windAngle, channelDuration;
     public float knockbackForce, knockbackDuration, regenAmount, regenInterval;
-    public GameObject discPrefab, windFX;
-    private List<Spore> discs = new List<Spore>();
+    public GameObject sporePrefab, windFX;
+    private List<Spore> spores = new List<Spore>();
 
     private float regenTimer = 0, channelTimer = 0;
     private bool windUp = false;
@@ -44,10 +44,10 @@ public class PestilentOne : EnemyBase
         healthSporeTriggers.Reverse();
 
         for (int t = 0; t < pestilentTimers.Length; t++) pestilentTimers[t] = pestilentCooldowns[t];
-        for (int s = 0; s < discsReleased * healthSporeTriggers.Count; s++)
+        for (int s = 0; s < sporesReleased * healthSporeTriggers.Count; s++)
         {
-            discs.Add(Instantiate(discPrefab, transform).GetComponent<Spore>());
-            discs[s].gameObject.SetActive(false);
+            spores.Add(Instantiate(sporePrefab, transform).GetComponent<Spore>());
+            spores[s].gameObject.SetActive(false);
         }
 
         chargeDistance = chargeSpeed * rollAnimDuration;
@@ -76,7 +76,7 @@ public class PestilentOne : EnemyBase
 
         if (curState == EnemyStates.Aggro && healthSporeTriggers.Count > 0)
         {
-            if (stats.health / stats.MAX_HEALTH * 100 < healthSporeTriggers[0])
+            if (stats.health / stats.MAX_HEALTH * 100 <= healthSporeTriggers[0])
             {
                 if (!attackEnded) AttackEnd();
                 SetAttack(PestilentAttacks.Spores);
@@ -150,10 +150,10 @@ public class PestilentOne : EnemyBase
 
     public void ReleaseSpores()
     {
-        for (int s = 0; s < discsReleased; s++)
+        for (int s = 0; s < sporesReleased; s++)
         {
-            discs[0].StartArc(shootPoint.position, transform.RandomRadiusPoint(minSporeRad, maxSporesRad), discSpeed);
-            discs.RemoveAt(0);
+            spores[0].StartArc(shootPoint.position, transform.RandomRadiusPoint(minSporeRad, maxSporesRad), sporeSpeed);
+            spores.RemoveAt(0);
         }
     }
 

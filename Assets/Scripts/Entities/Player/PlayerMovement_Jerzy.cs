@@ -487,6 +487,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         LockPlayerMovement();
     }
 
+    public void Launch(float yVel)
+    {
+        m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, yVel, m_Rigidbody.velocity.z);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         // Check for object type??

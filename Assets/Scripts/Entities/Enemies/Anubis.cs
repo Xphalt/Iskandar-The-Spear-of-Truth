@@ -13,73 +13,46 @@ public class Anubis : EnemyBase
 
     AnubisAttacks anubisAttack = AnubisAttacks.AttackTypesCount;
 
-    public List<float> healthDiscTriggers;
-    public int discsReleased;
-    public float minDiscRad, maxDiscsRad, discSpeed;
-    public float rollDamage, rollRange, rollMinDistance, runUpSpeed, rollAnimDuration = 1.45f;
-    public float windRange, windAngle, channelDuration;
-    public float knockbackForce, knockbackDuration, regenAmount, regenInterval;
-    public GameObject discPrefab, windFX;
-    private List<Disc> discs = new List<Disc>();
+    public List<float> healthTornadoTriggers;
 
-    private float regenTimer = 0, channelTimer = 0;
-    private bool windUp = false;
+    public float discDamage, discSpeed;
+    public float tornadoDamage, minTornadoRad, maxTornadoRad;
+    public GameObject discPrefab, tornadoPrefab;
+    private List<Tornado> tornados = new List<Tornado>();
 
     [NamedArray(new string[] { "Disc" })]
     public float[] anubisCooldowns = new float[(int)AnubisAttacks.AttackTypesCount];
     private float[] anubisTimers = new float[(int)AnubisAttacks.AttackTypesCount];
 
-    protected bool RollAvailable => (anubisTimers[(int)AnubisAttacks.Disc] >= anubisCooldowns[(int)AnubisAttacks.Disc])
-         && transform.GetDistance(detector.GetCurTarget()) < rollRange && transform.GetDistance(detector.GetCurTarget()) > rollMinDistance;
-    protected bool WindAvailable => (anubisTimers[(int)AnubisAttacks.Tornado] >= anubisCooldowns[(int)AnubisAttacks.Tornado])
-         && transform.GetDistance(detector.GetCurTarget()) < windRange && (anubisTimers[(int)AnubisAttacks.Disc] >= anubisCooldowns[(int)AnubisAttacks.Disc]);
+    protected bool DiscAvailable => anubisTimers[(int)AnubisAttacks.Disc] >= anubisCooldowns[(int)AnubisAttacks.Disc];
 
     public override void Start()
     {
         base.Start();
         _myAnimator.SetBool("IsAggroed", true);
 
-        healthDiscTriggers.Sort();
-        healthDiscTriggers.Reverse();
+        healthTornadoTriggers.Sort();
+        healthTornadoTriggers.Reverse();
 
         for (int t = 0; t < anubisTimers.Length; t++) anubisTimers[t] = anubisCooldowns[t];
-        for (int s = 0; s < discsReleased * healthDiscTriggers.Count; s++)
+        for (int s = 0; s < healthTornadoTriggers.Count; s++)
         {
-            discs.Add(Instantiate(discPrefab, transform).GetComponent<Disc>());
-            discs[s].gameObject.SetActive(false);
+            tornados.Add(Instantiate(tornadoPrefab, transform).GetComponent<Tornado>());
+            tornados[s].gameObject.SetActive(false);
         }
-
-        chargeDistance = chargeSpeed * rollAnimDuration;
-        chargeDuration = chargeDistance / chargeSpeed;
-
-        windFX.SetActive(false);
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (windUp)
+        if (curState == EnemyStates.Aggro && healthTornadoTriggers.Count > 0)
         {
-            if (detector.GetCurTarget()) MyRigid.velocity = (detector.GetCurTarget().position - transform.position).normalized * runUpSpeed;
-            else MyRigid.velocity = transform.forward * runUpSpeed;
-            transform.rotation = Quaternion.LookRotation(MyRigid.velocity);
-        }
-
-        regenTimer += Time.deltaTime;
-        if (regenTimer > regenInterval)
-        {
-            stats.health = Mathf.Min(stats.health + regenAmount, stats.MAX_HEALTH);
-            regenTimer = 0;
-        }
-
-        if (curState == EnemyStates.Aggro && healthDiscTriggers.Count > 0)
-        {
-            if (stats.health / stats.MAX_HEALTH * 100 < healthDiscTriggers[0])
+            if (stats.health / stats.MAX_HEALTH * 100 <= healthTornadoTriggers[0])
             {
                 if (!attackEnded) AttackEnd();
                 SetAttack(AnubisAttacks.Disc);
-                healthDiscTriggers.RemoveAt(0);
+                healthTornadoTriggers.RemoveAt(0);
             }
         }
     }
@@ -90,17 +63,9 @@ public class Anubis : EnemyBase
 
         if (CanAttack)
         {
-            if (!attackUsed && RollAvailable)
-            {
-                SetAttack(AnubisAttacks.Disc);
-                curAttackDmg = rollDamage;
-                windUp = true;
-            }
-
-            if (!attackUsed && WindAvailable)
+            if (!attackUsed && DiscAvailable)
             {
                 SetAttack(AnubisAttacks.Tornado);
-                StartCoroutine(ChannelWind());
                 curAttackDmg = 0;
             }
         }
@@ -112,13 +77,6 @@ public class Anubis : EnemyBase
         for (int a = 0; a < anubisCooldowns.Length; a++) anubisTimers[a] += Time.deltaTime;
     }
 
-    public override void AttackEnd()
-    {
-        base.AttackEnd();
-
-        if (windFX.activeSelf) windFX.SetActive(false);
-    }
-
     public void SetAttack(AnubisAttacks type)
     {
         _myAnimator.SetTrigger(type.ToString());
@@ -126,25 +84,8 @@ public class Anubis : EnemyBase
         anubisAttack = type;
         curState = EnemyStates.Attacking;
         MyRigid.velocity = Vector3.zero;
-        if (type != AnubisAttacks.Disc) anubisTimers[(int)anubisAttack] = 0;
+        if (type != AnubisAttacks.Tornado) anubisTimers[(int)anubisAttack] = 0;
         attackEnded = false;
-    }
-
-    public void Roll()
-    {
-        chargeStart = transform.position;
-        chargeDirection = (detector.GetCurTarget().position - transform.position).normalized;
-        chargeTimer = 0;
-        MyRigid.velocity = chargeDirection * chargeSpeed;
-
-        charging = true;
-        windUp = false;
-    }
-
-    protected override void EndCharge()
-    {
-        charging = false;
-        MyRigid.velocity = Vector3.zero;
     }
 
     public void ReleaseDiscs()
@@ -152,21 +93,11 @@ public class Anubis : EnemyBase
         
     }
 
-    public IEnumerator ChannelWind()
+    public void SpawnTornado()
     {
-        yield return new WaitForSeconds(channelDuration);
-        _myAnimator.SetTrigger("WindCast");
-    }
-
-    public void WindAttack()
-    {
-        windFX.transform.position = shootPoint.position;
-        windFX.SetActive(true);
-        if (detector.GetCurTarget())
-        {
-            Vector3 dirToTarget = detector.GetCurTarget().position - transform.position;
-            if (transform.GetDistance(detector.GetCurTarget()) < windRange && Vector3.Angle(transform.forward, dirToTarget) < windAngle / 2)
-                detector.GetCurTarget().GetComponent<PlayerMovement_Jerzy>().KnockBack(transform.position, knockbackForce, knockbackDuration);
-        }
+        tornados[0].transform.position = transform.RandomRadiusPoint(minTornadoRad, maxTornadoRad);
+        tornados[0].transform.SetParent(null);
+        tornados[0].gameObject.SetActive(true);
+        tornados.RemoveAt(0);
     }
 }
