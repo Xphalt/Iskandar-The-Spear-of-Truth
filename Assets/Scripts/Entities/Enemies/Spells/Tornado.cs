@@ -42,9 +42,7 @@ public class Tornado : MonoBehaviour
         {
             if (!stats.desertProtection)
             {
-                print("tornado");
-                move.KnockBack(transform.position, knockbackForce, knockbackDuration);
-                move.Launch(knockbackForce);
+                move.KnockBack(transform.position, knockbackForce, knockbackDuration, verticalVel:knockbackForce / 2);
                 stats.TakeDamage(damage);
             }
         }
