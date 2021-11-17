@@ -43,7 +43,7 @@ public class Caster : EnemyBase
     public override void Start()
     {
         base.Start();
-        for(int i=0; i <= casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
+        for(int i=0; i < casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
     }
 
     public override void Update()
