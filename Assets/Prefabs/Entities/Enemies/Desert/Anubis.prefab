@@ -736,16 +736,16 @@ MonoBehaviour:
   pauseTime: 0
   _stopAtLastWaypoint: 0
   _scriptToEnable: {fileID: 0}
-  isChaser: 0
+  isChaser: 1
   aggroedMoveSpeed: 5
   findDelay: 0
-  availableAttacks: 000000
+  availableAttacks: 010000
   attackDamages:
   - 0
   - 0
   - 0
   attackRanges:
-  - 0
+  - 1
   - 0
   - 0
   attackCooldowns:
@@ -762,12 +762,13 @@ MonoBehaviour:
   projectileObj: {fileID: 258240244044310445, guid: 930b893d6ff9836439c4d4d67d56adbd, type: 3}
   shootPoint: {fileID: 8454632486449883541}
   projectileSpeed: 20
-  minChaseRadius: 0
+  minChaseRadius: 1
   healthTornadoTriggers:
   - 100
   - 50
   discDamage: 0
   discSpeed: 0
+  discAngle: 30
   tornadoDamage: 0
   minTornadoRad: 5
   maxTornadoRad: 15
@@ -775,7 +776,7 @@ MonoBehaviour:
   discPrefab: {fileID: 0}
   tornadoPrefab: {fileID: 5533014151345856183, guid: ec5921ba2347cdd458b52b9b7d4e994d, type: 3}
   anubisCooldowns:
-  - 0
+  - 10
 --- !u!1 &8457196014660429027
 GameObject:
   m_ObjectHideFlags: 0
