@@ -187,8 +187,11 @@ public class QuestLogEntryEvent : Event
 {
     public override void TriggerEvent()
     {
-
+        questLog.AddQuest(quest);
     }
+
+    [SerializeReference] private QuestLogManager questLog;
+    [SerializeReference] private QuestObject quest;
 }
 
 //---------------- Sal Changes ----------------
