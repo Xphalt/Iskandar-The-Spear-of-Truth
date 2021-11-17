@@ -21,8 +21,6 @@ public class LootChest_Jerzy : MonoBehaviour
     void Start()
     {
         isInteractable = true;
-        //ID = this.transform.position;
-        //print(this.transform.GetSiblingIndex());
     }
 
     public void Interact()

@@ -15,6 +15,7 @@ public class ScrDestructablePot : MonoBehaviour
     const float UPPER_RANDOM_ANGLE_BOUNDARY = 0.8f;
 
     public float ID;
+    public bool destroyed = false;
 
     private void Start()
     {
@@ -25,8 +26,17 @@ public class ScrDestructablePot : MonoBehaviour
     {
         if (other.gameObject.CompareTag("playerSword"))
         {
+            destroyed = true;
             drop.SpawnLoot();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (destroyed == true)
+        {
+            gameObject.SetActive(false);
         }
     }
 
@@ -36,7 +46,5 @@ public class ScrDestructablePot : MonoBehaviour
         obj.transform.Rotate(0, Random.Range(0,360), 0);
         obj.GetComponent<Rigidbody>().AddForce(obj.transform.up * Random.Range(LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootHeightForce);
         obj.GetComponent<Rigidbody>().AddForce(obj.transform.forward * Random.Range(LOWER_RANDOM_ANGLE_BOUNDARY, UPPER_RANDOM_ANGLE_BOUNDARY) * lootForwardForce);
-
-
     }
 }

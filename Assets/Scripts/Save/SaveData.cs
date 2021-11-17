@@ -18,10 +18,15 @@ public class SaveData
     public int gemcount;
     public bool EnemyisDead;
 
+
     public Inventory Storage;
 
     public List<int> enemylist = new List<int>();
     public List<int> enemydeadlist = new List<int>();
+    public List<int> chestlist = new List<int>();
+    public List<int> chestopenedlist = new List<int>();
+    public List<int> potlist = new List<int>();
+    public List<int> potbrokenlist = new List<int>();
 
     //public List<EnemyData> enemyDataList = new List<EnemyData>();
 
@@ -47,6 +52,30 @@ public class SaveData
             }
         }
         Debug.Log(enemydeadlist);
+
+        //list save chests
+        foreach (var chest in GameObject.FindObjectsOfType<LootChest_Jerzy>())
+        {
+            chestlist.Add(chest.gameObject.GetInstanceID());
+            if (!chest.isInteractable)
+            {
+                chestopenedlist.Add(chest.gameObject.GetInstanceID());
+            }
+        }
+        Debug.Log(chestopenedlist);
+
+        //list save pots
+        foreach (var pot in GameObject.FindObjectsOfType<ScrDestructablePot>())
+        {
+            potlist.Add(pot.gameObject.GetInstanceID());
+            if (pot.destroyed)
+            {
+                potbrokenlist.Add(pot.gameObject.GetInstanceID());
+            }
+        }
+        Debug.Log(potbrokenlist);
+
+        //string.split
 
         //outline for saving the enemies
         /*foreach (GameObject enemy in enemyarray)
@@ -143,7 +172,6 @@ public class SaveData
 
 
     /// extra functions needed to be added
-    //if enemies are dead - WORKS BUT NEED TO ADD ID NUMBER TO EACH ENEMY
     //if chest open
     //if pot destroyed
     //quest log / progression

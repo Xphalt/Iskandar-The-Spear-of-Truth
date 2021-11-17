@@ -341,6 +341,28 @@ public class PlayerStats : StatsInterface
             }
         }
 
+        var colist = GameObject.FindGameObjectsWithTag("LootChest");
+        foreach (var Chest in colist)
+        {
+            foreach (var ID in saveData.chestopenedlist)
+            {
+                if (Chest.GetInstanceID() == ID)
+                    Chest.GetComponent<LootChest_Jerzy>().isInteractable = false;
+                    print("LootChest is " + Chest.GetComponent<LootChest_Jerzy>().isInteractable);
+            }
+        }
+
+        var plist = GameObject.FindGameObjectsWithTag("Pot");
+        foreach (var Pot in plist)
+        {
+            foreach (var ID in saveData.potbrokenlist)
+            {
+                if (Pot.GetInstanceID() == ID)
+                    Pot.GetComponent<ScrDestructablePot>().destroyed = false;
+                    print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
+            }
+        }
+
         /*int deadenemycount = GetComponent<SaveData>().enemydeadlist.Count;
         if (deadenemycount > 0)
         {
