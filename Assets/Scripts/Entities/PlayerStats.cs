@@ -59,9 +59,6 @@ public class PlayerStats : StatsInterface
     {
         Origin = MeshRenderer.material.color;
 
-        noWeaponAddress = "Animation/PlayerAnimations/PlayerAnims/PlayerNoWeapon";
-        weaponAddress = "Animation/PlayerAnimations/PlayerAnims/Player";
-
         damage = BASE_DAMAGE;
         defence = BASE_DEFENCE;
 
@@ -186,15 +183,15 @@ public class PlayerStats : StatsInterface
                 print(string.Concat("Removed ", p_slot.ItemObject, " on ", p_slot.parent.inventory.type, ", Allowed Items: ", string.Join(", ", p_slot.allowedItems)));
 
                 ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
-                switch (p_slot.ItemObject.type)
+                switch (p_slot.ItemObject.objType)
                 {
-                    case ItemType.Weapon: 
+                    case ObjectType.Weapon: 
                         damage -= ((WeaponObject_Sal)(temp)).damage;
                         spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
                         GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
 
                         break;
-                    case ItemType.Armor:
+                    case ObjectType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
                         poisonProtection = false;
                         desertProtection = false;
@@ -223,22 +220,14 @@ public class PlayerStats : StatsInterface
                 if (p_slot.ItemObject != null)
                 {
                     ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
-                    switch (p_slot.ItemObject.type)
+                    switch (p_slot.ItemObject.objType)
                     {
-                        case ItemType.Weapon: 
+                        case ObjectType.Weapon: 
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
                             GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
-                            //This changes the animator controller from weaponless animations to weapon animations
-                            if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
-                            {
-                                Debug.Log(Resources.Load<RuntimeAnimatorController>(weaponAddress));
-                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(weaponAddress);
-                            }
-                            else
-                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(noWeaponAddress);
                             break;
-                        case ItemType.Armor:
+                        case ObjectType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
                             poisonProtection = ((ArmorObject_Sal)(temp)).defValues.poisonProtection;
                             desertProtection = ((ArmorObject_Sal)(temp)).defValues.desertProtection;
@@ -260,7 +249,7 @@ public class PlayerStats : StatsInterface
     private void OnTriggerEnter(Collider other)
     {
         var item = other.GetComponent<GroundItem>();
-        if (item && item.itemobj.type != ItemType.Resource)
+        if (item && item.itemobj.objType != ObjectType.Resource)
         {
             if(equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
             {

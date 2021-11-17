@@ -35,7 +35,7 @@ public class AccessoryObject : ItemObject_Sal
 
     void Awake()
     {
-        type = ItemType.Accessory; 
+        objType = ObjectType.Accessory; 
     } 
      
     public override void UseCurrent()

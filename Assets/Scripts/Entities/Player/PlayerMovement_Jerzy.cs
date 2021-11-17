@@ -77,7 +77,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     Quaternion targetRotation = new Quaternion();
 
-    public GameObject FadeUI;
+    public Fading FadeUI;
 
     private const int RAYCAST_LAYER_MASK = -1;
 
@@ -104,6 +104,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+        FadeUI = FindObjectOfType<Fading>();
     }
 
     void Start()
@@ -116,7 +117,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void Update()
     {
-
         timeSinceLastDash += Time.deltaTime;
         dashSpeedMultiplier += Time.deltaTime;
 
@@ -225,7 +225,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             if (timeSinceRespawnStarted >= respawnTime)
             {
-                FadeUI.GetComponent<Fading>().FadeIn();
+                if (FadeUI) FadeUI.FadeIn();
                 transform.position = respawnPosition;
                 GetComponent<PlayerStats>().TakeDamage(respawnDamage);
                 respawning = false;
@@ -458,7 +458,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public void Respawn(Vector3 position, float time, float damage)
     {
         timeSinceRespawnStarted = 0;
-        FadeUI.GetComponent<Fading>().FadeOut();
+        if (FadeUI) FadeUI.FadeOut();
         respawnDamage = damage;
         respawnPosition = position;
         respawnTime = time;
@@ -483,7 +483,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         gettingConsumed = true;
         playerAnimation.Falling();
         GetComponent<CapsuleCollider>().enabled = false;
-        FadeUI.GetComponent<Fading>().FadeOut();
+        if (FadeUI) FadeUI.FadeOut();
         LockPlayerMovement();
     }
 

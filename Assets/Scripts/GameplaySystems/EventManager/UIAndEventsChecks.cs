@@ -26,7 +26,6 @@ public class UIAndEventsChecks : MonoBehaviour
     private void Awake()
     {
         _playerInput = FindObjectOfType<PlayerInput>();
-        _enemies = FindObjectsOfType<EnemyBase>();
     }
 
     public void DisableUI()
@@ -60,12 +59,14 @@ public class UIAndEventsChecks : MonoBehaviour
 
     public void OnStop()
     {
+        _enemies = FindObjectsOfType<EnemyBase>();
         foreach (EnemyBase enemy in _enemies) enemy.enabled = false;
         print("functioning");
     }
 
     public void OnContinue()
     {
+        _enemies = FindObjectsOfType<EnemyBase>();
         foreach (EnemyBase enemy in _enemies) enemy.enabled = true;
     }
 
