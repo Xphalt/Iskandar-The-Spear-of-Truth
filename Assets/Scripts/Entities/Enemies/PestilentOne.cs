@@ -74,7 +74,7 @@ public class PestilentOne : EnemyBase
             regenTimer = 0;
         }
 
-        if (curState == EnemyStates.Aggro && healthSporeTriggers.Count > 0)
+        if (curState != EnemyStates.Patrolling && healthSporeTriggers.Count > 0)
         {
             if (stats.health / stats.MAX_HEALTH * 100 <= healthSporeTriggers[0])
             {
