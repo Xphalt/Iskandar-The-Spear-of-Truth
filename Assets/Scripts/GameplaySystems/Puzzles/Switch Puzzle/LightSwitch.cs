@@ -11,6 +11,8 @@ public class LightSwitch : MonoBehaviour
 
     public GameObject spotLight;
 
+    public bool startLight = false;
+
     //private bool activated = false;
 
     private void Start()
@@ -24,16 +26,16 @@ public class LightSwitch : MonoBehaviour
 
     public void TurnOff()
     {
-        spotLight.SetActive(false);
+        spotLight.SetActive(startLight);
         myMesh.material = offMat;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("playerSword") && !spotLight.activeSelf)
+        if (other.CompareTag("playerSword") && myMesh.material != onMat)
         {
             myMesh.material = onMat;
-            spotLight.SetActive(true);
+            spotLight.SetActive(!startLight);
             manager.RegisterSwitch(this);
         }
     }
