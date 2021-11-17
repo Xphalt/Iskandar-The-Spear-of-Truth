@@ -52,6 +52,9 @@ public class EnemyStats : StatsInterface
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
     {
-        target.TakeDamage(amount, scriptedKill);
+        if (target)
+        {
+            target.TakeDamage(amount, scriptedKill);
+        }
     }
 }
