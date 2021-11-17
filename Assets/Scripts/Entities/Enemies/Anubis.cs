@@ -2,51 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PestilentOne : EnemyBase
+public class Anubis : EnemyBase
 {
-    public enum PestilentAttacks
+    public enum AnubisAttacks
     {
-        Roll,
-        Wind,
+        Disc,
+        Tornado,
         AttackTypesCount,
-        Spores
     };
 
-    PestilentAttacks pestilentAttack = PestilentAttacks.AttackTypesCount;
+    AnubisAttacks anubisAttack = AnubisAttacks.AttackTypesCount;
 
-    public List<float> healthSporeTriggers;
+    public List<float> healthDiscTriggers;
     public int discsReleased;
-    public float minSporeRad, maxSporesRad, discSpeed;
+    public float minDiscRad, maxDiscsRad, discSpeed;
     public float rollDamage, rollRange, rollMinDistance, runUpSpeed, rollAnimDuration = 1.45f;
     public float windRange, windAngle, channelDuration;
     public float knockbackForce, knockbackDuration, regenAmount, regenInterval;
     public GameObject discPrefab, windFX;
-    private List<Spore> discs = new List<Spore>();
+    private List<Disc> discs = new List<Disc>();
 
     private float regenTimer = 0, channelTimer = 0;
     private bool windUp = false;
 
-    [NamedArray(new string[] { "Roll", "Wind" })]
-    public float[] pestilentCooldowns = new float[(int)PestilentAttacks.AttackTypesCount];
-    private float[] pestilentTimers = new float[(int)PestilentAttacks.AttackTypesCount];
+    [NamedArray(new string[] { "Disc" })]
+    public float[] anubisCooldowns = new float[(int)AnubisAttacks.AttackTypesCount];
+    private float[] anubisTimers = new float[(int)AnubisAttacks.AttackTypesCount];
 
-    protected bool RollAvailable => (pestilentTimers[(int)PestilentAttacks.Roll] >= pestilentCooldowns[(int)PestilentAttacks.Roll])
+    protected bool RollAvailable => (anubisTimers[(int)AnubisAttacks.Disc] >= anubisCooldowns[(int)AnubisAttacks.Disc])
          && transform.GetDistance(detector.GetCurTarget()) < rollRange && transform.GetDistance(detector.GetCurTarget()) > rollMinDistance;
-    protected bool WindAvailable => (pestilentTimers[(int)PestilentAttacks.Wind] >= pestilentCooldowns[(int)PestilentAttacks.Wind])
-         && transform.GetDistance(detector.GetCurTarget()) < windRange && (pestilentTimers[(int)PestilentAttacks.Roll] >= pestilentCooldowns[(int)PestilentAttacks.Roll]);
+    protected bool WindAvailable => (anubisTimers[(int)AnubisAttacks.Tornado] >= anubisCooldowns[(int)AnubisAttacks.Tornado])
+         && transform.GetDistance(detector.GetCurTarget()) < windRange && (anubisTimers[(int)AnubisAttacks.Disc] >= anubisCooldowns[(int)AnubisAttacks.Disc]);
 
     public override void Start()
     {
         base.Start();
         _myAnimator.SetBool("IsAggroed", true);
 
-        healthSporeTriggers.Sort();
-        healthSporeTriggers.Reverse();
+        healthDiscTriggers.Sort();
+        healthDiscTriggers.Reverse();
 
-        for (int t = 0; t < pestilentTimers.Length; t++) pestilentTimers[t] = pestilentCooldowns[t];
-        for (int s = 0; s < discsReleased * healthSporeTriggers.Count; s++)
+        for (int t = 0; t < anubisTimers.Length; t++) anubisTimers[t] = anubisCooldowns[t];
+        for (int s = 0; s < discsReleased * healthDiscTriggers.Count; s++)
         {
-            discs.Add(Instantiate(discPrefab, transform).GetComponent<Spore>());
+            discs.Add(Instantiate(discPrefab, transform).GetComponent<Disc>());
             discs[s].gameObject.SetActive(false);
         }
 
@@ -74,13 +73,13 @@ public class PestilentOne : EnemyBase
             regenTimer = 0;
         }
 
-        if (curState == EnemyStates.Aggro && healthSporeTriggers.Count > 0)
+        if (curState == EnemyStates.Aggro && healthDiscTriggers.Count > 0)
         {
-            if (stats.health / stats.MAX_HEALTH * 100 < healthSporeTriggers[0])
+            if (stats.health / stats.MAX_HEALTH * 100 < healthDiscTriggers[0])
             {
                 if (!attackEnded) AttackEnd();
-                SetAttack(PestilentAttacks.Spores);
-                healthSporeTriggers.RemoveAt(0);
+                SetAttack(AnubisAttacks.Disc);
+                healthDiscTriggers.RemoveAt(0);
             }
         }
     }
@@ -93,14 +92,14 @@ public class PestilentOne : EnemyBase
         {
             if (!attackUsed && RollAvailable)
             {
-                SetAttack(PestilentAttacks.Roll);
+                SetAttack(AnubisAttacks.Disc);
                 curAttackDmg = rollDamage;
                 windUp = true;
             }
 
             if (!attackUsed && WindAvailable)
             {
-                SetAttack(PestilentAttacks.Wind);
+                SetAttack(AnubisAttacks.Tornado);
                 StartCoroutine(ChannelWind());
                 curAttackDmg = 0;
             }
@@ -110,7 +109,7 @@ public class PestilentOne : EnemyBase
     protected override void AttackCooldown()
     {
         base.AttackCooldown();
-        for (int a = 0; a < pestilentCooldowns.Length; a++) pestilentTimers[a] += Time.deltaTime;
+        for (int a = 0; a < anubisCooldowns.Length; a++) anubisTimers[a] += Time.deltaTime;
     }
 
     public override void AttackEnd()
@@ -120,14 +119,14 @@ public class PestilentOne : EnemyBase
         if (windFX.activeSelf) windFX.SetActive(false);
     }
 
-    public void SetAttack(PestilentAttacks type)
+    public void SetAttack(AnubisAttacks type)
     {
         _myAnimator.SetTrigger(type.ToString());
         attackUsed = true;
-        pestilentAttack = type;
+        anubisAttack = type;
         curState = EnemyStates.Attacking;
         MyRigid.velocity = Vector3.zero;
-        if (type != PestilentAttacks.Spores) pestilentTimers[(int)pestilentAttack] = 0;
+        if (type != AnubisAttacks.Disc) anubisTimers[(int)anubisAttack] = 0;
         attackEnded = false;
     }
 
@@ -148,13 +147,9 @@ public class PestilentOne : EnemyBase
         MyRigid.velocity = Vector3.zero;
     }
 
-    public void ReleaseSpores()
+    public void ReleaseDiscs()
     {
-        for (int s = 0; s < discsReleased; s++)
-        {
-            discs[0].StartArc(shootPoint.position, transform.RandomRadiusPoint(minSporeRad, maxSporesRad), discSpeed);
-            discs.RemoveAt(0);
-        }
+        
     }
 
     public IEnumerator ChannelWind()
