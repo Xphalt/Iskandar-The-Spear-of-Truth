@@ -127,7 +127,10 @@ public class Player_Targeting_Jack : MonoBehaviour
 
     private void UnTargetObject()
     {
-        ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.clear);
+        if (_targetedTransform)
+        {
+            ShaderHandler.instance.SetOutlineColor(_targetedTransform.gameObject, Color.clear);
+        }
         _targetedTransform = null;
         _wasTargeting = false;
 
