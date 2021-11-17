@@ -5,54 +5,59 @@ using UnityEngine;
 public class Disc : MonoBehaviour
 {
     private Transform _player;
-    private float _discSpeed, _discDamage;
-    private Vector3 _discDirection;
+    private float _discSpeed, _discDamage, _discOffset;
 
-    private bool _hasBounced;
+    private int _numberOfBounces;
+    private int _maxNumberOfBounces;
 
     private Rigidbody _myRigid;
 
-    private Vector3 _discPosition;
+    private Animator _myAnimator;
 
-    void Start()
+    void Awake()
     {
         _myRigid = GetComponent<Rigidbody>();
-        _hasBounced = false;
-    }
-
-    private void OnEnable()
-    {
-        UpdatePlayerLocation();
+        _myAnimator = GetComponent<Animator>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        ++_numberOfBounces;
         if (other.transform == _player)
-            Destroy(gameObject);
+            DisableDisc();
         else
         {
-            if (_hasBounced)
-                Destroy(gameObject);
+            if (_numberOfBounces == _maxNumberOfBounces)
+                DisableDisc();
             else
             {
                 UpdatePlayerLocation();
-                _hasBounced = true;
             }
         }
     }
 
-    public void SetVariables(Transform _target, float _speed, float _damage, Vector3 _startPosition)
+    private void DisableDisc()
+    {
+        _myRigid.velocity = Vector3.zero;
+        _myAnimator.SetTrigger("Ded");
+    }
+
+    public void SetVariables(Transform _target, float _speed, float _damage, bool _needOffset, float _offset)
     {
         _player = _target;
         _discSpeed = _speed;
-        _discDamage = _damage;
-        _discPosition = _startPosition;
-        UpdatePlayerLocation();
+        _discDamage = _damage;        
+        UpdatePlayerLocation(_offset);
     }
 
-    private void UpdatePlayerLocation()
+    private void UpdatePlayerLocation(float _offset = 0)
     {
-        transform.rotation = Quaternion.LookRotation(_player.position - transform.position);
+        transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y + _offset, transform.rotation.z, transform.rotation.w); ;
         _myRigid.velocity = transform.forward * _discSpeed;
+    }
+
+    private void DeathTime()
+    {
+        Destroy(gameObject);
     }
 }

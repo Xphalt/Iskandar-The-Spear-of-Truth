@@ -26,6 +26,8 @@ public class Anubis : EnemyBase
 
     protected bool DiscAvailable => anubisTimers[(int)AnubisAttacks.Disc] >= anubisCooldowns[(int)AnubisAttacks.Disc];
 
+    private bool _atHalfHealth;
+
     public override void Start()
     {
         base.Start();
@@ -40,11 +42,16 @@ public class Anubis : EnemyBase
             tornados.Add(Instantiate(tornadoPrefab, transform).GetComponent<Tornado>());
             tornados[s].gameObject.SetActive(false);
         }
+
+        _atHalfHealth = false;
     }
 
     public override void Update()
     {
         base.Update();
+
+        if (stats.health < (stats.MAX_HEALTH / 2))
+            _atHalfHealth = true;
 
         if (curState != EnemyStates.Patrolling && healthTornadoTriggers.Count > 0)
         {
@@ -90,7 +97,18 @@ public class Anubis : EnemyBase
 
     public void ReleaseDiscs()
     {
-        
+        Disc newDisc = Instantiate(projectileObj, shootPoint.position, transform.rotation).GetComponent<Disc>();
+        newDisc.SetVariables(detector.GetCurTarget(), projectileSpeed, discDamage, false, 0.0f);
+
+        if (_atHalfHealth)
+        {
+            Disc rightDisc = Instantiate(projectileObj, shootPoint.position, transform.rotation).GetComponent<Disc>();
+            rightDisc.SetVariables(detector.GetCurTarget(), projectileSpeed, discDamage, true, 1.0f);
+
+            Disc leftDisc = Instantiate(projectileObj, shootPoint.position, transform.rotation).GetComponent<Disc>();
+            leftDisc.SetVariables(detector.GetCurTarget(), projectileSpeed, discDamage, true, -1.0f);
+        }
+
     }
 
     public void SpawnTornado()
