@@ -26,19 +26,27 @@ public class Tornado : MonoBehaviour
         }
     }
 
-    public void Summon(float _damage, float _speed)
+    public void Summon(Vector3 pos, float dmg, float speed)
     {
-        damage = _damage;
-        movementSpeed = _speed;
+        transform.position = pos;
+        damage = dmg;
+        movementSpeed = speed;
+
+        transform.SetParent(null);
+        gameObject.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out PlayerMovement_Jerzy move))
+        if (other.TryGetComponent(out PlayerMovement_Jerzy move) && other.TryGetComponent(out PlayerStats stats))
         {
-            move.KnockBack(transform.position, knockbackForce, knockbackDuration);
-            move.Launch(knockbackForce);
-            move.GetComponent<PlayerStats>().TakeDamage(damage);
+            if (!stats.desertProtection)
+            {
+                print("tornado");
+                move.KnockBack(transform.position, knockbackForce, knockbackDuration);
+                move.Launch(knockbackForce);
+                stats.TakeDamage(damage);
+            }
         }
     }
 }
