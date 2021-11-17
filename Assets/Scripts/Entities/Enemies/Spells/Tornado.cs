@@ -34,6 +34,9 @@ public class Tornado : MonoBehaviour
 
         transform.SetParent(null);
         gameObject.SetActive(true);
+
+        Vector2 direction = ExtraFunctions.RandomVector2(speed);
+        myRigid.velocity = new Vector3(direction.x, 0, direction.y);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4399656, g: 0.48844576, b: 0.5686433, a: 1}
+  m_IndirectSpecularColor: {r: 0.43996564, g: 0.48844582, b: 0.56864333, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 978539820}
   - component: {fileID: 978539819}
   - component: {fileID: 978539818}
+  - component: {fileID: 978539822}
   m_Layer: 3
   m_Name: Capsule
   m_TagString: Untagged
@@ -315,6 +316,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &978539822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978539817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553981dbaf6452a458667fa8ccc7c7d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MAX_HEALTH: 10
+  health: 0
+  inventory: {fileID: 0}
+  equipment: {fileID: 0}
+  listOfObjs: {fileID: 0}
+  revivalGem: {fileID: 0}
+  MeshRenderer: {fileID: 0}
+  Origin: {r: 0, g: 0, b: 0, a: 0}
+  FlashTime: 0
+  damage: 0
+  spiritualDamage: 0
+  defence: 0
+  bleeding: 0
+  poisonProtection: 0
+  desertProtection: 0
+  snowProtection: 0
 --- !u!1001 &1190961450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -322,6 +351,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3093256775488984866, guid: 03ec8f136c2fd9746aa8443bf2f79cce, type: 3}
+      propertyPath: discAngle
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3093256775488984866, guid: 03ec8f136c2fd9746aa8443bf2f79cce, type: 3}
+      propertyPath: healthTornadoTriggers.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8451981109577907155, guid: 03ec8f136c2fd9746aa8443bf2f79cce, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -954,13 +991,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2053195616}
-  m_LocalRotation: {x: -0, y: 0.86602545, z: -0.49999997, w: 0}
-  m_LocalPosition: {x: 0, y: 29.49, z: 18.9}
+  m_LocalRotation: {x: 0, y: 0.9396927, z: -0.3420201, w: 0}
+  m_LocalPosition: {x: 0, y: 11.68, z: 17.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 60, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 40, y: 180, z: 0}
 --- !u!1001 &3077437178407329739
 PrefabInstance:
   m_ObjectHideFlags: 0

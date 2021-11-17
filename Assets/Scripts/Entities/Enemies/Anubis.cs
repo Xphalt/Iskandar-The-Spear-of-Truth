@@ -15,7 +15,7 @@ public class Anubis : EnemyBase
 
     public List<float> healthTornadoTriggers;
 
-    public float discDamage, discSpeed;
+    public float discDamage, discSpeed, discAngle;
     public float tornadoDamage, minTornadoRad, maxTornadoRad, tornadoSpeed;
     public GameObject discPrefab, tornadoPrefab;
     private List<Tornado> tornados = new List<Tornado>();
@@ -98,15 +98,15 @@ public class Anubis : EnemyBase
     public void ReleaseDiscs()
     {
         Disc newDisc = Instantiate(projectileObj, shootPoint.position, transform.rotation).GetComponent<Disc>();
-        newDisc.SetVariables(detector.GetCurTarget(), projectileSpeed, discDamage, false, 0.0f);
+        newDisc.SetVariables(detector.GetCurTarget(), projectileSpeed, discDamage, 0.0f);
 
         if (_atHalfHealth)
         {
             Disc rightDisc = Instantiate(projectileObj, shootPoint.position, transform.rotation).GetComponent<Disc>();
-            rightDisc.SetVariables(detector.GetCurTarget(), projectileSpeed, discDamage, true, 1.0f);
+            rightDisc.SetVariables(detector.GetCurTarget(), projectileSpeed, discDamage, discAngle);
 
             Disc leftDisc = Instantiate(projectileObj, shootPoint.position, transform.rotation).GetComponent<Disc>();
-            leftDisc.SetVariables(detector.GetCurTarget(), projectileSpeed, discDamage, true, -1.0f);
+            leftDisc.SetVariables(detector.GetCurTarget(), projectileSpeed, discDamage, -discAngle);
         }
 
     }

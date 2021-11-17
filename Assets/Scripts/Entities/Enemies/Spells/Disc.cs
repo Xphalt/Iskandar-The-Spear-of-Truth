@@ -20,11 +20,14 @@ public class Disc : MonoBehaviour
         _myAnimator = GetComponent<Animator>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
         ++_numberOfBounces;
-        if (other.transform == _player)
+        if (other.transform.TryGetComponent(out PlayerStats stats))
+        {
+            stats.TakeDamage(_discDamage);
             DisableDisc();
+        }
         else
         {
             if (_numberOfBounces == _maxNumberOfBounces)
@@ -42,7 +45,7 @@ public class Disc : MonoBehaviour
         _myAnimator.SetTrigger("Ded");
     }
 
-    public void SetVariables(Transform _target, float _speed, float _damage, bool _needOffset, float _offset)
+    public void SetVariables(Transform _target, float _speed, float _damage, float _offset)
     {
         _player = _target;
         _discSpeed = _speed;
@@ -52,7 +55,8 @@ public class Disc : MonoBehaviour
 
     private void UpdatePlayerLocation(float _offset = 0)
     {
-        transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y + _offset, transform.rotation.z, transform.rotation.w); ;
+        transform.LookAt(_player);
+        transform.Rotate(Vector3.up * _offset);
         _myRigid.velocity = transform.forward * _discSpeed;
     }
 
