@@ -101,6 +101,10 @@ public class PlayerStats : StatsInterface
         }
 
         Bleed();
+
+        //This ensures that the gameobjects are controlled by Sword Empty GO
+        if (swordEmpty.activeInHierarchy) propSwordHolder.SetActive(true);
+        else propSwordHolder.SetActive(false);
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -235,14 +239,19 @@ public class PlayerStats : StatsInterface
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
                             GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
-                            #region Update Weapon Mesh
+                            #region Update Weapon on Player
                             if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
                             {
                                 swordEmpty.SetActive(true);
-                                propSwordHolder.SetActive(true);
-                                if (temp.name == "Iron Sword") ironSword.SetActive(true);
-                                else if (temp.name == "Sword of the Soulless Ones") falchion.SetActive(true);
-                                else stick.SetActive(true);
+
+                                if (temp.name == "Iron Sword")
+                                { ironSword.SetActive(true); falchion.SetActive(false); stick.SetActive(false); }
+
+                                else if (temp.name == "Sword of the Soulless ones")
+                                { ironSword.SetActive(false); falchion.SetActive(true); stick.SetActive(false); }
+
+                                else if (temp.name == "Stick")
+                                { ironSword.SetActive(false); falchion.SetActive(false); stick.SetActive(true); }
                             }
                             else swordEmpty.SetActive(false);
                             #endregion
