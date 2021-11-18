@@ -74,7 +74,7 @@ public class EntityDrop : MonoBehaviour
             DropSystem.Instance.IncreaseTentatives(type);*/
 
         //Destroy
-        if (type != EntityType.Chest)
+        if (type != EntityType.Chest && type != EntityType.Pot)
             Destroy(gameObject, disableDelay); //GOING TO HANDLE THIS IN OTHER SCRIPTS
     }
 

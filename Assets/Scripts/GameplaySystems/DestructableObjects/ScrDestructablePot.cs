@@ -28,7 +28,6 @@ public class ScrDestructablePot : MonoBehaviour
         {
             destroyed = true;
             drop.SpawnLoot();
-            gameObject.SetActive(false);
         }
     }
 
@@ -36,10 +35,11 @@ public class ScrDestructablePot : MonoBehaviour
     {
         if (destroyed == true)
         {
-            gameObject.SetActive(false);
+            this.GetComponent<Renderer>().enabled = false;
+            this.GetComponent<BoxCollider>().enabled = false;
         }
     }
-
+    
     public void SetForces(GameObject obj)
     {
         obj.transform.position = obj.transform.position + new Vector3(0, lootHeightOffset, 0);

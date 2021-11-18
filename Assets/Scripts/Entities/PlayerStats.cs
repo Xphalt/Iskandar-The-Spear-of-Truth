@@ -358,7 +358,7 @@ public class PlayerStats : StatsInterface
             foreach (var ID in saveData.potbrokenlist)
             {
                 if (Pot.GetInstanceID() == ID)
-                    Pot.GetComponent<ScrDestructablePot>().destroyed = false;
+                    Pot.GetComponent<ScrDestructablePot>().destroyed = true;
                     print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
             }
         }
