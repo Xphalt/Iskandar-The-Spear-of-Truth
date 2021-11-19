@@ -54,6 +54,7 @@ public class PestilentOne : EnemyBase
         chargeDuration = chargeDistance / chargeSpeed;
 
         windFX.SetActive(false);
+        isBoss = true;
     }
 
     public override void Update()

@@ -6,7 +6,7 @@ public class DwarfExplosive : MonoBehaviour
 {
     public float Countdown;
     public float explosionDamage;
-    public float explsionRadius;
+    public float explosionRadius;
     public float knockbackSpeed;
     public float duration;
     private GameObject player;
@@ -21,11 +21,13 @@ public class DwarfExplosive : MonoBehaviour
         Countdown -= Time.deltaTime;
         if (Countdown <= 0)
         {
-            if ((player.transform.position - transform.position).magnitude <= explsionRadius)
+            if ((player.transform.position - transform.position).magnitude <= explosionRadius)
             {
                 player.GetComponent<PlayerMovement_Jerzy>().KnockBack(transform.position, knockbackSpeed, duration);
-                player.GetComponent<PlayerStats>().TakeDamage(explosionDamage, false);
+                player.GetComponent<PlayerStats>().TakeDamage(explosionDamage);
             }
+            FinalBurst explosion = transform.GetComponentInChildren<FinalBurst>(true);
+            if (explosion) explosion.Burst();
             Destroy(gameObject);
         }
     }

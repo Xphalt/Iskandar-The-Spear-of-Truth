@@ -47,6 +47,7 @@ public class Warchief : EnemyBase
         chargeDistance = minJumpDistance;
         chargeDuration = chargeDistance / chargeSpeed;
         for (int t = 0; t < warChiefTimers.Length; t++) warChiefTimers[t] = warChiefCooldowns[t];
+        isBoss = true;
     }
 
     public override void Update()

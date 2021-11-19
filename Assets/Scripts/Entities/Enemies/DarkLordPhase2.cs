@@ -36,8 +36,6 @@ public class DarkLordPhase2 : EnemyBase
     public Damnation damnationScript;
     private float damnationRotation = 0, boltLifetime = 0;
 
-    private bool targeting = false;
-
     protected bool SkullAvailable => (phaseTwoTimers[(int)PhaseTwoAttacks.Skull] >= phaseTwoCooldowns[(int)PhaseTwoAttacks.Skull])
          && transform.GetDistance(detector.GetCurTarget()) < skullRange;
     protected bool BurstAvailable => (phaseTwoTimers[(int)PhaseTwoAttacks.Burst] >= phaseTwoCooldowns[(int)PhaseTwoAttacks.Burst])
@@ -73,17 +71,15 @@ public class DarkLordPhase2 : EnemyBase
             boltScale = bolts[0].localScale;
             boltLifetime = bolts[0].GetComponent<ParticleSystem>().main.duration;
         }
+
+        isBoss = true;
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (curState == EnemyStates.Attacking)
-        {
-            if (phaseTwoAttack == PhaseTwoAttacks.Damn && damnationScript.Finished) damnationScript.EndCast();
-            if (targeting) transform.LookAt(detector.GetCurTarget().position);
-        }
+        if (curState == EnemyStates.Attacking && phaseTwoAttack == PhaseTwoAttacks.Damn && damnationScript.Finished) damnationScript.EndCast();
     }
 
     public override void Attack()

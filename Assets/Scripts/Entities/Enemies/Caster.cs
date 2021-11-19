@@ -50,8 +50,6 @@ public class Caster : EnemyBase
     {
         base.Update();
 
-        SetMovementAnim();
-
         if (pillarCast)
             PillarTimer();
     }

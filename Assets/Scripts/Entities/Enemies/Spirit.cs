@@ -19,8 +19,6 @@ public class Spirit : EnemyBase
 
             if (stats.health <= 0)
                 curAttackDmg = deathDmg;
-
-            SetMovementAnim();
         }
     }
 

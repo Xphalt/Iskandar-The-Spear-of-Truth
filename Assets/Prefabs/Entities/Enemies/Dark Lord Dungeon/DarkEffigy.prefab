@@ -1486,6 +1486,7 @@ MonoBehaviour:
   shootPoint: {fileID: 7918416937276580161}
   projectileSpeed: 0
   minChaseRadius: 0.5
+  isBoss: 0
   _minThrowSwordRange: 8
   _maxThrowSwordRange: 10
   _spinRange: 2
@@ -1509,7 +1510,7 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 0
   vulnerable: 1
-  despawnTime: 0
+  despawnTime: 10
 --- !u!114 &7150738228072638955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1522,6 +1523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnDrop: 1
   disableDelay: 0
   dropChances:
   - 75

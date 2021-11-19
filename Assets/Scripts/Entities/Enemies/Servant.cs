@@ -31,14 +31,6 @@ public class Servant : EnemyBase
     public float swingDamage;
     public float counterDamage;
 
-
-    // Update is called once per frame
-    public override void Update()
-    {
-        base.Update();
-        Attack();
-    }
-
     public override void Attack()
     {
         if (blocking)
