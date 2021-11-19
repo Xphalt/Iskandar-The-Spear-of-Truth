@@ -15,6 +15,7 @@ public class DarkLordPhase1 : EnemyBase
 
     PhaseOneAttacks phaseOneAttack = PhaseOneAttacks.AttackTypesCount;
 
+    public GameObject SecondPhaseObj;
     public float[] meleeAttackDamages = new float[4];
     public float shieldStunDuration;
     private int curCombo = 0;
@@ -116,6 +117,12 @@ public class DarkLordPhase1 : EnemyBase
             base.ChargeAttack();
         }
         else AttackEnd();
+    }
+
+    public void PhaseTransition()
+    {
+        SecondPhaseObj.transform.position = transform.position;
+        SecondPhaseObj.SetActive(true);
     }
 
     protected override void OnTriggerEnter(Collider collider)
