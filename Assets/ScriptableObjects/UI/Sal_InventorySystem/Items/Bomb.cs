@@ -10,13 +10,17 @@ public class Bomb : MonoBehaviour, ISerializationCallbackReceiver
     public float timeBeforeDetonating;
 
     private SphereCollider sphereCollider;
-
+    public GameObject explosionEffect;
 
     void Update()
     {
-        currentTime += Time.deltaTime; 
-        if (currentTime > (timeBeforeDetonating + 1.0f))
-            Destroy(gameObject);
+        currentTime += Time.deltaTime;
+        if (currentTime > timeBeforeDetonating)
+        {
+            var effect = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            Destroy(effect, 10.0f);
+            Destroy(gameObject, 1.0f);
+        }
     }
 
     public void OnBeforeSerialize()
@@ -35,7 +39,24 @@ public class Bomb : MonoBehaviour, ISerializationCallbackReceiver
         other.TryGetComponent<StatsInterface>(out stats); 
          
         //takes damage after detonation  
-        if (stats && currentTime > timeBeforeDetonating)
-            stats.DealDamage(stats, Damage); 
+        if (currentTime > timeBeforeDetonating)
+        {
+            if(stats) //Deal damage
+                stats.DealDamage(stats, Damage); 
+
+            //Destroy rock
+            if(other.gameObject.tag.Contains("BombPuzzle"))
+                Destroy(other.gameObject);
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        //Destroy rocks after detonation  
+        if (currentTime > timeBeforeDetonating)
+        { 
+            if (collision.gameObject.tag.Contains("BombPuzzle"))
+                Destroy(collision.gameObject);
+        }
     }
 }

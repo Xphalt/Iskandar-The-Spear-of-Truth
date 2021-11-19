@@ -12,7 +12,7 @@ public class MagneticObj : MonoBehaviour
         set { isControllable = value; }
     }
 
-    private Vector2 newDir;
+    private Vector3 newDir;
 
     public Transform cameraPoint; 
     public float movementSpeed;
@@ -30,8 +30,22 @@ public class MagneticObj : MonoBehaviour
     public Quaternion initialRot;
 
     private CameraMove cameraMove;
-    private PlayerMovement_Jerzy player;
+    private PlayerMovement_Jerzy playerMovement;
 
+    private PlayerInput playerInput;
+
+    private Vector3 pointA, pointB;
+    
+    [System.Serializable]
+    public class moveNodes
+    {
+        public Transform nodeA;
+        public Transform childA;
+        public Transform childB;
+    }
+    [SerializeField] public moveNodes[] network;
+
+    public LayerMask layer;
     void Start()
     {
         isControllable = false;
@@ -40,7 +54,12 @@ public class MagneticObj : MonoBehaviour
 
         cameraMove = FindObjectOfType<CameraMove>();
 
-        player = FindObjectOfType<PlayerMovement_Jerzy>();
+        playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
+
+        playerInput = FindObjectOfType<PlayerInput>();
+
+        pointA = pointB = transform.position;
+        newDir = Vector3.zero;
     }
 
     void Update()
@@ -56,34 +75,58 @@ public class MagneticObj : MonoBehaviour
 
             if (T >= lerpDuration)
             {
+                playerMovement.LockPlayerMovement();
+
                 isLerping = false;
                 IsControllable = true;
-                player.usingWand = true;
+                playerMovement.usingWand = true;
                 T = 0;
             }
         }
         else if(isControllable)
         {
-            newDir = Mouse.current.delta.ReadValue().normalized; 
-
-            transform.position += new Vector3(newDir.x, 0.0f, newDir.y) * movementSpeed * Time.deltaTime; 
-
-            if(Mouse.current.leftButton.isPressed)
+            newDir =  (Quaternion.Euler(transform.rotation.eulerAngles) * playerInput.GetMovementVector()).normalized;
+            foreach (var item in network)
             {
-                //Reset cursor visibility
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
+                if(Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(item.nodeA.position.x, item.nodeA.position.z)) < 0.05f)
+                {
+                    float dot1 = 0;
+                    float dot2 = 0;
+                    if (item.childA != null) dot1 = Vector2.Dot(new Vector2(newDir.x, newDir.z), new Vector2(item.childA.position.x, item.childA.position.z));
+                    if (item.childB != null) dot2 = Vector2.Dot(new Vector2(newDir.x, newDir.z), new Vector2(item.childB.position.x, item.childB.position.z));
+                    pointA = item.nodeA.position;
+                    if (item.childA != null && dot1 > dot2)
+                        pointB = item.childA.position;
+                    else if (item.childB != null && dot1 < dot2)
+                        pointB = item.childB.position;
+                }
+            }
+            
+            Vector3 moveToB = (pointB - pointA).normalized;
+            Vector3 moveToA = (pointA - pointB).normalized;
 
-                //Reset camera pos
-                Camera.main.transform.position = initialPos;
-                Camera.main.transform.rotation = initialRot;
+            Debug.Log(newDir);
 
-                //Exit controllable state
-                isControllable = false;
-
-                cameraMove.canMove = true;
-
-                player.usingWand = false;
+            if (newDir != Vector3.zero && Vector3.Dot(moveToB, newDir) > 0.1f && Vector2.Dot(new Vector2(moveToB.x, moveToB.z), new Vector2(transform.position.x - pointB.x, transform.position.z - pointB.z)) < 0 )
+            {
+                Vector3 mod = new Vector3((GetComponent<BoxCollider>().size.x / 2) * moveToB.x, 0.0f, (GetComponent<BoxCollider>().size.z/2) * moveToB.z );
+                var ray = new Ray(transform.position + mod, moveToB); 
+                if (!Physics.Raycast(ray, out RaycastHit hit, 0.05f, layer))
+                { 
+                    Debug.Log("Did not Hit");
+                    transform.Translate(moveToB * movementSpeed * Time.deltaTime, Space.World);  
+                }
+            }
+            else if(newDir != Vector3.zero && Vector3.Dot(moveToB, newDir) < -0.1f && Vector2.Dot(new Vector2(moveToA.x, moveToA.z), new Vector2(transform.position.x - pointA.x, transform.position.z - pointA.z)) < 0)
+            {
+                Vector3 mod = new Vector3((GetComponent<BoxCollider>().size.x / 2) * moveToA.x, 0.0f, (GetComponent<BoxCollider>().size.z / 2) * moveToA.z);
+                var ray = new Ray(transform.position + mod, moveToA); 
+                
+                if (!Physics.Raycast(ray, out RaycastHit hit, 0.01f, layer))
+                { 
+                    Debug.Log("Did not Hit"); 
+                    transform.Translate(moveToA * movementSpeed * Time.deltaTime, Space.World);
+                }
             }
         }
     }
@@ -94,6 +137,28 @@ public class MagneticObj : MonoBehaviour
         {
             Camera.main.transform.position = cameraPoint.position;
             Camera.main.transform.rotation = cameraPoint.rotation;
+        }
+    }
+
+
+    public void StopInteraction()
+    {
+        if (isControllable)
+        {
+            //Reset cursor visibility
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
+            //Reset camera pos
+            Camera.main.transform.position = initialPos;
+            Camera.main.transform.rotation = initialRot;
+
+            //Exit controllable state
+            isControllable = false;
+
+            cameraMove.canMove = true;
+
+            playerMovement.usingWand = false;
         }
     }
 }

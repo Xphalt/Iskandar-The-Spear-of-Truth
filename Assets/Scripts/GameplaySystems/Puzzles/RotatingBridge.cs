@@ -15,6 +15,7 @@ public class RotatingBridge : MonoBehaviour
 
     private void Start()
     {
+        angleRotated = rotationAngle;
         rotatePoint = transform.position;
         rotatePoint.y = bridge.position.y;
         puzzleCollider = GetComponent<Collider>();

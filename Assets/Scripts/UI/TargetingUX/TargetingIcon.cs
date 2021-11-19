@@ -54,7 +54,7 @@ public class TargetingIcon : MonoBehaviour
             transform.position = screenPoint;
 
             // If the enemy dies disable the icon
-            if (targetedStats.IsDead())
+            if (targetedStats && targetedStats.IsDead())
             {
                 SetTarget(null, TARGETING_TYPE.NUM_TARGETING_TYPES);
             }

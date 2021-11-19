@@ -1869,6 +1869,7 @@ GameObject:
   - component: {fileID: 6613316287000152106}
   - component: {fileID: 6613316287000152109}
   - component: {fileID: 6613316287000152108}
+  - component: {fileID: 3073854061457066833}
   m_Layer: 5
   m_Name: OpenWeaponSelectionButton (1)
   m_TagString: Untagged
@@ -2001,6 +2002,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 3073854061457066833}
+        m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
+        m_MethodName: PlayAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &6613316287000152108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2019,6 +2032,19 @@ MonoBehaviour:
   slotPrefab: {fileID: 3233363519999552831, guid: 3e93dc32dc09b864d808caddce176f9e, type: 3}
   UIDescription: {fileID: 7698557070219490439, guid: 284abbd8e50271742b86e65d8f55c83c, type: 3}
   parent: {fileID: 6613316287189213256}
+--- !u!114 &3073854061457066833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6613316287000152111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98168ab56d4687b4b9e19e4bdb9eb546, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: 0b344276d7acd5340a39dd86e93d361e, type: 3}
 --- !u!1 &6613316287189213259
 GameObject:
   m_ObjectHideFlags: 0
@@ -3183,6 +3209,7 @@ GameObject:
   - component: {fileID: 6613316287789239391}
   - component: {fileID: 6613316287789239390}
   - component: {fileID: 6613316287789239361}
+  - component: {fileID: 7243430091156301732}
   m_Layer: 5
   m_Name: OpenArmorSelectionButton (1)
   m_TagString: Untagged
@@ -3315,6 +3342,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 7243430091156301732}
+        m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
+        m_MethodName: PlayAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &6613316287789239361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3333,6 +3372,19 @@ MonoBehaviour:
   slotPrefab: {fileID: 3233363519999552831, guid: 3e93dc32dc09b864d808caddce176f9e, type: 3}
   UIDescription: {fileID: 7698557070219490439, guid: 284abbd8e50271742b86e65d8f55c83c, type: 3}
   parent: {fileID: 6613316286398529475}
+--- !u!114 &7243430091156301732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6613316287789239360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98168ab56d4687b4b9e19e4bdb9eb546, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: d7056c785fc2f98458fb565e58b3d8eb, type: 3}
 --- !u!1 &6613316287815938857
 GameObject:
   m_ObjectHideFlags: 0
