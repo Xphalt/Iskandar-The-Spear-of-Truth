@@ -40,10 +40,13 @@ public class EnemyBase : Patrol
     protected float curAttackDmg = 0;
 
     protected bool MeleeAvailable => availableAttacks[(int)AttackTypes.Melee] &&
-        (attackTimers[(int)AttackTypes.Melee] >= attackCooldowns[(int)AttackTypes.Melee]);
-    protected bool ChargeAvailable => availableAttacks[(int)AttackTypes.Charge] && (detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge] &&
+        (attackTimers[(int)AttackTypes.Melee] >= attackCooldowns[(int)AttackTypes.Melee]) && 
+        detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget());
+    protected bool ChargeAvailable => availableAttacks[(int)AttackTypes.Charge] && 
+        (detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Charge] &&
         (attackTimers[(int)AttackTypes.Charge] >= attackCooldowns[(int)AttackTypes.Charge]);
     protected bool ShootAvailable => availableAttacks[(int)AttackTypes.Shoot] &&
+        (detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Shoot] && 
         (attackTimers[(int)AttackTypes.Shoot] >= attackCooldowns[(int)AttackTypes.Shoot]);
     
     protected bool attackEnded = true;
@@ -77,8 +80,6 @@ public class EnemyBase : Patrol
     public bool PatrolAvailable => agent.enabled && ListOfNodes.Length > 0;
 
     public bool isBoss = false;
-
-    [HideInInspector]
 
     public override void Start()
     {
@@ -275,27 +276,21 @@ public class EnemyBase : Patrol
 
     protected virtual void MeleeAttack()
     {
-        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
-        {
-            _myAnimator.SetTrigger("Hit");
+        _myAnimator.SetTrigger("Hit");
 
-            attackUsed = true;
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector3.zero;
-        }
+        attackUsed = true;
+        curAttack = AttackTypes.Melee;
+        MyRigid.velocity = Vector3.zero;
     }
 
     protected virtual void ShootAttack()
     {
-        if ((detector.GetCurTarget().position - transform.position).magnitude <= attackRanges[(int)AttackTypes.Shoot])
-        {
-            _myAnimator.SetTrigger("Shoot");
+         _myAnimator.SetTrigger("Shoot");
 
-            attackUsed = true;
-            curAttack = AttackTypes.Shoot;
-            MyRigid.velocity = Vector3.zero;
-            targeting = true;
-        }
+        attackUsed = true;
+        curAttack = AttackTypes.Shoot;
+        MyRigid.velocity = Vector3.zero;
+        targeting = true;
     }
 
     public void FireShot()
