@@ -28,7 +28,13 @@ public class Spirit : EnemyBase
         curAttackDmg = deathDmg;
 
         //if (detector.GetCurTarget().TryGetComponent(out PlayerMovement_Jerzy move))
+        //    move.KnockBack(transform.position, knockbackForce, knockbackDuration);
+    }
+
+    protected override void OnTriggerEnter(Collider collider)
+    {
+        if (detector.IsTarget(collider.transform) && isDead)
             move.KnockBack(transform.position, knockbackForce, knockbackDuration);
     }
-    
+
 }
