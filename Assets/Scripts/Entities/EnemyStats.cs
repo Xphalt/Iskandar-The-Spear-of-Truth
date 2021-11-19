@@ -8,7 +8,7 @@ public class EnemyStats : StatsInterface
 
     public bool vulnerable = true;
     private float deathTimer = 0.0f;
-    public float despawnTime;
+    public float despawnTime = 4;
     private bool isDead = false;
     public bool IsDead() { return isDead; }
     EntityDrop drops;
@@ -21,8 +21,9 @@ public class EnemyStats : StatsInterface
 
     private void Update()
     {
-        if(isDead)
+        if(health <= 0)
         {
+            isDead = true;
             //timer til gameobj disable
             deathTimer += Time.deltaTime;
             if (deathTimer >= despawnTime)

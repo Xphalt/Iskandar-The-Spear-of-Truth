@@ -1271,6 +1271,7 @@ MonoBehaviour:
   chargeSpeed: 0
   chargeDistanceMult: 1
   chargeRaycast: 0
+  chargeSelfDamage: 0
   chargeLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -1278,12 +1279,15 @@ MonoBehaviour:
   shootPoint: {fileID: 0}
   projectileSpeed: 0
   minChaseRadius: 0
+  isBoss: 0
+  blockDuration: 0
+  servantCooldowns:
+  - 0
+  - 0
+  - 0
   slashDamage: 0
-  slashCooldown: 0
   swingDamage: 0
-  swingCooldown: 0
   counterDamage: 0
-  tauntCooldown: 0
 --- !u!114 &4772401355995896592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1319,7 +1323,7 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 10
   vulnerable: 1
-  despawnTime: 0
+  despawnTime: 10
 --- !u!137 &4288125778484320569
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -1455,6 +1459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnDrop: 1
   disableDelay: 0
   dropChances:
   - 25

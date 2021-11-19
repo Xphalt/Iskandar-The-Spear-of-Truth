@@ -48,6 +48,7 @@ public class DarkLordPhase1 : EnemyBase
         _myAnimator.SetBool("IsAggroed", true);
 
         for (int t = 0; t < phaseOneTimers.Length; t++) phaseOneTimers[t] = phaseOneCooldowns[t];
+        isBoss = true;
     }
 
     public override void Attack()

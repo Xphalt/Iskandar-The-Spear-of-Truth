@@ -44,6 +44,7 @@ public class Anubis : EnemyBase
         }
 
         _atHalfHealth = false;
+        isBoss = true;
     }
 
     public override void Update()
