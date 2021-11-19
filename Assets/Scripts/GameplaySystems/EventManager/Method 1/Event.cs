@@ -187,8 +187,11 @@ public class QuestLogEntryEvent : Event
 {
     public override void TriggerEvent()
     {
-
+        questLog.AddQuest(quest);
     }
+
+    [SerializeReference] private QuestLogManager questLog;
+    [SerializeReference] private QuestObject quest;
 }
 
 //---------------- Sal Changes ----------------
@@ -239,6 +242,18 @@ public class ChangeSceneEvent : Event
     } 
 
     [SerializeField] private int sceneIndex;
+}
+
+//Matt's changes
+public class TeleportObjectEvent : Event
+{
+    public override void TriggerEvent()
+    {
+        objectToTeleport.transform.position = teleportPos.position;
+    }
+
+    [SerializeField] GameObject objectToTeleport;
+    [SerializeField] Transform teleportPos;
 }
 
 //[System.Serializable]

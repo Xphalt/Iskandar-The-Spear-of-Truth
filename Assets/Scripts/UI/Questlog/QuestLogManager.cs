@@ -20,7 +20,7 @@ public class QuestLogManager : MonoBehaviour
     public TMP_Text QStatus;
     public TMP_Text QMessage;
 
-    private void Start()
+    private void Awake()
     {
         QuestPopup.SetActive(false);
         QuestInfoText = GameObject.Find("TextQuestDescription");
