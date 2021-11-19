@@ -1915,7 +1915,7 @@ GameObject:
   - component: {fileID: 338977112}
   - component: {fileID: 338977113}
   m_Layer: 7
-  m_Name: SpiritSummoned
+  m_Name: SpiritFemale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2000,7 +2000,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300060, guid: b69174d668ba02d44b14a084b217670a, type: 3}
+  m_Mesh: {fileID: 4300050, guid: b69174d668ba02d44b14a084b217670a, type: 3}
   m_Bones:
   - {fileID: 724559345382188173}
   - {fileID: 724559345382157323}
@@ -2126,7 +2126,7 @@ BoxCollider:
   m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1.798233}
-  m_Center: {x: 0.25, y: 1, z: 0.0141067505}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &338977110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2139,7 +2139,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7cea166cebf49428d29f7813550d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ListOfNodes: []
+  ListOfNodes:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   pauseTime: 0
   _stopAtLastWaypoint: 0
   _scriptToEnable: {fileID: 0}
@@ -2231,7 +2234,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   viewAngle: 360
-  detectionRadius: 20
+  detectionRadius: 8
 --- !u!1 &724559345382510387
 GameObject:
   m_ObjectHideFlags: 0
