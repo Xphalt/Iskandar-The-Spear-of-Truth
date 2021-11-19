@@ -5,10 +5,12 @@ using UnityEngine;
 public class Spirit : EnemyBase
 {
     public float knockbackForce, knockbackDuration, deathDmg;
+    private PlayerMovement_Jerzy move;
 
     public override void Start()
     {
         base.Start();
+        move = GameObject.Find("Player").GetComponent<PlayerMovement_Jerzy>();
     }
 
     public override void Update()
@@ -16,17 +18,16 @@ public class Spirit : EnemyBase
         if(!isDead)
         {
             base.Update();
-
-            if (stats.health <= 0)
-                curAttackDmg = deathDmg;
-
+                
             SetMovementAnim();
         }
     }
 
     public void DeathExplode()
     {
-        if (detector.GetCurTarget().TryGetComponent(out PlayerMovement_Jerzy move))
+        curAttackDmg = deathDmg;
+
+        //if (detector.GetCurTarget().TryGetComponent(out PlayerMovement_Jerzy move))
             move.KnockBack(transform.position, knockbackForce, knockbackDuration);
     }
     
