@@ -6,13 +6,18 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : StatsInterface
 {
     private PlayerAnimationManager playerAnimation;
+    private PlayerCombat_Jerzy playerCombat;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
     public GameObject listOfObjs;
 
     internal AccessoryObject Accessory; 
     public ItemObject_Sal revivalGem;
-    private string noWeaponAddress, weaponAddress;
+
+    #region Weapon Model Variables
+    private GameObject swordEmpty;
+    public GameObject propSwordHolder, ironSword, falchion, stick;
+    #endregion
 
     /*______________________________Damage_Flash_Variables_______________________________*/
     public SkinnedMeshRenderer MeshRenderer;
@@ -53,10 +58,14 @@ public class PlayerStats : StatsInterface
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+        playerCombat = GetComponent<PlayerCombat_Jerzy>();
     }
 
     private void Start()
     {
+        //Assigning variable to the referrenced variable
+        swordEmpty = playerCombat.swordEmpty;
+
         Origin = MeshRenderer.material.color;
 
         damage = BASE_DAMAGE;
@@ -92,6 +101,10 @@ public class PlayerStats : StatsInterface
         }
 
         Bleed();
+
+        //This ensures that the gameobjects are controlled by Sword Empty GO
+        if (swordEmpty.activeInHierarchy) propSwordHolder.SetActive(true);
+        else propSwordHolder.SetActive(false);
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -188,8 +201,7 @@ public class PlayerStats : StatsInterface
                     case ObjectType.Weapon: 
                         damage -= ((WeaponObject_Sal)(temp)).damage;
                         spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
-                        GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
-
+                        GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost;
                         break;
                     case ObjectType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
@@ -226,6 +238,22 @@ public class PlayerStats : StatsInterface
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
                             GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
+                            #region Update Weapon on Player
+                            if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
+                            {
+                                swordEmpty.SetActive(true);
+
+                                if (temp.name == "Iron Sword")
+                                { ironSword.SetActive(true); falchion.SetActive(false); stick.SetActive(false); }
+
+                                else if (temp.name == "Sword of the Soulless ones")
+                                { ironSword.SetActive(false); falchion.SetActive(true); stick.SetActive(false); }
+
+                                else if (temp.name == "Stick")
+                                { ironSword.SetActive(false); falchion.SetActive(false); stick.SetActive(true); }
+                            }
+                            else swordEmpty.SetActive(false);
+                            #endregion
                             break;
                         case ObjectType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
