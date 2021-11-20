@@ -58,7 +58,7 @@ public class MagneticObj : MonoBehaviour
 
         playerInput = FindObjectOfType<PlayerInput>();
 
-        pointA = pointB = transform.position;
+        pointA = pointB = transform.position; 
         newDir = Vector3.zero;
     }
 
@@ -86,47 +86,58 @@ public class MagneticObj : MonoBehaviour
         else if(isControllable)
         {
             newDir =  (Quaternion.Euler(transform.rotation.eulerAngles) * playerInput.GetMovementVector()).normalized;
+
+            if(newDir != Vector3.zero)
             foreach (var item in network)
             {
-                if(Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(item.nodeA.position.x, item.nodeA.position.z)) < 0.05f)
+                if(Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(item.nodeA.position.x, item.nodeA.position.z)) < 0.06f)
                 {
+                    pointA = item.nodeA.position;
                     float dot1 = 0;
                     float dot2 = 0;
-                    if (item.childA != null) dot1 = Vector2.Dot(new Vector2(newDir.x, newDir.z), new Vector2(item.childA.position.x, item.childA.position.z));
-                    if (item.childB != null) dot2 = Vector2.Dot(new Vector2(newDir.x, newDir.z), new Vector2(item.childB.position.x, item.childB.position.z));
-                    pointA = item.nodeA.position;
+                    if (item.childA != null) dot1 = Vector2.Dot(new Vector2(newDir.x, newDir.z), new Vector2(item.childA.position.x - item.nodeA.position.x, item.childA.position.z - item.nodeA.position.z));
+                    if (item.childB != null) dot2 = Vector2.Dot(new Vector2(newDir.x, newDir.z), new Vector2(item.childB.position.x - item.nodeA.position.x, item.childB.position.z - item.nodeA.position.z));
                     if (item.childA != null && dot1 > dot2)
                         pointB = item.childA.position;
                     else if (item.childB != null && dot1 < dot2)
                         pointB = item.childB.position;
+
+                    break;
                 }
             }
             
             Vector3 moveToB = (pointB - pointA).normalized;
             Vector3 moveToA = (pointA - pointB).normalized;
 
-            Debug.Log(newDir);
-
             if (newDir != Vector3.zero && Vector3.Dot(moveToB, newDir) > 0.1f && Vector2.Dot(new Vector2(moveToB.x, moveToB.z), new Vector2(transform.position.x - pointB.x, transform.position.z - pointB.z)) < 0 )
-            {
-                Vector3 mod = new Vector3((GetComponent<BoxCollider>().size.x / 2) * moveToB.x, 0.0f, (GetComponent<BoxCollider>().size.z/2) * moveToB.z );
-                var ray = new Ray(transform.position + mod, moveToB); 
-                if (!Physics.Raycast(ray, out RaycastHit hit, 0.05f, layer))
-                { 
-                    Debug.Log("Did not Hit");
-                    transform.Translate(moveToB * movementSpeed * Time.deltaTime, Space.World);  
+            { 
+                float Distance = (moveToB.x != 0.0f ? GetComponent<BoxCollider>().size.x / 2.0f : moveToB.z != 0.0f ? GetComponent<BoxCollider>().size.z / 2.0f : 0.0f) + 0.9f;
+                RaycastHit[] hits = Physics.RaycastAll(transform.position, moveToB, Distance);
+                Debug.DrawRay(transform.position, moveToB, Color.white);
+
+                bool canMove = true;
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    RaycastHit hit = hits[i];
+
+                    if (hit.transform.gameObject != this && hit.transform.gameObject.tag == "MagneticObj")
+                        canMove = false; 
                 }
+                if(canMove) transform.Translate(moveToB * movementSpeed * Time.deltaTime, Space.World);
             }
             else if(newDir != Vector3.zero && Vector3.Dot(moveToB, newDir) < -0.1f && Vector2.Dot(new Vector2(moveToA.x, moveToA.z), new Vector2(transform.position.x - pointA.x, transform.position.z - pointA.z)) < 0)
-            {
-                Vector3 mod = new Vector3((GetComponent<BoxCollider>().size.x / 2) * moveToA.x, 0.0f, (GetComponent<BoxCollider>().size.z / 2) * moveToA.z);
-                var ray = new Ray(transform.position + mod, moveToA); 
-                
-                if (!Physics.Raycast(ray, out RaycastHit hit, 0.01f, layer))
-                { 
-                    Debug.Log("Did not Hit"); 
-                    transform.Translate(moveToA * movementSpeed * Time.deltaTime, Space.World);
+            { 
+                float Distance = (moveToA.x != 0.0f ? GetComponent<BoxCollider>().size.x / 2.0f : moveToA.z != 0.0f ? GetComponent<BoxCollider>().size.z / 2.0f : 0.0f) + 0.9f;
+                RaycastHit[] hits = Physics.RaycastAll(transform.position, moveToA, Distance);
+                Debug.DrawRay(transform.position, moveToA, Color.white);
+                bool canMove = true;
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    RaycastHit hit = hits[i]; 
+                    if (hit.transform.gameObject != this && hit.transform.gameObject.tag == "MagneticObj")
+                        canMove = false; 
                 }
+                if (canMove) transform.Translate(moveToA * movementSpeed * Time.deltaTime, Space.World);
             }
         }
     }
