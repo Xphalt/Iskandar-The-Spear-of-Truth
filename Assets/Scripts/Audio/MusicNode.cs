@@ -132,7 +132,7 @@ public class MusicNode : MonoBehaviour
     {
         if (other.tag == "Player" && !overridden)
         {
-            FadeInMusic();
+            ChangeToNextMusic();
         }
     }
 
@@ -142,5 +142,10 @@ public class MusicNode : MonoBehaviour
         {
             isPlaying = false;
         }
+    }
+
+    public void ChangeToNextMusic()
+    {
+        FadeInMusic();
     }
 }
