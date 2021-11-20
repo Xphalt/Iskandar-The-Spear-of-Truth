@@ -12,6 +12,10 @@ public class OneTimeTrigger : MonoBehaviour
 	}
 
     private Collider _collider;
+    public Collider Collider
+    {
+        get => _collider;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -27,4 +31,4 @@ public class OneTimeTrigger : MonoBehaviour
             _collider.enabled = false;
 		}
 	}
-}
+} 

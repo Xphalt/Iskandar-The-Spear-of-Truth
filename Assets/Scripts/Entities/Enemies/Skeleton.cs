@@ -38,7 +38,7 @@ public class Skeleton : EnemyBase
             }
         }
 
-        if (gameObject.GetComponent<EnemyStats>().MAX_HEALTH <= 0)
+        if (gameObject.GetComponent<EnemyStats>().health <= 0)
         {
             //die
             ResurrectChance();

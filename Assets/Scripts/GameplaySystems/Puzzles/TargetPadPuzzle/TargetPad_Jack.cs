@@ -16,10 +16,13 @@ public class TargetPad_Jack : MonoBehaviour
 
     private float _timeSinceLastTriggered = 0.0f;
 
+    private Collider puzzleCollider;
+
     // Start is called before the first frame update
     void Start()
     {
         _timeSinceLastTriggered = _wallAnimation.length;
+        puzzleCollider = GetComponent<Collider>();
     }
 
 	private void Update()
@@ -30,14 +33,16 @@ public class TargetPad_Jack : MonoBehaviour
     // When hit by the player all attached walls will alternate between being risen & fallen
 	private void OnTriggerEnter(Collider other)
 	{
-        if (other.CompareTag(_playerSwordTag) 
+        if (other.attachedRigidbody.TryGetComponent(out ThrowSword_Jerzy sword)
             && _timeSinceLastTriggered > _wallAnimation.length)
         {
-            foreach (Animator wallAnimator in _attachedWalls)
+            if (!sword.PuzzleHit(puzzleCollider))
             {
-                print("target hit");
-                wallAnimator.SetTrigger(_changeStateTrigger);
-                _timeSinceLastTriggered = 0.0f;
+                foreach (Animator wallAnimator in _attachedWalls)
+                {
+                    wallAnimator.SetTrigger(_changeStateTrigger);
+                    _timeSinceLastTriggered = 0.0f;
+                }
             }
         }
 	}

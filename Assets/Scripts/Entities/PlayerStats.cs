@@ -7,13 +7,18 @@ using System.Linq;
 public class PlayerStats : StatsInterface
 {
     private PlayerAnimationManager playerAnimation;
+    private PlayerCombat_Jerzy playerCombat;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
     public GameObject listOfObjs;
 
     internal AccessoryObject Accessory; 
     public ItemObject_Sal revivalGem;
-    private string noWeaponAddress, weaponAddress;
+
+    #region Weapon Model Variables
+    private GameObject swordEmpty;
+    public GameObject propSwordHolder, ironSword, falchion, stick;
+    #endregion
 
     /*______________________________Damage_Flash_Variables_______________________________*/
     public SkinnedMeshRenderer MeshRenderer;
@@ -54,14 +59,15 @@ public class PlayerStats : StatsInterface
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+        playerCombat = GetComponent<PlayerCombat_Jerzy>();
     }
 
     private void Start()
     {
-        Origin = MeshRenderer.material.color;
+        //Assigning variable to the referrenced variable
+        swordEmpty = playerCombat.swordEmpty;
 
-        noWeaponAddress = "Animation/PlayerAnimations/PlayerAnims/PlayerNoWeapon";
-        weaponAddress = "Animation/PlayerAnimations/PlayerAnims/Player";
+        Origin = MeshRenderer.material.color;
 
         damage = BASE_DAMAGE;
         defence = BASE_DEFENCE;
@@ -101,6 +107,10 @@ public class PlayerStats : StatsInterface
         Z = this.transform.position.z;
 
         Bleed();
+
+        //This ensures that the gameobjects are controlled by Sword Empty GO
+        if (swordEmpty.activeInHierarchy) propSwordHolder.SetActive(true);
+        else propSwordHolder.SetActive(false);
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -192,15 +202,14 @@ public class PlayerStats : StatsInterface
                 print(string.Concat("Removed ", p_slot.ItemObject, " on ", p_slot.parent.inventory.type, ", Allowed Items: ", string.Join(", ", p_slot.allowedItems)));
 
                 ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
-                switch (p_slot.ItemObject.type)
+                switch (p_slot.ItemObject.objType)
                 {
-                    case ItemType.Weapon: 
+                    case ObjectType.Weapon: 
                         damage -= ((WeaponObject_Sal)(temp)).damage;
                         spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
-                        GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
-
+                        GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost;
                         break;
-                    case ItemType.Armor:
+                    case ObjectType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
                         poisonProtection = false;
                         desertProtection = false;
@@ -229,19 +238,30 @@ public class PlayerStats : StatsInterface
                 if (p_slot.ItemObject != null)
                 {
                     ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
-                    switch (p_slot.ItemObject.type)
+                    switch (p_slot.ItemObject.objType)
                     {
-                        case ItemType.Weapon: 
+                        case ObjectType.Weapon: 
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
                             GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
-                            //This changes the animator controller from weaponless animations to weapon animations
+                            #region Update Weapon on Player
                             if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
-                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(weaponAddress);
-                            else
-                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(noWeaponAddress);
+                            {
+                                swordEmpty.SetActive(true);
+
+                                if (temp.name == "Iron Sword")
+                                { ironSword.SetActive(true); falchion.SetActive(false); stick.SetActive(false); }
+
+                                else if (temp.name == "Sword of the Soulless ones")
+                                { ironSword.SetActive(false); falchion.SetActive(true); stick.SetActive(false); }
+
+                                else if (temp.name == "Stick")
+                                { ironSword.SetActive(false); falchion.SetActive(false); stick.SetActive(true); }
+                            }
+                            else swordEmpty.SetActive(false);
+                            #endregion
                             break;
-                        case ItemType.Armor:
+                        case ObjectType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
                             poisonProtection = ((ArmorObject_Sal)(temp)).defValues.poisonProtection;
                             desertProtection = ((ArmorObject_Sal)(temp)).defValues.desertProtection;
@@ -263,7 +283,7 @@ public class PlayerStats : StatsInterface
     private void OnTriggerEnter(Collider other)
     {
         var item = other.GetComponent<GroundItem>();
-        if (item && item.itemobj.type != ItemType.Resource)
+        if (item && item.itemobj.objType != ObjectType.Resource)
         {
             if(equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
             {
@@ -369,7 +389,7 @@ public class PlayerStats : StatsInterface
     //Morgan's Event Manager: Health Set
     private void OnPlayerHealthSet(int sethealth)
     {
-        if (sethealth > 10) { sethealth = 10; }
+        if (sethealth > MAX_HEALTH) { sethealth = (int)MAX_HEALTH; }
         health = sethealth;
     }
 

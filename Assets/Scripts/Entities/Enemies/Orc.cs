@@ -20,17 +20,9 @@ public class Orc : EnemyBase
 
     public override void Update()
     {
-        if(stats.health <= 0)
-        {
-            _myAnimator.SetBool("IsDead", true);
-            _myCapsuleCol.enabled = false;
-        }
-
         if(!isDead)
         {
             base.Update();
-
-            SetMovementAnim();
 
             if (buffTimer < buffDuration)
             {
@@ -47,7 +39,7 @@ public class Orc : EnemyBase
         base.EndCharge();
     }
 
-    protected override void ChargeAttack()
+    public override void ChargeAttack()
     {
         base.ChargeAttack();
 

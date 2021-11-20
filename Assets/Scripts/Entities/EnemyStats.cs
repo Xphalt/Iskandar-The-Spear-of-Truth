@@ -4,27 +4,38 @@ using UnityEngine;
 
 public class EnemyStats : StatsInterface
 {
+    public static int EnemiesKilled = 0;
+
     public bool vulnerable = true;
     private float deathTimer = 0.0f;
-    public float despawnTime;
-    public bool isDead = false;
+
+    public float despawnTime = 4;
+    private bool isDead = false;
+    public bool IsDead() { return isDead; }
+
     EntityDrop drops;
 
     private void Start()
     {
+        health = MAX_HEALTH;
         drops = GetComponent<EntityDrop>();
     }
 
     private void Update()
     {
-        if(isDead)
+        if(health <= 0)
         {
+            isDead = true;
             //timer til gameobj disable
             deathTimer += Time.deltaTime;
             if (deathTimer >= despawnTime)
             {
-                drops.SpawnLoot();
+                ++EnemiesKilled;
+                if (drops) drops.SpawnLoot();
                 gameObject.SetActive(false);
+
+                FinalBurst explosion = transform.GetComponentInChildren<FinalBurst>(true);
+                if (explosion) explosion.Burst();
             }
         }
     }
@@ -44,6 +55,9 @@ public class EnemyStats : StatsInterface
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
     {
-        target.TakeDamage(amount, scriptedKill);
+        if (target)
+        {
+            target.TakeDamage(amount, scriptedKill);
+        }
     }
 }

@@ -38,6 +38,8 @@ public class Butcher : EnemyBase
     {
         base.Start();
         _myAnimator.SetBool("IsAggroed", true);
+        for (int t = 0; t < butcherTimers.Length; t++) butcherTimers[t] = butcherCooldowns[t];
+        isBoss = true;
     }
 
     // Update is called once per frame
@@ -90,7 +92,7 @@ public class Butcher : EnemyBase
         slashing = false;
     }
 
-    protected override void ChargeAttack()
+    public override void ChargeAttack()
     {
         _myAnimator.SetBool("IsCharging", true);
         attackUsed = true;
@@ -102,7 +104,6 @@ public class Butcher : EnemyBase
         transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
         base.ChargeAttack();
     }
-
 
     private void BleedSlashAttack()
     {

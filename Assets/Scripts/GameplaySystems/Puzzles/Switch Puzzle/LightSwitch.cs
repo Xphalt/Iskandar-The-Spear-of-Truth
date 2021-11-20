@@ -6,9 +6,12 @@ public class LightSwitch : MonoBehaviour
 {
     public SwitchManager manager;
 
-    private Material myMat;
+    public Material offMat, onMat;
+    private MeshRenderer myMesh;
 
-    public Color activatedCol, deactivatedCol;
+    public GameObject spotLight;
+
+    public bool startLight = false;
 
     //private bool activated = false;
 
@@ -17,21 +20,23 @@ public class LightSwitch : MonoBehaviour
         if (!manager) manager = FindObjectOfType<SwitchManager>();
         if (!manager) enabled = false;
 
-        myMat = GetComponent<MeshRenderer>().material;
-        myMat.color = deactivatedCol;
+        myMesh = GetComponent<MeshRenderer>();
+        TurnOff();
     }
 
     public void TurnOff()
     {
-        myMat.color = deactivatedCol;
+        spotLight.SetActive(startLight);
+        myMesh.material = offMat;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("playerSword"))
+        if (other.CompareTag("playerSword") && myMesh.material != onMat)
         {
+            myMesh.material = onMat;
+            spotLight.SetActive(!startLight);
             manager.RegisterSwitch(this);
-            myMat.color = activatedCol;
         }
     }
 }

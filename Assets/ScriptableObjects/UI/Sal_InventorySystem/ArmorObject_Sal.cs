@@ -37,7 +37,7 @@ public class ArmorObject_Sal : ItemObject_Sal
 
     public void Awake()
     {
-        type = ItemType.Armor; 
+        objType = ObjectType.Armor; 
     }
 
     public override void UseAfter()

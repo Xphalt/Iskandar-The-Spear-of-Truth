@@ -82,7 +82,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
     public void SwapItem(InventorySlot item1, InventorySlot item2)
     {
-        if ((item1 != null && item2 != null) && item2.CanPlaceInSlot(item1.ItemObject) && item1.CanPlaceInSlot(item2.ItemObject))
+        if (item1 != null && item2 != null)
         {
             InventorySlot temp = new InventorySlot(item2.item, item2.amount);
             item2.UpdateSlot(item1.item, item1.amount);
@@ -174,7 +174,7 @@ public delegate void SlotUpdated(InventorySlot p_slot);
 [System.Serializable]
 public class InventorySlot
 {
-    public ItemType[] allowedItems = new ItemType[0];
+    public ObjectType[] allowedItems = new ObjectType[0];
    
     [System.NonSerialized] //Prevents the save system from trying to save this variable (cause scriptable objects can't be saved)
     public UserInterface_Sal parent;
@@ -193,7 +193,7 @@ public class InventorySlot
         get
         {
             if(item.id >= 0)
-            {
+            { 
                 return parent.inventory.database.ItemObjects[item.id];
             }
             return null;
@@ -239,7 +239,7 @@ public class InventorySlot
             return true;
         for (int i = 0; i < allowedItems.Length; i++)
         {
-            if (p_itemObj.type == allowedItems[i]) //Can be equipped
+            if (p_itemObj.objType == allowedItems[i]) //Can be equipped
                 return true;
         }
         return false;

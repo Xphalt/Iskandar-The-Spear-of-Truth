@@ -77,7 +77,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     Quaternion targetRotation = new Quaternion();
 
-    public GameObject FadeUI;
+    public Fading FadeUI;
 
     private const int RAYCAST_LAYER_MASK = -1;
 
@@ -96,9 +96,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private const float MAX_SPEED_MULTIPLIER = 1;
     private const float MIN_SPEED_MULTIPLIER = 0.1f;
 
+    private float slowMult = 1;
+    private float slowDuration = 0;
+    private float slowTimer = 0;
+    private bool slowed = false;
+
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+        FadeUI = FindObjectOfType<Fading>();
     }
 
     void Start()
@@ -111,7 +117,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void Update()
     {
-
         timeSinceLastDash += Time.deltaTime;
         dashSpeedMultiplier += Time.deltaTime;
 
@@ -220,7 +225,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
             if (timeSinceRespawnStarted >= respawnTime)
             {
-                FadeUI.GetComponent<Fading>().FadeIn();
+                if (FadeUI) FadeUI.FadeIn();
                 transform.position = respawnPosition;
                 GetComponent<PlayerStats>().TakeDamage(respawnDamage);
                 respawning = false;
@@ -235,15 +240,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         if (timeSinceLastDash < dashDuration && !falling)
         {
-            //m_Rigidbody.velocity = dashDirection * dashForce * Time.deltaTime * (DASH_MULTIPLIER_NUMERATOR / dashSpeedMultiplier);
-            m_Rigidbody.velocity = dashDirection * dashForce;// / dashSpeedMultiplier;
+            m_Rigidbody.velocity = dashDirection * dashForce * slowMult;
         }
 
-        if (timeKnockedBack < knockBackDuration && knockedBack && !falling)
+        if (timeKnockedBack < knockBackDuration && knockedBack)
         {
             timeKnockedBack += Time.deltaTime;
-            //knockBackDirection * Time.deltaTime * knockBackSpeed * (knockBackDuraction/ timeKnockedBack + KNOCKBACK_DENOMINATOR_ADDITION);
-            m_Rigidbody.velocity = knockBackDirection * knockBackSpeed * (1 - timeKnockedBack / knockBackDuration * KNOCKBACK_DENOMINATOR_ADDITION);
+            Vector3 newVel = knockBackDirection * knockBackSpeed * (1 - timeKnockedBack / knockBackDuration * KNOCKBACK_DENOMINATOR_ADDITION);
+            newVel.y = m_Rigidbody.velocity.y;
+            m_Rigidbody.velocity = newVel;
             playerAnimation.Falling();
         }
         else if (knockedBack)
@@ -322,7 +327,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                     m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE);
                 }
 
-                m_Rigidbody.velocity = (direction * m_Speed);
+                m_Rigidbody.velocity = (direction * m_Speed * slowMult);
 
                 // this line fixes the thrown sword direction when locked onto an enemy
                 swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
@@ -331,7 +336,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             {
                 if (m_Input.magnitude > 0)
                 {
-                    Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier * gradualSpeedMultiplier);
+                    Vector3 newVel = m_Input.normalized * (m_Speed * speedMultiplier * gradualSpeedMultiplier * slowMult);
                     newVel.y = m_Rigidbody.velocity.y;
                     m_Rigidbody.velocity = (newVel);
                 }
@@ -358,12 +363,13 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (!Physics.Raycast(transform.position, Vector3.down, m_floorDistance, RAYCAST_LAYER_MASK, QueryTriggerInteraction.Ignore))
         {
             fallingSpeedMultiplier += Time.deltaTime;
-            newVel.y = -(fallingSpeed * fallingSpeedMultiplier * fallingSpeedMultiplier);
+            if (knockedBack) newVel.y -= fallingSpeed * Time.deltaTime;
+            else newVel.y = -(fallingSpeed * fallingSpeedMultiplier * fallingSpeedMultiplier);
             onGround = false;
         }
         else
         {
-            newVel.y = 0;
+            if (newVel.y < 0) newVel.y = 0;
             onGround = true;
             fallingSpeedMultiplier = 1;
         }
@@ -397,7 +403,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         _targetedTransform = newTargetedTransform;
     }
 
-    public void KnockBack(Vector3 otherPosition, float speed, float duration, float stunTime = 0)
+    public void KnockBack(Vector3 otherPosition, float speed, float duration, float stunTime = 0, float verticalVel = 0)
     {
         timeSinceLastDash = dashDuration;
         otherPosition = new Vector3(otherPosition.x, transform.position.y, otherPosition.z);
@@ -408,6 +414,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         knockedBack = true;
         stunnable = stunTime > 0;
         if (stunnable) stunDuration = stunTime;
+        if (verticalVel != 0)
+        {
+            knockBackDuration = verticalVel / fallingSpeed;
+            Launch(verticalVel);
+        }
     }
 
     private void EndKnockback(bool collided = false)
@@ -417,7 +428,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (stunnable && collided) Stun(stunDuration);
         stunnable = false;
         playerAnimation.Landing();
-        m_Rigidbody.velocity = Vector3.zero;
+        Vector3 newVel = Vector3.zero;
+        newVel.y = m_Rigidbody.velocity.y;
+        m_Rigidbody.velocity = newVel;
     }
 
     public void Stun(float duration = 1)
@@ -425,6 +438,13 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         stunned = true;
         stunDuration = duration;
         stunTimer = 0;
+    }
+
+    public IEnumerator Slow(float newMult, float duration)
+    {
+        slowMult = newMult;
+        yield return new WaitForSeconds(duration);
+        slowMult = 1;
     }
 
     public void Root(float duration)
@@ -446,7 +466,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public void Respawn(Vector3 position, float time, float damage)
     {
         timeSinceRespawnStarted = 0;
-        FadeUI.GetComponent<Fading>().FadeOut();
+        if (FadeUI) FadeUI.FadeOut();
         respawnDamage = damage;
         respawnPosition = position;
         respawnTime = time;
@@ -471,13 +491,36 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         gettingConsumed = true;
         playerAnimation.Falling();
         GetComponent<CapsuleCollider>().enabled = false;
-        FadeUI.GetComponent<Fading>().FadeOut();
+        if (FadeUI) FadeUI.FadeOut();
         LockPlayerMovement();
+    }
+
+    public void Launch(float yVel)
+    {
+        m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, yVel, m_Rigidbody.velocity.z);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         // Check for object type??
         if (knockedBack) EndKnockback(true);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+       if(other.tag.Contains("Floor"))
+        {
+            string tag = other.tag.Substring(6);
+            switch (tag)
+            {
+                case "stone":
+                    GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.stone;
+                    break;
+                case "dirt":
+                    GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.dirt;
+                    break;
+            }
+        }
+        
     }
 }

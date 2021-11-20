@@ -180,6 +180,21 @@ public class UIManager : MonoBehaviour
     }
     #endregion // Money Popup
 
+    #region Potion Interface
+    [SerializeField] private GameObject keyboardPotionInterface;
+    [SerializeField] private GameObject controllerPotionInterface;
+
+    private bool potionInterfaceOpen = false;
+    public bool IsPotionInterfaceOpen() { return potionInterfaceOpen;  }
+
+    public void TogglePotionInterface()
+    {
+        potionInterfaceOpen = !potionInterfaceOpen;
+        keyboardPotionInterface.SetActive(potionInterfaceOpen);
+        controllerPotionInterface.SetActive(potionInterfaceOpen);
+    }
+    #endregion // Potion Interface
+
     public static UIManager instance;
     private void Awake()
     {
@@ -188,6 +203,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments;
 
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();

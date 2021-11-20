@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType
+public enum ObjectType
 {
     Armor,
     Weapon, 
@@ -18,7 +18,7 @@ public abstract class ItemObject_Sal : ScriptableObject
 
     public Sprite uiDisplay;
     public GameObject model;
-    public ItemType type;
+    public ObjectType objType;
     [TextArea(10,15)] public string description;
     public bool stackable;
     public Item data = new Item();

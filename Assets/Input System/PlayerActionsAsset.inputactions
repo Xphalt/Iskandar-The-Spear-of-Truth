@@ -30,14 +30,6 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Inventory",
-                    "type": "Button",
-                    "id": "545b5370-4c67-4ac2-b6c3-f06524fe263a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "Dash",
                     "type": "Button",
                     "id": "68b87936-120f-489d-b638-d8fe014d77ae",
@@ -54,15 +46,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ItemSelectionWheel",
-                    "type": "Button",
-                    "id": "47d267fe-3a0d-468d-8a4b-abb7cc09cea4",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "ItemSelectionBar",
+                    "name": "PotionInterface",
                     "type": "Button",
                     "id": "e4e57a12-86b0-4380-a41f-c60f6c8e8951",
                     "expectedControlType": "Button",
@@ -97,6 +81,14 @@
                     "name": "UseItem",
                     "type": "Button",
                     "id": "d518c97e-9ea9-4a8a-8288-01a4e7bc2200",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "UseWand",
+                    "type": "Button",
+                    "id": "c27afdaf-5dd7-4a42-98e6-6f2b04545111",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -270,28 +262,6 @@
                 },
                 {
                     "name": "",
-                    "id": "0d19a8e1-8184-4a28-a2a0-f60cab849ea0",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard & mouse",
-                    "action": "Inventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e26a1943-39ef-406d-9c4a-3c42a206555d",
-                    "path": "<Gamepad>/select",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Inventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "f9616fa0-f67c-43fc-b783-79b8fd4563ed",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -336,45 +306,23 @@
                 },
                 {
                     "name": "",
-                    "id": "a80031d4-ae3d-454f-9682-039cd29b5731",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard & mouse",
-                    "action": "ItemSelectionWheel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "3f9e9fcf-a656-438e-9f3e-c9f95169fb3c",
-                    "path": "<Keyboard>/1",
+                    "path": "<Keyboard>/ctrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & mouse",
-                    "action": "ItemSelectionBar",
+                    "action": "PotionInterface",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "fd7ffb5f-945a-4e23-85e3-eb3b408d2443",
-                    "path": "<Keyboard>/2",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard & mouse",
-                    "action": "ItemSelectionBar",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6e573098-fe0c-4637-8f4a-40e70428390a",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard & mouse",
-                    "action": "ItemSelectionBar",
+                    "groups": "Gamepad",
+                    "action": "PotionInterface",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -443,6 +391,28 @@
                     "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0cef387-43d6-4291-9de9-7d0828080743",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "UseWand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd36bc35-5f84-480a-b3a6-a512d4023231",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & mouse",
+                    "action": "UseWand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -459,9 +429,33 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Inventory",
+                    "name": "Large_Potion",
                     "type": "Button",
-                    "id": "926481af-118a-4eef-a880-c62eaf4dd250",
+                    "id": "2ef55493-4299-42bf-a8be-b8fc9d7845eb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Medium_Potion",
+                    "type": "Button",
+                    "id": "c11d888f-b210-4f7f-989a-b2e58fc3c17f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Small_Potion",
+                    "type": "Button",
+                    "id": "5f104f97-a182-454e-9f55-f3cadb1c0d36",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "PotionInterface",
+                    "type": "Button",
+                    "id": "7b4db12f-38ec-4cbd-a8dd-9339f6678041",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -471,22 +465,110 @@
                 {
                     "name": "",
                     "id": "a0eda673-76e1-4132-a8b3-71c7b4a2bcaa",
-                    "path": "<Keyboard>/p",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard & mouse",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "1e5999cc-134d-400b-8d26-564848bc3818",
-                    "path": "<Keyboard>/escape",
+                    "id": "c8e970e0-54cf-4fe4-ac88-f6248368ee91",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d6297ba4-bc74-48d2-bdf8-76d2ec86e03d",
+                    "path": "<XInputController>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Large_Potion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "485476f6-bd7d-43fe-8421-9668376ea792",
+                    "path": "<DualShockGamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Large_Potion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf930343-3889-42b0-b939-fb85f817f222",
+                    "path": "<XInputController>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Medium_Potion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ad051192-abb2-4a79-a862-f75385ce9301",
+                    "path": "<DualShockGamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Medium_Potion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8f527e64-c834-4a3e-a5c6-6d7ddd89cc1f",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Small_Potion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ccfbc655-93c9-4bea-8850-9585410c0701",
+                    "path": "<DualShockGamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Small_Potion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f349f48d-f5a5-4e58-835c-c9b0f808875f",
+                    "path": "<Keyboard>/ctrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & mouse",
-                    "action": "Inventory",
+                    "action": "PotionInterface",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1ff7bc5-abdc-4401-bfd6-1fec9622b9e3",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "PotionInterface",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

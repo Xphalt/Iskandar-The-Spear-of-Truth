@@ -7,7 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public abstract class Condition
 {
-	public abstract bool TestCondition();
+	public abstract bool TestCondition(); 
 }
 
 
@@ -56,6 +56,67 @@ public class TriggerColliderCondition : Condition
 	}
 
 	[SerializeField] private OneTimeTrigger _oneTimeTrigger;
+}
+
+public class IsDeadCondition : Condition
+{
+    public override bool TestCondition()
+    {
+		if (playerStats.health <= 0)
+			return true;
+		return false;
+    }
+
+	[SerializeField] private PlayerStats playerStats;
+}
+
+public class EnemyDiedCondition : Condition
+{
+	public override bool TestCondition()
+	{
+		if (enemyStats.IsDead())
+			return true;
+		return false;
+	}
+
+	[SerializeField] private EnemyStats enemyStats;
+}
+
+public class DialogueEndedCondition : Condition
+{
+    public override bool TestCondition()
+    {
+		if (dlgManager.NewConversation == dialogue && dlgManager.ConversationIsEnded)
+			return true;
+		return false;
+    }
+
+	[SerializeField] private NewConversation dialogue;
+	[SerializeField] private DialogueManager dlgManager;
+}
+
+public class KillnEnemiesCondition : Condition
+{
+	public override bool TestCondition()
+	{
+		if (EnemyStats.EnemiesKilled >= amountToKill)
+			return true;
+		return false;
+	}
+
+	[SerializeField] private int amountToKill;
+}
+
+public class EventsCompleted : Condition
+{
+	public override bool TestCondition()
+	{
+		return EventManager.actions[ActionIndex].events[EventIndex].IsComplete;
+	}
+
+	[SerializeField] EventManager EventManager;
+	[SerializeField] int ActionIndex;
+	[SerializeField] int EventIndex;
 }
 
 //[System.Serializable]
