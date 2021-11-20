@@ -84,7 +84,8 @@ public class PanCameraWithTargetVectorEvent : PanCameraEvent
         GameObject coroutineObject = new GameObject();
         coroutineObject.AddComponent<SwapActiveCameraAfterPanObject>();
 
-        SwapActiveCameraAfterPanObject spawnedObjectScript = GameObject.Instantiate(coroutineObject).GetComponent<SwapActiveCameraAfterPanObject>();
+        // SwapActiveCameraAfterPanObject spawnedObjectScript = GameObject.Instantiate(coroutineObject).GetComponent<SwapActiveCameraAfterPanObject>();
+        SwapActiveCameraAfterPanObject spawnedObjectScript = coroutineObject.GetComponent<SwapActiveCameraAfterPanObject>();
         spawnedObjectScript.playerCamera = _playerCamera;
         spawnedObjectScript.panCamera = _panCamera;
         spawnedObjectScript.timeToPanFor = _cameraPanScript.TotalPanDuration;
@@ -101,7 +102,7 @@ public class SwapActiveCameraAfterPanObject : MonoBehaviour
     public Camera panCamera;
     public float timeToPanFor;
 
-    public void Initiate()
+    public void Start()
     {
         StartCoroutine(SwapActiveCameraAfterPan());
 	}
@@ -138,6 +139,7 @@ public class LockPlayerInputsEvent : Event
         if (_lockInputs)
         {
             GameEvents.current.LockPlayerInputs();
+            Debug.Log("locking");
         }
         else
         {
