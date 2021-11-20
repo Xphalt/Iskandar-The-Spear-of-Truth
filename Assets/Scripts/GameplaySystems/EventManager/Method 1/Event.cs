@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public abstract class Event
 {
-    public abstract void TriggerEvent(); 
+    public abstract void TriggerEvent();
+    [HideInInspector] public bool IsComplete = false;
 }
 
 [System.Serializable]
@@ -16,6 +17,7 @@ public class DoorLockEvent : Event
     public override void TriggerEvent()
     {
         doorScript.Locked = lockDoor;
+        IsComplete = true;
 	}
 
     [SerializeReference] public ScrDoor1 doorScript;
@@ -27,6 +29,7 @@ public class OpenCloseDoorEvent : Event
 	public override void TriggerEvent()
 	{
         doorScript.SwapDoor();
+        IsComplete = true;
 	} 
 
     [SerializeReference] public ScrDoor1 doorScript;
@@ -40,6 +43,7 @@ public class SpawnEntityEvent : Event
         foreach(GameObject gameObject in _objectsToActivate)
         {
             gameObject.SetActive(_activateObjects);
+            IsComplete = true;
 		}
     } 
 
@@ -55,12 +59,13 @@ public abstract class PanCameraEvent : Event
     [SerializeReference] protected CameraMove _cameraPanScript;
     [SerializeReference] protected Camera _playerCamera;
     [SerializeReference] protected Camera _panCamera;
+    [SerializeReference] protected float _cameraPanSpeed;
 
 	public override void TriggerEvent()
 	{
         _playerCamera.enabled = false;
         _panCamera.enabled = true;
-
+        _cameraPanScript.panSpeed = _cameraPanSpeed;
         // start coroutine to reenable camera at end of pan
 	}
 }
@@ -84,9 +89,11 @@ public class PanCameraWithTargetVectorEvent : PanCameraEvent
         GameObject coroutineObject = new GameObject();
         coroutineObject.AddComponent<SwapActiveCameraAfterPanObject>();
 
-        SwapActiveCameraAfterPanObject spawnedObjectScript = GameObject.Instantiate(coroutineObject).GetComponent<SwapActiveCameraAfterPanObject>();
+        // SwapActiveCameraAfterPanObject spawnedObjectScript = GameObject.Instantiate(coroutineObject).GetComponent<SwapActiveCameraAfterPanObject>();
+        SwapActiveCameraAfterPanObject spawnedObjectScript = coroutineObject.GetComponent<SwapActiveCameraAfterPanObject>();
         spawnedObjectScript.playerCamera = _playerCamera;
         spawnedObjectScript.panCamera = _panCamera;
+        spawnedObjectScript.CameraPanEvent = this;
         spawnedObjectScript.timeToPanFor = _cameraPanScript.TotalPanDuration;
         
 	} 
@@ -100,8 +107,9 @@ public class SwapActiveCameraAfterPanObject : MonoBehaviour
     public Camera playerCamera;
     public Camera panCamera;
     public float timeToPanFor;
+    public Event CameraPanEvent;
 
-    public void Initiate()
+    public void Start()
     {
         StartCoroutine(SwapActiveCameraAfterPan());
 	}
@@ -112,6 +120,7 @@ public class SwapActiveCameraAfterPanObject : MonoBehaviour
       
         panCamera.enabled = false;
         playerCamera.enabled = true;
+        CameraPanEvent.IsComplete = true;
 
         GameEvents.current.EnableUI();
         GameEvents.current.UnLockPlayerInputs();
@@ -138,11 +147,15 @@ public class LockPlayerInputsEvent : Event
         if (_lockInputs)
         {
             GameEvents.current.LockPlayerInputs();
+            Debug.Log("locking");
         }
         else
         {
             GameEvents.current.UnLockPlayerInputs();
 		}
+
+        IsComplete = true;
+
 	} 
 
     [SerializeReference] private bool _lockInputs;
@@ -160,6 +173,9 @@ public class UIEvent : Event
         {
             GameEvents.current.EnableUI();
 		}
+
+        IsComplete = true;
+
     }
      
     [SerializeReference] private bool _disableUI;
@@ -177,6 +193,7 @@ public class PreventPlayerInteractionEvent : Event
         {
             GameEvents.current.AllowPlayerInteraction();
 		}
+
 	} 
 
     [SerializeReference] private bool _disablePlayerInteraction;

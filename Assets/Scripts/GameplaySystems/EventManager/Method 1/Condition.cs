@@ -107,6 +107,18 @@ public class KillnEnemiesCondition : Condition
 	[SerializeField] private int amountToKill;
 }
 
+public class EventsCompleted : Condition
+{
+	public override bool TestCondition()
+	{
+		return EventManager.actions[ActionIndex].events[EventIndex].IsComplete;
+	}
+
+	[SerializeField] EventManager EventManager;
+	[SerializeField] int ActionIndex;
+	[SerializeField] int EventIndex;
+}
+
 //[System.Serializable]
 //public class DialogueCondition : Condition
 //{
