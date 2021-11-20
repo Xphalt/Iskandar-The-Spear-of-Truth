@@ -363,14 +363,7 @@ public class PlayerStats : StatsInterface
             }
         }
 
-        /*int deadenemycount = GetComponent<SaveData>().enemydeadlist.Count;
-        if (deadenemycount > 0)
-        {
-            for (int i = 0; i < deadenemycount; i++)
-            {
-                Destroy(GameObject.FindGameObjectsWithTag("Enemy").GetComponent<SaveData>().enemydeadlist[i]);
-            }
-        }*/
+
     }
 
     //Morgan's Event Manager: Health Set

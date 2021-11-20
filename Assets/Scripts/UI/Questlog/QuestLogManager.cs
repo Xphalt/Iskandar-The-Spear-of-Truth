@@ -8,7 +8,7 @@ public class QuestLogManager : MonoBehaviour
     [HideInInspector] public GameObject ButtonArea;
     [HideInInspector] public Button QuestButton;
 
-    public List<QuestObject> ListOfQuests = new List<QuestObject>();
+    public List<QuestObject> ListOfQuests = new List<QuestObject>(); // do we get this
     [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
 
     private void Awake()
