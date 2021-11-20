@@ -6,11 +6,12 @@ public class LightSwitch : MonoBehaviour
 {
     public SwitchManager manager;
 
-    private Material myMat;
+    public Material offMat, onMat;
+    private MeshRenderer myMesh;
 
-    public Color[] colourCycle;
+    public GameObject spotLight;
 
-    public int colourIndex = 0;
+    public bool startLight = false;
 
     //private bool activated = false;
 
@@ -19,28 +20,22 @@ public class LightSwitch : MonoBehaviour
         if (!manager) manager = FindObjectOfType<SwitchManager>();
         if (!manager) enabled = false;
 
-        myMat = GetComponent<MeshRenderer>().material;
-        colourIndex = 0;
-        myMat.color = colourCycle[0];
+        myMesh = GetComponent<MeshRenderer>();
+        TurnOff();
     }
 
     public void TurnOff()
     {
-        colourIndex = 0;
-        SetColour();
-    }
-
-    private void SetColour()
-    {
-        myMat.color = colourCycle[colourIndex];
+        spotLight.SetActive(startLight);
+        myMesh.material = offMat;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("playerSword") && colourIndex + 1 < colourCycle.Length)
+        if (other.CompareTag("playerSword") && myMesh.material != onMat)
         {
-            colourIndex++;
-            SetColour();
+            myMesh.material = onMat;
+            spotLight.SetActive(!startLight);
             manager.RegisterSwitch(this);
         }
     }

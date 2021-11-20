@@ -13,7 +13,7 @@ public class DarkEffigyThrowSword : MonoBehaviour
     public bool _returnToSender;
     private Rigidbody _myRigid;
 
-    private PlayerDetection detector;
+    //private PlayerDetection detector;
 
     private Vector3 _startingPosition;
 

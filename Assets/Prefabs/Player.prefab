@@ -2657,7 +2657,6 @@ GameObject:
   - component: {fileID: 7836609602608423898}
   - component: {fileID: 7836609602608423899}
   - component: {fileID: 7836609602608423897}
-  - component: {fileID: 7836609602608423902}
   - component: {fileID: 7836609602608423903}
   - component: {fileID: 7836609602608423901}
   - component: {fileID: 7836609602608423879}
@@ -2665,6 +2664,8 @@ GameObject:
   - component: {fileID: 7836609602608423916}
   - component: {fileID: 7836609602608423917}
   - component: {fileID: 7836609602608423919}
+  - component: {fileID: 4953817751786210287}
+  - component: {fileID: 6732282388987265989}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -2720,7 +2721,7 @@ MonoBehaviour:
   playerModel: {fileID: 7836609602608423891}
   m_Speed: 10
   m_floorDistance: 0.5
-  fallingSpeed: 7
+  fallingSpeed: 5
   falling: 0
   respawning: 0
   gettingConsumed: 0
@@ -2865,19 +2866,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7836609602608423902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7836609602608423891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98168ab56d4687b4b9e19e4bdb9eb546, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: 9cf56d0d1ab64dd4689218a5ab9f4382, type: 3}
 --- !u!114 &7836609602608423903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3102,6 +3090,47 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 85.93463, z: -7.749631}
     m_Extent: {x: 102.455925, y: 96.043976, z: 26.803024}
   m_DirtyAABB: 0
+--- !u!114 &4953817751786210287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7836609602608423891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 046f344524e373444869d827b8cf8284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepsStone:
+  - {fileID: 8300000, guid: e62c12a8718d535418e8465bd45ba837, type: 3}
+  - {fileID: 8300000, guid: 77e0004dc47b0814cb194ab85ad14b5a, type: 3}
+  - {fileID: 8300000, guid: 71e25096503f2a74fb98c19a67643d4a, type: 3}
+  footstepsDirt:
+  - {fileID: 8300000, guid: c1f7eab33e82580479bdda9ef3dbe177, type: 3}
+  - {fileID: 8300000, guid: 1ffb313553205d347bec9e9988210356, type: 3}
+  - {fileID: 8300000, guid: f1e7099431d2aee4e967d98a88b6b6cf, type: 3}
+  armourHit:
+  - {fileID: 8300000, guid: b8688ed43bfff0549b79fb21ed5a5a59, type: 3}
+  - {fileID: 8300000, guid: fbdcb4e4bbbbaec4a94f4cf0c29ad805, type: 3}
+  - {fileID: 8300000, guid: 2b5cce58e44e8154d86290b58fc70377, type: 3}
+  swordSwing:
+  - {fileID: 8300000, guid: 85abc354dc2c1f54580c637ad8782d6c, type: 3}
+  - {fileID: 8300000, guid: ca53d64ff49a9fb4f827eb8ee6d324f7, type: 3}
+  - {fileID: 8300000, guid: 3eda0289dc4c2dc48b48b52f806efc0d, type: 3}
+  - {fileID: 8300000, guid: 66ab1b338e96b4145a5d3d364aa5ef2a, type: 3}
+  - {fileID: 8300000, guid: ec3ba0cb0d6e2ff4594da6bb2f0f0067, type: 3}
+  - {fileID: 8300000, guid: df7052094abbce6409a0997e1390f3e6, type: 3}
+  audioType: 0
+  footstepType: 0
+--- !u!81 &6732282388987265989
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7836609602608423891}
+  m_Enabled: 1
 --- !u!1 &7914231431960018541
 GameObject:
   m_ObjectHideFlags: 0

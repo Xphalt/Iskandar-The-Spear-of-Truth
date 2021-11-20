@@ -102,7 +102,7 @@ public class CameraMove : MonoBehaviour
         panning = true;
     }
 
-    public void StartPan(Transform newPan, float linger = -1)
+    public void StartPan(Transform newPan, float linger = 1)
     {
         StartPan(newPan.position, linger);
     }
@@ -110,6 +110,8 @@ public class CameraMove : MonoBehaviour
     public void EndPan()
     {
         panLinger = 0;
+        Target = FindObjectOfType<PlayerMovement_Jerzy>().transform;
+        transform.position = new Vector3(Target.position.x, Yoffset, Zoffset);
         panTarget = transform.position;
         panDuration = panStart.GetDistance(panTarget) / panSpeed;
         panTimer = panDuration;
@@ -121,12 +123,15 @@ public class CameraMove : MonoBehaviour
 
         if (panTimer < panDuration)
             transform.position = Vector3.Lerp(panStart, panTarget, Mathf.SmoothStep(0, 1, panTimer / panDuration));
-        else if (panLinger >= 0)
+        else if (panTimer >= panDuration)
         {
             if (panTimer > panDuration + panLinger && panTimer < TotalPanDuration)
                 transform.position = Vector3.Lerp(panTarget, TargetPos, Mathf.SmoothStep(0, 1, (panTimer - panDuration - panLinger) / panDuration));
             else if (panTimer > TotalPanDuration)
+            {
+                EndPan();
                 panning = false;
+            }
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spirit : EnemyBase
 {
-    public GameObject DeathExplosive;
+    public float knockbackForce, knockbackDuration, deathDmg;
 
     public override void Start()
     {
@@ -13,13 +13,21 @@ public class Spirit : EnemyBase
 
     public override void Update()
     {
-        base.Update();
+        if(!isDead)
+        {
+            base.Update();
 
+            if (stats.health <= 0)
+                curAttackDmg = deathDmg;
+
+            SetMovementAnim();
+        }
     }
 
-    public void DeathDrop()
+    public void DeathExplode()
     {
-        Instantiate(DeathExplosive);
+        if (detector.GetCurTarget().TryGetComponent(out PlayerMovement_Jerzy move))
+            move.KnockBack(transform.position, knockbackForce, knockbackDuration);
     }
     
 }

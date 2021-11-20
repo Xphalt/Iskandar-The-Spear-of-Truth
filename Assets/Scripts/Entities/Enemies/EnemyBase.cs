@@ -100,6 +100,7 @@ public class EnemyBase : Patrol
             _myAnimator.SetTrigger("Dead");
             _myCapsuleCol.enabled = false;
             agent.enabled = false;
+            isDead = true;
         }
 
         agent.enabled = curState != EnemyStates.Attacking;

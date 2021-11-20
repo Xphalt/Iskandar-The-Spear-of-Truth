@@ -28,6 +28,7 @@ public class PlayerInput : MonoBehaviour
     // Reference Variables
     private PlayerActionsAsset _playerActionsAsset;
     private Rigidbody _playerRigidbody;
+    private PotionInterface potionInterface;
 
     [Header("Scripts References")]
     [SerializeField] private PlayerMovement_Jerzy _playerMovement_Jerzy;
@@ -42,6 +43,7 @@ public class PlayerInput : MonoBehaviour
     {
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
+        potionInterface = FindObjectOfType<PotionInterface>();
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         // Disable player interaction if pause is set
@@ -77,6 +79,7 @@ public class PlayerInput : MonoBehaviour
                 _changeItem.inventory.database.ItemObjects[_changeItem.inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id].UseCurrent();
         };
 
+        _playerActionsAsset.Player.UseWand.performed += _ => FindObjectOfType<MagneticObj>().StopInteraction();
         // Re-enable player actions if pause is triggered in pause menu
         _playerActionsAsset.UI.Pause.performed += _ =>
         {
@@ -88,47 +91,11 @@ public class PlayerInput : MonoBehaviour
             _UIManager.TogglePotionInterface();
             TogglePlayerInteraction(true);
         };
-        _playerActionsAsset.UI.Large_Potion.performed += _ =>
-        {
-            if (_UIManager.IsPotionInterfaceOpen())
-            {
-                // Use a large health potion 
-                var interfaces = FindObjectsOfType<PotionInterface>();
-                foreach (var item in interfaces)
-                {
-                    if (item.gameObject.activeSelf)
-                        item.UseItem(item.largePotion);
-                }
-            }
-        };
-        _playerActionsAsset.UI.Medium_Potion.performed += _ =>
-        {
-            if (_UIManager.IsPotionInterfaceOpen())
-            {
-                // Use a medium health potion
-                var interfaces = FindObjectsOfType<PotionInterface>();
-                foreach (var item in interfaces)
-                {
-                    if (item.gameObject.activeSelf)
-                        item.UseItem(item.mediumPotion);
-                }
-            }
-        };
-        _playerActionsAsset.UI.Small_Potion.performed += _ =>
-        {
-            if (_UIManager.IsPotionInterfaceOpen())
-            {
-                // Use a small health potion
-                var interfaces = FindObjectsOfType<PotionInterface>();
-                foreach (var item in interfaces)
-                {
-                    if (item.gameObject.activeSelf)
-                        item.UseItem(item.smallPotion);
-                }
-            }
-        };
 
-
+        _playerActionsAsset.UI.Large_Potion.performed += ctx => UsePotion(ctx, potionInterface.largePotion);
+        _playerActionsAsset.UI.Medium_Potion.performed += ctx => UsePotion(ctx, potionInterface.mediumPotion);
+        _playerActionsAsset.UI.Small_Potion.performed += ctx => UsePotion(ctx, potionInterface.smallPotion);
+  
         #endregion
     }
 
@@ -172,6 +139,27 @@ public class PlayerInput : MonoBehaviour
         Ray ray = GameObject.FindObjectOfType<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
 
         return ray.origin;
+    }
+
+    private void UsePotion(InputAction.CallbackContext ctx, ItemObject_Sal potion)
+    {
+        if (_UIManager.IsPotionInterfaceOpen())
+        {
+            var interfaces = FindObjectsOfType<PotionInterface>();
+
+            // Use a small health potion
+            foreach (var item in interfaces)
+            {
+                if (item.gameObject.activeSelf)
+                    item.UseItem(potion);
+            }
+        }
+    }
+
+    public Vector3 GetMovementVector()
+    {
+        Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
+        return (new Vector3(inputVector.x, 0.0f, inputVector.y));
     }
 
     private void OnEnable()
