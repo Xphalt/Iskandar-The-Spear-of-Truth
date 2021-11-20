@@ -79,7 +79,7 @@ public class PlayerInput : MonoBehaviour
                 _changeItem.inventory.database.ItemObjects[_changeItem.inventory.GetSlots[(int)EquipSlot.ItemSlot].item.id].UseCurrent();
         };
 
-        _playerActionsAsset.Player.UseWand.performed += _ => FindObjectOfType<MagneticObj>().StopInteraction();
+     //   _playerActionsAsset.Player.UseWand.performed += _ => FindObjectOfType<MagneticObj>().StopInteraction();
         // Re-enable player actions if pause is triggered in pause menu
         _playerActionsAsset.UI.Pause.performed += _ =>
         {

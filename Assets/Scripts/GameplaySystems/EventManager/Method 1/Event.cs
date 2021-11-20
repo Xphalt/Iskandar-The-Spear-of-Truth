@@ -55,12 +55,13 @@ public abstract class PanCameraEvent : Event
     [SerializeReference] protected CameraMove _cameraPanScript;
     [SerializeReference] protected Camera _playerCamera;
     [SerializeReference] protected Camera _panCamera;
+    [SerializeReference] protected float _cameraPanSpeed;
 
 	public override void TriggerEvent()
 	{
         _playerCamera.enabled = false;
         _panCamera.enabled = true;
-
+        _cameraPanScript.panSpeed = _cameraPanSpeed;
         // start coroutine to reenable camera at end of pan
 	}
 }
