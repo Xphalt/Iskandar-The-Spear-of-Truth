@@ -594,7 +594,7 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 10
   vulnerable: 1
-  despawnTime: 0
+  despawnTime: 10
 --- !u!114 &2778536449404161079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,8 +612,8 @@ MonoBehaviour:
   _stopAtLastWaypoint: 0
   _scriptToEnable: {fileID: 0}
   isChaser: 0
-  aggroedMoveSpeed: 0
-  findDelay: 0
+  aggroedMoveSpeed: 4
+  findDelay: 0.2
   availableAttacks: 000000
   attackDamages:
   - 0
@@ -630,6 +630,7 @@ MonoBehaviour:
   chargeSpeed: 15
   chargeDistanceMult: 0
   chargeRaycast: 0
+  chargeSelfDamage: 0
   chargeLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -637,6 +638,7 @@ MonoBehaviour:
   shootPoint: {fileID: 0}
   projectileSpeed: 0
   minChaseRadius: 2
+  isBoss: 0
   flurryChance: 50
   meleeRange: 2
   minJumpDistance: 25
@@ -649,6 +651,7 @@ MonoBehaviour:
   axeTransform: {fileID: 4397367601529911120}
   orcPrefabs:
   - {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
+  - {fileID: 2412644508514209846, guid: 038863d20cb91f84bae4dc1f5e6dc8d7, type: 3}
   minions: []
   minSpawnRadius: 5
   maxSpawnRadius: 10
@@ -705,6 +708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnDrop: 1
   disableDelay: 0
   dropChances:
   - 100

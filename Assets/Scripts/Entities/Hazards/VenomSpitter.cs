@@ -29,6 +29,7 @@ public class VenomSpitter : MonoBehaviour
             //playerPos.y = transform.y;
             Vector3 direction = (playerPos - transform.position).normalized;
             venomShot.GetComponent<VenomShot>().SetDirection(direction,venomSpeed,playerPos);
+            Physics.IgnoreCollision(GetComponent<Collider>(), venomShot.GetComponent<Collider>());
         }
     }
 }

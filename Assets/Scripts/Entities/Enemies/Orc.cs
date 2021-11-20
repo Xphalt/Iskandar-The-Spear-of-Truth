@@ -24,8 +24,6 @@ public class Orc : EnemyBase
         {
             base.Update();
 
-            SetMovementAnim();
-
             if (buffTimer < buffDuration)
             {
                 buffTimer += Time.deltaTime;

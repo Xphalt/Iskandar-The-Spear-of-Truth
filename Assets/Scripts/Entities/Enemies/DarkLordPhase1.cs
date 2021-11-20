@@ -15,6 +15,7 @@ public class DarkLordPhase1 : EnemyBase
 
     PhaseOneAttacks phaseOneAttack = PhaseOneAttacks.AttackTypesCount;
 
+    public GameObject SecondPhaseObj;
     public float[] meleeAttackDamages = new float[4];
     public float shieldStunDuration;
     private int curCombo = 0;
@@ -47,6 +48,7 @@ public class DarkLordPhase1 : EnemyBase
         _myAnimator.SetBool("IsAggroed", true);
 
         for (int t = 0; t < phaseOneTimers.Length; t++) phaseOneTimers[t] = phaseOneCooldowns[t];
+        isBoss = true;
     }
 
     public override void Attack()
@@ -116,6 +118,12 @@ public class DarkLordPhase1 : EnemyBase
             base.ChargeAttack();
         }
         else AttackEnd();
+    }
+
+    public void PhaseTransition()
+    {
+        SecondPhaseObj.transform.position = transform.position;
+        SecondPhaseObj.SetActive(true);
     }
 
     protected override void OnTriggerEnter(Collider collider)

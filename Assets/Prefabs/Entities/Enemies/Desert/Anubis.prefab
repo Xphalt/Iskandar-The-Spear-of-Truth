@@ -506,6 +506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnDrop: 1
   disableDelay: 0
   dropChances:
   - 100
@@ -628,7 +629,7 @@ BoxCollider:
   m_GameObject: {fileID: 8457191227336566581}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1.7187805, y: 2.080683, z: 1.0598984}
   m_Center: {x: 0.25, y: 0.9434749, z: 1.0130577}
@@ -719,7 +720,7 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 0
   vulnerable: 1
-  despawnTime: 0
+  despawnTime: 10
 --- !u!114 &3093256775488984866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -763,6 +764,7 @@ MonoBehaviour:
   shootPoint: {fileID: 8454632486449883541}
   projectileSpeed: 20
   minChaseRadius: 1
+  isBoss: 0
   healthTornadoTriggers:
   - 100
   - 50

@@ -1915,7 +1915,7 @@ GameObject:
   - component: {fileID: 338977112}
   - component: {fileID: 338977113}
   m_Layer: 7
-  m_Name: Spirit
+  m_Name: SpiritSummoned
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2069,6 +2069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnDrop: 1
   disableDelay: 0
   dropChances:
   - 50
@@ -2169,6 +2170,7 @@ MonoBehaviour:
   shootPoint: {fileID: 0}
   projectileSpeed: 0
   minChaseRadius: 1
+  isBoss: 0
   knockbackForce: 10
   knockbackDuration: 1
   deathDmg: 9999
@@ -2229,7 +2231,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   viewAngle: 360
-  detectionRadius: 8
+  detectionRadius: 20
 --- !u!1 &724559345382510387
 GameObject:
   m_ObjectHideFlags: 0

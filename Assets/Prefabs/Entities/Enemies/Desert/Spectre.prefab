@@ -2217,6 +2217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnDrop: 1
   disableDelay: 0
   dropChances:
   - 50
@@ -2360,11 +2361,14 @@ MonoBehaviour:
   shootPoint: {fileID: 0}
   projectileSpeed: 0
   minChaseRadius: 0
+  isBoss: 0
   minSpawnRadius: 5
   maxSpawnRadius: 8
   prefabsToSpawn:
-  - obj: {fileID: 724559345382510007, guid: ee087aac69faf354dbc00b346293cf5e, type: 3}
-    howMany: 4
+  - obj: {fileID: 724559345382510007, guid: 529d5253efe240a4d81b9fa2cfdefd4a, type: 3}
+    howMany: 2
+  - obj: {fileID: 5241255970902673552, guid: d6876139215c3824199bfbd4dc21c6ee, type: 3}
+    howMany: 2
   pillarFollowTime: 3
   pillarActivateDelay: 1
   pillarActiveTime: 1
@@ -2384,7 +2388,7 @@ BoxCollider:
   m_GameObject: {fileID: 7624934383407468239}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 0.5}
   m_Center: {x: 0.25, y: 1, z: 0.5}

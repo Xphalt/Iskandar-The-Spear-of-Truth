@@ -34,13 +34,6 @@ public class DarkEffigy : EnemyBase
         _stopMoving = false;
     }
 
-    public override void Update()
-    {
-        base.Update();
-
-        SetMovementAnim();
-    }
-
     public override void Attack()
     {
         if (CanAttack)

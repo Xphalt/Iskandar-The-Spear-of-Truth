@@ -39,6 +39,7 @@ public class Butcher : EnemyBase
         base.Start();
         _myAnimator.SetBool("IsAggroed", true);
         for (int t = 0; t < butcherTimers.Length; t++) butcherTimers[t] = butcherCooldowns[t];
+        isBoss = true;
     }
 
     // Update is called once per frame

@@ -47,6 +47,7 @@ public class Warchief : EnemyBase
         chargeDistance = minJumpDistance;
         chargeDuration = chargeDistance / chargeSpeed;
         for (int t = 0; t < warChiefTimers.Length; t++) warChiefTimers[t] = warChiefCooldowns[t];
+        isBoss = true;
     }
 
     public override void Update()
@@ -63,7 +64,7 @@ public class Warchief : EnemyBase
             if (detector.GetCurTarget()) transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
             if (blockTimer > blockDuration) EndBlock();
         }
-        else if (attackEnded && detector.GetCurTarget() != null)
+        else if (CanAttack)
         {
             attackUsed = false;
 
@@ -212,6 +213,10 @@ public class Warchief : EnemyBase
             hitCollider.enabled = false;
         }
 
-        if (other.CompareTag("playerSword") && blocking) EndBlock();
+        if (other.CompareTag("playerSword") && blocking)
+        {
+            EndBlock();
+            MeleeAttack();
+        }
     }
 }

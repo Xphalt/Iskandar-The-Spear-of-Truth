@@ -8,6 +8,7 @@ public class EntityDrop : MonoBehaviour
 {
     private float spawnSpeed = 150.0f;
 
+    public bool disableOnDrop = true;
     public float disableDelay = 0;
 
     [Range(1, 100)] public List<float> dropChances;
@@ -74,7 +75,7 @@ public class EntityDrop : MonoBehaviour
             DropSystem.Instance.IncreaseTentatives(type);
 
         //Destroy
-        if (type != EntityType.Chest)
+        if (type != EntityType.Chest && disableOnDrop)
             Destroy(gameObject, disableDelay); //GOING TO HANDLE THIS IN OTHER SCRIPTS
     }
 
