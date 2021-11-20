@@ -351,6 +351,7 @@ public class PlayerStats : StatsInterface
         Z = saveData.zpos;
         transform.position = new Vector3(X, Y, Z);
 
+        //saving enemies
         var dlist = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (var Enemy in dlist)
         {
@@ -361,6 +362,7 @@ public class PlayerStats : StatsInterface
             }
         }
 
+        //saving chests
         var colist = GameObject.FindGameObjectsWithTag("LootChest");
         foreach (var Chest in colist)
         {
@@ -372,6 +374,7 @@ public class PlayerStats : StatsInterface
             }
         }
 
+        //saving pots
         var plist = GameObject.FindGameObjectsWithTag("Pot");
         foreach (var Pot in plist)
         {
@@ -383,7 +386,25 @@ public class PlayerStats : StatsInterface
             }
         }
 
+            for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofcompletedevents(); i++)
+            {
+                GameObject.Find("GameplayEventManager").GetComponent<EventManager>().setCompleted(i, GameObject.Find("GameplayEventManager").GetComponent<EventManager>().totallynotcompletedevents[i].complete);
+                Debug.Log(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().totallynotcompletedevents[i].complete);
+            }
 
+        /*var qlist = GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofevents();
+        foreach (var eventt in qlist)
+        {
+            foreach (var ID in saveData.totallynotcompletedevents)
+            {
+                if (eventt == ID)
+                    eventt.IsComplete = true;
+                print("event is " + eventt.IsComplete);
+            }
+        }*/
+
+        //var eventman = GameObject.Find("GameplayEventManager");
+        //eventman.GetComponent<EventManager>().events;
     }
 
     //Morgan's Event Manager: Health Set

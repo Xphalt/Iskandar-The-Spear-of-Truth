@@ -27,6 +27,8 @@ public class SaveData
     public List<int> chestopenedlist = new List<int>();
     public List<int> potlist = new List<int>();
     public List<int> potbrokenlist = new List<int>();
+    //public List<EventAction> totallynotevents = new List<EventAction>();
+    public List<EventAction> totallynotcompletedevents = new List<EventAction>();
 
     //public List<EnemyData> enemyDataList = new List<EnemyData>();
 
@@ -51,7 +53,6 @@ public class SaveData
                 enemydeadlist.Add(enemy.gameObject.GetInstanceID());
             }
         }
-        Debug.Log(enemydeadlist);
 
         //list save chests
         foreach (var chest in GameObject.FindObjectsOfType<LootChest_Jerzy>())
@@ -62,7 +63,6 @@ public class SaveData
                 chestopenedlist.Add(chest.gameObject.GetInstanceID());
             }
         }
-        Debug.Log(chestopenedlist);
 
         //list save pots
         foreach (var pot in GameObject.FindObjectsOfType<ScrDestructablePot>())
@@ -73,7 +73,35 @@ public class SaveData
                 potbrokenlist.Add(pot.gameObject.GetInstanceID());
             }
         }
-        Debug.Log(potbrokenlist);
+        //Debug.Log(potbrokenlist);
+
+        //event completion
+        //completion = GameObject.Find("GameplayEventManager").GetComponent<EventAction>().complete;
+        /*foreach (var eventt in GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getCompleted)
+        {
+            totallynotevents.Add(eventt);
+            if (eventt.IsComplete)
+            {
+                totallynotcompletedevents.Add(eventt);
+            }
+        }*/
+
+        /*for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofevents(); i++) 
+        {
+            totallynotevents.Add(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getActions(i));
+        }
+        Debug.Log(totallynotevents);*/
+
+        for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofcompletedevents(); i++)
+        {
+                totallynotcompletedevents.Add(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getCompleted(i));
+        }
+
+
+
+
+
+        // for each (event = true)
 
         //string.split
 

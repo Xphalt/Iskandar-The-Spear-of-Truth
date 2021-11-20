@@ -10,7 +10,7 @@ public class EnemyStats : StatsInterface
     private float deathTimer = 0.0f;
 
     public float despawnTime = 4;
-    private bool isDead = false;
+    public bool isDead = false;
     public bool IsDead() { return isDead; }
 
     EntityDrop drops;

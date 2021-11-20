@@ -16,6 +16,9 @@ public class EventAction
 public class EventManager : MonoBehaviour
 {
     [SerializeReference] public List<EventAction> actions = new List<EventAction>();
+    
+    //morgan's smelly edit 
+    public List<EventAction> totallynotcompletedevents = new List<EventAction>();
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +29,16 @@ public class EventManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //mog>
+        totallynotcompletedevents.Clear();
+        for (int i = 0; i < actions.Count; i++)
+        {
+            if (actions[i].complete)
+            {
+                totallynotcompletedevents.Add(actions[i]);
+            }
+        }
+        //<mog
         foreach (EventAction action in actions)
         { 
             if (!action.complete)
@@ -51,5 +64,24 @@ public class EventManager : MonoBehaviour
                 }
             } 
         }
+
+        //morgan's wank edits yo bruv
+
+    }
+
+    //morgan save edit
+    public EventAction getCompleted(int x)
+    {
+        return totallynotcompletedevents[x];
+    }
+
+    public int getnumberofcompletedevents()
+    {
+        return totallynotcompletedevents.Count;
+    }
+
+    public void setCompleted(int x, bool IsCompleted)
+    {
+        totallynotcompletedevents[x].complete = IsCompleted;
     }
 }
