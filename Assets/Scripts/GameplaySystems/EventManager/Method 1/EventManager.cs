@@ -88,7 +88,7 @@ public class EventManager : MonoBehaviour
         return actions.Count();
     }
 
-
+/*
     public void RandomiseEvents()
     {
         string output = "";
@@ -105,4 +105,5 @@ public class EventManager : MonoBehaviour
             }
         }
     }
+    */
 }

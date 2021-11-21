@@ -359,9 +359,12 @@ public class PlayerStats : StatsInterface
         gems = saveData.gemcount;
         inventory.LoadStats(num);
         //equipment.LoadStats(num);
-        X = saveData.xpos;
-        Y = saveData.ypos;
-        Z = saveData.zpos;
+        if (sceneName == saveData.scenename)
+        {
+            X = saveData.xpos;
+            Y = saveData.ypos;
+            Z = saveData.zpos;
+        }
         transform.position = new Vector3(X, Y, Z);
         SaveNum = saveData.LastFileSaved;
         saveData.LastFileSaved = num;
@@ -404,7 +407,6 @@ public class PlayerStats : StatsInterface
         for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getamountofevents(); i++)
         {
             GameObject.Find("GameplayEventManager").GetComponent<EventManager>().setCompleted(i, saveData.totallynotevents[i].complete);
-            //Debug.Log(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().totallynotcompletedevents[i].complete);
         }
     }
 
