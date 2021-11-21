@@ -88,27 +88,13 @@ public class SaveData
             }
         }*/
 
-        /*for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofevents(); i++) 
-        {
-            totallynotevents.Add(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getActions(i));
-        }
-        Debug.Log(totallynotevents);*/
 
         totallynotevents.Clear();
-        string output = "";
         for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getamountofevents(); i++)
         {
             totallynotevents.Add(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getCompleted(i));
-             if (GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getcompletionbool(i))
-            {
-                output += ",T";
-            }
-            else
-            {
-                output += ",F";
-            }
         }
-        //Debug.Log(output);
+
 
 
         
