@@ -4,23 +4,26 @@ using TMPro;
 using UnityEngine.Localization.Settings;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Linq;
 
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown dropdown;
 
-    public GameObject[] saveSelections;
+    internal Dictionary<string, SaveData> saveSelections = new Dictionary<string, SaveData>();
+    public Transform[] buttons;
     public Sprite emptyIcon;
 
     public GameObject inputName;
     public GameObject continueDeletePanel;
-
-    int currentSaveFileSelected = 0;
+    public GameObject startPanel;
 
     // Populate the locale dropdown
     IEnumerator Start()
     {
-        UpdateSavePanel();
+        GetSaveFiles();
 
         // Wait for the localization system to initialize, loading Locales, preloading etc.
         yield return LocalizationSettings.InitializationOperation;
@@ -48,35 +51,36 @@ public class MenuManager : MonoBehaviour
 
     public void UpdateSavePanel()
     {
-        //Load Saves
+        startPanel.SetActive(true);
 
-        //For loop save file
+        for (int i = 0; i < saveSelections.Count; i++)
+        {
+           buttons[i].GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = saveSelections.ElementAt(i).Key;
+           //saveSelection[i].transform.getChild(1).getComponent<Image>().sprite = saveFile.icon ?
+           buttons[i].GetChild(0).GetComponent<Button>().onClick.RemoveAllListeners();
+           buttons[i].GetChild(0).GetComponent<Button>().onClick.AddListener(ShowContinueDelete);
+           buttons[i].GetChild(0).GetComponent<Button>().onClick.AddListener(HideInputField);
+         }
 
-        /*
-         * {
-         *      saveSelection[i].transform.getChild(0).getChild(0).getComponent<TextMeshProGUI>().text = saveFile.name?
-         *      saveSelection[i].transform.getChild(1).getComponent<Image>().sprite = saveFile.icon?    
-         *      saveSelections[i].transform.GetChild(0).GetComponent<Button>().onClick.AddListener(ShowContinueDelete);
-         * }
-         * 
-         * For loop saveSelection.length - saveFile.length
-         * {
-         *      saveSelection[i].transform.getChild(0).getChild(0).getComponent<TextMeshProGUI>().text = "Empty"
-         *      saveSelection[i].transform.getChild(1).getComponent<Image>().sprite = emptyIcon
-         *      saveSelections[i].transform.GetChild(0).GetComponent<Button>().onClick.AddListener(ShowInputField);
-         * }
-         * 
-         */
+        Debug.Log(buttons.Length + " - " + saveSelections.Count + " = " + (buttons.Length - saveSelections.Count));
+
+        for (int i = saveSelections.Count; i < buttons.Length - saveSelections.Count; i++)
+        {
+            buttons[i].GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Empty";
+            //saveSelection[i].transform.getChild(1).getComponent<Image>().sprite = emptyIcon
+            buttons[i].GetChild(0).GetComponent<Button>().onClick.RemoveAllListeners();
+            buttons[i].GetChild(0).GetComponent<Button>().onClick.AddListener(ShowInputField);
+            buttons[i].GetChild(0).GetComponent<Button>().onClick.AddListener(HideContinueDelete);
+        }       
     }
 
     public void ShowContinueDelete()
     {
         continueDeletePanel.SetActive(true);
     }
-
-    public void SetCurrentSaveFile(int file)
+    public void HideContinueDelete()
     {
-        currentSaveFileSelected = file;
+        continueDeletePanel.SetActive(false);
     }
 
     public void ShowInputField()
@@ -84,14 +88,41 @@ public class MenuManager : MonoBehaviour
         inputName.SetActive(true);
     }
 
+    public void HideInputField()
+    {
+        inputName.SetActive(false);
+    }
+
     public void StartGame()
     {
         //Start
     }
 
-    public void GetSaveFiles(int num)
+    public void GetSaveFiles()
     {
-        //SaveManager.LoadPlayerStats(num).
+        for (int i = 0; i < 5; i++)
+        {
+            SaveData save;
+            string name;
+
+            string saveDataPath = Application.persistentDataPath + "/Player_statsf" + i + ".txt";
+            string namePath = Application.persistentDataPath + "/Player_name" + i + ".txt";
+            if (File.Exists(saveDataPath) && File.Exists(namePath))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream fs = new FileStream(saveDataPath, FileMode.Open);
+
+                save = bf.Deserialize(fs) as SaveData;
+
+                fs = new FileStream(namePath, FileMode.Open);
+
+                name = bf.Deserialize(fs) as string;
+
+                saveSelections.Add(name, save);
+                fs.Close();
+                Debug.Log(name + " " + save);
+            }       
+        }               
     }
 
     public void DeleteSaveFile()
