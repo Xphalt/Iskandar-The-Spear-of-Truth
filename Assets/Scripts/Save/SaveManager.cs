@@ -12,7 +12,7 @@ public static class SaveManager
     public static void SavePlayerStats(PlayerStats playerStats, int num)
     {
         BinaryFormatter bf = new BinaryFormatter();
-
+        
         string filePath = Application.persistentDataPath + "/Player_statsf" + num + ".txt";
         FileStream fs = new FileStream(filePath, FileMode.Create);
 
@@ -34,20 +34,6 @@ public static class SaveManager
         bf.Serialize(fs, saveData);
         fs.Close();
     }
-
-    ///ENEMY SAVEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-    /*public static void SaveEnemyStats(EnemyStats Enemy, int num)
-    {
-        BinaryFormatter bf = new BinaryFormatter();
-
-        string filePath = Application.persistentDataPath + "/Enemyf" + num + ".txt";
-        FileStream fs = new FileStream(filePath, FileMode.Create);
-
-        SaveData saveData = new SaveData(Enemy);
-
-        bf.Serialize(fs, saveData);
-        fs.Close();
-    }*/
 
     public static SaveData LoadPlayerStats(int num)
     {
@@ -86,24 +72,5 @@ public static class SaveManager
             return null;
         }
     }
-
-    /*public static SaveData LoadEnemyStats(int num)
-    {
-        string filePath = Application.persistentDataPath + "/Enemy_Inventoryf" + num + ".txt";
-        if (File.Exists(filePath))
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = new FileStream(filePath, FileMode.Open);
-
-            SaveData saveData = bf.Deserialize(fs) as SaveData;
-            fs.Close();
-
-            return saveData;
-        }
-        else
-        {
-            return null;
-        }
-    }*/
 
 }

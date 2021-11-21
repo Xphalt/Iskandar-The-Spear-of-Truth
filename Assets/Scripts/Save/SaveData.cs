@@ -17,6 +17,7 @@ public class SaveData
     public float zpos;
     public int gemcount;
     public bool EnemyisDead;
+    public int LastFileSaved;
 
 
     public Inventory Storage;
@@ -41,6 +42,7 @@ public class SaveData
         ypos = playerstats.Y;
         zpos = playerstats.Z;
         gemcount = playerstats.gems;
+        LastFileSaved = playerstats.SaveNum;
 
         //Debug.Log(GameObject.FindGameObjectsWithTag("Enemy").Length );
 

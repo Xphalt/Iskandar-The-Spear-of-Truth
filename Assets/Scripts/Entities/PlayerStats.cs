@@ -85,6 +85,8 @@ public class PlayerStats : StatsInterface
 
         // list event in GameEvents.cs
         GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
+
+        TrueLoadStats(SaveNum);
     }
 
     private void Update()
@@ -101,16 +103,17 @@ public class PlayerStats : StatsInterface
             Accessory.UseCurrent(); //Use either ring or goggles  
         }
 
-        //MORGAN EDIT
-        X = this.transform.position.x;
-        Y = this.transform.position.y;
-        Z = this.transform.position.z;
-
         Bleed();
 
         //This ensures that the gameobjects are controlled by Sword Empty GO
         if (swordEmpty.activeInHierarchy) propSwordHolder.SetActive(true);
         else propSwordHolder.SetActive(false);
+
+        //MORGAN EDIT (gets player position for loading the game)
+        X = this.transform.position.x;
+        Y = this.transform.position.y;
+        Z = this.transform.position.z;
+        SaveStats(SaveNum);
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -324,24 +327,35 @@ public class PlayerStats : StatsInterface
     //Morgan's Save Edits
     Scene m_Scene;
     string sceneName;
-    public float X;
-    public float Y;
-    public float Z;
+    internal int SaveNum;
+    internal float X;
+    internal float Y;
+    internal float Z;
     public void SaveStats(int num)
     {
         
-        //SaveData saveData;
+        SaveData saveData = new SaveData();
         SaveManager.SavePlayerStats(this, num);
         inventory.SaveStats(num);
         //equipment.SaveStats(num);
         m_Scene = SceneManager.GetActiveScene();
         sceneName = m_Scene.name;
+        saveData.LastFileSaved = num;
+        SaveNum = saveData.LastFileSaved;
+        Debug.Log(num);
     }
 
     public void LoadStats(int num)
     {
         SaveData saveData = SaveManager.LoadPlayerStats(num);
-        //SceneManager.LoadScene(saveData.scenename, LoadSceneMode.Single);
+        SaveNum = saveData.LastFileSaved;
+        saveData.LastFileSaved = num;
+        SceneManager.LoadScene(saveData.scenename);
+    }
+
+    public void TrueLoadStats(int num)
+    {
+        SaveData saveData = SaveManager.LoadPlayerStats(num);
         health = saveData.health;
         gems = saveData.gemcount;
         inventory.LoadStats(num);
@@ -350,7 +364,9 @@ public class PlayerStats : StatsInterface
         Y = saveData.ypos;
         Z = saveData.zpos;
         transform.position = new Vector3(X, Y, Z);
-
+        SaveNum = saveData.LastFileSaved;
+        saveData.LastFileSaved = num;
+        Debug.Log(num);
         //saving enemies
         var dlist = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (var Enemy in dlist)
@@ -370,7 +386,7 @@ public class PlayerStats : StatsInterface
             {
                 if (Chest.GetInstanceID() == ID)
                     Chest.GetComponent<LootChest_Jerzy>().isInteractable = false;
-                    print("LootChest is " + Chest.GetComponent<LootChest_Jerzy>().isInteractable);
+                print("LootChest is " + Chest.GetComponent<LootChest_Jerzy>().isInteractable);
             }
         }
 
@@ -382,30 +398,17 @@ public class PlayerStats : StatsInterface
             {
                 if (Pot.GetInstanceID() == ID)
                     Pot.GetComponent<ScrDestructablePot>().destroyed = true;
-                    print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
+                print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
             }
         }
 
-            for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofcompletedevents(); i++)
-            {
-                GameObject.Find("GameplayEventManager").GetComponent<EventManager>().setCompleted(i, GameObject.Find("GameplayEventManager").GetComponent<EventManager>().totallynotcompletedevents[i].complete);
-                Debug.Log(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().totallynotcompletedevents[i].complete);
-            }
-
-        /*var qlist = GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofevents();
-        foreach (var eventt in qlist)
+        for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofcompletedevents(); i++)
         {
-            foreach (var ID in saveData.totallynotcompletedevents)
-            {
-                if (eventt == ID)
-                    eventt.IsComplete = true;
-                print("event is " + eventt.IsComplete);
-            }
-        }*/
-
-        //var eventman = GameObject.Find("GameplayEventManager");
-        //eventman.GetComponent<EventManager>().events;
+            GameObject.Find("GameplayEventManager").GetComponent<EventManager>().setCompleted(i, GameObject.Find("GameplayEventManager").GetComponent<EventManager>().totallynotcompletedevents[i].complete);
+            Debug.Log(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().totallynotcompletedevents[i].complete);
+        }
     }
+
 
     //Morgan's Event Manager: Health Set
     private void OnPlayerHealthSet(int sethealth)
