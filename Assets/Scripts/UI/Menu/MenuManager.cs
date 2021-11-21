@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 using UnityEngine.Localization.Settings;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown dropdown;
 
-    internal Dictionary<string, SaveData> saveSelections = new Dictionary<string, SaveData>();
+    public Dictionary<string, SaveData> saveSelections = new Dictionary<string, SaveData>();
     public Transform[] buttons;
     public Sprite emptyIcon;
 
@@ -95,7 +96,14 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        //Start
+    /*if ()
+        {
+
+        }
+        else
+        {*/
+            SceneManager.LoadScene("Production"); // place holder
+        //}
     }
 
     public void GetSaveFiles()
