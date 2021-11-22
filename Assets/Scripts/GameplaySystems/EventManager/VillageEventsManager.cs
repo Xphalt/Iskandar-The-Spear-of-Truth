@@ -9,16 +9,20 @@ public class VillageEventsManager : MonoBehaviour
     [SerializeField] private GameObject forestConnectionEvents;
     [SerializeField] private GameObject darkLordDungeonConnectionEvents;
 
-    private List<GameObject> events = new List<GameObject>();
-
     void Start()
     {
-        events.Add(introVillageEvents);
-        events.Add(desertConnectionEvents);
-        events.Add(forestConnectionEvents);
-        events.Add(darkLordDungeonConnectionEvents);
+        introVillageEvents.SetActive(false);
+        desertConnectionEvents.SetActive(false);
+        forestConnectionEvents.SetActive(false);
+        darkLordDungeonConnectionEvents.SetActive(false);
 
-        foreach (GameObject eventType in events)
-            eventType.SetActive(false);
+        if (VillageEventsStaticVariables.villageHasStarted)
+            introVillageEvents.SetActive(true);
+        else if (VillageEventsStaticVariables.forestIsCompleted)
+            forestConnectionEvents.SetActive(true);
+        else if (VillageEventsStaticVariables.desertIsCompleted)
+            desertConnectionEvents.SetActive(true);
+        else if (VillageEventsStaticVariables.darkLordDungeonIsCompleted)
+            darkLordDungeonConnectionEvents.SetActive(true);
     }
 }

@@ -6,13 +6,13 @@ public static class VillageEventsStaticVariables
 {
     public enum VillageEventStages
     {
-        villageComplete,
-        desertComplete,
+        villageStarted,
         forestComplete,
-        darkLordDungeonComplete   
+        desertComplete,
+        darkLordDungeonComplete
     };
 
-    public static bool villageIsCompleted;
+    public static bool villageHasStarted;
     public static bool desertIsCompleted;
     public static bool forestIsCompleted;
     public static bool darkLordDungeonIsCompleted;
@@ -23,8 +23,8 @@ public static class VillageEventsStaticVariables
 
         switch (eventStage)
         {
-            case VillageEventStages.villageComplete:
-                villageIsCompleted = true;
+            case VillageEventStages.villageStarted:
+                villageHasStarted = true;
                 break;
             case VillageEventStages.desertComplete:
                 desertIsCompleted = true;
@@ -42,7 +42,7 @@ public static class VillageEventsStaticVariables
 
     private static void DisableAllEventTypes()
     {
-        villageIsCompleted = false;
+        villageHasStarted = false;
         desertIsCompleted = false;
         forestIsCompleted = false;
         darkLordDungeonIsCompleted = false;
