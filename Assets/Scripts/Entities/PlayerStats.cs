@@ -15,6 +15,8 @@ public class PlayerStats : StatsInterface
     internal AccessoryObject Accessory; 
     public ItemObject_Sal revivalGem;
 
+    public Transform startPos;
+
     #region Weapon Model Variables
     private GameObject swordEmpty;
     public GameObject propSwordHolder, ironSword, falchion, stick;
@@ -154,7 +156,9 @@ public class PlayerStats : StatsInterface
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        health = MAX_HEALTH;
+        UIManager.instance.SetHealthBar(health);
+        transform.position = startPos.position;
     }
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
