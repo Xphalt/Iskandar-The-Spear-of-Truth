@@ -312,9 +312,6 @@ public class CompleteLevel : Event
     {
         switch (level)
         {
-            case VillageEventsStaticVariables.VillageEventStages.villageComplete:
-                VillageEventsStaticVariables.villageIsCompleted = true;
-                break;
             case VillageEventsStaticVariables.VillageEventStages.desertComplete:
                 VillageEventsStaticVariables.desertIsCompleted = true;
                 break;
