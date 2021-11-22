@@ -9,7 +9,7 @@ public static class VillageEventsStaticVariables
         villageComplete,
         desertComplete,
         forestComplete,
-        darkLordDungeonComplete   
+        darkLordDungeonComplete
     };
 
     public static bool villageIsCompleted;
