@@ -53,8 +53,7 @@ public class DarkEffigy : EnemyBase
                 attackUsed = true;
                 curAttackDmg = _spinDamage;
             }
-            else
-                base.Attack();
+            
 
             if (attackUsed)
             {
@@ -64,6 +63,8 @@ public class DarkEffigy : EnemyBase
                 darkEffigyTimer[(int)darkEffigyAttack] = 0;
                 attackEnded = false;
             }
+            else
+                base.Attack();
         }
     }
 
@@ -101,6 +102,5 @@ public class DarkEffigy : EnemyBase
     protected override void OnTriggerEnter(Collider collider)
     {
         base.OnTriggerEnter(collider);
-        print("Hit");
     }
 }
