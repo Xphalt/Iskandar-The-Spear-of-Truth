@@ -139,7 +139,7 @@ public class PanCameraWithTargetTransformEvent : PanCameraEvent
         _playerCamera.enabled = false;
         _panCamera.enabled = true;
 
-        _cameraPanScript.StartPan(_targetVector, _linger);
+        _cameraPanScript.StartPan(_targetTransform, _linger);
 
         // create SwapActiveCameraAfterPanObject to start a coroutine to reenable
         // UI after camera pan is complete
@@ -155,7 +155,7 @@ public class PanCameraWithTargetTransformEvent : PanCameraEvent
 
     }
 
-    [SerializeReference] private Transform _targetVector = null;
+    [SerializeReference] private Transform _targetTransform;
     [SerializeReference] private float _linger = -1f;
 }
 
