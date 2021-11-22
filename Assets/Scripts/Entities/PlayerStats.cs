@@ -157,6 +157,7 @@ public class PlayerStats : StatsInterface
     public void Restart()
     {
         health = MAX_HEALTH;
+        UIManager.instance.SetHealthBar(health);
         transform.position = startPos.position;
     }
 
