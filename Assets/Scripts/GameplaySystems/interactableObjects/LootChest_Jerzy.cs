@@ -16,6 +16,8 @@ public class LootChest_Jerzy : MonoBehaviour
     const float LOWER_RANDOM_ANGLE_BOUNDARY = 0.3f;
     const float UPPER_RANDOM_ANGLE_BOUNDARY = 0.8f;
 
+    //public Vector3 ID;
+
     void Start()
     {
         isInteractable = true;

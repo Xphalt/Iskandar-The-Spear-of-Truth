@@ -79,4 +79,6 @@ public class UIAndEventsChecks : MonoBehaviour
         GameEvents.current.LockPlayerInputs();
         GameEvents.current.StopAttacking();
     }
+
+
 }
