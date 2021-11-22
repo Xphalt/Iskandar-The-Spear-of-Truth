@@ -300,14 +300,13 @@ public class PlayerStats : StatsInterface
                 }
             }
             else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
-            {
-               // gems += ((ResourceObject)(item.itemobj)).gems;
+            { 
                 if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
                     ((ResourceObject)(item.itemobj)).UseCurrent();
                 UIManager.instance.ShowMoneyPopup();
                 Destroy(other.gameObject);
             }
-            else
+            else //Add resource normally
             {
                 if (inventory.AddItem(new Item(item.itemobj), 1))
                     Destroy(other.gameObject);  //Only if the item is picked up

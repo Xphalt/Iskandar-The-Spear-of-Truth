@@ -82,6 +82,7 @@ public class EnemyDiedCondition : Condition
 	[SerializeField] private EnemyStats enemyStats;
 }
 
+[System.Serializable]
 public class DialogueEndedCondition : Condition
 {
     public override bool TestCondition()
@@ -117,6 +118,65 @@ public class EventsCompleted : Condition
 	[SerializeField] EventManager EventManager;
 	[SerializeField] int ActionIndex;
 	[SerializeField] int EventIndex;
+}
+
+[System.Serializable]
+public class ConditionCompleted : Condition
+{
+	public override bool TestCondition()
+	{
+		return EventManager.actions[ActionIndex].conditions[conditionIndex].TestCondition();
+	}
+
+	[SerializeField] EventManager EventManager;
+	[SerializeField] int ActionIndex;
+	[SerializeField] int conditionIndex;
+}
+
+public class CraftArmourQuestCondition : Condition
+{
+	//Check if player has item and if has enough
+    public override bool TestCondition()
+    {
+        for (int i = 0; i < materials.Length; i++)
+        {
+			InventorySlot slot = playerInventory.FindItemOnInventory(materials[i].data);
+			if (slot != null)
+			{
+				if (slot.amount < amounts[i])
+				{
+					return false;
+				}
+				else if (slot.amount >= amounts[i])
+				{
+					continue;
+				}
+			}
+			else
+				return false;
+        } 
+
+		return true;
+    }
+
+	[SerializeField] InventoryObject_Sal playerInventory;
+	[SerializeField] ItemObject_Sal[] materials;
+	[SerializeField] int[] amounts;
+}
+
+public class CraftArmourDialogueCondition : Condition
+{
+    public override bool TestCondition()
+    {
+		if(condToComplete.TestCondition() && dialogueEnded.TestCondition()) //Quest completed and dialogue with blacksmit is ended
+        { 
+			return true;
+        }
+		return false;
+    }
+
+	[SerializeField] ConditionCompleted condToComplete; 
+	[SerializeField] DialogueEndedCondition dialogueEnded;  
 }
 
 //[System.Serializable]

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum ResourceType
-{
-    ConduitOre1,
-    ConduitOre2,
-    ConduitOre3,
+{ 
     Gems,
-    RevivalGem
+    RevivalGem,
+    Other
 }
 
 [CreateAssetMenu(fileName = "New Resource Object", menuName = "Inventory System/Items/Resource")]
