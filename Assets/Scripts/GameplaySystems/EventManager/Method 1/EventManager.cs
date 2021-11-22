@@ -87,23 +87,4 @@ public class EventManager : MonoBehaviour
     {
         return actions.Count();
     }
-
-/*
-    public void RandomiseEvents()
-    {
-        string output = "";
-        for (int i = 0; i < actions.Count; i++)
-        {
-            actions[i].complete = (UnityEngine.Random.Range(0, 2) == 0 ? false : true);
-            if (actions[i].complete)
-            {
-                output += ",T";
-            }
-            else
-            {
-                output += ",F";
-            }
-        }
-    }
-    */
 }

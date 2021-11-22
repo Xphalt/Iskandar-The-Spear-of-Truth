@@ -276,9 +276,11 @@ public class ChangeSceneEvent : Event
 {
     public override void TriggerEvent()
     {
+        player.SaveStats();
         SceneManager.LoadScene(sceneIndex);    
-    } 
+    }
 
+    [SerializeField] private PlayerStats player;
     [SerializeField] private int sceneIndex;
 }
 
@@ -328,21 +330,3 @@ public class CompleteLevel : Event
 
     [SerializeField] VillageEventsStaticVariables.VillageEventStages level;
 }
-
-//[System.Serializable]
-//public class SetPlayerInvulnerableEvent : Event
-//{
-//    public override void TriggerEvent()   
-//    {
-
-//    }
-//}
-
-//[System.Serializable]
-//public class EndGameEvent : Event
-//{
-//    public override void TriggerEvent()
-//    {
-
-//    }
-//}

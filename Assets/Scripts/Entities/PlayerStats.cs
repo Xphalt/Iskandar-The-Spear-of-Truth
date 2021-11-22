@@ -88,7 +88,8 @@ public class PlayerStats : StatsInterface
         // list event in GameEvents.cs
         GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
 
-        //TrueLoadStats(SaveNum);
+        m_Scene = SceneManager.GetActiveScene();
+        TrueLoadStats(SaveNum);
     }
 
     private void Update()
@@ -110,12 +111,6 @@ public class PlayerStats : StatsInterface
         //This ensures that the gameobjects are controlled by Sword Empty GO
         if (swordEmpty.activeInHierarchy) propSwordHolder.SetActive(true);
         else propSwordHolder.SetActive(false);
-
-        //MORGAN EDIT (gets player position for loading the game)
-        X = this.transform.position.x;
-        Y = this.transform.position.y;
-        Z = this.transform.position.z;
-        //SaveStats(SaveNum);
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -335,16 +330,17 @@ public class PlayerStats : StatsInterface
     internal float X;
     internal float Y;
     internal float Z;
-    public void SaveStats(int num)
+    public void SaveStats()
     {
-
+        X = this.transform.position.x;
+        Y = this.transform.position.y;
+        Z = this.transform.position.z;
         SaveData saveData = new SaveData();
-        SaveManager.SavePlayerStats(this, num);
-        inventory.SaveStats(num);
-        equipment.SaveStats(num);
-        m_Scene = SceneManager.GetActiveScene();
+        SaveManager.SavePlayerStats(this, SaveNum);
+        inventory.SaveStats(SaveNum);
+        equipment.SaveStats(SaveNum);
         sceneName = m_Scene.name;
-        saveData.LastFileSaved = num;
+        saveData.LastFileSaved = SaveNum;
         SaveNum = saveData.LastFileSaved;
     }
 
@@ -407,10 +403,17 @@ public class PlayerStats : StatsInterface
             }
         }
 
+        List<EventAction> savedEvents = saveData.totallynotevents[m_Scene.buildIndex];
+        EventManager[] managers = GameObject.FindObjectsOfType<EventManager>();
+        int totalEvents = 0;
         //loading events
-        for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getamountofevents(); i++)
+        for (int em = 0; em < managers.Length; em++)
         {
-            GameObject.Find("GameplayEventManager").GetComponent<EventManager>().setCompleted(i, saveData.totallynotevents[i].complete);
+            for (int i = 0; i < managers[em].getamountofevents(); i++)
+            {
+                GameObject.FindObjectOfType<EventManager>().setCompleted(i, savedEvents[i - totalEvents].complete);
+            }
+            totalEvents += managers[em].getamountofevents();
         }
     }
 

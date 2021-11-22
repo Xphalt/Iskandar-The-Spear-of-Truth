@@ -28,7 +28,7 @@ public class SaveData
     public List<int> chestopenedlist = new List<int>();
     public List<int> potlist = new List<int>();
     public List<int> potbrokenlist = new List<int>();
-    public List<EventAction> totallynotevents = new List<EventAction>();
+    public List<List<EventAction>> totallynotevents;
     //public List<EventAction> totallynotcompletedevents = new List<EventAction>();
 
     //public List<EnemyData> enemyDataList = new List<EnemyData>();
@@ -88,20 +88,17 @@ public class SaveData
             }
         }*/
 
-
-        totallynotevents.Clear();
-        for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getamountofevents(); i++)
+        if (totallynotevents.Count != SceneManager.sceneCountInBuildSettings)
         {
-            totallynotevents.Add(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getCompleted(i));
+            totallynotevents.Clear();
+            for (int s = 0; s < SceneManager.sceneCountInBuildSettings; s++)
+                totallynotevents.Add(new List<EventAction>());
         }
 
-
-
-        
-
-
-
-
+        for (int i = 0; i < GameObject.FindObjectOfType<EventManager>().getamountofevents(); i++)
+        {
+            totallynotevents[m_Scene.buildIndex].Add(GameObject.FindObjectOfType<EventManager>().getCompleted(i));
+        }
 
         // for each (event = true)
 
