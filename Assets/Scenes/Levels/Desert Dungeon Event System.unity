@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7833,7 +7833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 135.3303
+      value: 183.8416
       objectReference: {fileID: 0}
     - target: {fileID: 3126463638398852182, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.x
@@ -23570,6 +23570,7 @@ MonoBehaviour:
   - id: 3
   - id: 4
   - id: 5
+  totallynotcompletedevents: []
   references:
     version: 1
     00000000:
@@ -23634,10 +23635,13 @@ MonoBehaviour:
     00000007:
       type: {class: PanCameraWithTargetTransformEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         _cameraPanScript: {fileID: 1244122482}
         _playerCamera: {fileID: 1244122484}
         _panCamera: {fileID: 1244122484}
-        _targetTransform: {fileID: 1983059485}
+        _cameraPanSpeed: 20
+        _targetVector: {fileID: 751807615}
+        _linger: 1
     00000008:
       type: {class: EnemyDiedCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -23657,6 +23661,7 @@ MonoBehaviour:
     0000000C:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         _objectsToActivate:
         - {fileID: 108066473}
         _activateObjects: 0
@@ -23667,18 +23672,23 @@ MonoBehaviour:
     0000000E:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         convCollider: {fileID: 2061200688}
         dialogue: {fileID: 11400000, guid: 19f702647b08fa94a9ac16a7707e585d, type: 2}
     0000000F:
       type: {class: PanCameraWithTargetTransformEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         _cameraPanScript: {fileID: 1244122482}
         _playerCamera: {fileID: 1244122484}
         _panCamera: {fileID: 1244122484}
-        _targetTransform: {fileID: 2088220369}
+        _cameraPanSpeed: 20
+        _targetVector: {fileID: 2088220369}
+        _linger: 1
     00000010:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         _objectsToActivate:
         - {fileID: 879749795}
         _activateObjects: 1
@@ -23689,17 +23699,20 @@ MonoBehaviour:
     00000012:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         convCollider: {fileID: 2061200688}
         dialogue: {fileID: 11400000, guid: 6ba48af139a3a0e458b2da7fcaf96c31, type: 2}
     00000013:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         _objectsToActivate:
         - {fileID: 1989069264}
         _activateObjects: 1
     00000014:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         _objectsToActivate:
         - {fileID: 879749795}
         _activateObjects: 0
@@ -23710,6 +23723,7 @@ MonoBehaviour:
     00000016:
       type: {class: TeleportObjectEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         objectToTeleport: {fileID: 299166627}
         teleportPos: {fileID: 5726894028810766545}
     00000017:
@@ -23719,6 +23733,7 @@ MonoBehaviour:
     00000018:
       type: {class: ChangeSceneEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         sceneIndex: 0
 --- !u!114 &5726894029296622490
 MonoBehaviour:

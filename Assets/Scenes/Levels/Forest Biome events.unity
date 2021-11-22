@@ -17915,7 +17915,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 111.32703
+      value: 183.8416
       objectReference: {fileID: 0}
     - target: {fileID: 3054451402402017905, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.y
@@ -35557,6 +35557,7 @@ MonoBehaviour:
   - id: 10
   - id: 11
   - id: 12
+  totallynotcompletedevents: []
   references:
     version: 1
     00000000:
@@ -35670,6 +35671,7 @@ MonoBehaviour:
     0000000E:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         convCollider: {fileID: 1279145227}
         dialogue: {fileID: 11400000, guid: 336df68be8fc12e41919abc1a9043287, type: 2}
     0000000F:
@@ -35680,10 +35682,13 @@ MonoBehaviour:
     00000010:
       type: {class: PanCameraWithTargetTransformEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         _cameraPanScript: {fileID: 1778385630}
         _playerCamera: {fileID: 1778385632}
         _panCamera: {fileID: 1778385632}
-        _targetTransform: {fileID: 355550249}
+        _cameraPanSpeed: 20
+        _targetVector: {fileID: 0}
+        _linger: 1
     00000011:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -35691,6 +35696,7 @@ MonoBehaviour:
     00000012:
       type: {class: UIEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         _disableUI: 0
     00000013:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
@@ -35699,6 +35705,7 @@ MonoBehaviour:
     00000014:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         convCollider: {fileID: 186855865}
         dialogue: {fileID: 11400000, guid: aede842e0b815e446a35bed407fd0688, type: 2}
     00000015:
@@ -35708,6 +35715,7 @@ MonoBehaviour:
     00000016:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         convCollider: {fileID: 1136505316}
         dialogue: {fileID: 11400000, guid: 11252d7f4379ea44ba25427223104e6b, type: 2}
     00000017:
@@ -35717,6 +35725,7 @@ MonoBehaviour:
     00000018:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         convCollider: {fileID: 1597632573}
         dialogue: {fileID: 11400000, guid: da3e8f088d726834bb6b575c84ef0b48, type: 2}
     00000019:
@@ -35726,6 +35735,7 @@ MonoBehaviour:
     0000001A:
       type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         spawnPos: {fileID: 1026174772}
         enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
     0000001B:
@@ -35735,6 +35745,7 @@ MonoBehaviour:
     0000001C:
       type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         spawnPos: {fileID: 1461522249}
         enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
     0000001D:
@@ -35744,6 +35755,7 @@ MonoBehaviour:
     0000001E:
       type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         spawnPos: {fileID: 462372757}
         enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
     0000001F:
@@ -35753,6 +35765,7 @@ MonoBehaviour:
     00000020:
       type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         spawnPos: {fileID: 1934039072}
         enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
     00000021:
@@ -35762,6 +35775,7 @@ MonoBehaviour:
     00000022:
       type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         spawnPos: {fileID: 146561998}
         enemyToSpawn: {fileID: 8530311234791967820, guid: e34a7e8014066a549a9cc317b3106e49, type: 3}
     00000023:
@@ -35771,6 +35785,7 @@ MonoBehaviour:
     00000024:
       type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         spawnPos: {fileID: 630333308}
         enemyToSpawn: {fileID: 5112796633581186112, guid: c89d306dec44b464eb1efe36b5c44f81, type: 3}
     00000025:
@@ -35780,6 +35795,7 @@ MonoBehaviour:
     00000026:
       type: {class: SpawnEnemyEvent, ns: , asm: Assembly-CSharp}
       data:
+        IsComplete: 0
         spawnPos: {fileID: 1313960064}
         enemyToSpawn: {fileID: 2463939360772356892, guid: 7403b2b6f815aeb49a40078184bcb567, type: 3}
 --- !u!114 &1164971103
