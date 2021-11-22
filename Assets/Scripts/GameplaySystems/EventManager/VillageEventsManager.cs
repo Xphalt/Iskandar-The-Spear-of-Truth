@@ -16,13 +16,13 @@ public class VillageEventsManager : MonoBehaviour
         forestConnectionEvents.SetActive(false);
         darkLordDungeonConnectionEvents.SetActive(false);
 
-        if (VillageEventsStaticVariables.villageIsCompleted)
+        if (VillageEventsStaticVariables.villageHasStarted)
             introVillageEvents.SetActive(true);
-        else if (VillageEventsStaticVariables.villageIsCompleted)
-            desertConnectionEvents.SetActive(true);
-        else if (VillageEventsStaticVariables.villageIsCompleted)
+        else if (VillageEventsStaticVariables.forestIsCompleted)
             forestConnectionEvents.SetActive(true);
-        else if (VillageEventsStaticVariables.villageIsCompleted)
+        else if (VillageEventsStaticVariables.desertIsCompleted)
+            desertConnectionEvents.SetActive(true);
+        else if (VillageEventsStaticVariables.darkLordDungeonIsCompleted)
             darkLordDungeonConnectionEvents.SetActive(true);
     }
 }
