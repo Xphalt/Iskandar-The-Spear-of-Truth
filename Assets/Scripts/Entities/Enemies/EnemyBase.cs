@@ -378,7 +378,7 @@ public class EnemyBase : Patrol
 
         _myAnimator.SetBool("IsAggroed", false);
         _myAnimator.SetBool("IsPatrolling",false);
-        _myAnimator.Play("Idle");
+        //_myAnimator.Play("Idle");
         agent.speed = 0;
         agent.enabled = false;
     }
