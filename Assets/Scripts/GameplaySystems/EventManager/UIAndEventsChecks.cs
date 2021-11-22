@@ -52,14 +52,14 @@ public class UIAndEventsChecks : MonoBehaviour
 
     public void OnLockPlayerInputs()
     {
-        _playerInput.enabled = false;
+        _playerInput.TogglePlayerInteraction(false);
         _playerMovement.LockPlayerMovement();
         print("the state of input is " + _playerInput.enabled);
     }
 
     public void OnUnLockPlayerInputs()
     {
-        _playerInput.enabled = !_dialogue.activeSelf;
+        _playerInput.TogglePlayerInteraction(!_dialogue.activeSelf);
 
     }
 

@@ -167,7 +167,7 @@ public class EnemyBase : Patrol
             Attack();
             AttackCooldown();
 
-            if (!isBoss) SetMovementAnim();
+            SetMovementAnim();
         }
     }
 
