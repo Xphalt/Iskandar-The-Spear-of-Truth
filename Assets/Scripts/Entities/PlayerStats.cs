@@ -88,7 +88,7 @@ public class PlayerStats : StatsInterface
         // list event in GameEvents.cs
         GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
 
-        TrueLoadStats(SaveNum);
+        //TrueLoadStats(SaveNum);
     }
 
     private void Update()
@@ -115,7 +115,7 @@ public class PlayerStats : StatsInterface
         X = this.transform.position.x;
         Y = this.transform.position.y;
         Z = this.transform.position.z;
-        SaveStats(SaveNum);
+        //SaveStats(SaveNum);
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)

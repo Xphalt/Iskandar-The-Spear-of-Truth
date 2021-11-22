@@ -12,7 +12,7 @@ public static class VillageEventsStaticVariables
         darkLordDungeonComplete
     };
 
-    public static bool villageHasStarted;
+    public static bool villageHasStarted = true;
     public static bool desertIsCompleted;
     public static bool forestIsCompleted;
     public static bool darkLordDungeonIsCompleted;
@@ -42,7 +42,6 @@ public static class VillageEventsStaticVariables
 
     private static void DisableAllEventTypes()
     {
-        villageHasStarted = false;
         desertIsCompleted = false;
         forestIsCompleted = false;
         darkLordDungeonIsCompleted = false;
