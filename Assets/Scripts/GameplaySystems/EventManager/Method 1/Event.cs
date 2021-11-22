@@ -306,6 +306,32 @@ public class AddItem : Event
     [SerializeField] int Amount;
 }
 
+public class CompleteLevel : Event
+{
+    public override void TriggerEvent()
+    {
+        switch (level)
+        {
+            case VillageEventsStaticVariables.VillageEventStages.villageComplete:
+                VillageEventsStaticVariables.villageIsCompleted = true;
+                break;
+            case VillageEventsStaticVariables.VillageEventStages.desertComplete:
+                VillageEventsStaticVariables.desertIsCompleted = true;
+                break;
+            case VillageEventsStaticVariables.VillageEventStages.forestComplete:
+                VillageEventsStaticVariables.forestIsCompleted = true;
+                break;
+            case VillageEventsStaticVariables.VillageEventStages.darkLordDungeonComplete:
+                VillageEventsStaticVariables.darkLordDungeonIsCompleted = true;
+                break;
+            default:
+                break;
+        }
+    }
+
+    [SerializeField] VillageEventsStaticVariables.VillageEventStages level;
+}
+
 //[System.Serializable]
 //public class SetPlayerInvulnerableEvent : Event
 //{
