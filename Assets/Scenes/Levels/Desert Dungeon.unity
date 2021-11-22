@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10063,7 +10063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 128.96588
+      value: 132.98865
       objectReference: {fileID: 0}
     - target: {fileID: 3126463638398852182, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.x
@@ -23683,6 +23683,7 @@ MonoBehaviour:
   - id: 3
   - id: 4
   - id: 5
+  totallynotcompletedevents: []
   references:
     version: 1
     00000000:
@@ -23751,8 +23752,9 @@ MonoBehaviour:
         _cameraPanScript: {fileID: 267436963}
         _playerCamera: {fileID: 267436962}
         _panCamera: {fileID: 267436962}
-        _cameraPanSpeed: 0
+        _cameraPanSpeed: 20
         _targetTransform: {fileID: 1623670492}
+        _linger: 1
     00000008:
       type: {class: EnemyDiedCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -23793,8 +23795,9 @@ MonoBehaviour:
         _cameraPanScript: {fileID: 267436963}
         _playerCamera: {fileID: 267436962}
         _panCamera: {fileID: 267436962}
-        _cameraPanSpeed: 0
+        _cameraPanSpeed: 20
         _targetTransform: {fileID: 1271645495}
+        _linger: 1
     00000010:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
