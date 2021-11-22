@@ -103,10 +103,6 @@ public class DialogueManager : MonoBehaviour
             {
                 TextContinueDialogue.text = "End";
             }
-
-            Debug.Log(_QueueOfCharacters.Count);
-            Debug.Log(_QueueOfStringArrays.Count);
-            Debug.Log(_QueueOfStrings.Count);
         }
     }
 

@@ -5477,7 +5477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 128.51274
+      value: 128.76662
       objectReference: {fileID: 0}
     - target: {fileID: 3054451402402017905, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5535,6 +5535,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4088250577532237743, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+      propertyPath: _dialogue
+      value: 
+      objectReference: {fileID: 173283467}
     - target: {fileID: 4155667853751284976, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -5929,6 +5933,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+--- !u!1 &173283467 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3672688301344454888, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
+  m_PrefabInstance: {fileID: 173283466}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &174093130
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40849,6 +40858,7 @@ MonoBehaviour:
       type: {class: ChangeSceneEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
+        player: {fileID: 0}
         sceneIndex: 1
 --- !u!114 &1435378992
 MonoBehaviour:
