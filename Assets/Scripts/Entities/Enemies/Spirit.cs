@@ -15,16 +15,6 @@ public class Spirit : EnemyBase
         pStats = GameObject.Find("Player").GetComponent<PlayerStats>();
     }
 
-    public override void Update()
-    {
-        if(!isDead)
-        {
-            base.Update();
-                
-            SetMovementAnim();
-        }
-    }
-
     public void DeathExplode()
     {
         if (pStats.spiritualDamage > 0.0f)
