@@ -273,6 +273,18 @@ public class TeleportObjectEvent : Event
     [SerializeField] Transform teleportPos;
 }
 
+public class AddItem : Event
+{
+    public override void TriggerEvent()
+    {
+        InventoryManager.AddItem(ItemToAdd, Amount);
+    }
+
+    [SerializeField] InventoryObject_Sal InventoryManager;
+    [SerializeField] Item ItemToAdd;
+    [SerializeField] int Amount;
+}
+
 //[System.Serializable]
 //public class SetPlayerInvulnerableEvent : Event
 //{
