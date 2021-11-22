@@ -44,7 +44,7 @@ public class EventManager : MonoBehaviour
             if (!action.complete)
             {
                 // Test conditions are met
-                //action.complete = true; // mog edit (that jusxtaposes the save system, bar this it all works fine!)
+                action.complete = true; // mog edit (that jusxtaposes the save system, bar this it all works fine!)
                 foreach (Condition condition in action.conditions)
                 {
                     if (!condition.TestCondition())
