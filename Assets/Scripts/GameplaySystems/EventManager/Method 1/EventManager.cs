@@ -44,7 +44,7 @@ public class EventManager : MonoBehaviour
             if (!action.complete)
             {
                 // Test conditions are met
-                action.complete = true;
+                //action.complete = true; // mog edit (that jusxtaposes the save system, bar this it all works fine!)
                 foreach (Condition condition in action.conditions)
                 {
                     if (!condition.TestCondition())
@@ -65,23 +65,45 @@ public class EventManager : MonoBehaviour
             } 
         }
 
-        //morgan's wank edits yo bruv
-
     }
 
     //morgan save edit
     public EventAction getCompleted(int x)
     {
-        return totallynotcompletedevents[x];
-    }
-
-    public int getnumberofcompletedevents()
-    {
-        return totallynotcompletedevents.Count;
+        return actions[x];
     }
 
     public void setCompleted(int x, bool IsCompleted)
     {
-        totallynotcompletedevents[x].complete = IsCompleted;
+        actions[x].complete = IsCompleted;
     }
+
+    public bool getcompletionbool(int x)
+    {
+        return actions[x].complete; 
+    }
+
+    public int getamountofevents()
+    {
+        return actions.Count();
+    }
+
+/*
+    public void RandomiseEvents()
+    {
+        string output = "";
+        for (int i = 0; i < actions.Count; i++)
+        {
+            actions[i].complete = (UnityEngine.Random.Range(0, 2) == 0 ? false : true);
+            if (actions[i].complete)
+            {
+                output += ",T";
+            }
+            else
+            {
+                output += ",F";
+            }
+        }
+    }
+    */
 }

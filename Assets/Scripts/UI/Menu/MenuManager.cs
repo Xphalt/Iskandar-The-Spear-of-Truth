@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization;
 using System.Collections;
@@ -16,7 +17,7 @@ public class MenuManager : MonoBehaviour
 
     public string qualitySettingsStringTable = "QualitySettings";
 
-    internal Dictionary<string, SaveData> saveSelections = new Dictionary<string, SaveData>();
+    public Dictionary<string, SaveData> saveSelections = new Dictionary<string, SaveData>();
     public Transform[] buttons;
     public Sprite emptyIcon;
 
@@ -159,7 +160,7 @@ public class MenuManager : MonoBehaviour
         catch (System.Exception)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-        }        
+        }
     }
 
     public void GetSaveFiles()

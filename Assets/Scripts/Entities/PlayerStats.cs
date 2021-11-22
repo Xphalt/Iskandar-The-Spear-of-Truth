@@ -333,16 +333,15 @@ public class PlayerStats : StatsInterface
     internal float Z;
     public void SaveStats(int num)
     {
-        
+
         SaveData saveData = new SaveData();
         SaveManager.SavePlayerStats(this, num);
         inventory.SaveStats(num);
-        //equipment.SaveStats(num);
+        equipment.SaveStats(num);
         m_Scene = SceneManager.GetActiveScene();
         sceneName = m_Scene.name;
         saveData.LastFileSaved = num;
         SaveNum = saveData.LastFileSaved;
-        Debug.Log(num);
     }
 
     public void LoadStats(int num)
@@ -359,15 +358,17 @@ public class PlayerStats : StatsInterface
         health = saveData.health;
         gems = saveData.gemcount;
         inventory.LoadStats(num);
-        //equipment.LoadStats(num);
-        X = saveData.xpos;
-        Y = saveData.ypos;
-        Z = saveData.zpos;
+        equipment.LoadStats(num);
+        if (sceneName == saveData.scenename)
+        {
+            X = saveData.xpos;
+            Y = saveData.ypos;
+            Z = saveData.zpos;
+        }
         transform.position = new Vector3(X, Y, Z);
         SaveNum = saveData.LastFileSaved;
         saveData.LastFileSaved = num;
-        Debug.Log(num);
-        //saving enemies
+
         var dlist = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (var Enemy in dlist)
         {
@@ -402,10 +403,10 @@ public class PlayerStats : StatsInterface
             }
         }
 
-        for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofcompletedevents(); i++)
+        //loading events
+        for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getamountofevents(); i++)
         {
-            GameObject.Find("GameplayEventManager").GetComponent<EventManager>().setCompleted(i, GameObject.Find("GameplayEventManager").GetComponent<EventManager>().totallynotcompletedevents[i].complete);
-            Debug.Log(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().totallynotcompletedevents[i].complete);
+            GameObject.Find("GameplayEventManager").GetComponent<EventManager>().setCompleted(i, saveData.totallynotevents[i].complete);
         }
     }
 

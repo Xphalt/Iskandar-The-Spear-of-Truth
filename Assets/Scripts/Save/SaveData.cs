@@ -28,8 +28,8 @@ public class SaveData
     public List<int> chestopenedlist = new List<int>();
     public List<int> potlist = new List<int>();
     public List<int> potbrokenlist = new List<int>();
-    //public List<EventAction> totallynotevents = new List<EventAction>();
-    public List<EventAction> totallynotcompletedevents = new List<EventAction>();
+    public List<EventAction> totallynotevents = new List<EventAction>();
+    //public List<EventAction> totallynotcompletedevents = new List<EventAction>();
 
     //public List<EnemyData> enemyDataList = new List<EnemyData>();
 
@@ -88,16 +88,16 @@ public class SaveData
             }
         }*/
 
-        /*for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofevents(); i++) 
-        {
-            totallynotevents.Add(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getActions(i));
-        }
-        Debug.Log(totallynotevents);*/
 
-        for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getnumberofcompletedevents(); i++)
+        totallynotevents.Clear();
+        for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getamountofevents(); i++)
         {
-                totallynotcompletedevents.Add(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getCompleted(i));
+            totallynotevents.Add(GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getCompleted(i));
         }
+
+
+
+        
 
 
 
