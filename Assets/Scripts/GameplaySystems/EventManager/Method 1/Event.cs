@@ -130,12 +130,33 @@ public class SwapActiveCameraAfterPanObject : MonoBehaviour
 [System.Serializable]
 public class PanCameraWithTargetTransformEvent : PanCameraEvent
 {
-	public override void TriggerEvent()
-	{
-        _cameraPanScript.StartPan(_targetTransform);
-	}
-     
-    [SerializeReference] private Transform _targetTransform;
+    public override void TriggerEvent()
+    {
+        GameEvents.current.DisableUI();
+        GameEvents.current.LockPlayerInputs();
+
+        // swap cameras
+        _playerCamera.enabled = false;
+        _panCamera.enabled = true;
+
+        _cameraPanScript.StartPan(_targetVector, _linger);
+
+        // create SwapActiveCameraAfterPanObject to start a coroutine to reenable
+        // UI after camera pan is complete
+        GameObject coroutineObject = new GameObject();
+        coroutineObject.AddComponent<SwapActiveCameraAfterPanObject>();
+
+        // SwapActiveCameraAfterPanObject spawnedObjectScript = GameObject.Instantiate(coroutineObject).GetComponent<SwapActiveCameraAfterPanObject>();
+        SwapActiveCameraAfterPanObject spawnedObjectScript = coroutineObject.GetComponent<SwapActiveCameraAfterPanObject>();
+        spawnedObjectScript.playerCamera = _playerCamera;
+        spawnedObjectScript.panCamera = _panCamera;
+        spawnedObjectScript.CameraPanEvent = this;
+        spawnedObjectScript.timeToPanFor = _cameraPanScript.TotalPanDuration;
+
+    }
+
+    [SerializeReference] private Transform _targetVector = null;
+    [SerializeReference] private float _linger = -1f;
 }
 
 #endregion
