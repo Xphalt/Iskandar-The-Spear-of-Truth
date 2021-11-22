@@ -337,7 +337,7 @@ public class PlayerStats : StatsInterface
         SaveData saveData = new SaveData();
         SaveManager.SavePlayerStats(this, num);
         inventory.SaveStats(num);
-        //equipment.SaveStats(num);
+        equipment.SaveStats(num);
         m_Scene = SceneManager.GetActiveScene();
         sceneName = m_Scene.name;
         saveData.LastFileSaved = num;
@@ -358,7 +358,7 @@ public class PlayerStats : StatsInterface
         health = saveData.health;
         gems = saveData.gemcount;
         inventory.LoadStats(num);
-        //equipment.LoadStats(num);
+        equipment.LoadStats(num);
         if (sceneName == saveData.scenename)
         {
             X = saveData.xpos;
