@@ -107,6 +107,7 @@ public class EnemyBase : Patrol
                 _myCapsuleCol.enabled = false;
                 agent.enabled = false;
                 isDead = true;
+                MyRigid.velocity = Vector3.zero;
             }
         }
 

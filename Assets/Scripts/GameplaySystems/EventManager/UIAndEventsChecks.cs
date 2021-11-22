@@ -10,6 +10,7 @@ public class UIAndEventsChecks : MonoBehaviour
     [HideInInspector] public PlayerInput _playerInput;
     [HideInInspector] public EnemyBase[] _enemies;
     private PlayerMovement_Jerzy _playerMovement;
+    private GameObject _dialogue;
     //public Renderer rend;
     public void Start()
     {
@@ -28,6 +29,7 @@ public class UIAndEventsChecks : MonoBehaviour
     {
         _playerInput = FindObjectOfType<PlayerInput>();
         _playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
+        _dialogue = GameObject.Find("DialoguePanel");
     }
 
     public void DisableUI()
@@ -57,7 +59,7 @@ public class UIAndEventsChecks : MonoBehaviour
 
     public void OnUnLockPlayerInputs()
     {
-        _playerInput.enabled = true;
+        _playerInput.enabled = !_dialogue.activeSelf;
 
     }
 
