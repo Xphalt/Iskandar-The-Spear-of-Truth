@@ -18,7 +18,7 @@ public class SaveData
     public int gemcount;
     public bool EnemyisDead;
     public int LastFileSaved;
-
+    public string playerName = "";
 
     public Inventory Storage;
 

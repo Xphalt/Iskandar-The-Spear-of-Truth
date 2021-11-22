@@ -5,11 +5,12 @@ using System.IO;
 
 public class PlayerNameManager : MonoBehaviour
 {
-    internal int currentSaveFile = 0; 
+    public int currentSaveFile = 0;
+    public TMP_InputField _InputField;
 
     private void Start()
     {
-        GetComponent<TMP_InputField>().characterLimit = 8;
+        _InputField.characterLimit = 8;
     }
 
     public void SetSaveNum(int num)
@@ -17,8 +18,9 @@ public class PlayerNameManager : MonoBehaviour
         currentSaveFile = num;
     }
 
-    public void SavePlayerName(string name)
+    public void SavePlayerName()
     {
+        string name = _InputField.text;
         Debug.Log(currentSaveFile + " " + name);
         BinaryFormatter bf = new BinaryFormatter();
 

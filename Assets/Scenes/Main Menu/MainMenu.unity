@@ -715,6 +715,7 @@ GameObject:
   - component: {fileID: 204179670}
   - component: {fileID: 204179669}
   - component: {fileID: 204179668}
+  - component: {fileID: 204179671}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -755,7 +756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -798,14 +799,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1601308477}
-        m_TargetAssemblyTypeName: PlayerNameManager, Assembly-CSharp
-        m_MethodName: SetSaveNum
-        m_Mode: 3
+      - m_Target: {fileID: 204179671}
+        m_TargetAssemblyTypeName: MenuSaveIdentity, Assembly-CSharp
+        m_MethodName: UpdateCurrentSaveID
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -848,6 +849,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204179666}
   m_CullTransparentMesh: 1
+--- !u!114 &204179671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204179666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a722362cc93f2214aa38a9173889a7d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pnm: {fileID: 1770113135}
+  id: 0
 --- !u!1 &231831184
 GameObject:
   m_ObjectHideFlags: 0
@@ -2812,6 +2827,7 @@ GameObject:
   - component: {fileID: 376879385}
   - component: {fileID: 376879384}
   - component: {fileID: 376879383}
+  - component: {fileID: 376879386}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -2852,7 +2868,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2895,14 +2911,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1601308477}
-        m_TargetAssemblyTypeName: PlayerNameManager, Assembly-CSharp
-        m_MethodName: SetSaveNum
-        m_Mode: 3
+      - m_Target: {fileID: 376879386}
+        m_TargetAssemblyTypeName: MenuSaveIdentity, Assembly-CSharp
+        m_MethodName: UpdateCurrentSaveID
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -2945,6 +2961,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 376879381}
   m_CullTransparentMesh: 1
+--- !u!114 &376879386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376879381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a722362cc93f2214aa38a9173889a7d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pnm: {fileID: 1770113135}
+  id: 0
 --- !u!1 &492419822
 GameObject:
   m_ObjectHideFlags: 0
@@ -4177,6 +4207,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829040607}
   m_CullTransparentMesh: 1
+--- !u!114 &847001221 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2141959514382305049, guid: fae381b10d73ffa4daf3d10e7964c435, type: 3}
+  m_PrefabInstance: {fileID: 242675076}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &866609908
 GameObject:
   m_ObjectHideFlags: 0
@@ -4445,16 +4486,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9214204264318480812, guid: 2f485a84a3dbd394fbd9cf64537d9031, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9214204264318480812, guid: 2f485a84a3dbd394fbd9cf64537d9031, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9214204264318480812, guid: 2f485a84a3dbd394fbd9cf64537d9031, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9214204264318480812, guid: 2f485a84a3dbd394fbd9cf64537d9031, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1601308477}
+      objectReference: {fileID: 0}
     - target: {fileID: 9214204264318480812, guid: 2f485a84a3dbd394fbd9cf64537d9031, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9214204264318480812, guid: 2f485a84a3dbd394fbd9cf64537d9031, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SavePlayerName
       objectReference: {fileID: 0}
     - target: {fileID: 9214204264318480812, guid: 2f485a84a3dbd394fbd9cf64537d9031, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -6687,7 +6740,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1007271284}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1770113134}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: DeleteSaveFile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1770113134}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: UpdateSavePanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 314385205}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1007271284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7664,6 +7753,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerNameManager, Assembly-CSharp
+        m_MethodName: SavePlayerName
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1364161527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8293,6 +8394,7 @@ GameObject:
   - component: {fileID: 1473737058}
   - component: {fileID: 1473737057}
   - component: {fileID: 1473737056}
+  - component: {fileID: 1473737059}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -8333,7 +8435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -8376,14 +8478,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1601308477}
-        m_TargetAssemblyTypeName: PlayerNameManager, Assembly-CSharp
-        m_MethodName: SetSaveNum
-        m_Mode: 3
+      - m_Target: {fileID: 1473737059}
+        m_TargetAssemblyTypeName: MenuSaveIdentity, Assembly-CSharp
+        m_MethodName: UpdateCurrentSaveID
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -8426,6 +8528,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1473737054}
   m_CullTransparentMesh: 1
+--- !u!114 &1473737059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473737054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a722362cc93f2214aa38a9173889a7d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pnm: {fileID: 1770113135}
+  id: 0
 --- !u!1 &1579153559
 GameObject:
   m_ObjectHideFlags: 0
@@ -8668,17 +8784,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592147911}
   m_CullTransparentMesh: 1
---- !u!114 &1601308477 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9214204264318480815, guid: 2f485a84a3dbd394fbd9cf64537d9031, type: 3}
-  m_PrefabInstance: {fileID: 933972041}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e2b1854b48a99941800c78003209574, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1692677092
 GameObject:
   m_ObjectHideFlags: 0
@@ -8998,6 +9103,7 @@ GameObject:
   - component: {fileID: 1770113133}
   - component: {fileID: 1770113132}
   - component: {fileID: 1770113134}
+  - component: {fileID: 1770113135}
   m_Layer: 5
   m_Name: Menu
   m_TagString: Untagged
@@ -9078,6 +9184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropdown: {fileID: 97344187}
+  qualityDropDown: {fileID: 847001221}
+  qualitySettingsStringTable: QualitySettings
   buttons:
   - {fileID: 554563510}
   - {fileID: 281378795}
@@ -9088,6 +9196,22 @@ MonoBehaviour:
   inputName: {fileID: 624876183}
   continueDeletePanel: {fileID: 1014664718}
   startPanel: {fileID: 829040607}
+  pnm: {fileID: 1770113135}
+  listOfNumsNotUsed: 0000000001000000020000000300000004000000
+--- !u!114 &1770113135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770113130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e2b1854b48a99941800c78003209574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSaveFile: 0
+  _InputField: {fileID: 933972043}
 --- !u!1 &1847779665
 GameObject:
   m_ObjectHideFlags: 0
@@ -9763,6 +9887,7 @@ GameObject:
   - component: {fileID: 1915116263}
   - component: {fileID: 1915116262}
   - component: {fileID: 1915116261}
+  - component: {fileID: 1915116264}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -9803,7 +9928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -9846,10 +9971,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1601308477}
-        m_TargetAssemblyTypeName: PlayerNameManager, Assembly-CSharp
-        m_MethodName: SetSaveNum
-        m_Mode: 3
+      - m_Target: {fileID: 1915116264}
+        m_TargetAssemblyTypeName: MenuSaveIdentity, Assembly-CSharp
+        m_MethodName: UpdateCurrentSaveID
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9896,6 +10021,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1915116259}
   m_CullTransparentMesh: 1
+--- !u!114 &1915116264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915116259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a722362cc93f2214aa38a9173889a7d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pnm: {fileID: 1770113135}
+  id: 0
 --- !u!1 &1974762552
 GameObject:
   m_ObjectHideFlags: 0
@@ -10175,6 +10314,7 @@ GameObject:
   - component: {fileID: 2005530234}
   - component: {fileID: 2005530233}
   - component: {fileID: 2005530232}
+  - component: {fileID: 2005530235}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -10215,7 +10355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -10258,14 +10398,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1601308477}
-        m_TargetAssemblyTypeName: PlayerNameManager, Assembly-CSharp
-        m_MethodName: SetSaveNum
-        m_Mode: 3
+      - m_Target: {fileID: 2005530235}
+        m_TargetAssemblyTypeName: MenuSaveIdentity, Assembly-CSharp
+        m_MethodName: UpdateCurrentSaveID
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -10308,6 +10448,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005530230}
   m_CullTransparentMesh: 1
+--- !u!114 &2005530235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005530230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a722362cc93f2214aa38a9173889a7d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pnm: {fileID: 1770113135}
+  id: 0
 --- !u!1 &2058424423
 GameObject:
   m_ObjectHideFlags: 0
