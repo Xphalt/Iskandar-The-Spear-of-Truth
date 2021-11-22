@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class PlayerStats : StatsInterface
 {
@@ -28,7 +29,7 @@ public class PlayerStats : StatsInterface
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
 
-    private int gems;
+    public int gems;
     public int Gems
     {
         get
@@ -83,7 +84,9 @@ public class PlayerStats : StatsInterface
         health = MAX_HEALTH;
 
         // list event in GameEvents.cs
-        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet; 
+        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
+
+        TrueLoadStats(SaveNum);
     }
 
     private void Update()
@@ -105,6 +108,12 @@ public class PlayerStats : StatsInterface
         //This ensures that the gameobjects are controlled by Sword Empty GO
         if (swordEmpty.activeInHierarchy) propSwordHolder.SetActive(true);
         else propSwordHolder.SetActive(false);
+
+        //MORGAN EDIT (gets player position for loading the game)
+        X = this.transform.position.x;
+        Y = this.transform.position.y;
+        Z = this.transform.position.z;
+        SaveStats(SaveNum);
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -301,7 +310,7 @@ public class PlayerStats : StatsInterface
             }
             else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
             {
-               // gems += ((ResourceObject)(item.itemobj)).gems;
+                gems += ((ResourceObject)(item.itemobj)).gems; // edited eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
                     ((ResourceObject)(item.itemobj)).UseCurrent();
                 UIManager.instance.ShowMoneyPopup();
@@ -316,18 +325,91 @@ public class PlayerStats : StatsInterface
     }
 
     //Morgan's Save Edits
+    Scene m_Scene;
+    string sceneName;
+    internal int SaveNum;
+    internal float X;
+    internal float Y;
+    internal float Z;
     public void SaveStats(int num)
     {
+
+        SaveData saveData = new SaveData();
         SaveManager.SavePlayerStats(this, num);
         inventory.SaveStats(num);
+        equipment.SaveStats(num);
+        m_Scene = SceneManager.GetActiveScene();
+        sceneName = m_Scene.name;
+        saveData.LastFileSaved = num;
+        SaveNum = saveData.LastFileSaved;
     }
 
     public void LoadStats(int num)
     {
         SaveData saveData = SaveManager.LoadPlayerStats(num);
-        health = saveData.health;
-        inventory.LoadStats(num);
+        SaveNum = saveData.LastFileSaved;
+        saveData.LastFileSaved = num;
+        SceneManager.LoadScene(saveData.scenename);
     }
+
+    public void TrueLoadStats(int num)
+    {
+        SaveData saveData = SaveManager.LoadPlayerStats(num);
+        health = saveData.health;
+        gems = saveData.gemcount;
+        inventory.LoadStats(num);
+        equipment.LoadStats(num);
+        if (sceneName == saveData.scenename)
+        {
+            X = saveData.xpos;
+            Y = saveData.ypos;
+            Z = saveData.zpos;
+        }
+        transform.position = new Vector3(X, Y, Z);
+        SaveNum = saveData.LastFileSaved;
+        saveData.LastFileSaved = num;
+
+        var dlist = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (var Enemy in dlist)
+        {
+            foreach (var ID in saveData.enemydeadlist)
+            {
+                if (Enemy.GetInstanceID() == ID)
+                    Destroy(Enemy);
+            }
+        }
+
+        //saving chests
+        var colist = GameObject.FindGameObjectsWithTag("LootChest");
+        foreach (var Chest in colist)
+        {
+            foreach (var ID in saveData.chestopenedlist)
+            {
+                if (Chest.GetInstanceID() == ID)
+                    Chest.GetComponent<LootChest_Jerzy>().isInteractable = false;
+                print("LootChest is " + Chest.GetComponent<LootChest_Jerzy>().isInteractable);
+            }
+        }
+
+        //saving pots
+        var plist = GameObject.FindGameObjectsWithTag("Pot");
+        foreach (var Pot in plist)
+        {
+            foreach (var ID in saveData.potbrokenlist)
+            {
+                if (Pot.GetInstanceID() == ID)
+                    Pot.GetComponent<ScrDestructablePot>().destroyed = true;
+                print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
+            }
+        }
+
+        //loading events
+        for (int i = 0; i < GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getamountofevents(); i++)
+        {
+            GameObject.Find("GameplayEventManager").GetComponent<EventManager>().setCompleted(i, saveData.totallynotevents[i].complete);
+        }
+    }
+
 
     //Morgan's Event Manager: Health Set
     private void OnPlayerHealthSet(int sethealth)

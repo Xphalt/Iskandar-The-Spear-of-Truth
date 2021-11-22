@@ -68,14 +68,15 @@ public class EntityDrop : MonoBehaviour
                 obj.GetComponent<GroundItem>().spawn += PotSpawn;
         }
 
-        if (canIReset)
+        /*if (canIReset)
             //Reset tentatives to 1
             DropSystem.Instance.ResetTentativeNum(type);
         else
-            DropSystem.Instance.IncreaseTentatives(type);
+            DropSystem.Instance.IncreaseTentatives(type);*/
 
         //Destroy
-        if (type != EntityType.Chest && disableOnDrop)
+
+        if (type != EntityType.Chest && type != EntityType.Pot && disableOnDrop)
             Destroy(gameObject, disableDelay); //GOING TO HANDLE THIS IN OTHER SCRIPTS
     }
 
