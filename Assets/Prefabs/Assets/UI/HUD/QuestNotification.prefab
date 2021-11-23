@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2413152577548961577}
   - component: {fileID: 2413152577548961578}
   m_Layer: 5
-  m_Name: QuestMessage
+  m_Name: QuestObjective
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Objective
+  m_text: QuestObjective
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2150ed2693cd327468f04881355884b0, type: 2}
   m_sharedMaterial: {fileID: -8889113862144706600, guid: 2150ed2693cd327468f04881355884b0, type: 2}
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 2413152577685189174}
   - component: {fileID: 2413152577685189172}
   - component: {fileID: 2413152577685189173}
-  - component: {fileID: 2413152577685189131}
+  - component: {fileID: 854381522}
   m_Layer: 5
   m_Name: QuestNotification
   m_TagString: Untagged
@@ -164,8 +164,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2413152577954303798}
   - {fileID: 2413152577746420351}
+  - {fileID: 2413152577954303798}
   - {fileID: 2413152577548961579}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2413152577685189131
+--- !u!114 &854381522
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,9 +222,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2413152577685189175}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f67cd30fa5f65d4988a23412dde7503, type: 3}
+  m_Script: {fileID: 11500000, guid: b4d37b51492b14b4aa138008c99d9192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  QuestPopup: {fileID: 2413152577685189175}
+  Anim: {fileID: 0}
+  HeaderName: {fileID: 2413152577746420350}
+  QuestName: {fileID: 2413152577954303797}
+  QuestObjective: {fileID: 2413152577548961578}
+  NewQuestText:
+    tableReference: QuestNotificationStrings
+    entryReference: NewQ
+  UpdatedQuestText:
+    tableReference: QuestNotificationStrings
+    entryReference: UpdatedQ
+  CompletedQuestText:
+    tableReference: QuestNotificationStrings
+    entryReference: CompletedQ
+  Message: 0
 --- !u!1 &2413152577746420344
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +252,7 @@ GameObject:
   - component: {fileID: 2413152577746420349}
   - component: {fileID: 2413152577746420350}
   m_Layer: 5
-  m_Name: QuestStatus
+  m_Name: QuestName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -255,7 +270,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2413152577685189174}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -290,7 +305,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: QuestStatus
+  m_text: QuestName
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2150ed2693cd327468f04881355884b0, type: 2}
   m_sharedMaterial: {fileID: -8889113862144706600, guid: 2150ed2693cd327468f04881355884b0, type: 2}
@@ -371,7 +386,7 @@ GameObject:
   - component: {fileID: 2413152577954303796}
   - component: {fileID: 2413152577954303797}
   m_Layer: 5
-  m_Name: QuestName
+  m_Name: HeaderName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -389,7 +404,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2413152577685189174}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -424,7 +439,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: QuestName
+  m_text: HeaderName
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2150ed2693cd327468f04881355884b0, type: 2}
   m_sharedMaterial: {fileID: -8889113862144706600, guid: 2150ed2693cd327468f04881355884b0, type: 2}
