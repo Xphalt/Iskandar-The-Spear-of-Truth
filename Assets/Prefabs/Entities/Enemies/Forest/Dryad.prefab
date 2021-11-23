@@ -578,6 +578,7 @@ MonoBehaviour:
   health: 0
   vulnerable: 1
   despawnTime: 10
+  isDead: 0
 --- !u!114 &1967141977996960865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,6 +634,7 @@ MonoBehaviour:
   chargeSpeed: 0
   chargeDistanceMult: 0
   chargeRaycast: 0
+  chargeSelfDamage: 0
   chargeLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -640,22 +642,25 @@ MonoBehaviour:
   shootPoint: {fileID: 0}
   projectileSpeed: 0
   minChaseRadius: 0
+  isBoss: 0
   minSpawnRadius: 5
   maxSpawnRadius: 8
   prefabsToSpawn:
-  - obj: {fileID: 3169118207333170559, guid: 4331b26f06c0ed24386eff703ba98e18, type: 3}
-    howMany: 3
-  - obj: {fileID: 782377222411420216, guid: 381fd6b5ce9668d438c9c717daff0f31, type: 3}
-    howMany: 2
+  - obj: {fileID: 4442450634826169697, guid: f16dcc37b4db4034c8c9a8d7f0a7e085, type: 3}
+    howMany: 1
+    ySpawnOffset: 0
+  - obj: {fileID: 3393543301055465238, guid: a3f6c4f7348b0d94aa329752915cdf64, type: 3}
+    howMany: 1
+    ySpawnOffset: 1
   pillarFollowTime: 0
   pillarActivateDelay: 0
   pillarActiveTime: 0
   pillarDmg: 0
   pillarBase: {fileID: 0}
   pillarHitbox: {fileID: 0}
-  casterAvailableAttacks: 0000
+  casterAvailableAttacks: 0100
   casterCooldowns:
-  - 0
+  - 3
   - 0
 --- !u!195 &1675256277858020987
 NavMeshAgent:
@@ -721,6 +726,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnDrop: 1
   disableDelay: 0
   dropChances:
   - 50
@@ -742,7 +748,7 @@ BoxCollider:
   m_GameObject: {fileID: 5112796633581186112}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 0.5}
   m_Center: {x: 0.25, y: 1, z: 0.5}

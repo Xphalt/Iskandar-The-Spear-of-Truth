@@ -23,11 +23,11 @@ public class ProjectileScript : MonoBehaviour
         damage = dmg;
     }
 
-    protected void OnCollisionEnter(Collision collision)
+    protected void OnTriggerEnter(Collider other)
     {
-        if(collision.transform.CompareTag("Player"))
+        if(other.TryGetComponent(out PlayerStats stats))
         {
-            collision.transform.GetComponent<PlayerStats>().TakeDamage(damage,false);
+            stats.TakeDamage(damage,false);
         }
         Destroy(gameObject);
     }

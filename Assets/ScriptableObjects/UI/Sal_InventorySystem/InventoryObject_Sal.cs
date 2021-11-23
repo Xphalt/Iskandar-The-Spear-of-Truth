@@ -119,9 +119,9 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
         Inventory newStorage = (Inventory)saveData.Storage;
-        for (int i = 0; i < Storage.Slots.Length; i++)
+        for (int i = 0; i < newStorage.Slots.Length; i++)
         {
-            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+            newStorage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
         }
     }
 
@@ -152,7 +152,7 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     //morgan's autosave game edit
     private void OnDestroy()
     {
-        SaveStats(0);
+        SaveStats(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>().SaveNum);
     }
 }
 

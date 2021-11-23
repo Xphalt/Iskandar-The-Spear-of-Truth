@@ -2,17 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class PlayerStats : StatsInterface
 {
     private PlayerAnimationManager playerAnimation;
+    private PlayerCombat_Jerzy playerCombat;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
     public GameObject listOfObjs;
 
     internal AccessoryObject Accessory; 
     public ItemObject_Sal revivalGem;
-    private string noWeaponAddress, weaponAddress;
+
+    public Transform startPos;
+
+    #region Weapon Model Variables
+    private GameObject swordEmpty;
+    public GameObject propSwordHolder, ironSword, falchion, stick;
+    #endregion
 
     /*______________________________Damage_Flash_Variables_______________________________*/
     public SkinnedMeshRenderer MeshRenderer;
@@ -23,7 +31,7 @@ public class PlayerStats : StatsInterface
     private const float BASE_DAMAGE = 0;
     private const float BASE_DEFENCE = 0;
 
-    private int gems;
+    public int gems;
     public int Gems
     {
         get
@@ -53,14 +61,15 @@ public class PlayerStats : StatsInterface
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+        playerCombat = GetComponent<PlayerCombat_Jerzy>();
     }
 
     private void Start()
     {
-        Origin = MeshRenderer.material.color;
+        //Assigning variable to the referrenced variable
+        swordEmpty = playerCombat.swordEmpty;
 
-        noWeaponAddress = "Animation/PlayerAnimations/PlayerAnims/PlayerNoWeapon";
-        weaponAddress = "Animation/PlayerAnimations/PlayerAnims/Player";
+        Origin = MeshRenderer.material.color;
 
         damage = BASE_DAMAGE;
         defence = BASE_DEFENCE;
@@ -77,7 +86,10 @@ public class PlayerStats : StatsInterface
         health = MAX_HEALTH;
 
         // list event in GameEvents.cs
-        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet; 
+        GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
+
+        m_Scene = SceneManager.GetActiveScene();
+        TrueLoadStats(SaveNum);
     }
 
     private void Update()
@@ -95,6 +107,10 @@ public class PlayerStats : StatsInterface
         }
 
         Bleed();
+
+        //This ensures that the gameobjects are controlled by Sword Empty GO
+        if (swordEmpty.activeInHierarchy) propSwordHolder.SetActive(true);
+        else propSwordHolder.SetActive(false);
     }
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
@@ -135,7 +151,9 @@ public class PlayerStats : StatsInterface
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        health = MAX_HEALTH;
+        UIManager.instance.SetHealthBar(health);
+        transform.position = startPos.position;
     }
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
@@ -191,8 +209,7 @@ public class PlayerStats : StatsInterface
                     case ObjectType.Weapon: 
                         damage -= ((WeaponObject_Sal)(temp)).damage;
                         spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
-                        GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost; 
-
+                        GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost;
                         break;
                     case ObjectType.Armor:
                         defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
@@ -229,14 +246,22 @@ public class PlayerStats : StatsInterface
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
                             GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
-                            //This changes the animator controller from weaponless animations to weapon animations
+                            #region Update Weapon on Player
                             if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
                             {
-                                Debug.Log(Resources.Load<RuntimeAnimatorController>(weaponAddress));
-                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(weaponAddress);
+                                swordEmpty.SetActive(true);
+
+                                if (temp.name == "Iron Sword")
+                                { ironSword.SetActive(true); falchion.SetActive(false); stick.SetActive(false); }
+
+                                else if (temp.name == "Sword of the Soulless ones")
+                                { ironSword.SetActive(false); falchion.SetActive(true); stick.SetActive(false); }
+
+                                else if (temp.name == "Stick")
+                                { ironSword.SetActive(false); falchion.SetActive(false); stick.SetActive(true); }
                             }
-                            else
-                                playerAnimation.animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(noWeaponAddress);
+                            else swordEmpty.SetActive(false);
+                            #endregion
                             break;
                         case ObjectType.Armor:
                             defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
@@ -284,7 +309,7 @@ public class PlayerStats : StatsInterface
             }
             else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
             {
-               // gems += ((ResourceObject)(item.itemobj)).gems;
+                gems += ((ResourceObject)(item.itemobj)).gems; // edited eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 if (((ResourceObject)(item.itemobj)).OnUseCurrent != null)
                     ((ResourceObject)(item.itemobj)).UseCurrent();
                 UIManager.instance.ShowMoneyPopup();
@@ -299,18 +324,112 @@ public class PlayerStats : StatsInterface
     }
 
     //Morgan's Save Edits
-    public void SaveStats(int num)
+    Scene m_Scene;
+    string sceneName;
+    internal int SaveNum;
+    internal float X;
+    internal float Y;
+    internal float Z;
+    public void SaveStats()
     {
-        SaveManager.SavePlayerStats(this, num);
-        inventory.SaveStats(num);
+        X = this.transform.position.x;
+        Y = this.transform.position.y;
+        Z = this.transform.position.z;
+        SaveData saveData = new SaveData();
+        SaveManager.SavePlayerStats(this, SaveNum);
+        inventory.SaveStats(SaveNum);
+        equipment.SaveStats(SaveNum);
+        sceneName = m_Scene.name;
+        saveData.LastFileSaved = SaveNum;
+        SaveNum = saveData.LastFileSaved;
     }
 
     public void LoadStats(int num)
     {
         SaveData saveData = SaveManager.LoadPlayerStats(num);
-        health = saveData.health;
-        inventory.LoadStats(num);
+        SaveNum = saveData.LastFileSaved;
+        saveData.LastFileSaved = num;
+        SceneManager.LoadScene(saveData.scenename);
     }
+
+    public void TrueLoadStats(int num)
+    {
+        SaveData saveData = SaveManager.LoadPlayerStats(num);
+        health = saveData.health;
+        gems = saveData.gemcount;
+        inventory.LoadStats(num);
+        equipment.LoadStats(num);
+        if (sceneName == saveData.scenename)
+        {
+            X = saveData.xpos;
+            Y = saveData.ypos;
+            Z = saveData.zpos;
+            transform.position = new Vector3(X, Y, Z);
+        }
+        print(transform.position);
+        SaveNum = saveData.LastFileSaved;
+        saveData.LastFileSaved = num;
+
+        EnemyStats[] dlist = FindObjectsOfType<EnemyStats>(true);
+        foreach (EnemyStats Enemy in dlist)
+        {
+            foreach (var ID in saveData.enemydeadlist)
+            {
+                if (Enemy.gameObject.GetInstanceID() == ID)
+                    Destroy(Enemy.gameObject);
+            }
+        }
+
+        //saving chests
+        var colist = GameObject.FindGameObjectsWithTag("LootChest");
+        foreach (var Chest in colist)
+        {
+            foreach (var ID in saveData.chestopenedlist)
+            {
+                if (Chest.GetInstanceID() == ID)
+                    Chest.GetComponent<LootChest_Jerzy>().isInteractable = false;
+                print("LootChest is " + Chest.GetComponent<LootChest_Jerzy>().isInteractable);
+            }
+        }
+
+        //saving pots
+        var plist = GameObject.FindGameObjectsWithTag("Pot");
+        foreach (var Pot in plist)
+        {
+            foreach (var ID in saveData.potbrokenlist)
+            {
+                if (Pot.GetInstanceID() == ID)
+                    Pot.GetComponent<ScrDestructablePot>().destroyed = true;
+                print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
+            }
+        }
+
+        // shh
+        List<bool> savedEvents = saveData.totallynotevents[m_Scene.buildIndex];
+        if (savedEvents.Count > 0)
+        {
+            EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
+            int totalEvents = 0;
+            //loading events
+            for (int em = 0; em < managers.Length; em++)
+            {
+                for (int a = 0; a < managers[em].getamountofactions(); a++)
+                {
+                    managers[em].setCompleted(a, savedEvents[a - totalEvents]);
+                    if (savedEvents[a - totalEvents])
+                    {
+                        for (int ev = 0; ev < managers[em].actions[a].events.Count; ev++)
+                        {
+                            if (managers[em].actions[a].events[ev].ReplayOnload)
+                                managers[em].actions[a].events[ev].TriggerEvent();
+                        }
+                    }
+                }
+                totalEvents += managers[em].getamountofactions();
+            }
+        }
+    }
+
 
     //Morgan's Event Manager: Health Set
     private void OnPlayerHealthSet(int sethealth)

@@ -78,6 +78,7 @@ MonoBehaviour:
   chargeSpeed: 0
   chargeDistanceMult: 1
   chargeRaycast: 0
+  chargeSelfDamage: 0
   chargeLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -85,6 +86,7 @@ MonoBehaviour:
   shootPoint: {fileID: 2711327630202223721}
   projectileSpeed: 0
   minChaseRadius: 1.5
+  isBoss: 0
   minSkulls: 1
   maxSkulls: 3
   skullDamage: 0
@@ -183,7 +185,7 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 0
   vulnerable: 1
-  despawnTime: 0
+  despawnTime: 10
 --- !u!1001 &2715296294453099175
 PrefabInstance:
   m_ObjectHideFlags: 0

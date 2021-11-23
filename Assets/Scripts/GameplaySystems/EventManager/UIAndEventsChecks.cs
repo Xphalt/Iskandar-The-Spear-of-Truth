@@ -9,6 +9,8 @@ public class UIAndEventsChecks : MonoBehaviour
     [HideInInspector] public Image img;
     [HideInInspector] public PlayerInput _playerInput;
     [HideInInspector] public EnemyBase[] _enemies;
+    private PlayerMovement_Jerzy _playerMovement;
+    public GameObject _dialogue;
     //public Renderer rend;
     public void Start()
     {
@@ -26,7 +28,7 @@ public class UIAndEventsChecks : MonoBehaviour
     private void Awake()
     {
         _playerInput = FindObjectOfType<PlayerInput>();
-        _enemies = FindObjectsOfType<EnemyBase>();
+        _playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
     }
 
     public void DisableUI()
@@ -49,23 +51,27 @@ public class UIAndEventsChecks : MonoBehaviour
 
     public void OnLockPlayerInputs()
     {
-        _playerInput.enabled = false;
+        _playerInput.TogglePlayerInteraction(false);
+        _playerMovement.LockPlayerMovement();
         print("the state of input is " + _playerInput.enabled);
     }
 
     public void OnUnLockPlayerInputs()
     {
-        _playerInput.enabled = true;
+        _playerInput.TogglePlayerInteraction(!_dialogue.activeSelf);
+
     }
 
     public void OnStop()
     {
+        _enemies = FindObjectsOfType<EnemyBase>();
         foreach (EnemyBase enemy in _enemies) enemy.enabled = false;
         print("functioning");
     }
 
     public void OnContinue()
     {
+        _enemies = FindObjectsOfType<EnemyBase>();
         foreach (EnemyBase enemy in _enemies) enemy.enabled = true;
     }
 
@@ -74,4 +80,6 @@ public class UIAndEventsChecks : MonoBehaviour
         GameEvents.current.LockPlayerInputs();
         GameEvents.current.StopAttacking();
     }
+
+
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SwitchManager : MonoBehaviour
 {
     public LightSwitch[] switchOrder;
-    private List<LightSwitch> switchInputs = new List<LightSwitch>();
+    public List<LightSwitch> switchInputs = new List<LightSwitch>();
 
     public List<GameObject> activated;
     public List<GameObject> deactivated;

@@ -4,22 +4,34 @@ using UnityEngine;
 
 public class Spirit : EnemyBase
 {
-    public GameObject DeathExplosive;
+    public float knockbackForce, knockbackDuration, deathDmg;
+    private PlayerMovement_Jerzy move;
+    private PlayerStats pStats;
 
     public override void Start()
     {
         base.Start();
+        move = GameObject.Find("Player").GetComponent<PlayerMovement_Jerzy>();
+        pStats = GameObject.Find("Player").GetComponent<PlayerStats>();
     }
 
-    public override void Update()
+    public void DeathExplode()
     {
-        base.Update();
-
+        if (pStats.spiritualDamage > 0.0f)
+            curAttackDmg = 0.0f;
+        else
+            curAttackDmg = deathDmg;
+            
+        //if (detector.GetCurTarget().TryGetComponent(out PlayerMovement_Jerzy move))
+        //    move.KnockBack(transform.position, knockbackForce, knockbackDuration);
     }
 
-    public void DeathDrop()
+    protected override void OnTriggerEnter(Collider collider)
     {
-        Instantiate(DeathExplosive);
+        if (detector.IsTarget(collider.transform) && isDead && (pStats.spiritualDamage <= 0.0f))
+        {
+            move.KnockBack(transform.position, knockbackForce, knockbackDuration);
+        }
     }
-    
+
 }

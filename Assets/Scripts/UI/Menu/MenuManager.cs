@@ -1,26 +1,38 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 using UnityEngine.Localization.Settings;
+using UnityEngine.Localization;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Linq;
 
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown dropdown;
+    [SerializeField] private TMP_Dropdown qualityDropDown;
 
-    public GameObject[] saveSelections;
+    public string qualitySettingsStringTable = "QualitySettings";
+
+    public Dictionary<string, SaveData> saveSelections = new Dictionary<string, SaveData>();
+    public Transform[] buttons;
     public Sprite emptyIcon;
 
     public GameObject inputName;
     public GameObject continueDeletePanel;
+    public GameObject startPanel;
 
-    int currentSaveFileSelected = 0;
+    internal SaveData currentSaveFile;
+
+    public PlayerNameManager pnm;
 
     // Populate the locale dropdown
     IEnumerator Start()
     {
-        UpdateSavePanel();
+        GetSaveFiles();
 
         // Wait for the localization system to initialize, loading Locales, preloading etc.
         yield return LocalizationSettings.InitializationOperation;
@@ -39,44 +51,93 @@ public class MenuManager : MonoBehaviour
 
         dropdown.value = selected;
         dropdown.onValueChanged.AddListener(LocaleSelected);
+
+        qualityDropDown.ClearOptions();
+
+        LocalizedString localisedString = new LocalizedString();
+        localisedString.TableReference = qualitySettingsStringTable;
+        foreach (var name in QualitySettings.names)
+        {
+            localisedString.TableEntryReference = name;
+            string localised_name = localisedString.GetLocalizedString();
+            qualityDropDown.options.Add(new TMP_Dropdown.OptionData(localised_name));
+        }
+
+        SetQuality(QualitySettings.GetQualityLevel());
     }
+
+
     // Update the locale when changed with dropdown
     public void LocaleSelected(int index)
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
     }
 
+    public List<int> listOfNumsNotUsed = new List<int>();
+    //UnityEngine.SceneManagement.SceneManager.LoadScene(saveSelections.ElementAt(i).Value.scenename);
+
     public void UpdateSavePanel()
     {
-        //Load Saves
+        startPanel.SetActive(true);
+        saveSelections.Clear();
+        GetSaveFiles();
 
-        //For loop save file
+        listOfNumsNotUsed.Clear();
 
-        /*
-         * {
-         *      saveSelection[i].transform.getChild(0).getChild(0).getComponent<TextMeshProGUI>().text = saveFile.name?
-         *      saveSelection[i].transform.getChild(1).getComponent<Image>().sprite = saveFile.icon?    
-         *      saveSelections[i].transform.GetChild(0).GetComponent<Button>().onClick.AddListener(ShowContinueDelete);
-         * }
-         * 
-         * For loop saveSelection.length - saveFile.length
-         * {
-         *      saveSelection[i].transform.getChild(0).getChild(0).getComponent<TextMeshProGUI>().text = "Empty"
-         *      saveSelection[i].transform.getChild(1).getComponent<Image>().sprite = emptyIcon
-         *      saveSelections[i].transform.GetChild(0).GetComponent<Button>().onClick.AddListener(ShowInputField);
-         * }
-         * 
-         */
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            listOfNumsNotUsed.Add(i);
+        }
+
+        for (int i = 0; i < saveSelections.Count; i++)
+        {
+            //Debug.Log(saveSelections.ElementAt(i).Key);
+
+            //Gets player name and sets it to text
+            buttons[i].GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = saveSelections.ElementAt(i).Key;
+
+            //Sets the quest icon?!?!??!?!?!?
+            //saveSelection[i].transform.getChild(1).getComponent<Image>().sprite = saveFile.icon ?
+
+            //When button's clicked, show continue and delete buttons
+            buttons[i].GetChild(0).GetComponent<Button>().onClick.AddListener(ShowContinueDelete);
+
+            //When button's clicked, hides the input field for new name
+            buttons[i].GetChild(0).GetComponent<Button>().onClick.AddListener(HideInputField);
+
+            //When button's clicked, sets the current save num variable to the prewritten save num in the save data
+            buttons[i].GetChild(0).GetComponent<MenuSaveIdentity>().id = saveSelections.ElementAt(i).Value.LastFileSaved;
+
+            //Removes the numbers that are being used by save files
+            listOfNumsNotUsed.Remove(saveSelections.ElementAt(i).Value.LastFileSaved);
+        }
+
+
+        for (int i = saveSelections.Count; i < buttons.Length; i++)
+        {
+            //Set's the button text to empty as no save file exists at this ID
+            buttons[i].GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Empty";
+
+            //Set's 'quest' icon to empty icon
+            //saveSelection[i].transform.getChild(1).getComponent<Image>().sprite = emptyIcon
+
+            //Shows the input name field
+            buttons[i].GetChild(0).GetComponent<Button>().onClick.AddListener(ShowInputField);
+
+            //Hides the ability to continue a save or delete a save, as it doesn't exist at the current ID
+            buttons[i].GetChild(0).GetComponent<Button>().onClick.AddListener(HideContinueDelete);
+
+            buttons[i].GetChild(0).GetComponent<MenuSaveIdentity>().id = listOfNumsNotUsed[i - saveSelections.Count];
+        }
     }
 
     public void ShowContinueDelete()
     {
         continueDeletePanel.SetActive(true);
     }
-
-    public void SetCurrentSaveFile(int file)
+    public void HideContinueDelete()
     {
-        currentSaveFileSelected = file;
+        continueDeletePanel.SetActive(false);
     }
 
     public void ShowInputField()
@@ -84,19 +145,77 @@ public class MenuManager : MonoBehaviour
         inputName.SetActive(true);
     }
 
-    public void StartGame()
+    public void HideInputField()
     {
-        //Start
+        inputName.SetActive(false);
     }
 
-    public void GetSaveFiles(int num)
+    public void StartGame()
     {
-        //SaveManager.LoadPlayerStats(num).
+        try
+        {
+            currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSaveFile.scenename);
+        }
+        catch (System.Exception)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        }
+    }
+
+    public void GetSaveFiles()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            SaveData save;
+            string name;
+
+            string saveDataPath = Application.persistentDataPath + "/Player_statsf" + i + ".txt";
+            string namePath = Application.persistentDataPath + "/Player_name" + i + ".txt";
+            if (File.Exists(saveDataPath) && File.Exists(namePath))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream fs = new FileStream(saveDataPath, FileMode.Open);
+
+                save = bf.Deserialize(fs) as SaveData;
+
+                fs = new FileStream(namePath, FileMode.Open);
+
+                name = bf.Deserialize(fs) as string;
+
+                saveSelections.Add(name, save);
+                fs.Close();
+            }       
+        }               
     }
 
     public void DeleteSaveFile()
     {
-        //currentSaveFileSelected
+        int i = pnm.currentSaveFile;
+
+        string saveDataPath = Application.persistentDataPath + "/Player_statsf" + i + ".txt";
+        string namePath = Application.persistentDataPath + "/Player_name" + i + ".txt";
+        string invPath = Application.persistentDataPath + "/Player_Inventoryf" + i + ".txt";
+
+        if (File.Exists(saveDataPath))
+        {
+            File.Delete(saveDataPath);
+        }
+        if (File.Exists(namePath))
+        {
+            File.Delete(namePath);
+        }
+        if (File.Exists(invPath))
+        {
+            File.Delete(invPath);
+        }
+    }
+
+    public void SetQuality(int qualityIndex)
+    {
+        QualitySettings.SetQualityLevel(qualityIndex);
+        qualityDropDown.value = qualityIndex;
+        qualityDropDown.RefreshShownValue();
     }
 
     public void QuitGame()

@@ -4,112 +4,106 @@ using UnityEngine;
 
 public class Servant : EnemyBase
 {
-
-    public float slashDamage;
-    public float slashCooldown;
-    private float slashTimer;
-
-    public float swingDamage;
-    public float swingCooldown;
-    private float swingTimer;
-
-    public float counterDamage;
-    public float tauntCooldown;
-    private float tauntTimer;
-
-    private bool slashUsed = false;
-    private bool swingUsed = false;
-    private bool tauntUsed = false;
-    private bool canAttack = true;
-
-    private void Awake()
+    public enum ServantAttacks
     {
-        slashTimer = slashCooldown;
-        swingTimer = swingCooldown;
-        tauntTimer = tauntCooldown;
+        Swing,
+        Taunt,
+        AttackTypesCount
+    };
+
+    public float blockDuration;
+    private bool blocking = false;
+    private float blockTimer;
+
+    [NamedArray(new string[] { "Swing", "Taunt" })]
+    public float[] servantCooldowns = new float[(int)ServantAttacks.AttackTypesCount];
+
+    private float[] servantTimers = new float[(int)ServantAttacks.AttackTypesCount];
+
+    protected ServantAttacks servantAttack = ServantAttacks.AttackTypesCount;
+
+    protected bool SwingAvailable => servantTimers[(int)ServantAttacks.Swing] >= servantCooldowns[(int)ServantAttacks.Swing]
+        && detector.MeleeRangeCheck(swingRange);
+    protected bool TauntAvailable => servantTimers[(int)ServantAttacks.Taunt] >= servantCooldowns[(int)ServantAttacks.Taunt]
+        && detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee]);
+
+    public float swingDamage, swingRange;
+
+    public override void Start()
+    {
+        base.Start();
+        for (int t = 0; t < servantTimers.Length; t++) servantTimers[t] = servantTimers[t];
     }
 
-    // Update is called once per frame
-    public override void Update()
+    public override void Attack()
     {
-        base.Update();
-        AttackCycle();
-        ManageCooldowns();
-    }
-
-    public void AttackCycle()
-    {
-        canAttack = true;
-
-        if (!tauntUsed && canAttack)
+        if (blocking)
         {
-            Taunt();
+            blockTimer += Time.deltaTime;
+            if (detector.GetCurTarget()) transform.rotation = Quaternion.LookRotation(detector.GetCurTarget().position - transform.position);
+            if (blockTimer > blockDuration) EndBlock();
         }
-
-        if (!swingUsed && canAttack)
+        else if (CanAttack)
         {
-            MeleeSwing();
-        }
-
-        if (!slashUsed && canAttack)
-        {
-            MeleeSlash();
-        }
-    }
-
-    public void MeleeSlash()
-    {
-        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
-        {
-            //play melee animation
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector3.zero;
-            slashUsed = true;
-            canAttack = false;
+            if (SwingAvailable && !attackUsed)
+            {
+                SetAttack(ServantAttacks.Swing);
+                curAttackDmg = swingDamage;
+            }
+            else if (TauntAvailable && !attackUsed)
+            {
+                SetAttack(ServantAttacks.Taunt);
+                curAttackDmg = attackDamages[(int)AttackTypes.Melee];
+                Block();
+            }
+            base.Attack();
         }
     }
 
-    public void MeleeSwing()
+    public void SetAttack(ServantAttacks type)
     {
-        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
+        _myAnimator.SetTrigger(type.ToString());
+        attackUsed = true;
+        servantAttack = type;
+        curState = EnemyStates.Attacking;
+        MyRigid.velocity = Vector3.zero;
+        servantTimers[(int)servantAttack] = 0;
+        attackEnded = false;
+    }
+
+    public void Block()
+    {
+        blocking = true;
+        blockTimer = 0;
+        stats.vulnerable = false;
+        _myAnimator.SetBool("IsBlocking", true);
+    }
+
+    public void EndBlock()
+    {
+        blocking = false;
+        stats.vulnerable = true;
+        _myAnimator.SetBool("IsBlocking", false);
+        AttackEnd();
+    }
+
+    protected override void AttackCooldown()
+    {
+        base.AttackCooldown();
+        for (int a = 0; a < servantCooldowns.Length; a++)
         {
-            //play swing animation
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector3.zero;
-            swingUsed = true;
-            canAttack = false;
+            servantTimers[a] += Time.deltaTime;
         }
     }
 
-    public void Taunt()
+    protected override void OnTriggerEnter(Collider other)
     {
-        //play taunt animation
-        tauntUsed = true;
-        canAttack = false;
-    }
+        base.OnTriggerEnter(other);
 
-    public void ManageCooldowns()
-    {
-        
-        slashTimer -= Time.deltaTime;
-        if (slashTimer == 0)
+        if (other.CompareTag("playerSword") && blocking)
         {
-            slashUsed = false;
-        }
-
-        
-        swingTimer -= Time.deltaTime;
-        if (swingTimer == 0)
-        {
-            swingUsed = false;
-        }
-
-        
-        tauntTimer -= Time.deltaTime;
-        if (tauntTimer == 0)
-        {
-            tauntUsed = false;
+            EndBlock();
+            MeleeAttack();
         }
     }
-
 }

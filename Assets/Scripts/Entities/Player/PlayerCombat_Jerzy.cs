@@ -142,7 +142,6 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         if (other.CompareTag("playerSword") && returning && thrown)
         {
             // end throw cycle, attach sword to player, set appropriate position and rotation for the sword
-            playerAnimation.SwordReturnAttack();
             playerMovement.LockPlayerMovement();
             throwSword.EndThrowCycle();
             swordEmpty.transform.parent = playerModel.transform;

@@ -103,10 +103,6 @@ public class DialogueManager : MonoBehaviour
             {
                 TextContinueDialogue.text = "End";
             }
-
-            Debug.Log(_QueueOfCharacters.Count);
-            Debug.Log(_QueueOfStringArrays.Count);
-            Debug.Log(_QueueOfStrings.Count);
         }
     }
 
@@ -123,10 +119,12 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        playerInput.enabled = true;
         playerInput.TogglePlayerInteraction(true);
         // Re-enable the collider of the GO we're speaking to when ending the dialogue
         currentCollider.enabled = true;
         DialoguePanel.SetActive(false);
+        GameEvents.current.ContinueAttacking();
     }
 
     #region Queues

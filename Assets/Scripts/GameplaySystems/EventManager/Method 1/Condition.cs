@@ -70,6 +70,18 @@ public class IsDeadCondition : Condition
 	[SerializeField] private PlayerStats playerStats;
 }
 
+public class EnemyDiedCondition : Condition
+{
+	public override bool TestCondition()
+	{
+		if (enemyStats.IsDead())
+			return true;
+		return false;
+	}
+
+	[SerializeField] private EnemyStats enemyStats;
+}
+
 public class DialogueEndedCondition : Condition
 {
     public override bool TestCondition()
@@ -93,6 +105,18 @@ public class KillnEnemiesCondition : Condition
 	}
 
 	[SerializeField] private int amountToKill;
+}
+
+public class EventsCompleted : Condition
+{
+	public override bool TestCondition()
+	{
+		return EventManager.actions[ActionIndex].events[EventIndex].IsComplete;
+	}
+
+	[SerializeField] EventManager EventManager;
+	[SerializeField] int ActionIndex;
+	[SerializeField] int EventIndex;
 }
 
 //[System.Serializable]

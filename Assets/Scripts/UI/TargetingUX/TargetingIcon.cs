@@ -28,6 +28,7 @@ public class TargetingIcon : MonoBehaviour
     }
 
     private Transform targetedTransform = null;
+    private EnemyStats targetedStats = null;
     private TARGETING_TYPE targetingType = TARGETING_TYPE.NUM_TARGETING_TYPES;
     private Image iconImage;
 
@@ -51,6 +52,12 @@ public class TargetingIcon : MonoBehaviour
             Vector3 new_pos = new Vector3(targetedTransform.position.x, targetedTransform.position.y + (3 * targetedTransform.localScale.y), targetedTransform.position.z);
             Vector2 screenPoint = Camera.main.WorldToScreenPoint(new_pos);
             transform.position = screenPoint;
+
+            // If the enemy dies disable the icon
+            if (targetedStats && targetedStats.IsDead())
+            {
+                SetTarget(null, TARGETING_TYPE.NUM_TARGETING_TYPES);
+            }
         }
     }
 
@@ -61,6 +68,14 @@ public class TargetingIcon : MonoBehaviour
         if ((targetingType == TARGETING_TYPE.NUM_TARGETING_TYPES) || (type == targetingType) || (type > TARGETING_TYPE.INDICATING))
         {
             targetedTransform = target;
+            if (targetedTransform)
+            {
+                targetedStats = targetedTransform.GetComponent<EnemyStats>();
+            }
+            else
+            {
+                targetedStats = null;
+            }
             targetingType = type;
 
             switch (targetingType)

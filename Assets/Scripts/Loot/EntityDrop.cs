@@ -8,6 +8,7 @@ public class EntityDrop : MonoBehaviour
 {
     private float spawnSpeed = 150.0f;
 
+    public bool disableOnDrop = true;
     public float disableDelay = 0;
 
     [Range(1, 100)] public List<float> dropChances;
@@ -67,14 +68,15 @@ public class EntityDrop : MonoBehaviour
                 obj.GetComponent<GroundItem>().spawn += PotSpawn;
         }
 
-        if (canIReset)
+        /*if (canIReset)
             //Reset tentatives to 1
             DropSystem.Instance.ResetTentativeNum(type);
         else
-            DropSystem.Instance.IncreaseTentatives(type);
+            DropSystem.Instance.IncreaseTentatives(type);*/
 
         //Destroy
-        if (type != EntityType.Chest)
+
+        if (type != EntityType.Chest && type != EntityType.Pot && disableOnDrop)
             Destroy(gameObject, disableDelay); //GOING TO HANDLE THIS IN OTHER SCRIPTS
     }
 

@@ -2,22 +2,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class QuestLogManager : MonoBehaviour
 {
-    [HideInInspector] public GameObject ButtonArea;
-    [HideInInspector] public Button QuestButton;
+    public GameObject ButtonArea;
+    public Button QuestButton;
 
     public List<QuestObject> ListOfQuests = new List<QuestObject>();
+
     [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
+    private GameObject QuestInfoText;
 
     private void Awake()
     {
-        foreach (var item in ListOfQuests)
-        {
-            ListOfButtons.Add(QuestButton);
-            QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = item.QuestName.GetLocalisedString();
-            Instantiate(QuestButton, ButtonArea.transform).name = item.QuestName.GetLocalisedString();
-        }
+        QuestInfoText = GameObject.Find("TextQuestDescription");
     }
+
+    public void AddQuest(QuestObject quest)
+    {
+        ListOfQuests.Remove(quest);
+        QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = quest.QuestName.GetLocalisedString();
+        Instantiate(QuestButton, ButtonArea.transform).name = quest.QuestName.GetLocalisedString();
+    }
+
+    /*_______________________________________Button_Functions______________________________________________*/
+    public void ChangeQuestInfo()
+    {
+        QuestInfoText.GetComponent<TextMeshProUGUI>().text = ListOfQuests.Find(QuestObject => QuestObject.name == gameObject.name).QuestDescription.GetLocalisedString();
+    }
+    /*_____________________________________________________________________________________________________*/
 }

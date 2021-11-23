@@ -16,7 +16,7 @@ public class Poison : MonoBehaviour
         if (other.TryGetComponent(out PlayerCombat_Jerzy combat))
         {
             combat.Poison(this);
-            if (destroyOnContact) Destroy(gameObject);
         }
+        if (destroyOnContact) Destroy(gameObject);
     }
 }

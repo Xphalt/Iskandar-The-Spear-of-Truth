@@ -8,8 +8,11 @@ public class EnemyStats : StatsInterface
 
     public bool vulnerable = true;
     private float deathTimer = 0.0f;
-    public float despawnTime;
-    private bool isDead = false;
+
+    public float despawnTime = 4;
+    public bool isDead = false;
+    public bool IsDead() { return isDead; }
+
     EntityDrop drops;
 
     private void Start()
@@ -20,8 +23,9 @@ public class EnemyStats : StatsInterface
 
     private void Update()
     {
-        if(isDead)
+        if(health <= 0)
         {
+            isDead = true;
             //timer til gameobj disable
             deathTimer += Time.deltaTime;
             if (deathTimer >= despawnTime)
@@ -29,6 +33,9 @@ public class EnemyStats : StatsInterface
                 ++EnemiesKilled;
                 if (drops) drops.SpawnLoot();
                 gameObject.SetActive(false);
+
+                FinalBurst explosion = transform.GetComponentInChildren<FinalBurst>(true);
+                if (explosion) explosion.Burst();
             }
         }
     }
@@ -48,6 +55,9 @@ public class EnemyStats : StatsInterface
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
     {
-        target.TakeDamage(amount, scriptedKill);
+        if (target)
+        {
+            target.TakeDamage(amount, scriptedKill);
+        }
     }
 }

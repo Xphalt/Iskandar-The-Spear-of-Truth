@@ -11,6 +11,7 @@ public class Caster : EnemyBase
         AttackTypesCount
     };
 
+
     public float minSpawnRadius;
     public float maxSpawnRadius;
     [System.Serializable]
@@ -18,6 +19,7 @@ public class Caster : EnemyBase
     {
         public GameObject obj;
         public int howMany;
+        public float ySpawnOffset;
     }
     public PrefabsToSpawn[] prefabsToSpawn;
 
@@ -43,14 +45,12 @@ public class Caster : EnemyBase
     public override void Start()
     {
         base.Start();
-        for(int i=0; i <= casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
+        for(int i=0; i < casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
     }
 
     public override void Update()
     {
         base.Update();
-
-        SetMovementAnim();
 
         if (pillarCast)
             PillarTimer();
@@ -115,7 +115,7 @@ public class Caster : EnemyBase
             for (int t = 0; t < prefabsToSpawn[obj].howMany; t++)
             {
                 GameObject newSpawn = Instantiate(prefabsToSpawn[obj].obj);
-                newSpawn.transform.position = transform.RandomRadiusPoint(minSpawnRadius, maxSpawnRadius);
+                newSpawn.transform.position = transform.RandomRadiusPoint(minSpawnRadius, maxSpawnRadius)+Vector3.up * prefabsToSpawn[obj].ySpawnOffset;
             }
         }
     }
