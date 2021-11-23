@@ -508,19 +508,44 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-       if(other.tag.Contains("Floor"))
+       if(other.tag == "Stone" || other.tag == "Wood")
         {
-            string tag = other.tag.Substring(6);
-            switch (tag)
+            switch (other.tag)
             {
-                case "stone":
+                case "Stone":
                     GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.stone;
-                    break;
-                case "dirt":
-                    GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.dirt;
+                    break;                
+                case "Wood":
+                    GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.wood;
                     break;
             }
+        }        
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (GetComponent<PlayerSFXPlayer>().footstepType == PlayerSFXPlayer.FootstepType.defaultMass)
+        {
+            if (other.tag == "Stone" || other.tag == "Wood")
+            {
+                switch (other.tag)
+                {
+                    case "Stone":
+                        GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.stone;
+                        break;
+                    case "Wood":
+                        GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.wood;
+                        break;
+                }
+            }
         }
-        
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Stone" || other.tag == "Wood")
+        {
+            GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.defaultMass;
+        }                     
     }
 }

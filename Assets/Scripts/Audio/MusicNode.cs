@@ -93,7 +93,7 @@ public class MusicNode : MonoBehaviour
                     currentClip = audioClips.Length-amountToLoop;
 
                 music.PlayOneShot(audioClips[currentClip]);
-                Debug.Log("Playing: " + audioClips[currentClip]);
+                //Debug.Log("Playing: " + audioClips[currentClip]);
             }
 
             timeTillNextClip += Time.deltaTime;
@@ -132,7 +132,7 @@ public class MusicNode : MonoBehaviour
     {
         if (other.tag == "Player" && !overridden)
         {
-            FadeInMusic();
+            ChangeToNextMusic();
         }
     }
 
@@ -142,5 +142,10 @@ public class MusicNode : MonoBehaviour
         {
             isPlaying = false;
         }
+    }
+
+    public void ChangeToNextMusic()
+    {
+        FadeInMusic();
     }
 }

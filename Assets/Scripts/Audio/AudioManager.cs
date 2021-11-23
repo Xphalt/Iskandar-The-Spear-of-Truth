@@ -14,7 +14,7 @@ public class AudioManager : MonoBehaviour
 
     public MusicNode[] musicNodes;
 
-    void Start()
+    void Awake()
     {
         mixer = Resources.Load("Master") as AudioMixer;        
 

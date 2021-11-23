@@ -11,10 +11,11 @@ public class PlayerSFXPlayer : MonoBehaviour
     int aSourceCounter = 0;
 
     public enum AudioType {footsteps, armourHit, swordSwing };
-    public enum FootstepType {stone, dirt};
+    public enum FootstepType {stone, defaultMass, wood};
 
     public List<AudioClip> footstepsStone = new List<AudioClip>();
-    public List<AudioClip> footstepsDirt = new List<AudioClip>();
+    public List<AudioClip> footstepsDefault = new List<AudioClip>();
+    public List<AudioClip> footstepsWood = new List<AudioClip>();
     public List<AudioClip> armourHit = new List<AudioClip>();
     public List<AudioClip> swordSwing = new List<AudioClip>();
 
@@ -33,7 +34,8 @@ public class PlayerSFXPlayer : MonoBehaviour
         playerSFXDictionary.Add(AudioType.swordSwing, swordSwing);
 
         playerFootstepDictionary.Add(FootstepType.stone, footstepsStone);
-        playerFootstepDictionary.Add(FootstepType.dirt, footstepsDirt);
+        playerFootstepDictionary.Add(FootstepType.defaultMass, footstepsDefault);
+        playerFootstepDictionary.Add(FootstepType.wood, footstepsWood);
 
         aSource = new AudioSource[playerSFXDictionary.Count+1];
 
