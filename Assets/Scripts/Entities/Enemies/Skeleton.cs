@@ -85,6 +85,7 @@ public class Skeleton : EnemyBase
             attackUsed = true;
             curAttack = AttackTypes.Melee;
             MyRigid.velocity = Vector3.zero;
+            _myAnimator.SetTrigger("Hit");
         }
     }
 
