@@ -6,29 +6,19 @@ using System.Collections;
 
 public class QuestLogManager : MonoBehaviour
 {
-    //QuestLogVars
-    [HideInInspector] public GameObject ButtonArea;
-    [HideInInspector] public Button QuestButton;
+    public GameObject ButtonArea;
+    public Button QuestButton;
 
-    public List<QuestObject> ListOfQuests = new List<QuestObject>(); // do we get this
+    public List<QuestObject> ListOfQuests = new List<QuestObject>();
 
     [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
     private GameObject QuestInfoText;
 
-    //QuestNotificationVars
-    public GameObject QuestPopup;
-    public Animator Anim;
-    public TMP_Text QName;
-    public TMP_Text QStatus;
-    public TMP_Text QMessage;
-
     private void Awake()
     {
-        QuestPopup.SetActive(false);
         QuestInfoText = GameObject.Find("TextQuestDescription");
     }
 
-    #region QuestLog
     public void AddQuest(QuestObject quest)
     {
         ListOfQuests.Remove(quest);
@@ -42,57 +32,4 @@ public class QuestLogManager : MonoBehaviour
         QuestInfoText.GetComponent<TextMeshProUGUI>().text = ListOfQuests.Find(QuestObject => QuestObject.name == gameObject.name).QuestDescription.GetLocalisedString();
     }
     /*_____________________________________________________________________________________________________*/
-    #endregion
-
-    #region QuestNotification
-    /*____________________________________
-     * To trigger the quest notification
-     * pass in the correct 
-     * variables to trigger and display
-     * the correct messages
-    _____________________________________*/
-
-    //Trigger for when a quest objective is required
-    public void TriggerNotification(QuestObject questObject, LocalisationTableReference questStatus, bool isShown, LocalisationTableReference questObjective, float screenDuration)
-    {
-        QuestPopup.SetActive(true);
-        SetQuestNotifName(questObject);
-        SetQuestStatus(questStatus);
-        SetQuestObjective(questObjective);
-        StartCoroutine(LingerOnScreen(screenDuration));
-        QuestPopup.SetActive(false);
-    }
-
-    //Overloaded trigger for when quest objective is not required
-    public void TriggerNotification(QuestObject questObject, LocalisationTableReference questStatus, float screenDuration)
-    {
-        QuestPopup.SetActive(true);
-        SetQuestNotifName(questObject);
-        SetQuestStatus(questStatus);
-        QMessage.gameObject.SetActive(false);
-        StartCoroutine(LingerOnScreen(screenDuration));
-        QuestPopup.SetActive(false);
-    }
-
-    public void SetQuestNotifName(QuestObject questObject)
-    {
-        QName.SetText(questObject.QuestName.GetLocalisedString());
-    }
-
-    public void SetQuestStatus(LocalisationTableReference questStatus)
-    {
-        QStatus.SetText(questStatus.GetLocalisedString());
-    }
-
-    public void SetQuestObjective(LocalisationTableReference questObjective)
-    {
-        QMessage.gameObject.SetActive(true);
-        QMessage.SetText(questObjective.GetLocalisedString());
-    }
-
-    public IEnumerator LingerOnScreen(float screenDuration)
-    {
-        yield return screenDuration;
-    }
-    #endregion
 }
