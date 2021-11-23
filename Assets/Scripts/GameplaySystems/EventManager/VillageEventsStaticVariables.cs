@@ -7,15 +7,15 @@ public static class VillageEventsStaticVariables
     public enum VillageEventStages
     {
         villageStarted,
-        forestComplete,
+        forestDungeonComplete,
         desertComplete,
-        darkLordDungeonComplete
+        desertDungeonComplete,
     };
 
     public static bool villageHasStarted = true;
     public static bool desertIsCompleted;
-    public static bool forestIsCompleted;
-    public static bool darkLordDungeonIsCompleted;
+    public static bool forestDungeonIsCompleted;
+    public static bool desertDungeonIsCompleted;
 
     public static void UpdateVillage(VillageEventStages eventStage)
     {
@@ -29,11 +29,11 @@ public static class VillageEventsStaticVariables
             case VillageEventStages.desertComplete:
                 desertIsCompleted = true;
                 break;
-            case VillageEventStages.forestComplete:
-                forestIsCompleted = true;
+            case VillageEventStages.forestDungeonComplete:
+                forestDungeonIsCompleted = true;
                 break;
-            case VillageEventStages.darkLordDungeonComplete:
-                darkLordDungeonIsCompleted = true;
+            case VillageEventStages.desertDungeonComplete:
+                desertDungeonIsCompleted = true;
                 break;
             default:
                 break;
@@ -43,7 +43,7 @@ public static class VillageEventsStaticVariables
     private static void DisableAllEventTypes()
     {
         desertIsCompleted = false;
-        forestIsCompleted = false;
-        darkLordDungeonIsCompleted = false;
+        forestDungeonIsCompleted = false;
+        desertDungeonIsCompleted = false;
     }
 }

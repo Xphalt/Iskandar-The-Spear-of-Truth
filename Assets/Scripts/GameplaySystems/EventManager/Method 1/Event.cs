@@ -318,11 +318,11 @@ public class CompleteLevel : Event
             case VillageEventsStaticVariables.VillageEventStages.desertComplete:
                 VillageEventsStaticVariables.desertIsCompleted = true;
                 break;
-            case VillageEventsStaticVariables.VillageEventStages.forestComplete:
-                VillageEventsStaticVariables.forestIsCompleted = true;
+            case VillageEventsStaticVariables.VillageEventStages.forestDungeonComplete:
+                VillageEventsStaticVariables.forestDungeonIsCompleted = true;
                 break;
-            case VillageEventsStaticVariables.VillageEventStages.darkLordDungeonComplete:
-                VillageEventsStaticVariables.darkLordDungeonIsCompleted = true;
+            case VillageEventsStaticVariables.VillageEventStages.desertDungeonComplete:
+                VillageEventsStaticVariables.desertDungeonIsCompleted = true;
                 break;
             default:
                 break;

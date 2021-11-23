@@ -17,11 +17,11 @@ public class VillageEventsManager : MonoBehaviour
         darkLordDungeonConnectionEvents.SetActive(false);
 
         // Do in reverse order so the latest events are enabled
-        if (VillageEventsStaticVariables.darkLordDungeonIsCompleted)
+        if (VillageEventsStaticVariables.desertDungeonIsCompleted)
             darkLordDungeonConnectionEvents.SetActive(true);
         else if (VillageEventsStaticVariables.desertIsCompleted)
             desertConnectionEvents.SetActive(true);
-        else if (VillageEventsStaticVariables.forestIsCompleted)
+        else if (VillageEventsStaticVariables.forestDungeonIsCompleted)
             forestConnectionEvents.SetActive(true);
         else if (VillageEventsStaticVariables.villageHasStarted)
             introVillageEvents.SetActive(true);
