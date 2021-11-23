@@ -408,7 +408,7 @@ public class PlayerStats : StatsInterface
         List<bool> savedEvents = saveData.totallynotevents[m_Scene.buildIndex];
         if (savedEvents.Count > 0)
         {
-            EventManager[] managers = GameObject.FindObjectsOfType<EventManager>();
+            EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
             int totalEvents = 0;
             //loading events
             for (int em = 0; em < managers.Length; em++)
