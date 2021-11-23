@@ -28,7 +28,7 @@ public class SaveData
     public List<int> chestopenedlist = new List<int>();
     public List<int> potlist = new List<int>();
     public List<int> potbrokenlist = new List<int>();
-    public List<List<EventAction>> totallynotevents;
+    public List<List<bool>> totallynotevents = new List<List<bool>>();
     //public List<EventAction> totallynotcompletedevents = new List<EventAction>();
 
     //public List<EnemyData> enemyDataList = new List<EnemyData>();
@@ -92,10 +92,10 @@ public class SaveData
         {
             totallynotevents.Clear();
             for (int s = 0; s < SceneManager.sceneCountInBuildSettings; s++)
-                totallynotevents.Add(new List<EventAction>());
+                totallynotevents.Add(new List<bool>());
         }
 
-        for (int i = 0; i < GameObject.FindObjectOfType<EventManager>().getamountofevents(); i++)
+        for (int i = 0; i < GameObject.FindObjectOfType<EventManager>().getamountofactions(); i++)
         {
             totallynotevents[m_Scene.buildIndex].Add(GameObject.FindObjectOfType<EventManager>().getCompleted(i));
         }

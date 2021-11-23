@@ -9,6 +9,7 @@ public abstract class Event
 {
     public abstract void TriggerEvent();
     [HideInInspector] public bool IsComplete = false;
+    public bool ReplayOnload = false;
 }
 
 [System.Serializable]

@@ -68,9 +68,9 @@ public class EventManager : MonoBehaviour
     }
 
     //morgan save edit
-    public EventAction getCompleted(int x)
+    public bool getCompleted(int x)
     {
-        return actions[x];
+        return actions[x].complete;
     }
 
     public void setCompleted(int x, bool IsCompleted)
@@ -83,7 +83,7 @@ public class EventManager : MonoBehaviour
         return actions[x].complete; 
     }
 
-    public int getamountofevents()
+    public int getamountofactions()
     {
         return actions.Count();
     }

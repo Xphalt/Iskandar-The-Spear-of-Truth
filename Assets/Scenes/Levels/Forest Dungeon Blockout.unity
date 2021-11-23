@@ -2014,6 +2014,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f016281e9ed37cb40aa36959e1448904, type: 3}
+--- !u!114 &65071000 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7836609602608423879, guid: f016281e9ed37cb40aa36959e1448904, type: 3}
+  m_PrefabInstance: {fileID: 65070999}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553981dbaf6452a458667fa8ccc7c7d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &68771558
 GameObject:
   m_ObjectHideFlags: 0
@@ -5477,7 +5488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 128.86499
+      value: 129.04117
       objectReference: {fileID: 0}
     - target: {fileID: 3054451402402017905, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.y
@@ -40792,6 +40803,7 @@ MonoBehaviour:
       type: {class: PanCameraWithTargetVectorEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
+        ReplayOnload: 0
         _cameraPanScript: {fileID: 1937486494}
         _playerCamera: {fileID: 1937486493}
         _panCamera: {fileID: 1937486493}
@@ -40806,6 +40818,7 @@ MonoBehaviour:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
+        ReplayOnload: 0
         convCollider: {fileID: 449566163}
         dialogue: {fileID: 11400000, guid: 698fa4fcc86f5684bbcf532e08356de1, type: 2}
     0000000B:
@@ -40816,6 +40829,7 @@ MonoBehaviour:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
+        ReplayOnload: 0
         convCollider: {fileID: 1299967970}
         dialogue: {fileID: 11400000, guid: f8ebb96b04c5ebc42b5dac061e00056b, type: 2}
     0000000D:
@@ -40826,6 +40840,7 @@ MonoBehaviour:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
+        ReplayOnload: 0
         convCollider: {fileID: 1634121092}
         dialogue: {fileID: 11400000, guid: 53ecc5153aec0164890967b817eeb913, type: 2}
     0000000F:
@@ -40836,6 +40851,7 @@ MonoBehaviour:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
+        ReplayOnload: 0
         convCollider: {fileID: 769626162}
         dialogue: {fileID: 11400000, guid: 439b0e7a0a1f08148b1a52de9bc57daf, type: 2}
     00000011:
@@ -40847,6 +40863,7 @@ MonoBehaviour:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
+        ReplayOnload: 1
         _objectsToActivate:
         - {fileID: 1228451921}
         _activateObjects: 1
@@ -40858,7 +40875,8 @@ MonoBehaviour:
       type: {class: ChangeSceneEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
-        player: {fileID: 0}
+        ReplayOnload: 0
+        player: {fileID: 65071000}
         sceneIndex: 1
 --- !u!114 &1435378992
 MonoBehaviour:

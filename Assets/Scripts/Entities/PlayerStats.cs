@@ -364,8 +364,9 @@ public class PlayerStats : StatsInterface
             X = saveData.xpos;
             Y = saveData.ypos;
             Z = saveData.zpos;
+            transform.position = new Vector3(X, Y, Z);
         }
-        transform.position = new Vector3(X, Y, Z);
+        print(transform.position);
         SaveNum = saveData.LastFileSaved;
         saveData.LastFileSaved = num;
 
@@ -403,17 +404,29 @@ public class PlayerStats : StatsInterface
             }
         }
 
-        List<EventAction> savedEvents = saveData.totallynotevents[m_Scene.buildIndex];
-        EventManager[] managers = GameObject.FindObjectsOfType<EventManager>();
-        int totalEvents = 0;
-        //loading events
-        for (int em = 0; em < managers.Length; em++)
+        // shh
+        List<bool> savedEvents = saveData.totallynotevents[m_Scene.buildIndex];
+        if (savedEvents.Count > 0)
         {
-            for (int i = 0; i < managers[em].getamountofevents(); i++)
+            EventManager[] managers = GameObject.FindObjectsOfType<EventManager>();
+            int totalEvents = 0;
+            //loading events
+            for (int em = 0; em < managers.Length; em++)
             {
-                GameObject.FindObjectOfType<EventManager>().setCompleted(i, savedEvents[i - totalEvents].complete);
+                for (int a = 0; a < managers[em].getamountofactions(); a++)
+                {
+                    managers[em].setCompleted(a, savedEvents[a - totalEvents]);
+                    if (savedEvents[a - totalEvents])
+                    {
+                        for (int ev = 0; ev < managers[em].actions[a].events.Count; ev++)
+                        {
+                            if (managers[em].actions[a].events[ev].ReplayOnload)
+                                managers[em].actions[a].events[ev].TriggerEvent();
+                        }
+                    }
+                }
+                totalEvents += managers[em].getamountofactions();
             }
-            totalEvents += managers[em].getamountofevents();
         }
     }
 
