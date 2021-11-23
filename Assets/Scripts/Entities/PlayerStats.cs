@@ -370,13 +370,13 @@ public class PlayerStats : StatsInterface
         SaveNum = saveData.LastFileSaved;
         saveData.LastFileSaved = num;
 
-        var dlist = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (var Enemy in dlist)
+        EnemyStats[] dlist = FindObjectsOfType<EnemyStats>(true);
+        foreach (EnemyStats Enemy in dlist)
         {
             foreach (var ID in saveData.enemydeadlist)
             {
-                if (Enemy.GetInstanceID() == ID)
-                    Destroy(Enemy);
+                if (Enemy.gameObject.GetInstanceID() == ID)
+                    Destroy(Enemy.gameObject);
             }
         }
 
