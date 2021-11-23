@@ -301,12 +301,31 @@ public class AddItem : Event
 {
     public override void TriggerEvent()
     {
-        InventoryManager.AddItem(ItemToAdd, Amount);
+        inventory.AddItem(itemToAdd.data, amount);
     }
 
-    [SerializeField] InventoryObject_Sal InventoryManager;
-    [SerializeField] Item ItemToAdd;
-    [SerializeField] int Amount;
+    [SerializeField] InventoryObject_Sal inventory;
+    [SerializeField] ItemObject_Sal itemToAdd;
+    [SerializeField] int amount;
+}
+
+public class RemoveItem : Event
+{
+    public override void TriggerEvent()
+    {
+        InventorySlot slot = inventory.FindItemOnInventory(itemToRemove.data); 
+        if (slot != null)  
+        {
+            if (slot.amount == amount) //Remove item 
+                inventory.RemoveItem(itemToRemove.data);
+            else //Remove amount
+                slot.AddAmount(-amount);  
+        } 
+    }
+
+    [SerializeField] InventoryObject_Sal inventory;
+    [SerializeField] ItemObject_Sal itemToRemove;
+    [SerializeField] int amount;
 }
 
 public class CompleteLevel : Event
