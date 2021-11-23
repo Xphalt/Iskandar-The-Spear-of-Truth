@@ -4,31 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public static class InputActionExtensions
-{
-    public static bool IsPressed(this InputAction inputAction)
-    {
-        return inputAction.ReadValue<float>() > 0f;
-    }
-
-    public static bool WasPressedThisFrame(this InputAction inputAction)
-    {
-        return inputAction.triggered && inputAction.ReadValue<float>() > 0f;
-    }
-
-    public static bool WasReleasedThisFrame(this InputAction inputAction)
-    {
-        return inputAction.triggered && inputAction.ReadValue<float>() == 0f;
-    }
-}
-
-
 public class PlayerInput : MonoBehaviour
 {
+    #region Events
+    public delegate void StartTouch(Vector2 position, float tima);
+    public event StartTouch OnStartTouch;
+
+    public delegate void EndTouch(Vector2 position, float tima);
+    public event StartTouch OnEndTouch;
+    #endregion
+
     // Reference Variables
     private PlayerActionsAsset _playerActionsAsset;
     private Rigidbody _playerRigidbody;
     private PotionInterface potionInterface;
+    private Camera _mainCamera;
 
     [Header("Scripts References")]
     [SerializeField] private PlayerMovement_Jerzy _playerMovement_Jerzy;
@@ -44,6 +34,8 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
         potionInterface = FindObjectOfType<PotionInterface>();
+        
+        _mainCamera = Camera.main;
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         // Disable player interaction if pause is set
@@ -57,6 +49,7 @@ public class PlayerInput : MonoBehaviour
             TogglePlayerInteraction(false);
             _UIManager.TogglePotionInterface();
         };
+
         _playerActionsAsset.Player.Target.performed += _ => _playerTargeting.TargetObject();
 
         _playerActionsAsset.Player.Attack.started += _ =>
@@ -102,6 +95,13 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset.UI.Medium_Potion.performed += ctx => UsePotion(ctx, potionInterface.mediumPotion);
         _playerActionsAsset.UI.Small_Potion.performed += ctx => UsePotion(ctx, potionInterface.smallPotion);
   
+        _playerActionsAsset.Player.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
+        _playerActionsAsset.Player.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
+
+        //_playerActionsAsset.Player.DeviceUsed.performed += ctx => ChangeDevice(ctx);
+
+        //InputSystem.onDeviceChange += (device, change) => OnDeviceChange(device, change);
+
         #endregion
     }
 
@@ -136,15 +136,18 @@ public class PlayerInput : MonoBehaviour
     {
         if (_playerRigidbody.velocity != Vector3.zero)
         {
-            _playerMovement_Jerzy.Dash(_playerRigidbody.velocity);
+            _playerMovement_Jerzy.Dash(_playerRigidbody.velocity.normalized);
         }
     }
 
-    public static Vector3 MousePosition()
+    private void StartTouchPrimary(InputAction.CallbackContext ctx)
     {
-        Ray ray = GameObject.FindObjectOfType<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
+        OnStartTouch?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerActionsAsset.Player.PrimaryPosition.ReadValue<Vector2>()), (float)ctx.startTime);
+    }
 
-        return ray.origin;
+    private void EndTouchPrimary(InputAction.CallbackContext ctx)
+    {
+        OnEndTouch?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerActionsAsset.Player.PrimaryPosition.ReadValue<Vector2>()), (float)ctx.startTime);
     }
 
     private void UsePotion(InputAction.CallbackContext ctx, ItemObject_Sal potion)
@@ -167,6 +170,49 @@ public class PlayerInput : MonoBehaviour
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
         return (new Vector3(inputVector.x, 0.0f, inputVector.y));
     }
+    //    private void OnDeviceChange(InputDevice device, InputDeviceChange change)
+    //    {
+    //#if UNITY_ANDROID
+    //        UIManager.INPUT_OPTIONS currentInput = UIManager.INPUT_OPTIONS.MOBILE;
+    //#else
+    //        UIManager.INPUT_OPTIONS currentInput = UIManager.INPUT_OPTIONS.KEYBOAD_AND_MOUSE;
+    //#endif
+
+    //        switch (change)
+    //        {
+    //            case InputDeviceChange.Added:
+    //                // New Device.
+    //                UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.GAMEPAD);
+    //                break;
+    //            case InputDeviceChange.Disconnected:
+    //                // If this is happening, activate some boolean that will tell the game that a controller is now "missing".
+    //                UIManager.instance.SetUIForInput(currentInput);
+    //                break;
+    //            case InputDeviceChange.Reconnected:
+    //                // Plugged back in.
+    //                UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.GAMEPAD);
+    //                break;
+    //            case InputDeviceChange.Removed:
+    //                // Remove from Input System entirely; by default, Devices stay in the system once discovered.
+    //                UIManager.instance.SetUIForInput(currentInput);
+    //                break;
+    //            default:
+    //                // Always includes a default case for when a unused case is being called. Leave it empty.
+    //                break;
+    //        }
+    //    }
+
+//    private void ChangeDevice(InputAction.CallbackContext ctx)
+//    {
+//        if (ctx.control.device.displayName != "Keyboard")
+//#if UNITY_ANDROID
+//            UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.MOBILE);
+//#else
+//            UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.GAMEPAD);
+//#endif
+//        else
+//            UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
+//    }
 
     private void OnEnable()
     {

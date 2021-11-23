@@ -105,6 +105,22 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""PrimaryContact"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""f48225cb-9475-4d99-ab39-b0089dda4eff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""PrimaryPosition"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""e10676e9-59a8-4050-8069-b0070c19ad74"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -426,6 +442,28 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""action"": ""UseWand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""acdcd799-6a9c-4712-9e42-f01cef850421"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""PrimaryContact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8af27772-fd5a-40fc-bc26-f188c5727dc9"",
+                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""PrimaryPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -631,6 +669,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         m_Player_ItemToggle = m_Player.FindAction("ItemToggle", throwIfNotFound: true);
         m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
         m_Player_UseWand = m_Player.FindAction("UseWand", throwIfNotFound: true);
+        m_Player_PrimaryContact = m_Player.FindAction("PrimaryContact", throwIfNotFound: true);
+        m_Player_PrimaryPosition = m_Player.FindAction("PrimaryPosition", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -698,6 +738,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_ItemToggle;
     private readonly InputAction m_Player_UseItem;
     private readonly InputAction m_Player_UseWand;
+    private readonly InputAction m_Player_PrimaryContact;
+    private readonly InputAction m_Player_PrimaryPosition;
     public struct PlayerActions
     {
         private @PlayerActionsAsset m_Wrapper;
@@ -713,6 +755,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         public InputAction @ItemToggle => m_Wrapper.m_Player_ItemToggle;
         public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
         public InputAction @UseWand => m_Wrapper.m_Player_UseWand;
+        public InputAction @PrimaryContact => m_Wrapper.m_Player_PrimaryContact;
+        public InputAction @PrimaryPosition => m_Wrapper.m_Player_PrimaryPosition;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -755,6 +799,12 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @UseWand.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseWand;
                 @UseWand.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseWand;
                 @UseWand.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseWand;
+                @PrimaryContact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryContact;
+                @PrimaryContact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryContact;
+                @PrimaryContact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryContact;
+                @PrimaryPosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryPosition;
+                @PrimaryPosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryPosition;
+                @PrimaryPosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryPosition;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -792,6 +842,12 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                 @UseWand.started += instance.OnUseWand;
                 @UseWand.performed += instance.OnUseWand;
                 @UseWand.canceled += instance.OnUseWand;
+                @PrimaryContact.started += instance.OnPrimaryContact;
+                @PrimaryContact.performed += instance.OnPrimaryContact;
+                @PrimaryContact.canceled += instance.OnPrimaryContact;
+                @PrimaryPosition.started += instance.OnPrimaryPosition;
+                @PrimaryPosition.performed += instance.OnPrimaryPosition;
+                @PrimaryPosition.canceled += instance.OnPrimaryPosition;
             }
         }
     }
@@ -892,6 +948,8 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
         void OnItemToggle(InputAction.CallbackContext context);
         void OnUseItem(InputAction.CallbackContext context);
         void OnUseWand(InputAction.CallbackContext context);
+        void OnPrimaryContact(InputAction.CallbackContext context);
+        void OnPrimaryPosition(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
