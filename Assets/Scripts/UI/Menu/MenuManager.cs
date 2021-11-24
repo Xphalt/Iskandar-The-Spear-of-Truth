@@ -152,6 +152,7 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
+        FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
         try
         {
             currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
