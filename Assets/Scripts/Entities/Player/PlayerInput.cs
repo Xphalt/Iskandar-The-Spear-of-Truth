@@ -1,34 +1,22 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public static class InputActionExtensions
-{
-    public static bool IsPressed(this InputAction inputAction)
-    {
-        return inputAction.ReadValue<float>() > 0f;
-    }
-
-    public static bool WasPressedThisFrame(this InputAction inputAction)
-    {
-        return inputAction.triggered && inputAction.ReadValue<float>() > 0f;
-    }
-
-    public static bool WasReleasedThisFrame(this InputAction inputAction)
-    {
-        return inputAction.triggered && inputAction.ReadValue<float>() == 0f;
-    }
-}
-
-
 public class PlayerInput : MonoBehaviour
 {
-    // Reference Variables
+    #region Events
+    public delegate void StartTouch(Vector2 position, float tima);
+    public event StartTouch OnStartTouch;
+
+    public delegate void EndTouch(Vector2 position, float tima);
+    public event StartTouch OnEndTouch;
+    #endregion
+
+    #region Reference Variables
     private PlayerActionsAsset _playerActionsAsset;
     private Rigidbody _playerRigidbody;
     private PotionInterface potionInterface;
+    private Camera _mainCamera;
+    #endregion
 
     [Header("Scripts References")]
     [SerializeField] private PlayerMovement_Jerzy _playerMovement_Jerzy;
@@ -44,6 +32,8 @@ public class PlayerInput : MonoBehaviour
         _playerActionsAsset = new PlayerActionsAsset();
         _playerRigidbody = GetComponent<Rigidbody>();
         potionInterface = FindObjectOfType<PotionInterface>();
+       
+        _mainCamera = Camera.main;
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         // Disable player interaction if pause is set
@@ -98,10 +88,13 @@ public class PlayerInput : MonoBehaviour
             TogglePlayerInteraction(true);
         };
 
-        _playerActionsAsset.UI.Large_Potion.performed += ctx => UsePotion(ctx, potionInterface.largePotion);
-        _playerActionsAsset.UI.Medium_Potion.performed += ctx => UsePotion(ctx, potionInterface.mediumPotion);
-        _playerActionsAsset.UI.Small_Potion.performed += ctx => UsePotion(ctx, potionInterface.smallPotion);
-  
+        _playerActionsAsset.UI.Large_Potion.performed += _ => UsePotion(potionInterface.largePotion);
+        _playerActionsAsset.UI.Medium_Potion.performed += _ => UsePotion(potionInterface.mediumPotion);
+        _playerActionsAsset.UI.Small_Potion.performed += _ => UsePotion( potionInterface.smallPotion);
+
+        _playerActionsAsset.Player.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
+        _playerActionsAsset.Player.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
+
         #endregion
     }
 
@@ -136,18 +129,22 @@ public class PlayerInput : MonoBehaviour
     {
         if (_playerRigidbody.velocity != Vector3.zero)
         {
-            _playerMovement_Jerzy.Dash(_playerRigidbody.velocity);
+            _playerMovement_Jerzy.Dash(_playerRigidbody.velocity.normalized);
         }
     }
 
-    public static Vector3 MousePosition()
+    private void StartTouchPrimary(InputAction.CallbackContext ctx)
     {
-        Ray ray = GameObject.FindObjectOfType<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
-
-        return ray.origin;
+        if (!Utils.DiscardSwipe(_playerActionsAsset.Player.PrimaryPosition.ReadValue<Vector2>()))
+            OnStartTouch?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerActionsAsset.Player.PrimaryPosition.ReadValue<Vector2>()), (float)ctx.startTime);
     }
 
-    private void UsePotion(InputAction.CallbackContext ctx, ItemObject_Sal potion)
+    private void EndTouchPrimary(InputAction.CallbackContext ctx)
+    {
+        OnEndTouch?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerActionsAsset.Player.PrimaryPosition.ReadValue<Vector2>()), (float)ctx.startTime);
+    }
+
+    private void UsePotion(ItemObject_Sal potion)
     {
         if (_UIManager.IsPotionInterfaceOpen())
         {
