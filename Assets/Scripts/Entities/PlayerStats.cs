@@ -90,8 +90,8 @@ public class PlayerStats : StatsInterface
         GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
 
         m_Scene = SceneManager.GetActiveScene();
-        Debug.Log(m_Scene.name);
         TrueLoadStats(SaveNum);
+        Debug.Log("Currently " + playerName + " is playing");
     }
 
     private void Update()
@@ -332,6 +332,8 @@ public class PlayerStats : StatsInterface
     internal float X;
     internal float Y;
     internal float Z;
+    internal string playerName = "";
+
     public void SaveStats()
     {
         X = this.transform.position.x;
@@ -359,6 +361,7 @@ public class PlayerStats : StatsInterface
         try
         {
             SaveData saveData = SaveManager.LoadPlayerStats(num);
+            playerName = SaveManager.LoadPlayerName(num); ;            
             health = saveData.health;
             gems = saveData.gemcount;
             inventory.LoadStats(num);
@@ -440,7 +443,6 @@ public class PlayerStats : StatsInterface
         }
         catch (System.Exception)
         {
-            Debug.LogError("No Player Save Data exists for: " + SaveNum + ". Making a new one!");
             Debug.LogWarning("No Player Save Data exists for: " + SaveNum + ". Making a new one!");
             SaveStats();
         }

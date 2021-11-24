@@ -6228,6 +6228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2451352170233491644}
+  - component: {fileID: 7715731979014024150}
   m_Layer: 5
   m_Name: SettingsPrefab
   m_TagString: Untagged
@@ -6260,6 +6261,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7715731979014024150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5246195976781297904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ca3b100533ac2546abaee4ae473c86f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  qualityDropDown: {fileID: 2141959514382305049}
+  qualitySettingsStringTable: QualitySettings
+  masterMixer: {fileID: 24100000, guid: 29133ebad2f93684f882bd778e369a89, type: 2}
 --- !u!1 &5250141160970428075
 GameObject:
   m_ObjectHideFlags: 0
@@ -7683,7 +7699,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7715731979014024150}
         m_TargetAssemblyTypeName: SettingsOptions, Assembly-CSharp
         m_MethodName: SetSFXVolume
         m_Mode: 0
@@ -10199,7 +10215,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7715731979014024150}
         m_TargetAssemblyTypeName: SettingsOptions, Assembly-CSharp
         m_MethodName: SetMusicVolume
         m_Mode: 0
