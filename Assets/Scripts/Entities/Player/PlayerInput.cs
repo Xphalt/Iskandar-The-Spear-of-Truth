@@ -91,16 +91,12 @@ public class PlayerInput : MonoBehaviour
             TogglePlayerInteraction(true);
         };
 
-        _playerActionsAsset.UI.Large_Potion.performed += ctx => UsePotion(ctx, potionInterface.largePotion);
-        _playerActionsAsset.UI.Medium_Potion.performed += ctx => UsePotion(ctx, potionInterface.mediumPotion);
-        _playerActionsAsset.UI.Small_Potion.performed += ctx => UsePotion(ctx, potionInterface.smallPotion);
+        _playerActionsAsset.UI.Large_Potion.performed += _ => UsePotion(potionInterface.largePotion);
+        _playerActionsAsset.UI.Medium_Potion.performed += _ => UsePotion(potionInterface.mediumPotion);
+        _playerActionsAsset.UI.Small_Potion.performed += _ => UsePotion(potionInterface.smallPotion);
   
         _playerActionsAsset.Player.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
         _playerActionsAsset.Player.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
-
-        //_playerActionsAsset.Player.DeviceUsed.performed += ctx => ChangeDevice(ctx);
-
-        //InputSystem.onDeviceChange += (device, change) => OnDeviceChange(device, change);
 
         #endregion
     }
@@ -142,7 +138,8 @@ public class PlayerInput : MonoBehaviour
 
     private void StartTouchPrimary(InputAction.CallbackContext ctx)
     {
-        OnStartTouch?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerActionsAsset.Player.PrimaryPosition.ReadValue<Vector2>()), (float)ctx.startTime);
+        if (!Utils.DiscardSwipe(_playerActionsAsset.Player.PrimaryPosition.ReadValue<Vector2>()))
+            OnStartTouch?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerActionsAsset.Player.PrimaryPosition.ReadValue<Vector2>()), (float)ctx.startTime);
     }
 
     private void EndTouchPrimary(InputAction.CallbackContext ctx)
@@ -150,7 +147,7 @@ public class PlayerInput : MonoBehaviour
         OnEndTouch?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerActionsAsset.Player.PrimaryPosition.ReadValue<Vector2>()), (float)ctx.startTime);
     }
 
-    private void UsePotion(InputAction.CallbackContext ctx, ItemObject_Sal potion)
+    private void UsePotion(ItemObject_Sal potion)
     {
         if (_UIManager.IsPotionInterfaceOpen())
         {
@@ -170,49 +167,6 @@ public class PlayerInput : MonoBehaviour
         Vector2 inputVector = _playerActionsAsset.Player.Movement.ReadValue<Vector2>();
         return (new Vector3(inputVector.x, 0.0f, inputVector.y));
     }
-    //    private void OnDeviceChange(InputDevice device, InputDeviceChange change)
-    //    {
-    //#if UNITY_ANDROID
-    //        UIManager.INPUT_OPTIONS currentInput = UIManager.INPUT_OPTIONS.MOBILE;
-    //#else
-    //        UIManager.INPUT_OPTIONS currentInput = UIManager.INPUT_OPTIONS.KEYBOAD_AND_MOUSE;
-    //#endif
-
-    //        switch (change)
-    //        {
-    //            case InputDeviceChange.Added:
-    //                // New Device.
-    //                UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.GAMEPAD);
-    //                break;
-    //            case InputDeviceChange.Disconnected:
-    //                // If this is happening, activate some boolean that will tell the game that a controller is now "missing".
-    //                UIManager.instance.SetUIForInput(currentInput);
-    //                break;
-    //            case InputDeviceChange.Reconnected:
-    //                // Plugged back in.
-    //                UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.GAMEPAD);
-    //                break;
-    //            case InputDeviceChange.Removed:
-    //                // Remove from Input System entirely; by default, Devices stay in the system once discovered.
-    //                UIManager.instance.SetUIForInput(currentInput);
-    //                break;
-    //            default:
-    //                // Always includes a default case for when a unused case is being called. Leave it empty.
-    //                break;
-    //        }
-    //    }
-
-//    private void ChangeDevice(InputAction.CallbackContext ctx)
-//    {
-//        if (ctx.control.device.displayName != "Keyboard")
-//#if UNITY_ANDROID
-//            UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.MOBILE);
-//#else
-//            UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.GAMEPAD);
-//#endif
-//        else
-//            UIManager.instance.SetUIForInput(UIManager.INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
-//    }
 
     private void OnEnable()
     {
