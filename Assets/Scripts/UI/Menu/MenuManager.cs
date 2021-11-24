@@ -155,11 +155,12 @@ public class MenuManager : MonoBehaviour
         try
         {
             currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSaveFile.scenename);
+            Debug.Log(currentSaveFile + " " + currentSaveFile.scenename);
+            SceneManager.LoadScene(currentSaveFile.scenename);
         }
         catch (System.Exception)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+            SceneManager.LoadScene(1);
         }
     }
 
