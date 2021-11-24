@@ -240,6 +240,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
         if (timeSinceLastDash < dashDuration && !falling)
         {
+            // DO IT LATER TIAGO 
             m_Rigidbody.velocity = dashDirection * dashForce * slowMult;
         }
 
