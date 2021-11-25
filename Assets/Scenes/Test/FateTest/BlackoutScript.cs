@@ -14,7 +14,7 @@ public class BlackoutScript : MonoBehaviour
     public void FadeOutOfScene()//int sceneIndex)
     {
         blackoutAnimator.SetTrigger("FadeBlack"); //Event within animation triggers GetLoadingScreen();
-    }
+    }   
 
     public void GetLoadingScreen()
     {

@@ -9,11 +9,12 @@ using UnityEngine.SceneManagement;
 
 public class LoadScene : MonoBehaviour
 {
-    public GameObject loadingScreen;
+    private GameObject loadingScreen;
     private Slider progressSlider;
     private Text progressText;
     private void Awake()
     {
+        loadingScreen = gameObject.transform.GetChild(0).gameObject; //Don't change prefab order
         progressSlider = loadingScreen.GetComponentInChildren<Slider>();
         progressText = loadingScreen.GetComponentInChildren<Text>();
     }
