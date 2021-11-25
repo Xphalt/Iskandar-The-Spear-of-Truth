@@ -14,17 +14,10 @@ public class BlackoutScript : MonoBehaviour
     public void FadeOutOfScene()//int sceneIndex)
     {
         blackoutAnimator.SetTrigger("FadeBlack"); //Event within animation triggers GetLoadingScreen();
-        //StartCoroutine(DelayLoadingScreen());// sceneIndex));
     }
 
     public void GetLoadingScreen()
     {
         loadScene.Load();// sceneIndex);
     }
-
-//  public IEnumerator GetLoadingScreen()//int sceneIndex)
-//  {
-//      yield return new WaitForSeconds(2); //get length of fade animation
-//       oadScene.Load();// sceneIndex);
-//  }
 }
