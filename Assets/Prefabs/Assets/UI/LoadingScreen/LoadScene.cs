@@ -11,14 +11,13 @@ public class LoadScene : MonoBehaviour
 {
     public GameObject loadingScreen;
     private Slider progressSlider;
-    public Text progressText;
-    public Text loadingText;
+    private Text progressText;
 
     private void Awake()
     {
         progressSlider = loadingScreen.GetComponentInChildren<Slider>();
         //loadingText = loadingScreen.GetComponentInChildren<Text>();
-        //progressText = loadingScreen.GetComponentInChildren<Text>();
+        progressText = loadingScreen.GetComponentInChildren<Text>();
     }
     public void Load()//int sceneNumber)
     {
