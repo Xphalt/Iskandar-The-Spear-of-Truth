@@ -7,29 +7,27 @@ using System.Collections;
 public class QuestLogManager : MonoBehaviour
 {
     public GameObject ButtonArea;
+    // Dominique, Make sure we get reference through prefab
+    [SerializeField] private TextMeshProUGUI QuestInfoText;
     public Button QuestButton;
 
     public List<QuestObject> ListOfQuests = new List<QuestObject>();
 
     [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
-    private GameObject QuestInfoText;
-
-    private void Awake()
-    {
-        QuestInfoText = GameObject.Find("TextQuestDescription");
-    }
 
     public void AddQuest(QuestObject quest)
     {
-        ListOfQuests.Remove(quest);
         QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = quest.QuestName.GetLocalisedString();
         Instantiate(QuestButton, ButtonArea.transform).name = quest.QuestName.GetLocalisedString();
     }
 
     /*_______________________________________Button_Functions______________________________________________*/
-    public void ChangeQuestInfo()
+    // Dominique, Use the button name instead of gameobject.name since the gameobject is the QuestLogPanel
+    public void ChangeQuestInfo(GameObject button)
     {
-        QuestInfoText.GetComponent<TextMeshProUGUI>().text = ListOfQuests.Find(QuestObject => QuestObject.name == gameObject.name).QuestDescription.GetLocalisedString();
+        QuestObject quest = ListOfQuests.Find(QuestObject => QuestObject.name == button.name);
+        string questString = quest.QuestDescription.GetLocalisedString();
+        QuestInfoText.SetText(questString);
     }
     /*_____________________________________________________________________________________________________*/
 }
