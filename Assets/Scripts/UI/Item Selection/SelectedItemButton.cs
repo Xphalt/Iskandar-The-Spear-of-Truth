@@ -13,6 +13,7 @@ public class SelectedItemButton : MonoBehaviour
 
     private float timer = 0.0f;
     private bool runTimer = false;
+    private bool isHolding;
 
     private void Update()
     {
@@ -25,17 +26,28 @@ public class SelectedItemButton : MonoBehaviour
     public void Holding()
     {
         runTimer = true;
+        isHolding = true;
     }
 
     public void LetGo()
     {
         runTimer = false;
 
+        ///on icon hold, start timer
+        ///if timer > 0 
+        ///     open tool menu
+        ///     if finger has raycase on item
+        ///         select item
+        ///else if icon release
+        ///     reset timer
+        
+
         // If we've held the button down or the menu is already open then open/close it respectively
         if (timer > open_menu_time || itemWheel.IsItemWheelSelected())
         {
             itemWheel.ToggleItemSelectionWheel();
             potionWheel.ToggleItemSelectionWheel();
+            print("words");
         }
         else // Use the selected item
         {
