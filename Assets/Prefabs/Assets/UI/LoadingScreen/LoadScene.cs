@@ -5,12 +5,19 @@ using UnityEngine.SceneManagement;
 
 //This script was made by Fate, contact me if you need any help with it.
 
+//ASK LEWIS WHAT CHANGES HE MADE BEFORE COMMITTING, DON'T FORGET!
+
 public class LoadScene : MonoBehaviour
 {
-    public GameObject loadingScreen;
-    public Slider progressSlider;
-    public Text loadingText;
-
+    private GameObject loadingScreen;
+    private Slider progressSlider;
+    private Text progressText;
+    private void Awake()
+    {
+        loadingScreen = gameObject.transform.GetChild(0).gameObject; //Don't change prefab order
+        progressSlider = loadingScreen.GetComponentInChildren<Slider>();
+        progressText = loadingScreen.GetComponentInChildren<Text>();
+    }
     public void Load(int sceneNumber)
     {
         StartCoroutine(LoadInSync(sceneNumber));
@@ -34,7 +41,7 @@ public class LoadScene : MonoBehaviour
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
             float progressPercent = progress * 100;
 
-            loadingText.text = progressPercent.ToString("F0") + " %"; //F0 removes decimals
+            progressText.text = progressPercent.ToString("F0") + " %"; //F0 removes decimals
             progressSlider.value = progress;
             yield return null; //Waits until next frame before continuing to loop
         }
