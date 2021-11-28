@@ -6,12 +6,22 @@ using UnityEngine.SceneManagement;
 public class SceneTransitionTrigger : MonoBehaviour
 {
     public int sceneIndex;
+
+    private BlackoutScript blackoutScreen;
+
+    private void Awake()
+    {
+        blackoutScreen = FindObjectOfType<BlackoutScript>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out PlayerStats stats))
         {
             stats.SaveStats();
-            SceneManager.LoadScene(sceneIndex);
+
+            // Dominique, Use fade to black screen
+            blackoutScreen.FadeOutOfScene(sceneIndex);
         }
     }
 }

@@ -62,6 +62,7 @@ public class PlayerStats : StatsInterface
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         playerCombat = GetComponent<PlayerCombat_Jerzy>();
+        SaveNum = FindObjectOfType<SaveDataAssistant>().currentSaveFileID;
     }
 
     private void Start()
@@ -90,6 +91,7 @@ public class PlayerStats : StatsInterface
 
         m_Scene = SceneManager.GetActiveScene();
         TrueLoadStats(SaveNum);
+        Debug.Log("Currently " + playerName + " is playing");
     }
 
     private void Update()
@@ -330,6 +332,8 @@ public class PlayerStats : StatsInterface
     internal float X;
     internal float Y;
     internal float Z;
+    internal string playerName = "";
+
     public void SaveStats()
     {
         X = this.transform.position.x;
@@ -354,79 +358,93 @@ public class PlayerStats : StatsInterface
 
     public void TrueLoadStats(int num)
     {
-        SaveData saveData = SaveManager.LoadPlayerStats(num);
-        health = saveData.health;
-        gems = saveData.gemcount;
-        inventory.LoadStats(num);
-        equipment.LoadStats(num);
-        if (sceneName == saveData.scenename)
+        try
         {
-            X = saveData.xpos;
-            Y = saveData.ypos;
-            Z = saveData.zpos;
-            transform.position = new Vector3(X, Y, Z);
-        }
-        print(transform.position);
-        SaveNum = saveData.LastFileSaved;
-        saveData.LastFileSaved = num;
+            SaveData saveData = SaveManager.LoadPlayerStats(num);
+            playerName = SaveManager.LoadPlayerName(num); ;            
+            health = saveData.health;
+            gems = saveData.gemcount;
+            inventory.LoadStats(num);
+            equipment.LoadStats(num);
 
-        EnemyStats[] dlist = FindObjectsOfType<EnemyStats>(true);
-        foreach (EnemyStats Enemy in dlist)
-        {
-            foreach (var ID in saveData.enemydeadlist)
-            {
-                if (Enemy.gameObject.GetInstanceID() == ID)
-                    Destroy(Enemy.gameObject);
-            }
-        }
+            SaveNum = saveData.LastFileSaved;
+            saveData.LastFileSaved = num;
 
-        //saving chests
-        var colist = GameObject.FindGameObjectsWithTag("LootChest");
-        foreach (var Chest in colist)
-        {
-            foreach (var ID in saveData.chestopenedlist)
+            EnemyStats[] dlist = FindObjectsOfType<EnemyStats>(true);
+            foreach (EnemyStats Enemy in dlist)
             {
-                if (Chest.GetInstanceID() == ID)
-                    Chest.GetComponent<LootChest_Jerzy>().isInteractable = false;
-                print("LootChest is " + Chest.GetComponent<LootChest_Jerzy>().isInteractable);
-            }
-        }
-
-        //saving pots
-        var plist = GameObject.FindGameObjectsWithTag("Pot");
-        foreach (var Pot in plist)
-        {
-            foreach (var ID in saveData.potbrokenlist)
-            {
-                if (Pot.GetInstanceID() == ID)
-                    Pot.GetComponent<ScrDestructablePot>().destroyed = true;
-                print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
-            }
-        }
-
-        // shh
-        List<bool> savedEvents = saveData.totallynotevents[m_Scene.buildIndex];
-        if (savedEvents.Count > 0)
-        {
-            EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
-            int totalEvents = 0;
-            //loading events
-            for (int em = 0; em < managers.Length; em++)
-            {
-                for (int a = 0; a < managers[em].getamountofactions(); a++)
+                foreach (var ID in saveData.enemydeadlist)
                 {
-                    managers[em].setCompleted(a, savedEvents[a - totalEvents]);
-                    if (savedEvents[a - totalEvents])
+                    if (Enemy.gameObject.GetInstanceID() == ID)
+                        Destroy(Enemy.gameObject);
+                }
+            }
+
+            //saving chests
+            var colist = GameObject.FindGameObjectsWithTag("LootChest");
+            foreach (var Chest in colist)
+            {
+                foreach (var ID in saveData.chestopenedlist)
+                {
+                    if (Chest.GetInstanceID() == ID)
+                        Chest.GetComponent<LootChest_Jerzy>().isInteractable = false;
+                    print("LootChest is " + Chest.GetComponent<LootChest_Jerzy>().isInteractable);
+                }
+            }
+
+            //saving pots
+            var plist = GameObject.FindGameObjectsWithTag("Pot");
+            foreach (var Pot in plist)
+            {
+                foreach (var ID in saveData.potbrokenlist)
+                {
+                    if (Pot.GetInstanceID() == ID)
+                        Pot.GetComponent<ScrDestructablePot>().destroyed = true;
+                    print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
+                }
+            }
+
+            // shh
+            List<bool> savedEvents = saveData.totallynotevents[m_Scene.buildIndex];
+            if (savedEvents.Count > 0)
+            {
+                EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
+                int totalEvents = 0;
+                //loading events
+                for (int em = 0; em < managers.Length; em++)
+                {
+                    for (int a = 0; a < managers[em].getamountofactions(); a++)
                     {
-                        for (int ev = 0; ev < managers[em].actions[a].events.Count; ev++)
+                        managers[em].setCompleted(a, savedEvents[a - totalEvents]);
+                        if (savedEvents[a - totalEvents])
                         {
-                            if (managers[em].actions[a].events[ev].ReplayOnload)
-                                managers[em].actions[a].events[ev].TriggerEvent();
+                            for (int ev = 0; ev < managers[em].actions[a].events.Count; ev++)
+                            {
+                                if (managers[em].actions[a].events[ev].ReplayOnload)
+                                    managers[em].actions[a].events[ev].TriggerEvent();
+                            }
                         }
                     }
+                    totalEvents += managers[em].getamountofactions();
                 }
-                totalEvents += managers[em].getamountofactions();
             }
+
+
+            if (sceneName == saveData.scenename)
+            {
+                X = saveData.xpos;
+                Y = saveData.ypos;
+                Z = saveData.zpos;
+                transform.position = new Vector3(X, Y, Z);
+            }
+            else SaveStats();
+            print(transform.position);
+            
+        }
+        catch (System.Exception)
+        {
+            Debug.LogWarning("No Player Save Data exists for: " + SaveNum + ". Making a new one!");
+            SaveStats();
         }
     }
 

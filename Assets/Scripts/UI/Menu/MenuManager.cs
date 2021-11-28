@@ -13,7 +13,6 @@ using System.Linq;
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown dropdown;
-    [SerializeField] private TMP_Dropdown qualityDropDown;
 
     public string qualitySettingsStringTable = "QualitySettings";
 
@@ -51,19 +50,6 @@ public class MenuManager : MonoBehaviour
 
         dropdown.value = selected;
         dropdown.onValueChanged.AddListener(LocaleSelected);
-
-        qualityDropDown.ClearOptions();
-
-        LocalizedString localisedString = new LocalizedString();
-        localisedString.TableReference = qualitySettingsStringTable;
-        foreach (var name in QualitySettings.names)
-        {
-            localisedString.TableEntryReference = name;
-            string localised_name = localisedString.GetLocalizedString();
-            qualityDropDown.options.Add(new TMP_Dropdown.OptionData(localised_name));
-        }
-
-        SetQuality(QualitySettings.GetQualityLevel());
     }
 
 
@@ -152,14 +138,15 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
+        FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
         try
         {
             currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSaveFile.scenename);
+            SceneManager.LoadScene(currentSaveFile.scenename);
         }
         catch (System.Exception)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+            SceneManager.LoadScene(1);
         }
     }
 
@@ -209,13 +196,6 @@ public class MenuManager : MonoBehaviour
         {
             File.Delete(invPath);
         }
-    }
-
-    public void SetQuality(int qualityIndex)
-    {
-        QualitySettings.SetQualityLevel(qualityIndex);
-        qualityDropDown.value = qualityIndex;
-        qualityDropDown.RefreshShownValue();
     }
 
     public void QuitGame()

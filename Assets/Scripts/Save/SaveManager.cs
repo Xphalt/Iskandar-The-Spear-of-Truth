@@ -73,4 +73,23 @@ public static class SaveManager
         }
     }
 
+    public static string LoadPlayerName(int num)
+    {
+        string filePath = Application.persistentDataPath + "/Player_name" + num + ".txt";
+        if (File.Exists(filePath))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fs = new FileStream(filePath, FileMode.Open);
+
+            string saveData = bf.Deserialize(fs) as string;
+            fs.Close();
+
+            return saveData;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }

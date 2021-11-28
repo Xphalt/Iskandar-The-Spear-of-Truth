@@ -25,7 +25,7 @@ public class SceneTransition : MonoBehaviour
         print(collision.gameObject.layer);
         if (collision.gameObject.layer == playerLayer)
         {
-            LoadSceneManager.Load((int)nextArea);
+            LoadSceneManager.Load((int)nextArea);  //TELL LEWIS THAT THE SCENE NAME IS UNNEEDED 
         }
     }
 }
