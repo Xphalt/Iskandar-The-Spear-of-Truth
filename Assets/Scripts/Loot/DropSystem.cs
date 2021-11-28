@@ -45,8 +45,9 @@ public class DropSystem : MonoBehaviour
 
     public float CalculateChance(EntityType type, float chance)
     {
-        Debug.Log(string.Concat("Chance: ", 1.0f - (Mathf.Pow((1.0f - (chance / 100)), tentativeNum[type]))));
-        return 1.0f - (Mathf.Pow((1.0f - (chance/100.0f)), tentativeNum[type]));
+        //Debug.Log(string.Concat("Chance: ", 1.0f - (Mathf.Pow((1.0f - (chance / 100)), tentativeNum[type]))));
+        // return 1.0f - (Mathf.Pow((1.0f - (chance/100.0f)), tentativeNum[type]));
+        return 1.0f - (1.0f - (chance / 100.0f));
     }
 
     public void ResetTentativeNum(EntityType type)
