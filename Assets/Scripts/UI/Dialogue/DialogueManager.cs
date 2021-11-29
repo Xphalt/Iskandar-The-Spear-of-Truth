@@ -29,10 +29,12 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI TextContinueDialogue;
 
     private PlayerInput playerInput;
+    private PlayerStats playerStats;
 
     public void Start()
     {
         playerInput = GameObject.Find("Player").GetComponent<PlayerInput>();
+        playerStats = FindObjectOfType<PlayerStats>();
 
         DialoguePanel.SetActive(false);
         TextNPCName.text = "";
@@ -85,7 +87,15 @@ public class DialogueManager : MonoBehaviour
             if (_QueueOfStrings.Count == 0)
             {
                 AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
-                TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
+                string characterName = _QueueOfCharacters.Dequeue().CharacterName;
+                if (characterName.Equals("Son"))
+                {
+                    TextNPCName.text = playerStats.playerName;
+                }
+                else
+                {
+                    TextNPCName.text = characterName;
+                }
             }
 
             if (_QueueOfStrings.Count != 0)
