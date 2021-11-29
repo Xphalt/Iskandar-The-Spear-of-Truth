@@ -241,7 +241,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (timeSinceLastDash < dashDuration && !falling)
         {
             // DO IT LATER TIAGO 
-            m_Rigidbody.velocity = dashDirection * dashForce * slowMult;
+            m_Rigidbody.AddForce ( dashDirection * dashForce );
         }
 
         if (timeKnockedBack < knockBackDuration && knockedBack)
@@ -529,6 +529,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             if (other.tag == "Stone" || other.tag == "Wood" || other.tag == "Metal")
             {
+
                 switch (other.tag)
                 {
                     case "Stone":
