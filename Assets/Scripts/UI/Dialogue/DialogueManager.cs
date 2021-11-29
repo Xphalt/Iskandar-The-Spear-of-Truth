@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -159,7 +159,14 @@ public class DialogueManager : MonoBehaviour
     {
         foreach (LocalisationTableReference item in characterDialogueQueue)
         {
-            _QueueOfStrings.Enqueue(item.GetLocalisedString());
+            // Dominique, Replace any instances of {playerName} with the player's name
+            string sentence = item.GetLocalisedString();
+            if (sentence.Contains("{playerName}"))
+            {
+                sentence = sentence.Replace("{playerName}", playerStats.playerName);
+            }
+
+            _QueueOfStrings.Enqueue(sentence);
         }
     }
     /*_________________________________________________________________________*/
