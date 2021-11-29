@@ -106,20 +106,21 @@ MonoBehaviour:
   projectileSpeed: 0
   minChaseRadius: 1
   isBoss: 0
+  SecondPhaseObj: {fileID: 0}
   meleeAttackDamages:
-  - 0
-  - 0
-  - 0
-  - 0
-  shieldStunDuration: 0
+  - 1
+  - 1
+  - 1
+  - 2
+  shieldStunDuration: 2
   comboRange: 1
-  spinDamage: 0
+  spinDamage: 3
   spinRange: 1.5
-  kickDamage: 0
+  kickDamage: 1
   kickRange: 1
   knockbackForce: 10
   knockbackDuration: 1
-  lungeDamage: 0
+  lungeDamage: 3
   minLungeRange: 5
   phaseOneCooldowns:
   - 4
@@ -163,7 +164,8 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 0
   vulnerable: 1
-  despawnTime: 10
+  despawnTime: 3.5
+  isDead: 0
 --- !u!114 &4467576707019002018
 MonoBehaviour:
   m_ObjectHideFlags: 0

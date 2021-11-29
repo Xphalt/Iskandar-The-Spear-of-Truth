@@ -979,7 +979,8 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 0
   vulnerable: 1
-  despawnTime: 10
+  despawnTime: 3.5
+  isDead: 0
 --- !u!114 &7732896254425507217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1001,7 +1002,7 @@ MonoBehaviour:
   findDelay: 0
   availableAttacks: 010000
   attackDamages:
-  - 0
+  - 1
   - 0
   - 0
   attackRanges:
@@ -1029,8 +1030,8 @@ MonoBehaviour:
   - 50
   - 25
   sporesReleased: 5
-  minSporeRad: 2
-  maxSporesRad: 10
+  minSporeRad: 5
+  maxSporesRad: 15
   sporeSpeed: 5
   rollDamage: 0
   rollRange: 10
