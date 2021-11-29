@@ -19,6 +19,7 @@ public class Anubis : EnemyBase
     public float tornadoDamage, minTornadoRad, maxTornadoRad, tornadoSpeed;
     public GameObject discPrefab, tornadoPrefab;
     private List<Tornado> tornados = new List<Tornado>();
+    private int tornadoIndex = 0;
 
     [NamedArray(new string[] { "Disc" })]
     public float[] anubisCooldowns = new float[(int)AnubisAttacks.AttackTypesCount];
@@ -51,16 +52,24 @@ public class Anubis : EnemyBase
     {
         base.Update();
 
-        if (stats.health < (stats.MAX_HEALTH / 2))
-            _atHalfHealth = true;
-
-        if (curState != EnemyStates.Patrolling && healthTornadoTriggers.Count > 0)
+        if (stats.health <= 0)
         {
-            if (stats.health / stats.MAX_HEALTH * 100 <= healthTornadoTriggers[0])
+            foreach (Tornado t in tornados) t.gameObject.SetActive(false);
+        }
+
+        else
+        {
+            if (stats.health < (stats.MAX_HEALTH / 2))
+                _atHalfHealth = true;
+
+            if (curState != EnemyStates.Patrolling && healthTornadoTriggers.Count > 0)
             {
-                if (!attackEnded) AttackEnd();
-                SetAttack(AnubisAttacks.Tornado);
-                healthTornadoTriggers.RemoveAt(0);
+                if (stats.health / stats.MAX_HEALTH * 100 <= healthTornadoTriggers[0])
+                {
+                    if (!attackEnded) AttackEnd();
+                    SetAttack(AnubisAttacks.Tornado);
+                    healthTornadoTriggers.RemoveAt(0);
+                }
             }
         }
     }
@@ -114,7 +123,7 @@ public class Anubis : EnemyBase
 
     public void SpawnTornado()
     {
-        tornados[0].Summon(transform.RandomRadiusPoint(minTornadoRad, maxTornadoRad), tornadoDamage, tornadoSpeed);
-        tornados.RemoveAt(0);
+        tornados[tornadoIndex].Summon(transform.RandomRadiusPoint(minTornadoRad, maxTornadoRad), tornadoDamage, tornadoSpeed);
+        tornadoIndex++;
     }
 }

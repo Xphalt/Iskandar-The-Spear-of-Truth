@@ -527,7 +527,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     {
         if (GetComponent<PlayerSFXPlayer>().footstepType == PlayerSFXPlayer.FootstepType.defaultMass)
         {
-            if (other.tag == "Stone" || other.tag == "Wood")
+            if (other.tag == "Stone" || other.tag == "Wood" || other.tag == "Metal")
             {
                 switch (other.tag)
                 {
@@ -537,6 +537,9 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                     case "Wood":
                         GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.wood;
                         break;
+                    case "Metal":
+                        GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.metal;
+                        break;
                 }
             }
         }
@@ -544,7 +547,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Stone" || other.tag == "Wood")
+        if (other.tag == "Stone" || other.tag == "Wood" || other.tag == "Metal")
         {
             GetComponent<PlayerSFXPlayer>().footstepType = PlayerSFXPlayer.FootstepType.defaultMass;
         }                     
