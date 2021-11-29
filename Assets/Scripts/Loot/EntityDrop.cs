@@ -88,7 +88,7 @@ public class EntityDrop : MonoBehaviour
             float randomChance = Rnd.Range(0.0f, 1.0f);
             float dropChance = DropSystem.Instance.CalculateChance(type, this.dropChances[i]);
            // Debug.Log($"Random number: {randomChance}");
-            if (randomChance < dropChance)// && Mathf.Abs(randomChance - dropChance) >= .02f)
+            if (randomChance < dropChance && itemsToDrop[i] != null)// && Mathf.Abs(randomChance - dropChance) >= .02f)
                 chances.Add(true);
             else
                 chances.Add(false);
