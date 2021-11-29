@@ -1719,6 +1719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 3154728146447155937}
   itemID: 0
+  itemWheelSelected: 0
 --- !u!95 &3154728146447155937
 Animator:
   serializedVersion: 3
@@ -4666,6 +4667,14 @@ PrefabInstance:
       value: SelectedItemButton
       objectReference: {fileID: 0}
     - target: {fileID: 5648952038900689926, guid: a32340028ebbef5409ab7df2e3423222, type: 3}
+      propertyPath: m_Delegates.Array.data[0].eventID
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648952038900689926, guid: a32340028ebbef5409ab7df2e3423222, type: 3}
+      propertyPath: m_Delegates.Array.data[1].eventID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648952038900689926, guid: a32340028ebbef5409ab7df2e3423222, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4417980118132809362}
@@ -4673,6 +4682,14 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4417980118132809362}
+    - target: {fileID: 5648952038900689926, guid: a32340028ebbef5409ab7df2e3423222, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResetTimer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648952038900689926, guid: a32340028ebbef5409ab7df2e3423222, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartTimer
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a32340028ebbef5409ab7df2e3423222, type: 3}
 --- !u!114 &4155667854382916117 stripped
@@ -5533,6 +5550,14 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1719558006247586732, guid: c96101d985326aa4e879a209185b90ec, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719558006247586732, guid: c96101d985326aa4e879a209185b90ec, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719558006247586732, guid: c96101d985326aa4e879a209185b90ec, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -5562,11 +5587,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1719558006247586732, guid: c96101d985326aa4e879a209185b90ec, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -327
+      value: -309.2
       objectReference: {fileID: 0}
     - target: {fileID: 1719558006247586732, guid: c96101d985326aa4e879a209185b90ec, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -133
+      value: -115.9
       objectReference: {fileID: 0}
     - target: {fileID: 1719558006247586732, guid: c96101d985326aa4e879a209185b90ec, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
