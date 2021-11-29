@@ -7,8 +7,6 @@ using System.Collections;
 public class QuestLogManager : MonoBehaviour
 {
     public GameObject ButtonArea;
-    // Dominique, Make sure we get reference through prefab
-    [SerializeField] private TextMeshProUGUI QuestInfoText;
     public Button QuestButton;
 
     public List<QuestObject> ListOfQuests = new List<QuestObject>();
@@ -27,7 +25,8 @@ public class QuestLogManager : MonoBehaviour
     {
         QuestObject quest = ListOfQuests.Find(QuestObject => QuestObject.name == button.name);
         string questString = quest.QuestDescription.GetLocalisedString();
-        QuestInfoText.SetText(questString);
+        // Dominique, For some reason trying to store this text to update it won't work so we'll have to get it here :((
+        GameObject.Find("TextQuestDescription").GetComponent<TextMeshProUGUI>().text = questString;
     }
     /*_____________________________________________________________________________________________________*/
 }
