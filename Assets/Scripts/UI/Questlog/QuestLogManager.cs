@@ -12,24 +12,21 @@ public class QuestLogManager : MonoBehaviour
     public List<QuestObject> ListOfQuests = new List<QuestObject>();
 
     [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
-    private GameObject QuestInfoText;
-
-    private void Awake()
-    {
-        QuestInfoText = GameObject.Find("TextQuestDescription");
-    }
 
     public void AddQuest(QuestObject quest)
     {
-        ListOfQuests.Remove(quest);
         QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = quest.QuestName.GetLocalisedString();
         Instantiate(QuestButton, ButtonArea.transform).name = quest.QuestName.GetLocalisedString();
     }
 
     /*_______________________________________Button_Functions______________________________________________*/
-    public void ChangeQuestInfo()
+    // Dominique, Use the button name instead of gameobject.name since the gameobject is the QuestLogPanel
+    public void ChangeQuestInfo(GameObject button)
     {
-        QuestInfoText.GetComponent<TextMeshProUGUI>().text = ListOfQuests.Find(QuestObject => QuestObject.name == gameObject.name).QuestDescription.GetLocalisedString();
+        QuestObject quest = ListOfQuests.Find(QuestObject => QuestObject.name == button.name);
+        string questString = quest.QuestDescription.GetLocalisedString();
+        // Dominique, For some reason trying to store this text to update it won't work so we'll have to get it here :((
+        GameObject.Find("TextQuestDescription").GetComponent<TextMeshProUGUI>().text = questString;
     }
     /*_____________________________________________________________________________________________________*/
 }
