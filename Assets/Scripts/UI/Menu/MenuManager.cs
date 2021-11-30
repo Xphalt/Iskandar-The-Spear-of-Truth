@@ -165,7 +165,7 @@ public class MenuManager : MonoBehaviour
                 FileStream fs = new FileStream(saveDataPath, FileMode.Open);
 
                 save = bf.Deserialize(fs) as SaveData;
-
+                fs.Close();
                 fs = new FileStream(namePath, FileMode.Open);
 
                 name = bf.Deserialize(fs) as string;
