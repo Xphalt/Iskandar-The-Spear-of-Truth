@@ -42,7 +42,6 @@ public static class SaveManager
             FileStream fs = new FileStream(filePath, FileMode.Open);
 
             SaveData saveData = bf.Deserialize(fs) as SaveData;
-            Debug.Log(saveData.totallynotevents[saveData.sceneEventIndex].Count);
             fs.Close();
 
             return saveData;

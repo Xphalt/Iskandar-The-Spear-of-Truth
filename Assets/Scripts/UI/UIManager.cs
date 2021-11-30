@@ -203,8 +203,6 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = heartSegments;
-
         enemyHealthSlider = enemyHealthBarUI.GetComponentInChildren<Slider>();
         enemyNameText = enemyHealthBarUI.GetComponentInChildren<TextMeshProUGUI>();
 

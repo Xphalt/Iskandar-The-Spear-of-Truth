@@ -129,6 +129,7 @@ public class PlayerStats : StatsInterface
         health -= amount;
         //sfx.PlayAudio();
         UIManager.instance.UpdateHealthBar((int)-amount);
+        
 
         StartCoroutine(EDamageFlash());
 
@@ -372,7 +373,11 @@ public class PlayerStats : StatsInterface
         if (saveData != null)
         {
             playerName = SaveManager.LoadPlayerName(num);
+
+            UIManager.instance.SetHealthBar(saveData.health);
+            Debug.Log("Player Health Saved: " + saveData.health + " | Before Loading Health: " + health);
             health = saveData.health;
+
             gems = saveData.gemcount;
             totallynotevents = saveData.totallynotevents;
             if (saveData.levelsComplete.Length == VillageEventsStaticVariables.levelsComplete.Length) 
@@ -417,8 +422,6 @@ public class PlayerStats : StatsInterface
                 }
             }
 
-            Debug.Log(saveData.totallynotevents.Count + " " + SceneManager.sceneCountInBuildSettings);
-
             // shh
             if (totallynotevents.Count > sceneEventIndex)
             {
@@ -431,7 +434,6 @@ public class PlayerStats : StatsInterface
                     //loading events
                     for (int em = 0; em < managers.Length; em++)
                     {
-                        Debug.Log(managers[em].getamountofactions());
                         for (int a = 0; a < managers[em].getamountofactions(); a++)
                         {
                             managers[em].setCompleted(a, savedEvents[totalEvents + a]);
@@ -457,7 +459,6 @@ public class PlayerStats : StatsInterface
                 transform.position = new Vector3(X, Y, Z);
             }
             else SaveStats();
-            print(transform.position);
 
         }
         else
