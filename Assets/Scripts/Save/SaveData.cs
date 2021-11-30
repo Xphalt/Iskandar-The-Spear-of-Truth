@@ -10,6 +10,8 @@ public class SaveData
 {
     //PlayerStats Playerstats;
     Scene m_Scene;
+    internal int sceneEventIndex;
+    
     public string scenename;
     public float health;
     public float xpos;
@@ -29,6 +31,8 @@ public class SaveData
     public List<int> potlist = new List<int>();
     public List<int> potbrokenlist = new List<int>();
     public List<List<bool>> totallynotevents = new List<List<bool>>();
+    public bool[] levelsComplete;
+
     //public List<EventAction> totallynotcompletedevents = new List<EventAction>();
 
     //public List<EnemyData> enemyDataList = new List<EnemyData>();
@@ -36,6 +40,7 @@ public class SaveData
     public SaveData(PlayerStats playerstats)
     {
         m_Scene = SceneManager.GetActiveScene();
+        sceneEventIndex = m_Scene.buildIndex - 1; // -1 for menu scene
         scenename = m_Scene.name;
         health = playerstats.health;
         xpos = playerstats.X;
@@ -43,6 +48,8 @@ public class SaveData
         zpos = playerstats.Z;
         gemcount = playerstats.gems;
         LastFileSaved = playerstats.SaveNum;
+        totallynotevents = playerstats.totallynotevents;
+        levelsComplete = VillageEventsStaticVariables.levelsComplete;
 
         //Debug.Log(GameObject.FindGameObjectsWithTag("Enemy").Length );
 
@@ -75,59 +82,24 @@ public class SaveData
                 potbrokenlist.Add(pot.gameObject.GetInstanceID());
             }
         }
-        //Debug.Log(potbrokenlist);
 
-        //event completion
-        //completion = GameObject.Find("GameplayEventManager").GetComponent<EventAction>().complete;
-        /*foreach (var eventt in GameObject.Find("GameplayEventManager").GetComponent<EventManager>().getCompleted)
-        {
-            totallynotevents.Add(eventt);
-            if (eventt.IsComplete)
-            {
-                totallynotcompletedevents.Add(eventt);
-            }
-        }*/
+        EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
 
-        if (totallynotevents.Count != SceneManager.sceneCountInBuildSettings)
+        try
         {
-            totallynotevents.Clear();
-            for (int s = 0; s < SceneManager.sceneCountInBuildSettings; s++)
-                totallynotevents.Add(new List<bool>());
+            totallynotevents[sceneEventIndex].Clear();
         }
-
-        for (int i = 0; i < GameObject.FindObjectOfType<EventManager>().getamountofactions(); i++)
+        catch  (System.Exception)  
         {
-            totallynotevents[m_Scene.buildIndex].Add(GameObject.FindObjectOfType<EventManager>().getCompleted(i));
+            totallynotevents.Add(new List<bool>());
         }
-
-        // for each (event = true)
-
-        //string.split
-
-        //outline for saving the enemies
-        /*foreach (GameObject enemy in enemyarray)
+        for (int em = 0; em < managers.Length; em++)
         {
-            Debug.Log(enemy.GetInstanceID());
-            if (enemy.GetComponent<EnemyStats>().isDead)
+            for (int a = 0; a < managers[em].getamountofactions(); a++)
             {
-                UnityEngine.Object.Destroy(enemy);
+                totallynotevents[sceneEventIndex].Add(managers[em].getCompleted(a));
             }
         }
-
-        foreach (GameObject enemy in enemyarray)
-        {
-            if (enemy.GetComponent<EnemyStats>().isDead)
-            {
-                EnemyisDead = true;
-            }
-        }*/
-
-
-
-        //reminder make thing above^ check on load input
-        //reminder check when enemy is dead
-
-        //SaveEnemies();
     }
 
     public SaveData()

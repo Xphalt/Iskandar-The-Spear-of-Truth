@@ -87,7 +87,9 @@ public class Player_Targeting_Jack : MonoBehaviour
     // Returns true if the player is currently targeting an object
     public bool IsTargeting()
     {
-        return _targetedTransform;
+        if (_targetedTransform)
+            return _targetedTransform.gameObject.activeInHierarchy;
+        return false;
 	}
 
     // If already targeting an object calling this method will untarget the object.
@@ -125,7 +127,7 @@ public class Player_Targeting_Jack : MonoBehaviour
          
     }
 
-    private void UnTargetObject()
+    public void UnTargetObject()
     {
         if (_targetedTransform)
         {

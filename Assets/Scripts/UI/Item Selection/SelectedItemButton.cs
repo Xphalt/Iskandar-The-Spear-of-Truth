@@ -1,10 +1,11 @@
+using UnityEngine;
+
 /*
  * Dominique 11-11-2021,
  * Add functionality to open/close the ItemSelectionwheel if held but use the selected item (or close the wheel if it's open) if tapped
+ * Fate 29-11-21,
+ * Changed the UI interactablity in line with designer's needs: item wheel closes when let go.
  */
-
-using UnityEngine;
-
 public class SelectedItemButton : MonoBehaviour
 {
     [SerializeField] private float open_menu_time = 0.5f;
@@ -16,31 +17,41 @@ public class SelectedItemButton : MonoBehaviour
 
     private void Update()
     {
-        if (runTimer)
+        if (timer > open_menu_time)
         {
-            timer += Time.deltaTime;
+            ShowItems(true);
+          
+            if (itemWheel.IsItemWheelSelected()) itemWheel.UseItem();
+            if (potionWheel.IsItemWheelSelected()) potionWheel.UseItem();
         }
     }
-
-    public void Holding()
+    private void FixedUpdate()
     {
+        if (runTimer) { timer += Time.deltaTime; }
+    }
+    public void StartTimer() //Used for button Pointer Enter event
+    {  
         runTimer = true;
     }
-
-    public void LetGo()
-    {
+    public void ResetTimer() //Used for button Pointer Exit event
+    {   
         runTimer = false;
+        timer = 0f;
 
-        // If we've held the button down or the menu is already open then open/close it respectively
-        if (timer > open_menu_time || itemWheel.IsItemWheelSelected())
-        {
-            itemWheel.ToggleItemSelectionWheel();
-            potionWheel.ToggleItemSelectionWheel();
-        }
-        else // Use the selected item
-        {
-            itemWheel.UseItem();
-        }
-        timer = 0.0f;
+        ShowItems(false);
     }
+    private void ShowItems(bool showItem)
+    {
+        if (showItem)
+        {
+            itemWheel.itemWheelSelected = true;
+            potionWheel.itemWheelSelected = true;
+        }
+        else
+        {
+            itemWheel.itemWheelSelected = false;
+            potionWheel.itemWheelSelected = false;
+        }
+    }
+
 }

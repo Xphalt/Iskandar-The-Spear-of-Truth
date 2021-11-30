@@ -1,4 +1,4 @@
- using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,12 +8,15 @@ public class PlayerStats : StatsInterface
 {
     private PlayerAnimationManager playerAnimation;
     private PlayerCombat_Jerzy playerCombat;
+    private Player_Targeting_Jack playerTargeting;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
     public GameObject listOfObjs;
 
-    internal AccessoryObject Accessory; 
+    internal AccessoryObject Accessory;
     public ItemObject_Sal revivalGem;
+
+    public List<List<bool>> totallynotevents = new List<List<bool>>();
 
     public Transform startPos;
 
@@ -43,7 +46,7 @@ public class PlayerStats : StatsInterface
             gems = value;
         }
     }
-    
+
     public float damage;
     public float spiritualDamage;
     public float defence;
@@ -62,7 +65,9 @@ public class PlayerStats : StatsInterface
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         playerCombat = GetComponent<PlayerCombat_Jerzy>();
-        SaveNum = FindObjectOfType<SaveDataAssistant>().currentSaveFileID;
+        playerTargeting = GetComponent<Player_Targeting_Jack>();
+        SaveDataAssistant saveAssisstant = FindObjectOfType<SaveDataAssistant>();
+        if (saveAssisstant) SaveNum = saveAssisstant.currentSaveFileID;
     }
 
     private void Start()
@@ -90,7 +95,10 @@ public class PlayerStats : StatsInterface
         GameEvents.current.onPlayerHealthSet += OnPlayerHealthSet;
 
         m_Scene = SceneManager.GetActiveScene();
+        sceneEventIndex = m_Scene.buildIndex - 1;
         TrueLoadStats(SaveNum);
+        VillageEventsManager villageEvents = FindObjectOfType<VillageEventsManager>();
+        if (villageEvents) villageEvents.SetEvents();
         Debug.Log("Currently " + playerName + " is playing");
     }
 
@@ -121,21 +129,23 @@ public class PlayerStats : StatsInterface
         health -= amount;
         //sfx.PlayAudio();
         UIManager.instance.UpdateHealthBar((int)-amount);
+        
 
         StartCoroutine(EDamageFlash());
 
 
         // anything that happens when taking damage happens 
         if (health <= 0)
-        { 
+        {
             //Check if player has revival gem
             var RevGem = inventory.FindItemOnInventory(revivalGem.data);
-            if (RevGem != null) 
+            if (RevGem != null)
             {
                 inventory.database.ItemObjects[RevGem.item.id].UseCurrent();
             }
             else
             {
+                playerTargeting.UnTargetObject();
                 //gameObject.SetActive(false);
                 playerAnimation.Dead();
             }
@@ -161,12 +171,12 @@ public class PlayerStats : StatsInterface
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
     {
         target.TakeDamage(amount, scriptedKill);
-        
+
         if (target.HasBeenDefeated && Accessory && Accessory.accessory == AccessoryType.NecklaceOfTheLifeStealers) Accessory.UseCurrent();
     }
 
 
-    public void SetBleed(float _bleedDamage ,float _maxBleedTicks, float _bleedDelay)
+    public void SetBleed(float _bleedDamage, float _maxBleedTicks, float _bleedDelay)
     {
         bleedDamage = _bleedDamage;
         maxBleedTicks = _maxBleedTicks;
@@ -208,7 +218,7 @@ public class PlayerStats : StatsInterface
                 ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
                 switch (p_slot.ItemObject.objType)
                 {
-                    case ObjectType.Weapon: 
+                    case ObjectType.Weapon:
                         damage -= ((WeaponObject_Sal)(temp)).damage;
                         spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
                         GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost;
@@ -244,7 +254,7 @@ public class PlayerStats : StatsInterface
                     ItemObject_Sal temp = equipment.database.ItemObjects[p_slot.item.id];
                     switch (p_slot.ItemObject.objType)
                     {
-                        case ObjectType.Weapon: 
+                        case ObjectType.Weapon:
                             damage += ((WeaponObject_Sal)(temp)).damage;
                             spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
                             GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
@@ -289,7 +299,7 @@ public class PlayerStats : StatsInterface
         var item = other.GetComponent<GroundItem>();
         if (item && item.itemobj.objType != ObjectType.Resource)
         {
-            if(equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
+            if (equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
             {
                 equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
                 Destroy(other.gameObject);
@@ -297,11 +307,11 @@ public class PlayerStats : StatsInterface
             else if (inventory.AddItem(new Item(item.itemobj), 1))
                 Destroy(other.gameObject);  //Only if the item is picked up
         }
-        else if(item) //It's a resource
-        { 
-            if(((ResourceObject)(item.itemobj)).resourceType == ResourceType.RevivalGem)
+        else if (item) //It's a resource
+        {
+            if (((ResourceObject)(item.itemobj)).resourceType == ResourceType.RevivalGem)
             {
-                if(inventory.FindItemOnInventory(item.itemobj.data) != null)
+                if (inventory.FindItemOnInventory(item.itemobj.data) != null)
                     Debug.Log("Can't take more Revival gems");
                 else
                 {
@@ -327,6 +337,7 @@ public class PlayerStats : StatsInterface
 
     //Morgan's Save Edits
     Scene m_Scene;
+    private int sceneEventIndex;
     string sceneName;
     internal int SaveNum;
     internal float X;
@@ -336,16 +347,16 @@ public class PlayerStats : StatsInterface
 
     public void SaveStats()
     {
-        X = this.transform.position.x;
-        Y = this.transform.position.y;
-        Z = this.transform.position.z;
-        SaveData saveData = new SaveData();
-        SaveManager.SavePlayerStats(this, SaveNum);
+        X = transform.position.x;
+        Y = transform.position.y;
+        Z = transform.position.z;
+        SaveData saveData = new SaveData(this);
+        saveData.LastFileSaved = SaveNum;
+        SaveManager.SavePlayerStats(saveData);
         inventory.SaveStats(SaveNum);
         equipment.SaveStats(SaveNum);
         sceneName = m_Scene.name;
-        saveData.LastFileSaved = SaveNum;
-        SaveNum = saveData.LastFileSaved;
+        totallynotevents = saveData.totallynotevents;
     }
 
     public void LoadStats(int num)
@@ -358,12 +369,19 @@ public class PlayerStats : StatsInterface
 
     public void TrueLoadStats(int num)
     {
-        try
+        SaveData saveData = SaveManager.LoadPlayerStats(num); //Loads in all player data
+        if (saveData != null)
         {
-            SaveData saveData = SaveManager.LoadPlayerStats(num);
-            playerName = SaveManager.LoadPlayerName(num); ;            
+            playerName = SaveManager.LoadPlayerName(num);
+
+            UIManager.instance.SetHealthBar(saveData.health);
+            Debug.Log("Player Health Saved: " + saveData.health + " | Before Loading Health: " + health);
             health = saveData.health;
+
             gems = saveData.gemcount;
+            totallynotevents = saveData.totallynotevents;
+            if (saveData.levelsComplete.Length == VillageEventsStaticVariables.levelsComplete.Length) 
+                VillageEventsStaticVariables.levelsComplete = saveData.levelsComplete;
             inventory.LoadStats(num);
             equipment.LoadStats(num);
 
@@ -405,30 +423,33 @@ public class PlayerStats : StatsInterface
             }
 
             // shh
-            List<bool> savedEvents = saveData.totallynotevents[m_Scene.buildIndex];
-            if (savedEvents.Count > 0)
+            if (totallynotevents.Count > sceneEventIndex)
             {
-                EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
-                int totalEvents = 0;
-                //loading events
-                for (int em = 0; em < managers.Length; em++)
+                List<bool> savedEvents = totallynotevents[sceneEventIndex];
+
+                if (savedEvents.Count > 0)
                 {
-                    for (int a = 0; a < managers[em].getamountofactions(); a++)
+                    EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
+                    int totalEvents = 0;
+                    //loading events
+                    for (int em = 0; em < managers.Length; em++)
                     {
-                        managers[em].setCompleted(a, savedEvents[a - totalEvents]);
-                        if (savedEvents[a - totalEvents])
+                        for (int a = 0; a < managers[em].getamountofactions(); a++)
                         {
-                            for (int ev = 0; ev < managers[em].actions[a].events.Count; ev++)
+                            managers[em].setCompleted(a, savedEvents[totalEvents + a]);
+                            if (savedEvents[totalEvents + a])
                             {
-                                if (managers[em].actions[a].events[ev].ReplayOnload)
-                                    managers[em].actions[a].events[ev].TriggerEvent();
+                                for (int ev = 0; ev < managers[em].actions[a].events.Count; ev++)
+                                {
+                                    if (managers[em].actions[a].events[ev].ReplayOnload)
+                                        managers[em].actions[a].events[ev].TriggerEvent();
+                                }
                             }
                         }
+                        totalEvents += managers[em].getamountofactions();
                     }
-                    totalEvents += managers[em].getamountofactions();
                 }
             }
-
 
             if (sceneName == saveData.scenename)
             {
@@ -438,10 +459,9 @@ public class PlayerStats : StatsInterface
                 transform.position = new Vector3(X, Y, Z);
             }
             else SaveStats();
-            print(transform.position);
-            
+
         }
-        catch (System.Exception)
+        else
         {
             Debug.LogWarning("No Player Save Data exists for: " + SaveNum + ". Making a new one!");
             SaveStats();

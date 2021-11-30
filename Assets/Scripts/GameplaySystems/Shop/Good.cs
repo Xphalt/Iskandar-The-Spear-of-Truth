@@ -6,16 +6,17 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Good : MonoBehaviour
 {  
     private ItemObject_Sal objHolder; 
 
     public Image image;
-    public Text displayName;
-    public Text buyValue; private int buyVl;
-    public Text sellValue; private int sellVl;
-    public Text amount; public int howMany;
+    public TextMeshProUGUI displayName;
+    public TextMeshProUGUI buyValue; private int buyVl;
+    public TextMeshProUGUI sellValue; private int sellVl;
+    public TextMeshProUGUI amount; private int howMany;
 
     public void SetupGood(ItemObject_Sal item, InventoryObject_Sal inv)
     { 

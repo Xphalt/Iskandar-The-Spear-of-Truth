@@ -132,7 +132,7 @@ public class DialogueManager : MonoBehaviour
         playerInput.enabled = true;
         playerInput.TogglePlayerInteraction(true);
         // Re-enable the collider of the GO we're speaking to when ending the dialogue
-        currentCollider.enabled = true;
+        if (currentCollider) currentCollider.enabled = true;
         DialoguePanel.SetActive(false);
         GameEvents.current.ContinueAttacking();
     }

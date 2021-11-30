@@ -75,6 +75,7 @@ public class PauseMenuManager : MonoBehaviour
         if(Time.timeScale < 1)
             Time.timeScale = Mathf.Lerp(Time.timeScale, 1, LerpPauseSpeed);
         pauseMenuUI.SetActive(false);
+        Debug.Log("Playing");
     }
 
     void Pause()
@@ -118,8 +119,10 @@ public class PauseMenuManager : MonoBehaviour
     public void LoadMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(0);
         gameIsPaused = false;
+        Debug.Log("Fading Out");
+        GameObject.FindObjectOfType<BlackoutScript>().FadeOutOfScene(0);
+        GameObject.FindObjectOfType<BlackoutScript>().GetLoadingScreen();
     }
 
     public void QuitGame()

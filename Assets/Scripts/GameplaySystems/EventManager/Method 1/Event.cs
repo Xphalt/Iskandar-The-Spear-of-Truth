@@ -332,20 +332,7 @@ public class CompleteLevel : Event
 {
     public override void TriggerEvent()
     {
-        switch (level)
-        {
-            case VillageEventsStaticVariables.VillageEventStages.desertComplete:
-                VillageEventsStaticVariables.desertIsCompleted = true;
-                break;
-            case VillageEventsStaticVariables.VillageEventStages.forestDungeonComplete:
-                VillageEventsStaticVariables.forestDungeonIsCompleted = true;
-                break;
-            case VillageEventsStaticVariables.VillageEventStages.desertDungeonComplete:
-                VillageEventsStaticVariables.desertDungeonIsCompleted = true;
-                break;
-            default:
-                break;
-        }
+        VillageEventsStaticVariables.UpdateVillage(level);
     }
 
     [SerializeField] VillageEventsStaticVariables.VillageEventStages level;
