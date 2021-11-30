@@ -16,35 +16,15 @@ public class EventAction
 public class EventManager : MonoBehaviour
 {
     [SerializeReference] public List<EventAction> actions = new List<EventAction>();
-    
-    //morgan's smelly edit 
-    public List<EventAction> totallynotcompletedevents = new List<EventAction>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        //mog>
-        totallynotcompletedevents.Clear();
-        for (int i = 0; i < actions.Count; i++)
-        {
-            if (actions[i].complete)
-            {
-                totallynotcompletedevents.Add(actions[i]);
-            }
-        }
-        //<mog
         foreach (EventAction action in actions)
         { 
             if (!action.complete)
             {
                 // Test conditions are met
-                action.complete = true; // mog edit (that jusxtaposes the save system, bar this it all works fine!)
+                action.complete = true;
                 foreach (Condition condition in action.conditions)
                 {
                     if (!condition.TestCondition())
