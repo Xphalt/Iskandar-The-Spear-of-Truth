@@ -68,7 +68,7 @@ public class Caster : EnemyBase
                 attackUsed = true;
             }
 
-            if(!attackUsed && PillarAvailable)
+            if(!attackUsed && PillarAvailable && casterAvailableAttacks[(int)CasterAttacks.Pillar])
             {
                 MagicPillarCast();
                 attackUsed = true;
