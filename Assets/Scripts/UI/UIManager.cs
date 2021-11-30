@@ -216,7 +216,7 @@ public class UIManager : MonoBehaviour
 #if UNITY_ANDROID
         SetUIForInput(INPUT_OPTIONS.MOBILE);
 #else
-        SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
+        SetUIForInput(INPUT_OPTIONS.MOBILE);
 #endif
     }
 
