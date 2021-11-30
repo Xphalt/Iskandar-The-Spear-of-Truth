@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Localization;
+using UnityEngine.SceneManagement;
 using UnityEngine.Localization.Settings;
 using TMPro;
 
@@ -63,5 +64,4 @@ public class SettingsOptions : MonoBehaviour
     {
         masterMixer.SetFloat("sfxVol", volume);
     }
-
 }
