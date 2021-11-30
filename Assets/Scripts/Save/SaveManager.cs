@@ -9,14 +9,12 @@ public static class SaveManager
     // Morgan S Script
 
     //FILE 1
-    public static void SavePlayerStats(PlayerStats playerStats, int num)
+    public static void SavePlayerStats(SaveData saveData)
     {
         BinaryFormatter bf = new BinaryFormatter();
         
-        string filePath = Application.persistentDataPath + "/Player_statsf" + num + ".txt";
+        string filePath = Application.persistentDataPath + "/Player_statsf" + saveData.LastFileSaved + ".txt";
         FileStream fs = new FileStream(filePath, FileMode.Create);
-
-        SaveData saveData = new SaveData(playerStats);
 
         bf.Serialize(fs, saveData);
         fs.Close();
@@ -44,6 +42,7 @@ public static class SaveManager
             FileStream fs = new FileStream(filePath, FileMode.Open);
 
             SaveData saveData = bf.Deserialize(fs) as SaveData;
+            Debug.Log(saveData.totallynotevents[saveData.sceneEventIndex].Count);
             fs.Close();
 
             return saveData;
