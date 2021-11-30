@@ -3,11 +3,15 @@
  * Dominique 30-09-2021
  * Handles interactions with the shop UI
  */
-
-using UnityEngine; 
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
+    public List<ItemObject_Sal> items = new List<ItemObject_Sal>();
+    public List<int> amounts = new List<int>();
+
     public InventoryObject_Sal shop;
      
     // The good prefab will set up the UI with the GoodData
@@ -24,7 +28,9 @@ public class ShopManager : MonoBehaviour
     {
         shopPanel = GameObject.Find("ShopUI");
         shopContentPanel = GameObject.Find("ShopContentPanel");
-        shopPanel.SetActive(false); 
+        shopPanel.SetActive(false);
+
+        SetUpShop(); 
     } 
 
     // Pass in an integer that corresponds to the SHOP_TYPE enum
@@ -65,5 +71,18 @@ public class ShopManager : MonoBehaviour
         }
 
         shopPanel.SetActive(false);
+    }
+
+    private void SetUpShop()
+    { 
+        for (int i = 0; i < items.Count; i++)
+        {
+            shop.AddItem(items[i].data, amounts[i]);
+        }
+    }
+
+    private void OnApplicationQuit()
+    { 
+        shop.Clear();
     }
 } 

@@ -111,31 +111,41 @@ public class MagneticObj : MonoBehaviour
 
             if (newDir != Vector3.zero && Vector3.Dot(moveToB, newDir) > 0.1f && Vector2.Dot(new Vector2(moveToB.x, moveToB.z), new Vector2(transform.position.x - pointB.x, transform.position.z - pointB.z)) < 0 )
             { 
-                float Distance = (moveToB.x != 0.0f ? GetComponent<BoxCollider>().size.x / 2.0f : moveToB.z != 0.0f ? GetComponent<BoxCollider>().size.z / 2.0f : 0.0f) + 0.9f;
-                RaycastHit[] hits = Physics.RaycastAll(transform.position, moveToB, Distance);
-                Debug.DrawRay(transform.position, moveToB, Color.white);
-
+                float Distance = (moveToB.x != 0.0f ? GetComponent<BoxCollider>().size.x / 2.0f : moveToB.z != 0.0f ? GetComponent<BoxCollider>().size.z / 2.0f : 0.0f) + 0.9f; 
+                Vector3 leftRight = Vector3.Cross(moveToB, Vector3.up) * 1.15f;
+                GetComponent<BoxCollider>().enabled = false;
+                RaycastHit hit1; Physics.Raycast(transform.position - leftRight, moveToB, out hit1, Distance);
+                RaycastHit hit2; Physics.Raycast(transform.position + leftRight, moveToB, out hit2, Distance);
+                GetComponent<BoxCollider>().enabled = true;
+                RaycastHit[] hits = { hit1, hit2 }; 
                 bool canMove = true;
                 for (int i = 0; i < hits.Length; i++)
                 {
-                    RaycastHit hit = hits[i];
-
-                    if (hit.transform.gameObject != this && hit.transform.gameObject.tag == "MagneticObj")
-                        canMove = false; 
+                    if (hits[i].transform && hits[i].transform.tag.Contains("MagneticObj"))
+                    {
+                        canMove = false;
+                        break;
+                    }    
                 }
-                if(canMove) transform.Translate(moveToB * movementSpeed * Time.deltaTime, Space.World);
+                if (canMove) transform.Translate(moveToB * movementSpeed * Time.deltaTime, Space.World);
             }
             else if(newDir != Vector3.zero && Vector3.Dot(moveToB, newDir) < -0.1f && Vector2.Dot(new Vector2(moveToA.x, moveToA.z), new Vector2(transform.position.x - pointA.x, transform.position.z - pointA.z)) < 0)
             { 
-                float Distance = (moveToA.x != 0.0f ? GetComponent<BoxCollider>().size.x / 2.0f : moveToA.z != 0.0f ? GetComponent<BoxCollider>().size.z / 2.0f : 0.0f) + 0.9f;
-                RaycastHit[] hits = Physics.RaycastAll(transform.position, moveToA, Distance);
-                Debug.DrawRay(transform.position, moveToA, Color.white);
+                float Distance = (moveToA.x != 0.0f ? GetComponent<BoxCollider>().size.x / 2.0f : moveToA.z != 0.0f ? GetComponent<BoxCollider>().size.z / 2.0f : 0.0f) + 0.9f; 
+                Vector3 leftRight = Vector3.Cross(moveToA, Vector3.up) * 1.15f;
+                GetComponent<BoxCollider>().enabled = false;
+                RaycastHit hit1; Physics.Raycast(transform.position - leftRight, moveToA, out hit1, Distance);
+                RaycastHit hit2; Physics.Raycast(transform.position + leftRight, moveToA, out hit2, Distance);
+                GetComponent<BoxCollider>().enabled = true;
+                RaycastHit[] hits = { hit1, hit2 }; 
                 bool canMove = true;
                 for (int i = 0; i < hits.Length; i++)
                 {
-                    RaycastHit hit = hits[i]; 
-                    if (hit.transform.gameObject != this && hit.transform.gameObject.tag == "MagneticObj")
-                        canMove = false; 
+                    if (hits[i].transform && hits[i].transform.tag.Contains("MagneticObj"))
+                    {
+                        canMove = false;
+                        break;
+                    }
                 }
                 if (canMove) transform.Translate(moveToA * movementSpeed * Time.deltaTime, Space.World);
             }
