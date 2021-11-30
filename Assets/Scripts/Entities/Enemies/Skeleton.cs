@@ -28,7 +28,7 @@ public class Skeleton : EnemyBase
         {
             FindSkeletonsInRange();
             if (skeletonAgroRadius != 0)
-            { 
+            {
                 for (int i = 0; i < SkeletonsInAgroRange.Count; i++)
                 {
                     //disabled this line due to the changes in PlayerDetection, must add the SetCurrentTarget later again -Bernardo
@@ -38,15 +38,11 @@ public class Skeleton : EnemyBase
             }
         }
 
-        if (gameObject.GetComponent<EnemyStats>().health <= 0)
+        if (stats.health <= 0)
         {
-            //die
-            ResurrectChance();
-            if (Resurrect == true)
-            {
-                //comeback to life
-            }
+            agent.enabled = false;
         }
+        
     }
 
     void FindSkeletonsInRange()
@@ -78,26 +74,33 @@ public class Skeleton : EnemyBase
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
 
-    protected override void MeleeAttack()
-    {
-        if (detector.MeleeRangeCheck(attackRanges[(int)AttackTypes.Melee], detector.GetCurTarget()))
-        {
-            attackUsed = true;
-            curAttack = AttackTypes.Melee;
-            MyRigid.velocity = Vector3.zero;
-            _myAnimator.SetTrigger("Hit");
-        }
-    }
-
     public void ResurrectChance()
     {
-        float percentChance = Random.Range(0, 100);
-        if (percentChance > ResurrectionChancePercentage)
+        float percentChance = Random.Range(0, 101);
+        if (percentChance < ResurrectionChancePercentage)
         {
             Debug.Log("Resurrect");
             Resurrect = true;
         }
+
+        if (Resurrect)
+        {
+            _myAnimator.SetBool("Rise", true);
+            stats.isDead = false;
+            isDead = false;
+            stats.deathTimer = 0f;
+            stats.health = stats.MAX_HEALTH;
+            //agent.enabled = false;
+        }
     }
+
+    public void RessurectEnd()
+    {
+        _myAnimator.SetBool("Rise", false);
+        //agent.enabled = true;
+    }
+
+
 
     public void SetStateChasing()
     {

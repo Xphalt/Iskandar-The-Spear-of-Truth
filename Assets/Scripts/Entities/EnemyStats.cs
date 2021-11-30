@@ -7,7 +7,7 @@ public class EnemyStats : StatsInterface
     public static int EnemiesKilled = 0;
 
     public bool vulnerable = true;
-    private float deathTimer = 0.0f;
+    [HideInInspector] public float deathTimer = 0.0f;
 
     public float despawnTime = 4;
     public bool isDead = false;
