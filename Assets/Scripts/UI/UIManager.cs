@@ -210,6 +210,7 @@ public class UIManager : MonoBehaviour
 
         playerStats = GameObject.FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>();
         HealthBarUI.transform.GetChild(0).GetComponent<Slider>().maxValue = playerStats.MAX_HEALTH;
+        SetHealthBar(playerStats.health);
 
         // At the moment we're using keyboard and mouse to play the game
 #if UNITY_ANDROID
