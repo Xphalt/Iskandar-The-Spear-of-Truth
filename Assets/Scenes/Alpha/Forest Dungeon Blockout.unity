@@ -5588,7 +5588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 128.99501
+      value: 128.87798
       objectReference: {fileID: 0}
     - target: {fileID: 3054451402402017905, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.y
@@ -41498,70 +41498,62 @@ MonoBehaviour:
   - id: 3
   - id: 4
   - id: 5
-  - id: 6
   references:
     version: 1
     00000000:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 7
+        - id: 6
         events:
-        - id: 8
+        - id: 7
         complete: 0
     00000001:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 9
+        - id: 8
         events:
-        - id: 10
+        - id: 9
         complete: 0
     00000002:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 11
+        - id: 10
         events:
-        - id: 12
+        - id: 11
         complete: 0
     00000003:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 13
+        - id: 12
         events:
-        - id: 14
+        - id: 13
         complete: 0
     00000004:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 15
+        - id: 14
         events:
-        - id: 16
+        - id: 15
         complete: 0
     00000005:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 17
+        - id: 16
         events:
+        - id: 17
         - id: 18
         complete: 0
     00000006:
-      type: {class: EventAction, ns: , asm: Assembly-CSharp}
-      data:
-        conditions:
-        - id: 19
-        events:
-        - id: 20
-        complete: 0
-    00000007:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 123720533}
-    00000008:
+    00000007:
       type: {class: PanCameraWithTargetVectorEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -41572,56 +41564,56 @@ MonoBehaviour:
         _cameraPanSpeed: 15
         _targetVector: {x: 233.98, y: 27.22, z: 212.96}
         _linger: 1
-    00000009:
+    00000008:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 449566162}
-    0000000A:
+    00000009:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 449566163}
         dialogue: {fileID: 11400000, guid: 698fa4fcc86f5684bbcf532e08356de1, type: 2}
-    0000000B:
+    0000000A:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 1299967971}
-    0000000C:
+    0000000B:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 1299967970}
         dialogue: {fileID: 11400000, guid: f8ebb96b04c5ebc42b5dac061e00056b, type: 2}
-    0000000D:
+    0000000C:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 1634121091}
-    0000000E:
+    0000000D:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 1634121092}
         dialogue: {fileID: 11400000, guid: 53ecc5153aec0164890967b817eeb913, type: 2}
-    0000000F:
+    0000000E:
       type: {class: EnemyDiedCondition, ns: , asm: Assembly-CSharp}
       data:
         enemyStats: {fileID: 769626161}
-    00000010:
+    0000000F:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 769626162}
         dialogue: {fileID: 11400000, guid: 439b0e7a0a1f08148b1a52de9bc57daf, type: 2}
-    00000011:
+    00000010:
       type: {class: DialogueEndedCondition, ns: , asm: Assembly-CSharp}
       data:
         dialogue: {fileID: 11400000, guid: 439b0e7a0a1f08148b1a52de9bc57daf, type: 2}
         dlgManager: {fileID: 512148866}
-    00000012:
+    00000011:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -41629,15 +41621,11 @@ MonoBehaviour:
         _objectsToActivate:
         - {fileID: 1228451921}
         _activateObjects: 1
-    00000013:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
-      data:
-        _oneTimeTrigger: {fileID: 1228451923}
-    00000014:
+    00000012:
       type: {class: CompleteLevel, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
-        ReplayOnload: 1
+        ReplayOnload: 0
         level: 1
 --- !u!114 &1435378992
 MonoBehaviour:
