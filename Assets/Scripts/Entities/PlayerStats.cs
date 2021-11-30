@@ -97,6 +97,8 @@ public class PlayerStats : StatsInterface
         m_Scene = SceneManager.GetActiveScene();
         sceneEventIndex = m_Scene.buildIndex - 1;
         TrueLoadStats(SaveNum);
+        VillageEventsManager villageEvents = FindObjectOfType<VillageEventsManager>();
+        if (villageEvents) villageEvents.SetEvents();
         Debug.Log("Currently " + playerName + " is playing");
     }
 
@@ -366,13 +368,15 @@ public class PlayerStats : StatsInterface
 
     public void TrueLoadStats(int num)
     {
-        try
+        SaveData saveData = SaveManager.LoadPlayerStats(num); //Loads in all player data
+        if (saveData != null)
         {
-            SaveData saveData = SaveManager.LoadPlayerStats(num); //Loads in all player data
             playerName = SaveManager.LoadPlayerName(num);
             health = saveData.health;
             gems = saveData.gemcount;
             totallynotevents = saveData.totallynotevents;
+            if (saveData.levelsComplete.Length == VillageEventsStaticVariables.levelsComplete.Length) 
+                VillageEventsStaticVariables.levelsComplete = saveData.levelsComplete;
             inventory.LoadStats(num);
             equipment.LoadStats(num);
 
@@ -456,11 +460,10 @@ public class PlayerStats : StatsInterface
             print(transform.position);
 
         }
-        catch (System.Exception)
+        else
         {
             Debug.LogWarning("No Player Save Data exists for: " + SaveNum + ". Making a new one!");
             SaveStats();
-            throw;
         }
     }
 

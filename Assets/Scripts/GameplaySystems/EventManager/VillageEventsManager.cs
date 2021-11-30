@@ -9,7 +9,7 @@ public class VillageEventsManager : MonoBehaviour
     [SerializeField] private GameObject forestConnectionEvents;
     [SerializeField] private GameObject darkLordDungeonConnectionEvents;
 
-    void Start()
+    public void SetEvents()
     {
         introVillageEvents.SetActive(false);
         desertConnectionEvents.SetActive(false);
@@ -17,13 +17,13 @@ public class VillageEventsManager : MonoBehaviour
         darkLordDungeonConnectionEvents.SetActive(false);
 
         // Do in reverse order so the latest events are enabled
-        if (VillageEventsStaticVariables.desertDungeonIsCompleted)
+        if (VillageEventsStaticVariables.levelsComplete[(int)VillageEventsStaticVariables.VillageEventStages.desertDungeonComplete])
             darkLordDungeonConnectionEvents.SetActive(true);
-        else if (VillageEventsStaticVariables.desertIsCompleted)
+        else if (VillageEventsStaticVariables.levelsComplete[(int)VillageEventsStaticVariables.VillageEventStages.desertComplete])
             desertConnectionEvents.SetActive(true);
-        else if (VillageEventsStaticVariables.forestDungeonIsCompleted)
+        else if (VillageEventsStaticVariables.levelsComplete[(int)VillageEventsStaticVariables.VillageEventStages.forestDungeonComplete])
             forestConnectionEvents.SetActive(true);
-        else if (VillageEventsStaticVariables.villageHasStarted)
+        else if (VillageEventsStaticVariables.levelsComplete[(int)VillageEventsStaticVariables.VillageEventStages.villageStarted])
             introVillageEvents.SetActive(true);
     }
 }

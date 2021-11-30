@@ -31,7 +31,7 @@ public class SaveData
     public List<int> potlist = new List<int>();
     public List<int> potbrokenlist = new List<int>();
     public List<List<bool>> totallynotevents = new List<List<bool>>();
-    public List<bool> levelsComplete = new List<bool>();
+    public bool[] levelsComplete;
 
     //public List<EventAction> totallynotcompletedevents = new List<EventAction>();
 
@@ -49,6 +49,7 @@ public class SaveData
         gemcount = playerstats.gems;
         LastFileSaved = playerstats.SaveNum;
         totallynotevents = playerstats.totallynotevents;
+        levelsComplete = VillageEventsStaticVariables.levelsComplete;
 
         //Debug.Log(GameObject.FindGameObjectsWithTag("Enemy").Length );
 
