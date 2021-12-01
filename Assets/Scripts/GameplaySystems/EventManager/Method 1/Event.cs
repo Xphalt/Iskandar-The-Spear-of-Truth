@@ -337,3 +337,14 @@ public class CompleteLevel : Event
 
     [SerializeField] VillageEventsStaticVariables.VillageEventStages level;
 }
+
+public class PlayAnimation : Event
+{
+    public override void TriggerEvent()
+    {
+        animation.Play();
+    }
+
+    [SerializeField] Animation animation;
+}
+
