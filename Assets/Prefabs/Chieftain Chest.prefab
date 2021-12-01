@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 3735744575168200134}
   - component: {fileID: 3728739307321831230}
   - component: {fileID: 3718648098300111372}
-  - component: {fileID: 3687897502947407426}
   - component: {fileID: 3731289009309366741}
   - component: {fileID: 3731289009309366742}
   - component: {fileID: 3731289009309366743}
   - component: {fileID: 3731289009309366736}
+  - component: {fileID: 7626522808629344266}
   m_Layer: 8
   m_Name: Chieftain Chest
   m_TagString: LootChest
@@ -87,20 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3687897502947407426
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3732423491401475702}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43180673889932660, guid: 4018880a3dfcbbe40b4926616085a25f, type: 2}
 --- !u!114 &3731289009309366741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +163,19 @@ MonoBehaviour:
   lootHeightForce: 400
   lootForwardForce: 350
   lootSideForce: 100
+--- !u!65 &7626522808629344266
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3732423491401475702}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7271082, y: 0.2809871, z: 0.47418547}
+  m_Center: {x: 0.0023128842, y: 0.14049308, z: -0.00867481}
 --- !u!1 &3733158802737690938
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,6 +188,7 @@ GameObject:
   - component: {fileID: 3728495982143361966}
   - component: {fileID: 3718236894175537872}
   - component: {fileID: 1392981495984901189}
+  - component: {fileID: 2930192871045624107}
   m_Layer: 0
   m_Name: SM_Prop_Chest_03_Lid
   m_TagString: Untagged
@@ -278,3 +278,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &2930192871045624107
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3733158802737690938}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.69804096, y: 0.4566489, z: 0.5008612}
+  m_Center: {x: -0.006710948, y: 0.20437157, z: 0.23516072}
