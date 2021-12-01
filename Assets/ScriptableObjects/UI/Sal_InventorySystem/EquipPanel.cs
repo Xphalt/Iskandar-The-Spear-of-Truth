@@ -79,13 +79,21 @@ public class EquipPanel : MonoBehaviour
             case ObjectType.Accessory: //Default
                 values = ((AccessoryObject)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
                 break; 
-        } 
+        }
 
         //Assign text Desc
+        LocalisationTableReference name_string;
+        name_string.tableReference = "InventoryStrings";
+        name_string.entryReference = "Name";
+
+        LocalisationTableReference description_string;
+        description_string.tableReference = "InventoryStrings";
+        description_string.entryReference = "Description";
+
         UIDescHolder.GetComponentInChildren<TextMeshProUGUI>().text = string.Concat(
-            "<b><color=red>Name</color></b>:\n",
+            "<b><color=red>" + name_string + "</color></b>:\n",
             slotItem[obj].name,
-            "\n<b><color=red>Description</color></b>:\n",
+            "\n<b><color=red>" + description_string + "</color></b>:\n",
             inventory.database.ItemObjects[slotItem[obj].id].description, "\n\n",
             values
             );
