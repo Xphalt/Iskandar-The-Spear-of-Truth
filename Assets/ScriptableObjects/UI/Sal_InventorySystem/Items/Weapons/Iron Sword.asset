@@ -16,11 +16,15 @@ MonoBehaviour:
   SellValue: 0
   uiDisplay: {fileID: 21300000, guid: 3ca7605cf23d2454991e8b907bcc6ede, type: 3}
   model: {fileID: 1892038912347164913, guid: 25a3c82352f672d48a04dec6d9e60f5b, type: 3}
-  type: 1
-  description: A simple sword, more powerful than the Stick. No special properties.
+  objType: 1
+  description:
+    tableReference: InventoryStrings
+    entryReference: IronSword_Description
   stackable: 0
   data:
-    name: Iron Sword
+    name:
+      tableReference: InventoryStrings
+      entryReference: IronSword_Name
     id: 8
   damage: 8
   spiritualDamage: 0

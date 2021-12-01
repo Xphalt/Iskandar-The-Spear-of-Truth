@@ -16,16 +16,15 @@ MonoBehaviour:
   SellValue: 0
   uiDisplay: {fileID: 21300000, guid: 2a2e6380b14531d46833b8b4342911a9, type: 3}
   model: {fileID: 0}
-  type: 0
-  description: 'This armour will make it so the player is immune to the environmental
-    hazards of the forest biome. The venom spitters will still do damage on hit to
-    the player but the poison component of the attack will no longer apply. Additionally
-    whenever an enemies hitbox collides with the players the enemy takes some damage
-    to represent them colliding with Armour of Black Thorns. A variable will be need
-    for the HP damage when a player comes into contact with venom spitter hazards. '
+  objType: 0
+  description:
+    tableReference: InventoryStrings
+    entryReference: ArmourOfBlackThorns_Description
   stackable: 0
   data:
-    name: Armour of Black Thorns (Forest Biome)
+    name:
+      tableReference: InventoryStrings
+      entryReference: ArmourOfBlackThorns_Name
     id: 9
   defValues:
     physicalDef: 0

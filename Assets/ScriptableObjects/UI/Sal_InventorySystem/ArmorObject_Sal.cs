@@ -29,9 +29,15 @@ public class ArmorObject_Sal : ItemObject_Sal
     {
         get
         {
-            const string value = "{defValues.physicalDef}";
-            string newDesc = desc.Replace(value, defValues.physicalDef.ToString());
-            return newDesc;
+            LocalisationTableReference physicalDefenceString;
+            physicalDefenceString.tableReference = "InventoryStrings";
+            physicalDefenceString.entryReference = "Armour_PhysicalDefence";
+
+            const string value1 = "{defValues.physicalDef}";
+            const string value2 = "Physical defence";
+            string desc1 = desc.Replace(value1, defValues.physicalDef.ToString());
+            string desc2 = desc1.Replace(value2, physicalDefenceString.GetLocalisedString());
+            return desc2;
         }
     }
 

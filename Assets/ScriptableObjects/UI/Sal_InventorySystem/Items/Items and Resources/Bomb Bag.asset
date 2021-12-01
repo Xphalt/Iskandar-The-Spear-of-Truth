@@ -17,11 +17,14 @@ MonoBehaviour:
   uiDisplay: {fileID: 21300000, guid: 73fd1172930b27848942ca74cb95f2a5, type: 3}
   model: {fileID: 6086406297925434840, guid: b1c8770d8fca98641860a21efcdecf0b, type: 3}
   objType: 3
-  description: Allows the player to use bombs, a small timed explosive, bombs can
-    be bought at the village
+  description:
+    tableReference: InventoryStrings
+    entryReference: BombBag_Description
   stackable: 1
   data:
-    name: Bomb Bag
+    name:
+      tableReference: InventoryStrings
+      entryReference: BombBag_Name
     id: 11
   itemType: 1
   healingValue: 0

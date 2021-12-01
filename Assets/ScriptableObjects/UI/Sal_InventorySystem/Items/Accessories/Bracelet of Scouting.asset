@@ -16,13 +16,15 @@ MonoBehaviour:
   SellValue: 0
   uiDisplay: {fileID: 21300000, guid: ddc6a9b4b0322534f9ea784ca4e9b541, type: 3}
   model: {fileID: 6054000022266571106, guid: bab47fec636916a4891b821a3336bc41, type: 3}
-  type: 2
-  description: Allows the player to teleport to the position of the thrown sword
-    by pressing the attack button again whilst the sword is away from the player.
-    Once the player teleports they should instantly collect the sword
+  objType: 2
+  description:
+    tableReference: InventoryStrings
+    entryReference: BraceletOfScouting_Description
   stackable: 0
   data:
-    name: Bracelet of Scouting
+    name:
+      tableReference: InventoryStrings
+      entryReference: BraceletOfScouting_Name
     id: 4
   healingValue: 0
   regenerationInterval: 0

@@ -79,14 +79,30 @@ public class EquipPanel : MonoBehaviour
             case ObjectType.Accessory: //Default
                 values = ((AccessoryObject)(inventory.database.ItemObjects[slotItem[obj].id])).Desc;
                 break; 
-        } 
+        }
 
         //Assign text Desc
+        LocalisationTableReference nameTitleString;
+        nameTitleString.tableReference = "InventoryStrings";
+        nameTitleString.entryReference = "Name";
+
+        LocalisationTableReference descriptionTitleString;
+        descriptionTitleString.tableReference = "InventoryStrings";
+        descriptionTitleString.entryReference = "Description";
+
+        LocalisationTableReference nameString;
+        nameString.tableReference = "InventoryStrings";
+        nameString.entryReference = inventory.database.ItemObjects[slotItem[obj].id].data.name.entryReference;
+
+        LocalisationTableReference descriptionString;
+        descriptionString.tableReference = "InventoryStrings";
+        descriptionString.entryReference = inventory.database.ItemObjects[slotItem[obj].id].description.entryReference;
+
         UIDescHolder.GetComponentInChildren<TextMeshProUGUI>().text = string.Concat(
-            "<b><color=red>Name</color></b>:\n",
-            slotItem[obj].name,
-            "\n<b><color=red>Description</color></b>:\n",
-            inventory.database.ItemObjects[slotItem[obj].id].description, "\n\n",
+            "<b><color=red>" + nameTitleString.GetLocalisedString() + "</color></b>:\n",
+            nameString.GetLocalisedString(),
+            "\n<b><color=red>" + descriptionTitleString.GetLocalisedString() + "</color></b>:\n", descriptionString.GetLocalisedString()
+            , "\n\n",
             values
             );
     }
