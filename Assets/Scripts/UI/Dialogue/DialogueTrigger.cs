@@ -27,6 +27,9 @@ public class DialogueTrigger : MonoBehaviour
         col.enabled = false;
         DialogueManager_.DialoguePanel.SetActive(true);
         DialogueManager_.StartDialogue(col, Conversation);
+        // Dominique, Dialogues don't need to be repeated and this way we can stop them from triggering during combat
+        GetComponent<Interactable_Object_Jack>().enabled = false;
+        gameObject.layer = 0;
     }
 
     //Call this function to move to the next line of dialogue
