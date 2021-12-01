@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc83cb40ef37fe438ce896053483f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnDrop: 1
   disableDelay: 0
   dropChances: []
   itemsToDrop: []
@@ -181,6 +182,7 @@ GameObject:
   - component: {fileID: 5628997002035987412}
   - component: {fileID: 5628997002034975792}
   - component: {fileID: 5628997002631788925}
+  - component: {fileID: 9162330658722956275}
   m_Layer: 0
   m_Name: Lid
   m_TagString: Untagged
@@ -270,3 +272,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &9162330658722956275
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5628997002037208944}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.79458076, y: 0.43468216, z: 0.5865704}
+  m_Center: {x: 0, y: 0.16739084, z: 0.25949466}
