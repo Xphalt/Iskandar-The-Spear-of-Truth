@@ -16,13 +16,15 @@ MonoBehaviour:
   SellValue: 0
   uiDisplay: {fileID: 21300000, guid: acb16582c6ca745439663ea194285bd1, type: 3}
   model: {fileID: 3177863412900629312, guid: f5c6bf13dd289e14595f72b6fd8ce6a7, type: 3}
-  type: 2
-  description: Allows the player to regain a % of HP upon killing an enemy. A rare
-    item that can be brought from the merchant after the player has completed at
-    least 2 dungeons
+  objType: 2
+  description:
+    tableReference: InventoryStrings
+    entryReference: NecklaceOfTheLifeStealers_Description
   stackable: 0
   data:
-    name: Necklace Of The Life Stealers
+    name:
+      tableReference: InventoryStrings
+      entryReference: NecklaceOfTheLifeStealers_Name
     id: 5
   healingValue: 1
   regenerationInterval: 0

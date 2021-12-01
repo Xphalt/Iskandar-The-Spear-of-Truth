@@ -19,7 +19,7 @@ public abstract class ItemObject_Sal : ScriptableObject
     public Sprite uiDisplay;
     public GameObject model;
     public ObjectType objType;
-    [TextArea(10,15)] public string description;
+    public LocalisationTableReference description;
     public bool stackable;
     public Item data = new Item();
 
@@ -33,18 +33,16 @@ public abstract class ItemObject_Sal : ScriptableObject
 [System.Serializable]
 public class Item
 {
-    public string name;
+    public LocalisationTableReference name;
     public int id = 1;
 
     public Item()
     {
-        name = "";
         id = -1;
     }
 
     public Item(ItemObject_Sal item)
     {
-        name = item.name;
         id = item.data.id;
     }
 }

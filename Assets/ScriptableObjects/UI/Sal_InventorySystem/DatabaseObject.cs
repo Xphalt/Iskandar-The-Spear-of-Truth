@@ -22,7 +22,7 @@ public class DatabaseObject : ScriptableObject, ISerializationCallbackReceiver
             for (int i = 0; i < ItemObjects.Length; i++)
             {
                 if(ItemObjects[i])
-                    ItemObjects[i].data.name = ItemObjects[i].name;
+                    ItemObjects[i].data.name.entryReference = ItemObjects[i].name;
             }
     }
 }

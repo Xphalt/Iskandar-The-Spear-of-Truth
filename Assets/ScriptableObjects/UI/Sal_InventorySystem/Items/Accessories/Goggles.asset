@@ -16,14 +16,15 @@ MonoBehaviour:
   SellValue: 0
   uiDisplay: {fileID: 21300000, guid: 8b2ad07b7c331dd45a3f5ffab95b519e, type: 3}
   model: {fileID: 7728887905376733908, guid: a6d2070fb3d8a83448ace1f44b06be92, type: 3}
-  type: 2
-  description: "If the player is wearing the goggles some parts of the environment
-    disappear. In theory they were fake and never really there and the goggles let
-    the player see that, however the obstacles that are removed will be solid whilst
-    not wearing them.\u202F"
+  objType: 2
+  description:
+    tableReference: InventoryStrings
+    entryReference: Goggles_Description
   stackable: 0
   data:
-    name: Goggles
+    name:
+      tableReference: InventoryStrings
+      entryReference: Goggles_Name
     id: 3
   healingValue: 0
   regenerationInterval: 0

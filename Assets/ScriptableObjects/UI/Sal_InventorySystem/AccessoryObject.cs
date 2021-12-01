@@ -24,11 +24,22 @@ public class AccessoryObject : ItemObject_Sal
     {
         get 
         {
+            LocalisationTableReference healingString;
+            healingString.tableReference = "InventoryStrings";
+            healingString.entryReference = "Accessory_HealingValue";
+            LocalisationTableReference regenerationIntervalString;
+            regenerationIntervalString.tableReference = "InventoryStrings";
+            regenerationIntervalString.entryReference = "Accessory_RegenerationRate";
+
             const string value1 = "{healingValue}";
             const string value2 = "{regenerationInterval}";
+            const string value3 = "Healing value";
+            const string value4 = "Regeneration rate";
             string desc1  = desc.Replace(value1, healingValue.ToString());
             string desc2  = desc1.Replace (value2, regenerationInterval.ToString());
-            return desc2;
+            string desc3  = desc2.Replace(value3, healingString.GetLocalisedString());
+            string desc4  = desc3.Replace(value4, regenerationIntervalString.GetLocalisedString());
+            return desc4;
         }
     }
     public AccessoryType accessory; 

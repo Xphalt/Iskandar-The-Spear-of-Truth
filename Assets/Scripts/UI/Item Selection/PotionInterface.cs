@@ -57,14 +57,17 @@ public class PotionInterface : MonoBehaviour
 
     private void SetAmounts()
     {
-        // Set values of each button to match the number there are in the inventory
-        InventorySlot large = inventory.FindItemOnInventory(largePotion.data);
-        num_large_potion_button.text = large == null ? "0" : large.amount.ToString();
+        if (num_large_potion_button && num_medium_potion_button && num_small_potion_button)
+        {
+            // Set values of each button to match the number there are in the inventory
+            InventorySlot large = inventory.FindItemOnInventory(largePotion.data);
+            num_large_potion_button.text = large == null ? "0" : large.amount.ToString();
 
-        InventorySlot medium = inventory.FindItemOnInventory(mediumPotion.data);
-        num_medium_potion_button.text = medium == null ? "0" : medium.amount.ToString();
+            InventorySlot medium = inventory.FindItemOnInventory(mediumPotion.data);
+            num_medium_potion_button.text = medium == null ? "0" : medium.amount.ToString();
 
-        InventorySlot small = inventory.FindItemOnInventory(smallPotion.data);
-        num_small_potion_button.text = small == null ? "0" : small.amount.ToString();
+            InventorySlot small = inventory.FindItemOnInventory(smallPotion.data);
+            num_small_potion_button.text = small == null ? "0" : small.amount.ToString();
+        }
     }
 }

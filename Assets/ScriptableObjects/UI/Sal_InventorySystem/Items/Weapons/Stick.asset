@@ -16,11 +16,15 @@ MonoBehaviour:
   SellValue: 0
   uiDisplay: {fileID: 21300000, guid: 4a565b40315d4d24a8143da81c1913c3, type: 3}
   model: {fileID: 1547379584260383850, guid: 07464ce410272f749b6f77a193a7fbb1, type: 3}
-  type: 1
-  description: he first weapon obtained by the player. Weak with no special properties.
+  objType: 1
+  description:
+    tableReference: InventoryStrings
+    entryReference: Stick_Description
   stackable: 0
   data:
-    name: Stick
+    name:
+      tableReference: InventoryStrings
+      entryReference: Stick_Name
     id: 9
   damage: 5
   spiritualDamage: 0

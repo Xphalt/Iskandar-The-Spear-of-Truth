@@ -52,8 +52,17 @@ public class Caster : EnemyBase
     {
         base.Update();
 
-        if (pillarCast)
+        if (pillarCast && !isDead)
             PillarTimer();
+        else
+            DeathCastCleanup();
+
+    }
+
+    private void DeathCastCleanup()
+    {
+        pillarHitbox.SetActive(false);
+        pillarBase.SetActive(false);
     }
 
     public override void Attack()
@@ -122,6 +131,7 @@ public class Caster : EnemyBase
 
     private void PillarTimer()
     {
+
         pillarTimer += Time.deltaTime;
         if (pillarTimer >= pillarFollowTime)
         {
