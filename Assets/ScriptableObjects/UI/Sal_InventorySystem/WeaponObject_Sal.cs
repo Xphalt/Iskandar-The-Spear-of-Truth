@@ -23,13 +23,29 @@ public class WeaponObject_Sal : ItemObject_Sal
     {
         get
         {
+            LocalisationTableReference damageString;
+            damageString.tableReference = "InventoryStrings";
+            damageString.entryReference = "Weapon_DamageValue";
+            LocalisationTableReference spiritualDamageString;
+            spiritualDamageString.tableReference = "InventoryStrings";
+            spiritualDamageString.entryReference = "Weapon_SpiritualDamageValue";
+            LocalisationTableReference speedBoostString;
+            speedBoostString.tableReference = "InventoryStrings";
+            speedBoostString.entryReference = "Weapon_SpeedBoost";
+
             const string value1 = "{damage}";
             const string value2 = "{spiritualDamage}";
             const string value3 = "{speedBoost}";
+            const string value4 = "Damage value";
+            const string value5 = "Spiritual Damage value";
+            const string value6 = "Speed Boost";
             string newDesc1 = desc.Replace(value1, damage.ToString());
             string newDesc2 = newDesc1.Replace(value2, spiritualDamage.ToString());
             string newDesc3 = newDesc2.Replace(value3, speedBoost.ToString());
-            return newDesc3;
+            string newDesc4 = newDesc3.Replace(value4, damageString.GetLocalisedString());
+            string newDesc5 = newDesc4.Replace(value5, spiritualDamageString.GetLocalisedString());
+            string newDesc6 = newDesc5.Replace(value6, speedBoostString.GetLocalisedString());
+            return newDesc6;
         }
     }
 

@@ -138,9 +138,9 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
         for (int i = 0; i < Storage.Slots.Length; i++)
         {
             if (Storage.Slots[i].item.id > -1 && Storage.Slots[i].item.id < database.ItemObjects.Length)
-                Storage.Slots[i].item.name = database.ItemObjects[Storage.Slots[i].item.id].name;
+                Storage.Slots[i].item.name.entryReference = database.ItemObjects[Storage.Slots[i].item.id].name;
             else
-                Storage.Slots[i].item.name = string.Empty;
+                Storage.Slots[i].item.name.entryReference = string.Empty;
         }
     }
 
