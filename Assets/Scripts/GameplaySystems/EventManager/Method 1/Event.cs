@@ -342,9 +342,9 @@ public class PlayAnimation : Event
 {
     public override void TriggerEvent()
     {
-        animation.Play();
+        foreach(Animation animation in animations) animation.Play();
     }
 
-    [SerializeField] Animation animation;
+    [SerializeField] List<Animation> animations = new List<Animation>();
 }
 
