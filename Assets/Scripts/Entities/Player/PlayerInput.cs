@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -26,6 +27,14 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private PauseMenuManager _pauseMenuManager;
     [SerializeField] private ItemSelect _changeItem;
     [SerializeField] private UIManager _UIManager;
+
+    #region Jerzy's Change
+    // this is so we have a visual cue of when the player can throw their sword
+    private const float holdThreshold = 1.0f;
+    private const float chargeDelay = 0.5f;
+    private IEnumerator coroutine;
+    // Player.Attack.started changed & Player.Attack.canceled added
+    #endregion
 
     private void Awake()
     {
@@ -54,8 +63,15 @@ public class PlayerInput : MonoBehaviour
             if (_player_Interaction_Jack.IsInteractionAvailable())
                 _player_Interaction_Jack.Interact();
             else
+            {
                 _playerCombat_Jerzy.Attack();
+                coroutine = StartThrow();
+                StartCoroutine(coroutine);
+            }
+
         };
+
+        _playerActionsAsset.Player.Attack.canceled += _ => { StopCoroutine(coroutine); _playerCombat_Jerzy.cancelChargedAttack(); };
 
         _playerActionsAsset.Player.Attack.performed += _ => _playerCombat_Jerzy.ThrowAttack();
 
@@ -173,5 +189,13 @@ public class PlayerInput : MonoBehaviour
     private void OnDisable()
     {
         _playerActionsAsset.Disable();
+    }
+
+    IEnumerator StartThrow()
+    {
+        yield return new WaitForSeconds(chargeDelay);
+        _playerCombat_Jerzy.startChargingEffect();
+        yield return new WaitForSeconds(holdThreshold - chargeDelay);
+        _playerCombat_Jerzy.swordChargedEffect();
     }
 }
