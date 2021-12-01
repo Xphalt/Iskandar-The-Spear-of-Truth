@@ -8,7 +8,7 @@ public class LightSwitch : MonoBehaviour
 
     public Material offMat, onMat;
     private MeshRenderer myMesh;
-
+    private Collider puzzleCollider;
     public GameObject spotLight;
 
     public bool startLight = false;
@@ -22,6 +22,7 @@ public class LightSwitch : MonoBehaviour
         if (!manager) enabled = false;
 
         myMesh = GetComponent<MeshRenderer>();
+        puzzleCollider = GetComponent<Collider>();
         TurnOff();
     }
 
@@ -34,12 +35,15 @@ public class LightSwitch : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("playerSword") && !on)
+        if (other.TryGetComponent(out ThrowSword_Jerzy sword) && !on)
         {
-            myMesh.material = onMat;
-            spotLight.SetActive(!startLight);
-            on = true;
-            manager.RegisterSwitch(this);
+            if (!sword.PuzzleHit(puzzleCollider))
+            {
+                myMesh.material = onMat;
+                spotLight.SetActive(!startLight);
+                on = true;
+                manager.RegisterSwitch(this);
+            }
         }
     }
 }
