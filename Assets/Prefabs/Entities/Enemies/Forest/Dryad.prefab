@@ -577,8 +577,11 @@ MonoBehaviour:
   MAX_HEALTH: 10
   health: 0
   vulnerable: 1
+  deathTimer: 0
   despawnTime: 3.5
   isDead: 0
+  MeshRenderer: {fileID: 0}
+  FlashTime: 0
 --- !u!114 &1967141977996960865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,7 +663,7 @@ MonoBehaviour:
   pillarHitbox: {fileID: 0}
   casterAvailableAttacks: 0100
   casterCooldowns:
-  - 3
+  - 8
   - 0
 --- !u!195 &1675256277858020987
 NavMeshAgent:
