@@ -56,9 +56,9 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         playerStats = FindObjectOfType<PlayerStats>();
         throwSword = swordEmpty.GetComponent<ThrowSword_Jerzy>();
         swordCollider = swordObject.GetComponent<Collider>();
-        throwPowerUpParticle = GameObject.Find("FX_PowerDraw_01").GetComponent<ParticleSystem>();
+        throwPowerUpParticle = GameObject.Find("FX_PowerDraw_Modified").GetComponent<ParticleSystem>();
         throwPowerUpElectricParticle = GameObject.Find("FX_PowerDraw_Electricity_01").GetComponent<ParticleSystem>();
-        throwReadyParticle = GameObject.Find("FX_GlowSpot_02").GetComponent<ParticleSystem>();
+        throwReadyParticle = GameObject.Find("FX_GlowSpot_Modified").GetComponent<ParticleSystem>();
     }
 
     void FixedUpdate()
@@ -142,6 +142,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             isThrowing = false;
             timeSinceLastAttack = 0;
             throwReadyParticle.Stop();
+            throwPowerUpElectricParticle.Stop();
         } 
     }
 
@@ -176,14 +177,13 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public void startChargingEffect()
     {
         throwPowerUpParticle.Play();
-        throwPowerUpElectricParticle.Play();
     }
 
     public void swordChargedEffect()
     {
         throwPowerUpParticle.Stop();
-        throwPowerUpElectricParticle.Stop();
         throwReadyParticle.Play();
+        throwPowerUpElectricParticle.Play();
     }
 
     public void cancelChargedAttack()
