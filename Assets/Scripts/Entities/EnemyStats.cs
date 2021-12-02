@@ -13,12 +13,22 @@ public class EnemyStats : StatsInterface
     public bool isDead = false;
     public bool IsDead() { return isDead; }
 
+    
+    /*______________________________Damage_Flash_Variables_______________________________*/
+    public SkinnedMeshRenderer MeshRenderer;
+    private Color Origin;
+    public float FlashTime;
+    /*___________________________________________________________________________________*/
+
     EntityDrop drops;
 
     private void Start()
     {
         health = MAX_HEALTH;
         drops = GetComponent<EntityDrop>();
+        MeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        FlashTime = 0.5f;
+        Origin = MeshRenderer.material.color;
     }
 
     private void Update()
@@ -40,11 +50,22 @@ public class EnemyStats : StatsInterface
         }
     }
 
+    /*______________________________Damage_Flash_________________________________________*/
+    private IEnumerator EDamageFlash()
+    {
+        MeshRenderer.material.color = Color.HSVToRGB(0.08f,1,1);
+        yield return new WaitForSeconds(FlashTime);
+        MeshRenderer.material.color = Origin;
+    }
+    /*___________________________________________________________________________________*/
+
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
     {
         if (!vulnerable) return;
         health -= amount;
+
+         StartCoroutine(EDamageFlash());
 
         // anything that happens when taking damage happens 
         if (health <= 0)

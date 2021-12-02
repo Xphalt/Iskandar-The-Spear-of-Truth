@@ -43,6 +43,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     private bool isPoisoned = false;
     private bool isThrowing = false;
 
+    ParticleSystem throwPowerUpParticle;
+    ParticleSystem throwReadyParticle;
+    ParticleSystem throwPowerUpElectricParticle;
+
 
     void Start()
     {
@@ -52,6 +56,9 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         playerStats = FindObjectOfType<PlayerStats>();
         throwSword = swordEmpty.GetComponent<ThrowSword_Jerzy>();
         swordCollider = swordObject.GetComponent<Collider>();
+        throwPowerUpParticle = GameObject.Find("FX_PowerDraw_Modified").GetComponent<ParticleSystem>();
+        throwPowerUpElectricParticle = GameObject.Find("FX_PowerDraw_Electricity_01").GetComponent<ParticleSystem>();
+        throwReadyParticle = GameObject.Find("FX_GlowSpot_Modified").GetComponent<ParticleSystem>();
     }
 
     void FixedUpdate()
@@ -121,6 +128,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
                 playerMovement.LockPlayerMovement();
                 isThrowing = true;
+
             }
         }
     }
@@ -133,6 +141,8 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             throwSword.ThrowSword(swordLookRotation);
             isThrowing = false;
             timeSinceLastAttack = 0;
+            throwReadyParticle.Stop();
+            throwPowerUpElectricParticle.Stop();
         } 
     }
 
@@ -161,5 +171,24 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         timeSinceLastPoisonDamage = 0;
         poisonTicks = 0;
         isPoisoned = true;
+    }
+
+
+    public void startChargingEffect()
+    {
+        throwPowerUpParticle.Play();
+    }
+
+    public void swordChargedEffect()
+    {
+        throwPowerUpParticle.Stop();
+        throwReadyParticle.Play();
+        throwPowerUpElectricParticle.Play();
+    }
+
+    public void cancelChargedAttack()
+    {
+        throwPowerUpParticle.Stop();
+        throwPowerUpElectricParticle.Stop();
     }
 }
