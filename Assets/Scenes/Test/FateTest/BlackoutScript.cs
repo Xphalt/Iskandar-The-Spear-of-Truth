@@ -9,7 +9,7 @@ public class BlackoutScript : MonoBehaviour
 
     private int sceneIndex;
 
-    private void Start()
+    private void Awake()
     {
         loadScene = GetComponent<LoadScene>();
         blackoutAnimator = GetComponent<Animator>();
