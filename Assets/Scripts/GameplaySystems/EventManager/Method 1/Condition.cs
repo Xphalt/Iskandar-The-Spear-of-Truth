@@ -128,11 +128,62 @@ public class ConditionCompleted : Condition
 		return EventManager.actions[ActionIndex].conditions[conditionIndex].TestCondition();
 	}
 
-	[SerializeField] EventManager EventManager;
-	[SerializeField] int ActionIndex;
-	[SerializeField] int conditionIndex;
+	[SerializeField] public EventManager EventManager;
+	[SerializeField] public int ActionIndex;
+	[SerializeField] public int conditionIndex;
 }
 
+public class ConditionsCompletedOR : Condition
+{
+	public override bool TestCondition()
+	{
+        for (int i = 0; i < conds.Length; i++)
+        {
+			if (conds[i].TestCondition())
+				return true;
+        }
+
+		return false;
+	}
+
+	[SerializeField] ConditionCompleted[] conds;
+}
+
+public class HealthIsLowCondition : Condition
+{
+    public override bool TestCondition()
+    {
+		if (stats.health < value)
+			return true;
+
+		return false;
+    }
+
+	[SerializeField] PlayerStats stats;
+	[SerializeField] int value;
+}
+
+public class StartCountingAfterCondition : Condition
+{
+    public override bool TestCondition()
+    {
+		if(cond.TestCondition())
+        {
+			counter += Time.deltaTime;
+			if (counter > intervalInsSeconds)
+				return true;
+
+			return false;
+        }
+		return false;
+    }
+
+	[SerializeField] ConditionCompleted cond;
+	private float counter = 0;
+	[SerializeField] float intervalInsSeconds;
+}
+
+ 
 public class CraftArmourQuestCondition : Condition
 {
 	//Check if player has item and if has enough

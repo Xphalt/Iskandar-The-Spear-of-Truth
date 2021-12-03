@@ -27,6 +27,7 @@ public class DialogueTrigger : MonoBehaviour
         col.enabled = false;
         DialogueManager_.DialoguePanel.SetActive(true);
         DialogueManager_.StartDialogue(col, Conversation);
+        GameEvents.current.StopAttacking();
     }
 
     //Call this function to move to the next line of dialogue
