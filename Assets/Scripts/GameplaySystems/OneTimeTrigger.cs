@@ -25,7 +25,18 @@ public class OneTimeTrigger : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if(!_hasTriggered && other.CompareTag("Player"))
+        if (this.gameObject.name.Contains("Trigger (") && !_hasTriggered && other.CompareTag("playerSword"))
+        {
+            PlayerCombat_Jerzy combat = FindObjectOfType<PlayerCombat_Jerzy>();
+            if (!combat.attackOffCooldown || !combat.swordObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Simple Attack"))
+            {
+                _hasTriggered = true;
+                _collider.enabled = false;
+            }
+            _hasTriggered = true;
+            _collider.enabled = false;
+        }
+        else if (!this.gameObject.name.Contains("Trigger (") && !_hasTriggered && other.CompareTag("Player"))
         {
             _hasTriggered = true;
             _collider.enabled = false;

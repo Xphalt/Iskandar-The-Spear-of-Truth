@@ -309,6 +309,20 @@ public class AddItem : Event
     [SerializeField] int amount;
 }
 
+public class EquipWeapon : Event
+{
+    public override void TriggerEvent()
+    {
+        if(equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
+            inventory.AddItem(equipment.GetSlots[(int)EquipSlot.SwordSlot].item, 1);
+        equipment.GetSlots[(int)EquipSlot.SwordSlot].UpdateSlot(itemToEquip.data, 1);
+    }
+
+    [SerializeField] InventoryObject_Sal equipment;
+    [SerializeField] InventoryObject_Sal inventory;
+    [SerializeField] ItemObject_Sal itemToEquip;
+}
+
 public class RemoveItem : Event
 {
     public override void TriggerEvent()
