@@ -9,7 +9,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     
     public float throwTimeSpinningInPlace;
     public float throwSpeed;
-    public float throwReturnSpeed;
+    [HideInInspector] public float throwReturnSpeed = 1;
     public bool attackOffCooldown = true;
     public bool canAttack = true;
     Quaternion swordLookRotation;
@@ -59,7 +59,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
         playerStats = FindObjectOfType<PlayerStats>();
         throwSword = swordEmpty.GetComponent<ThrowSword_Jerzy>();
-        swordCollider = swordObject.GetComponent<Collider>();
+        swordCollider = swordObject.GetComponentInParent<Collider>();
     }
 
     void FixedUpdate()
