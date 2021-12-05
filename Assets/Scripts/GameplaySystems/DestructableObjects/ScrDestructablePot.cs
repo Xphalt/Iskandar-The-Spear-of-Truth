@@ -36,7 +36,11 @@ public class ScrDestructablePot : MonoBehaviour
         if (destroyed == true)
         {
             this.GetComponent<Renderer>().enabled = false;
-            this.GetComponent<BoxCollider>().enabled = false;
+            var colliders = GetComponents<BoxCollider>();
+            foreach (var collider in colliders)
+            {
+                collider.enabled = false;
+            }
         }
     }
     

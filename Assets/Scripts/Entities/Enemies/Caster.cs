@@ -24,6 +24,7 @@ public class Caster : EnemyBase
     public PrefabsToSpawn[] prefabsToSpawn;
 
     private bool pillarCast = false;
+    private bool isSpectre = false;
     private float pillarTimer;
     public float pillarFollowTime;
     public float pillarActivateDelay;
@@ -46,16 +47,22 @@ public class Caster : EnemyBase
     {
         base.Start();
         for(int i=0; i < casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
+
+        if(casterAvailableAttacks[(int)CasterAttacks.Pillar])
+            isSpectre=true;
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (pillarCast && !isDead)
-            PillarTimer();
-        else
-            DeathCastCleanup();
+        if(isSpectre)
+        {
+            if (pillarCast && !isDead)
+                PillarTimer();
+            else
+                DeathCastCleanup();
+        }
 
     }
 
@@ -131,23 +138,18 @@ public class Caster : EnemyBase
 
     private void PillarTimer()
     {
+        //make AoE appear on the ground and follow player here
+        pillarBase.SetActive(true);
 
         pillarTimer += Time.deltaTime;
         if (pillarTimer >= pillarFollowTime)
-        {
-            StartCoroutine("PillarActivation");
-            pillarTimer = 0;
-        }
-
-        //make AoE appear on the ground and follow player here
-        pillarBase.SetActive(true);
-        pillarBase.transform.position = detector.GetCurTarget().position;
-
+         StartCoroutine("PillarActivation");
+        else
+         pillarBase.transform.position = detector.GetCurTarget().position;
     }
 
     private IEnumerator PillarActivation()
     {
-        pillarCast = false;
         _myAnimator.SetBool("Channeling", false);
         yield return new WaitForSeconds(pillarActivateDelay);
         //pillar shoots out of the ground here
@@ -156,6 +158,8 @@ public class Caster : EnemyBase
         yield return new WaitForSeconds(pillarActiveTime);
         pillarHitbox.SetActive(false);
         pillarBase.SetActive(false);
+        pillarCast = false;
+        pillarTimer = 0;
         AttackEnd();
     }
 

@@ -20,6 +20,8 @@ public class PlayerStats : StatsInterface
 
     public Transform startPos;
 
+    private PlayerSFXPlayer psp;
+
     #region Weapon Model Variables
     private GameObject swordEmpty;
     public GameObject propSwordHolder, ironSword, falchion, stick;
@@ -66,6 +68,7 @@ public class PlayerStats : StatsInterface
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         playerCombat = GetComponent<PlayerCombat_Jerzy>();
         playerTargeting = GetComponent<Player_Targeting_Jack>();
+        psp = GetComponent<PlayerSFXPlayer>();
         SaveDataAssistant saveAssisstant = FindObjectOfType<SaveDataAssistant>();
         if (saveAssisstant) SaveNum = saveAssisstant.currentSaveFileID;
     }
@@ -127,7 +130,12 @@ public class PlayerStats : StatsInterface
     {
         if (scriptedKill) amount = health - 1;
         health -= amount;
-        //sfx.PlayAudio();
+
+        PlayerSFXPlayer.AudioType prevAudioType = psp.audioType;
+        psp.audioType = PlayerSFXPlayer.AudioType.playerHit;
+        psp.PlayAudio();
+        psp.audioType = prevAudioType;
+
         UIManager.instance.UpdateHealthBar((int)-amount);
         
 

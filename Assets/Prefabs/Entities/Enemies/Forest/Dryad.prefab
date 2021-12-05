@@ -574,11 +574,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_HEALTH: 10
+  MAX_HEALTH: 20
   health: 0
   vulnerable: 1
+  deathTimer: 0
   despawnTime: 3.5
   isDead: 0
+  MeshRenderer: {fileID: 0}
+  FlashTime: 0
 --- !u!114 &1967141977996960865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,7 +663,7 @@ MonoBehaviour:
   pillarHitbox: {fileID: 0}
   casterAvailableAttacks: 0100
   casterCooldowns:
-  - 3
+  - 8
   - 0
 --- !u!195 &1675256277858020987
 NavMeshAgent:
