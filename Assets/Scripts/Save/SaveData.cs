@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,9 +25,9 @@ public class SaveData
 
     public Inventory Storage;
 
-    public List<List<bool>> enemydeadlist = new List<List<bool>>();
-    public List<List<bool>> chestopenedlist = new List<List<bool>>();
-    public List<List<bool>> potbrokenlist = new List<List<bool>>();
+    public List<List<bool>> savedEnemies = new List<List<bool>>();
+    public List<List<bool>> savedChests = new List<List<bool>>();
+    public List<List<bool>> savedPots = new List<List<bool>>();
     public List<List<bool>> totallynotevents = new List<List<bool>>();
     public bool[] levelsComplete;
 
@@ -46,33 +47,36 @@ public class SaveData
         gemcount = playerstats.gems;
         LastFileSaved = playerstats.SaveNum;
         totallynotevents = playerstats.totallynotevents;
-        potbrokenlist = playerstats.savedPots;
-        chestopenedlist = playerstats.savedChests;
-        enemydeadlist = playerstats.savedEnemies;
+        savedPots = playerstats.savedPots;
+        savedChests = playerstats.savedChests;
+        savedEnemies = playerstats.savedEnemies;
         levelsComplete = VillageEventsStaticVariables.levelsComplete;
 
         for (int i = totallynotevents.Count; i < sceneEventIndex + 1; i++) totallynotevents.Add(new List<bool>());
-        for (int i = potbrokenlist.Count; i < sceneEventIndex + 1; i++) potbrokenlist.Add(new List<int>());
-        for (int i = enemydeadlist.Count; i < sceneEventIndex + 1; i++) enemydeadlist.Add(new List<int>());
-        for (int i = chestopenedlist.Count; i < sceneEventIndex + 1; i++) chestopenedlist.Add(new List<int>());
+        for (int i = savedPots.Count; i < sceneEventIndex + 1; i++) savedPots.Add(new List<bool>());
+        for (int i = savedEnemies.Count; i < sceneEventIndex + 1; i++) savedEnemies.Add(new List<bool>());
+        for (int i = savedChests.Count; i < sceneEventIndex + 1; i++) savedChests.Add(new List<bool>());
 
         totallynotevents[sceneEventIndex].Clear();
-        potbrokenlist[sceneEventIndex].Clear();
-        enemydeadlist[sceneEventIndex].Clear();
-        chestopenedlist[sceneEventIndex].Clear();
+        savedPots[sceneEventIndex].Clear();
+        savedEnemies[sceneEventIndex].Clear();
+        savedChests[sceneEventIndex].Clear();
         //Debug.Log(GameObject.FindGameObjectsWithTag("Enemy").Length );
 
         //list save enemies
-        foreach (EnemyStats enemy in GameObject.FindObjectsOfType<EnemyStats>(true))
-            if (enemy.isDead) enemydeadlist[sceneEventIndex].Add(enemy.gameObject.GetInstanceID());
+        List<EnemyStats> enemies = GameObject.FindObjectsOfType<EnemyStats>(true).ToList();
+        enemies = enemies.OrderBy(enemy => enemy.gameObject.GetInstanceID()).ToList();
+        foreach (EnemyStats enemy in GameObject.FindObjectsOfType<EnemyStats>(true)) savedEnemies[sceneEventIndex].Add(enemy.isDead);
 
         //list save chests
-        foreach (LootChest_Jerzy chest in GameObject.FindObjectsOfType<LootChest_Jerzy>(true))
-            if (!chest.isInteractable) chestopenedlist[sceneEventIndex].Add(chest.gameObject.GetInstanceID());
+        List<LootChest_Jerzy> chests = GameObject.FindObjectsOfType<LootChest_Jerzy>(true).ToList();
+        chests = chests.OrderBy(chest => chest.gameObject.GetInstanceID()).ToList();
+        foreach (LootChest_Jerzy chest in GameObject.FindObjectsOfType<LootChest_Jerzy>(true)) savedChests[sceneEventIndex].Add(chest.isInteractable);
 
         //list save pots
-        foreach (ScrDestructablePot pot in GameObject.FindObjectsOfType<ScrDestructablePot>(true))
-            if (pot.destroyed) potbrokenlist[sceneEventIndex].Add(pot.gameObject.GetInstanceID());
+        List<ScrDestructablePot> pots = GameObject.FindObjectsOfType<ScrDestructablePot>(true).ToList();
+        pots = pots.OrderBy(pot => pot.gameObject.GetInstanceID()).ToList();
+        foreach (ScrDestructablePot pot in GameObject.FindObjectsOfType<ScrDestructablePot>(true)) savedPots[sceneEventIndex].Add(pot.destroyed);
 
         //try
         //{

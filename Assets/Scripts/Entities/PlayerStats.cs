@@ -395,9 +395,9 @@ public class PlayerStats : StatsInterface
 
             gems = saveData.gemcount;
             totallynotevents = saveData.totallynotevents;
-            savedPots = saveData.potbrokenlist;
-            savedChests = saveData.chestopenedlist;
-            savedEnemies = saveData.enemydeadlist;
+            savedPots = saveData.savedPots;
+            savedChests = saveData.savedChests;
+            savedEnemies = saveData.savedEnemies;
             if (saveData.levelsComplete.Length == VillageEventsStaticVariables.levelsComplete.Length) 
                 VillageEventsStaticVariables.levelsComplete = saveData.levelsComplete;
             inventory.LoadStats(num);
@@ -441,16 +441,20 @@ public class PlayerStats : StatsInterface
                 }
             }
 
-            foreach (EnemyStats enemy in FindObjectsOfType<EnemyStats>(true))
-                if (saveData.enemydeadlist[sceneEventIndex].Contains(enemy.gameObject.GetInstanceID())) Destroy(enemy.gameObject);
+            List<EnemyStats> enemies = FindObjectsOfType<EnemyStats>(true).ToList();
+            enemies = enemies.OrderBy(enemy => enemy.gameObject.GetInstanceID()).ToList();
+            for (int e = 0; e < enemies.Count; e++)
+                if (saveData.savedEnemies[sceneEventIndex][e]) Destroy(enemies[e].gameObject);
 
-            //saving chests
-            foreach (LootChest_Jerzy chest in FindObjectsOfType<LootChest_Jerzy>(true))
-                chest.isInteractable = saveData.chestopenedlist[sceneEventIndex].Contains(chest.gameObject.GetInstanceID());
+            List<LootChest_Jerzy> chests = FindObjectsOfType<LootChest_Jerzy>(true).ToList();
+            chests = chests.OrderBy(chest => chest.gameObject.GetInstanceID()).ToList();
+            for (int c = 0; c < chests.Count; c++)
+                chests[c].isInteractable = saveData.savedChests[sceneEventIndex][c];
 
-            //saving pots
-            foreach (ScrDestructablePot pot in FindObjectsOfType<ScrDestructablePot>(true))
-                pot.destroyed = saveData.potbrokenlist[sceneEventIndex].Contains(pot.gameObject.GetInstanceID());
+            List<ScrDestructablePot> pots = FindObjectsOfType<ScrDestructablePot>(true).ToList();
+            pots = pots.OrderBy(pot => pot.gameObject.GetInstanceID()).ToList();
+            for (int p = 0; p < pots.Count; p++)
+                pots[p].destroyed = saveData.savedPots[sceneEventIndex][p];
 
             if (sceneName == saveData.scenename)
             {
