@@ -33,6 +33,8 @@ public class CameraMove : MonoBehaviour
     }
 
     private bool panning = false;
+    // Dominique, Provide access so we don't open the pause menu when panning
+    public bool IsPanning() { return panning; }
     private Vector3 panTarget = new Vector3();
     private Vector3 panStart = new Vector3();
 
