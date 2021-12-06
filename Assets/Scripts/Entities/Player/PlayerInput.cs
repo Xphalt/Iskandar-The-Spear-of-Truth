@@ -98,8 +98,8 @@ public class PlayerInput : MonoBehaviour
         // Re-enable player actions if pause is triggered in pause menu
         _playerActionsAsset.UI.Pause.performed += _ =>
         {
-            // Dominique, If the camera is panning don't open the pause menu
-            if (!_cameraMove.IsPanning())
+            // Dominique, If the camera is panning or potion interface is open don't open the pause menu
+            if (!_cameraMove.IsPanning() && !_UIManager.IsPotionInterfaceOpen())
             {
                 _pauseMenuManager.TogglePauseState();
                 TogglePlayerInteraction(true);
@@ -107,8 +107,8 @@ public class PlayerInput : MonoBehaviour
         };
         _playerActionsAsset.UI.PotionInterface.performed += _ =>
         {
-            // Dominique, If the camera is panning don't open the potion interface
-            if (!_cameraMove.IsPanning())
+            // Dominique, If the camera is panning or pause menu is open don't open the potion interface
+            if (!_cameraMove.IsPanning() && !PauseMenuManager.gameIsPaused)
             {
                 _UIManager.TogglePotionInterface();
                 TogglePlayerInteraction(true);
