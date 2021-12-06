@@ -15,6 +15,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public bool gettingConsumed = false;
     public bool usingWand = false;
 
+    public float lockedSpeedMultiplier;
+
     public Quaternion swordLookRotation;
 
     public bool canBeDamaged = true;
@@ -320,7 +322,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 {
                     playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
 
-                    Vector3 direction = playerModel.transform.TransformDirection(m_Input);
+                    Vector3 direction = playerModel.transform.TransformDirection(m_Input).normalized;
 
                     // this block of code ensures that the player does not spiral away from the targeted enemy
                     if (m_Input.x == 0)
@@ -332,11 +334,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                         m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE);
                     }
 
-                    m_Rigidbody.velocity = (direction * m_Speed * slowMult);
+                    m_Rigidbody.velocity = (direction * m_Speed * slowMult * lockedSpeedMultiplier);
 
                     // this line fixes the thrown sword direction when locked onto an enemy
                     swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
                 }
+
 
             }
             if (!_playerTargetingScript.IsTargeting())
@@ -511,7 +514,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     {
         // Check for object type??
         if (knockedBack) EndKnockback(true);
+        GetComponent<Rigidbody>().useGravity = false;
     }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        GetComponent<Rigidbody>().useGravity = true;
+    }
+
+
 
     private void OnTriggerEnter(Collider other)
     {

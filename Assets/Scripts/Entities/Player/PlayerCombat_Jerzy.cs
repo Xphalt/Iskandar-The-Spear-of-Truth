@@ -9,7 +9,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     
     public float throwTimeSpinningInPlace;
     public float throwSpeed;
-    public float throwReturnSpeed;
+    [HideInInspector] public float throwReturnSpeed = 1;
     public bool attackOffCooldown = true;
     public bool canAttack = true;
     Quaternion swordLookRotation;
@@ -43,6 +43,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     private bool isPoisoned = false;
     private bool isThrowing = false;
 
+    public GameObject chargeParticle;
+    public GameObject chargeFinishedParticle;
+    public GameObject electricParticle;
+
     ParticleSystem throwPowerUpParticle;
     ParticleSystem throwReadyParticle;
     ParticleSystem throwPowerUpElectricParticle;
@@ -55,10 +59,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
         playerStats = FindObjectOfType<PlayerStats>();
         throwSword = swordEmpty.GetComponent<ThrowSword_Jerzy>();
-        swordCollider = swordObject.GetComponent<Collider>();
-        throwPowerUpParticle = GameObject.Find("FX_PowerDraw_Modified").GetComponent<ParticleSystem>();
-        throwPowerUpElectricParticle = GameObject.Find("FX_PowerDraw_Electricity_01").GetComponent<ParticleSystem>();
-        throwReadyParticle = GameObject.Find("FX_GlowSpot_Modified").GetComponent<ParticleSystem>();
+        swordCollider = swordObject.GetComponentInParent<Collider>();
     }
 
     void FixedUpdate()
@@ -141,8 +142,8 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             throwSword.ThrowSword(swordLookRotation);
             isThrowing = false;
             timeSinceLastAttack = 0;
-            throwReadyParticle.Stop();
-            throwPowerUpElectricParticle.Stop();
+            chargeFinishedParticle.GetComponent<ParticleSystem>().Stop();
+            electricParticle.GetComponent<ParticleSystem>().Stop();
         } 
     }
 
@@ -179,19 +180,19 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void startChargingEffect()
     {
-        throwPowerUpParticle.Play();
+       chargeParticle.GetComponent<ParticleSystem>().Play();
     }
 
     public void swordChargedEffect()
     {
-        throwPowerUpParticle.Stop();
-        throwReadyParticle.Play();
-        throwPowerUpElectricParticle.Play();
+        chargeParticle.GetComponent<ParticleSystem>().Stop();
+        chargeFinishedParticle.GetComponent<ParticleSystem>().Play();
+        electricParticle.GetComponent<ParticleSystem>().Play();
     }
 
     public void cancelChargedAttack()
     {
-        throwPowerUpParticle.Stop();
-        throwPowerUpElectricParticle.Stop();
+        chargeParticle.GetComponent<ParticleSystem>().Stop();
+        electricParticle.GetComponent<ParticleSystem>().Stop();
     }
 }
