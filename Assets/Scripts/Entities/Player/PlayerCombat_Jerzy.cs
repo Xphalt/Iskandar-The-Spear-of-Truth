@@ -59,7 +59,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         playerMovement = FindObjectOfType<PlayerMovement_Jerzy>();
         playerStats = FindObjectOfType<PlayerStats>();
         throwSword = swordEmpty.GetComponent<ThrowSword_Jerzy>();
-        swordCollider = swordObject.GetComponentInParent<Collider>();
+        swordCollider = swordObject.GetComponent<Collider>();
     }
 
     void FixedUpdate()

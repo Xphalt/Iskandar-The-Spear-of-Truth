@@ -24,7 +24,7 @@ public static class SaveManager
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + ".txt";
+        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + playerInventory.type.ToString() + ".txt";
         FileStream fs = new FileStream(filePath, FileMode.Create);
 
         SaveData saveData = new SaveData(playerInventory);
@@ -52,9 +52,9 @@ public static class SaveManager
         }
     }
 
-    public static SaveData LoadPlayerInventory(int num)
+    public static SaveData LoadPlayerInventory(int num, string inventoryType)
     {
-        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + ".txt";
+        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + inventoryType + ".txt";
         if (File.Exists(filePath))
         {
             BinaryFormatter bf = new BinaryFormatter();

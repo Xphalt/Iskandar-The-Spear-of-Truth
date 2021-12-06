@@ -89,8 +89,8 @@ public class ThrowSword_Jerzy : MonoBehaviour
             {
                 transform.LookAt(player.transform);
                 throwSpeed *= ACCELERATION_MULTIPLIER;
+                if (throwSpeed < -MAX_RETURNING_SPEED) throwSpeed = -MAX_RETURNING_SPEED;
                 swordRigidBody.velocity = -transform.forward * throwSpeed;
-                if (throwSpeed <= -MAX_RETURNING_SPEED) throwSpeed = -MAX_RETURNING_SPEED;
             }
         }
     }

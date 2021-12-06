@@ -86,6 +86,8 @@ public class PlayerStats : StatsInterface
         //Adding callbacks for the inventory slot update (every time something happens)
         for (int i = 0; i < equipment.GetSlots.Length; i++)
         {
+            equipment.GetSlots[i].OnBeforeUpdate = null;
+            equipment.GetSlots[i].OnAfterUpdate = null;
             equipment.GetSlots[i].OnBeforeUpdate += OnBeforeSlotUpdate;
             equipment.GetSlots[i].OnAfterUpdate += OnAfterSlotUpdate;
         }
@@ -395,8 +397,43 @@ public class PlayerStats : StatsInterface
             inventory.LoadStats(num);
             equipment.LoadStats(num);
 
+            for (int e = 0; e < equipment.GetSlots.Length; e++)
+            {
+                equipment.GetSlots[e].OnAfterUpdate.Invoke(equipment.GetSlots[e]);
+            }
+
             SaveNum = saveData.LastFileSaved;
             saveData.LastFileSaved = num;
+
+            // shh
+            if (totallynotevents.Count > sceneEventIndex)
+            {
+                List<bool> savedEvents = totallynotevents[sceneEventIndex];
+
+                if (savedEvents.Count > 0)
+                {
+                    EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
+                    int totalEvents = 0;
+                    //loading events
+                    for (int em = 0; em < managers.Length; em++)
+                    {
+                        for (int a = 0; a < managers[em].getamountofactions(); a++)
+                        {
+                            managers[em].setCompleted(a, savedEvents[totalEvents + a]);
+                            if (savedEvents[totalEvents + a])
+                            {
+                                for (int ev = 0; ev < managers[em].actions[a].events.Count; ev++)
+                                {
+                                    if (managers[em].actions[a].events[ev] == null) continue;
+                                    if (managers[em].actions[a].events[ev].ReplayOnload)
+                                        managers[em].actions[a].events[ev].TriggerEvent();
+                                }
+                            }
+                        }
+                        totalEvents += managers[em].getamountofactions();
+                    }
+                }
+            }
 
             EnemyStats[] dlist = FindObjectsOfType<EnemyStats>(true);
             foreach (EnemyStats Enemy in dlist)
@@ -429,35 +466,6 @@ public class PlayerStats : StatsInterface
                     if (Pot.GetInstanceID() == ID)
                         Pot.GetComponent<ScrDestructablePot>().destroyed = true;
                     print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
-                }
-            }
-
-            // shh
-            if (totallynotevents.Count > sceneEventIndex)
-            {
-                List<bool> savedEvents = totallynotevents[sceneEventIndex];
-
-                if (savedEvents.Count > 0)
-                {
-                    EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
-                    int totalEvents = 0;
-                    //loading events
-                    for (int em = 0; em < managers.Length; em++)
-                    {
-                        for (int a = 0; a < managers[em].getamountofactions(); a++)
-                        {
-                            managers[em].setCompleted(a, savedEvents[totalEvents + a]);
-                            if (savedEvents[totalEvents + a])
-                            {
-                                for (int ev = 0; ev < managers[em].actions[a].events.Count; ev++)
-                                {
-                                    if (managers[em].actions[a].events[ev].ReplayOnload)
-                                        managers[em].actions[a].events[ev].TriggerEvent();
-                                }
-                            }
-                        }
-                        totalEvents += managers[em].getamountofactions();
-                    }
                 }
             }
 
