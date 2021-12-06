@@ -17,6 +17,9 @@ public class PlayerStats : StatsInterface
     public ItemObject_Sal revivalGem;
 
     public List<List<bool>> totallynotevents = new List<List<bool>>();
+    public List<List<bool>> savedEnemies = new List<List<bool>>();
+    public List<List<bool>> savedPots= new List<List<bool>>();
+    public List<List<bool>> savedChests= new List<List<bool>>();
 
     public Transform startPos;
 
@@ -392,6 +395,9 @@ public class PlayerStats : StatsInterface
 
             gems = saveData.gemcount;
             totallynotevents = saveData.totallynotevents;
+            savedPots = saveData.potbrokenlist;
+            savedChests = saveData.chestopenedlist;
+            savedEnemies = saveData.enemydeadlist;
             if (saveData.levelsComplete.Length == VillageEventsStaticVariables.levelsComplete.Length) 
                 VillageEventsStaticVariables.levelsComplete = saveData.levelsComplete;
             inventory.LoadStats(num);
@@ -435,39 +441,16 @@ public class PlayerStats : StatsInterface
                 }
             }
 
-            EnemyStats[] dlist = FindObjectsOfType<EnemyStats>(true);
-            foreach (EnemyStats Enemy in dlist)
-            {
-                foreach (var ID in saveData.enemydeadlist)
-                {
-                    if (Enemy.gameObject.GetInstanceID() == ID)
-                        Destroy(Enemy.gameObject);
-                }
-            }
+            foreach (EnemyStats enemy in FindObjectsOfType<EnemyStats>(true))
+                if (saveData.enemydeadlist[sceneEventIndex].Contains(enemy.gameObject.GetInstanceID())) Destroy(enemy.gameObject);
 
             //saving chests
-            var colist = GameObject.FindGameObjectsWithTag("LootChest");
-            foreach (var Chest in colist)
-            {
-                foreach (var ID in saveData.chestopenedlist)
-                {
-                    if (Chest.GetInstanceID() == ID)
-                        Chest.GetComponent<LootChest_Jerzy>().isInteractable = false;
-                    print("LootChest is " + Chest.GetComponent<LootChest_Jerzy>().isInteractable);
-                }
-            }
+            foreach (LootChest_Jerzy chest in FindObjectsOfType<LootChest_Jerzy>(true))
+                chest.isInteractable = saveData.chestopenedlist[sceneEventIndex].Contains(chest.gameObject.GetInstanceID());
 
             //saving pots
-            var plist = GameObject.FindGameObjectsWithTag("Pot");
-            foreach (var Pot in plist)
-            {
-                foreach (var ID in saveData.potbrokenlist)
-                {
-                    if (Pot.GetInstanceID() == ID)
-                        Pot.GetComponent<ScrDestructablePot>().destroyed = true;
-                    print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
-                }
-            }
+            foreach (ScrDestructablePot pot in FindObjectsOfType<ScrDestructablePot>(true))
+                pot.destroyed = saveData.potbrokenlist[sceneEventIndex].Contains(pot.gameObject.GetInstanceID());
 
             if (sceneName == saveData.scenename)
             {

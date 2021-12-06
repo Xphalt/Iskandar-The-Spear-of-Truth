@@ -105,6 +105,7 @@ public class EnemyBase : Patrol
             {
                 _myAnimator.SetTrigger("Dead");
                 _myCapsuleCol.enabled = false;
+                AttackEnd();
                 agent.enabled = false;
                 isDead = true;
                 MyRigid.velocity = Vector3.zero;
@@ -207,7 +208,7 @@ public class EnemyBase : Patrol
 
     public virtual void AttackEnd()
     {
-        curState = detector.GetCurTarget() ? EnemyStates.Aggro : EnemyStates.Patrolling;
+        curState = (detector && detector.GetCurTarget()) ? EnemyStates.Aggro : EnemyStates.Patrolling;
         attackEnded = true;
         SetWeaponActive(0);
     }
