@@ -442,17 +442,20 @@ public class PlayerStats : StatsInterface
             }
 
             List<EnemyStats> enemies = FindObjectsOfType<EnemyStats>(true).ToList();
-            enemies = enemies.OrderBy(enemy => enemy.gameObject.GetInstanceID()).ToList();
+            //enemies = enemies.OrderBy(enemy => enemy.gameObject.GetInstanceID()).ToList();
             for (int e = 0; e < enemies.Count; e++)
-                if (saveData.savedEnemies[sceneEventIndex][e]) Destroy(enemies[e].gameObject);
-
+            {
+                enemies[e].isDead = saveData.savedEnemies[sceneEventIndex][e];
+                enemies[e].gameObject.SetActive(!saveData.savedEnemies[sceneEventIndex][e]);
+            }
+            
             List<LootChest_Jerzy> chests = FindObjectsOfType<LootChest_Jerzy>(true).ToList();
-            chests = chests.OrderBy(chest => chest.gameObject.GetInstanceID()).ToList();
+            //chests = chests.OrderBy(chest => chest.gameObject.GetInstanceID()).ToList();
             for (int c = 0; c < chests.Count; c++)
                 chests[c].isInteractable = saveData.savedChests[sceneEventIndex][c];
 
             List<ScrDestructablePot> pots = FindObjectsOfType<ScrDestructablePot>(true).ToList();
-            pots = pots.OrderBy(pot => pot.gameObject.GetInstanceID()).ToList();
+            //pots = pots.OrderBy(pot => pot.gameObject.GetInstanceID()).ToList();
             for (int p = 0; p < pots.Count; p++)
                 pots[p].destroyed = saveData.savedPots[sceneEventIndex][p];
 

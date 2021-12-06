@@ -65,18 +65,18 @@ public class SaveData
 
         //list save enemies
         List<EnemyStats> enemies = GameObject.FindObjectsOfType<EnemyStats>(true).ToList();
-        enemies = enemies.OrderBy(enemy => enemy.gameObject.GetInstanceID()).ToList();
-        foreach (EnemyStats enemy in GameObject.FindObjectsOfType<EnemyStats>(true)) savedEnemies[sceneEventIndex].Add(enemy.isDead);
+        //enemies = enemies.OrderBy(enemy => enemy.gameObject.GetInstanceID()).ToList();
+        foreach (EnemyStats enemy in enemies) savedEnemies[sceneEventIndex].Add(enemy.isDead);
 
         //list save chests
         List<LootChest_Jerzy> chests = GameObject.FindObjectsOfType<LootChest_Jerzy>(true).ToList();
-        chests = chests.OrderBy(chest => chest.gameObject.GetInstanceID()).ToList();
-        foreach (LootChest_Jerzy chest in GameObject.FindObjectsOfType<LootChest_Jerzy>(true)) savedChests[sceneEventIndex].Add(chest.isInteractable);
+        //chests = chests.OrderBy(chest => chest.gameObject.GetInstanceID()).ToList();
+        foreach (LootChest_Jerzy chest in chests) savedChests[sceneEventIndex].Add(chest.isInteractable);
 
         //list save pots
         List<ScrDestructablePot> pots = GameObject.FindObjectsOfType<ScrDestructablePot>(true).ToList();
-        pots = pots.OrderBy(pot => pot.gameObject.GetInstanceID()).ToList();
-        foreach (ScrDestructablePot pot in GameObject.FindObjectsOfType<ScrDestructablePot>(true)) savedPots[sceneEventIndex].Add(pot.destroyed);
+        //pots = pots.OrderBy(pot => pot.gameObject.GetInstanceID()).ToList();
+        foreach (ScrDestructablePot pot in pots) savedPots[sceneEventIndex].Add(pot.destroyed);
 
         //try
         //{

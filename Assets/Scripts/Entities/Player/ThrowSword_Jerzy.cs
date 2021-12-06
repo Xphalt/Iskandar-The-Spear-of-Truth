@@ -64,12 +64,15 @@ public class ThrowSword_Jerzy : MonoBehaviour
             {
                 throwSpeed *= DECELERATION_MULTIPLIER;
                 swordRigidBody.velocity = transform.forward * throwSpeed;
-                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.3f))
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.3f,1, QueryTriggerInteraction.Ignore))
                 {
-                    print(hit.transform.name);
-                    returning = true;
-                    throwSpeed = -returningSpeed;
-                    if (hit.transform.TryGetComponent(out LightSwitch ls)) ls.TurnOn();
+                    if(hit.transform.tag != "Enemy" && hit.transform.tag != "Pot" && hit.transform.tag != "PuzzleTrigger")
+                    {
+                        returning = true;
+                        throwSpeed = -throwSpeed;
+                        if (hit.transform.TryGetComponent(out LightSwitch ls)) ls.TurnOn();
+                    }
+
                 }
             }
             // stage 2 : sword spins in place for some time
@@ -95,7 +98,7 @@ public class ThrowSword_Jerzy : MonoBehaviour
         }
     }
 
-    public void ThrowSword(Quaternion targetRotation)
+    public void ThrowSword(Vector3 pos, Quaternion targetRotation)
     {
         throwSpeed = combatScript.throwSpeed;
         timeSpinningInPlace = 0;

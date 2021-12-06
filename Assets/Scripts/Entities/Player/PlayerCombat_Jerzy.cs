@@ -9,7 +9,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     
     public float throwTimeSpinningInPlace;
     public float throwSpeed;
-    [HideInInspector] public float throwReturnSpeed = 1;
+    [HideInInspector] public float throwReturnSpeed = 5;
     public bool attackOffCooldown = true;
     public bool canAttack = true;
     Quaternion swordLookRotation;
@@ -64,6 +64,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     void FixedUpdate()
     {
+ 
         if (swordObject.activeInHierarchy)
         {
             timeSinceLastPoisonDamage += Time.deltaTime;
@@ -123,15 +124,30 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         {
             if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
             {
-                attackOffCooldown = false;
-                //StartCoroutine(PauseForThrow());
-                playerAnimation.SwordThrowAttack();
+                if (!Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out RaycastHit hit, 1.3f, 1, QueryTriggerInteraction.Ignore))
+                {
+                    ThrowAction();
 
-                playerMovement.LockPlayerMovement();
-                isThrowing = true;
+                }
+                else if (hit.transform.tag == "Enemy" || hit.transform.tag == "Pot" || hit.transform.tag == "PuzzleTrigger")
+                {
+                    ThrowAction();
+                }
+
 
             }
         }
+    }
+
+    void ThrowAction()
+    {
+
+        attackOffCooldown = false;
+        //StartCoroutine(PauseForThrow());
+        playerAnimation.SwordThrowAttack();
+
+        playerMovement.LockPlayerMovement();
+        isThrowing = true;
     }
 
     public void ReleaseSword()
@@ -139,7 +155,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         //This function is linked to an animation event in PlayerThrow anim
         if (isThrowing)
         {
-            throwSword.ThrowSword(swordLookRotation);
+            throwSword.ThrowSword(transform.position,swordLookRotation);
             isThrowing = false;
             timeSinceLastAttack = 0;
             chargeFinishedParticle.GetComponent<ParticleSystem>().Stop();

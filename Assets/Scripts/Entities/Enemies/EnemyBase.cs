@@ -99,7 +99,7 @@ public class EnemyBase : Patrol
     {
         base.Update();
 
-        if (stats.health <= 0)
+        if (stats.isDead)
         {
             if (!isDead)
             {
