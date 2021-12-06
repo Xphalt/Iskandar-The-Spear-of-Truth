@@ -440,20 +440,20 @@ public class PlayerStats : StatsInterface
             }
 
             List<EnemyStats> enemies = FindObjectsOfType<EnemyStats>(true).ToList();
-            //enemies = enemies.OrderBy(enemy => enemy.gameObject.GetInstanceID()).ToList();
+            enemies = enemies.OrderBy(e => e.transform.position.x).ThenBy(e =>e.transform.position.y).ThenBy(e => e.transform.position.z).ThenBy(e => e.name).ToList();
             for (int e = 0; e < enemies.Count; e++)
             {
                 enemies[e].isDead = saveData.savedEnemies[sceneEventIndex][e];
-                enemies[e].gameObject.SetActive(!saveData.savedEnemies[sceneEventIndex][e]);
+                enemies[e].gameObject.SetActive(!enemies[e].isDead && enemies[e].gameObject.activeSelf);
             }
             
             List<LootChest_Jerzy> chests = FindObjectsOfType<LootChest_Jerzy>(true).ToList();
-            //chests = chests.OrderBy(chest => chest.gameObject.GetInstanceID()).ToList();
+            chests = chests.OrderBy(c => c.transform.position.x).ThenBy(c => c.transform.position.y).ThenBy(c => c.transform.position.z).ThenBy(c => c.name).ToList();
             for (int c = 0; c < chests.Count; c++)
                 chests[c].isInteractable = saveData.savedChests[sceneEventIndex][c];
 
             List<ScrDestructablePot> pots = FindObjectsOfType<ScrDestructablePot>(true).ToList();
-            //pots = pots.OrderBy(pot => pot.gameObject.GetInstanceID()).ToList();
+            pots = pots.OrderBy(p => p.transform.position.x).ThenBy(p => p.transform.position.y).ThenBy(p => p.transform.position.z).ThenBy(p => p.name).ToList();
             for (int p = 0; p < pots.Count; p++)
                 pots[p].destroyed = saveData.savedPots[sceneEventIndex][p];
 
