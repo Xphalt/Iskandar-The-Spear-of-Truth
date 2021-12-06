@@ -482,7 +482,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         respawnTime = time;
         LockPlayerMovement();
         SetRespawn();
-        playerAnimation.Dead();
+        playerAnimation.FakeDeath();
     }
 
     public void SetRespawn(int active = 1)
