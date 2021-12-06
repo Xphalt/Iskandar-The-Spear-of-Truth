@@ -49,6 +49,9 @@ public class PlayerSFXPlayer : MonoBehaviour
             aSource[i].outputAudioMixerGroup = mixer.FindMatchingGroups("SFX")[0];
             aSource[i].loop = false;
             aSource[i].playOnAwake = false;
+            aSource[i].priority = 200;
+            aSource[i].spatialBlend = 1;
+            aSource[i].volume = 0.3f;
         }
     }
 

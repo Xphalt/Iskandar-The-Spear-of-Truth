@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Localization;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.Localization.Settings;
 using TMPro;
 
@@ -18,9 +18,16 @@ public class SettingsOptions : MonoBehaviour
 
     public AudioMixer masterMixer;
 
+    private SaveDataAssistant sda;
+
     private void Start()
     {
         LocaleChange();
+        sda = GameObject.FindObjectOfType<SaveDataAssistant>();
+        SetMusicVolume(sda.MusicVol);
+        SetSFXVolume(sda.SFXVol);
+        transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Slider>().value = sda.MusicVol;
+        transform.GetChild(0).GetChild(0).GetChild(3).GetComponent<Slider>().value = sda.SFXVol;
     }
 
     // Dominique 08-10-2021, When the pause button is pressed the pause menu opens and the quality settings are populated with options taken from the current locale
@@ -58,10 +65,12 @@ public class SettingsOptions : MonoBehaviour
     public void SetMusicVolume(float volume)
     {
         masterMixer.SetFloat("musicVol", volume);
+        sda.MusicVol = volume;
     }
 
     public void SetSFXVolume(float volume)
     {
         masterMixer.SetFloat("sfxVol", volume);
+        sda.SFXVol = volume;
     }
 }
