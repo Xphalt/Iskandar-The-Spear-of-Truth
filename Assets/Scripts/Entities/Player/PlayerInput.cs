@@ -17,8 +17,9 @@ public class PlayerInput : MonoBehaviour
     private Rigidbody _playerRigidbody;
     private PotionInterface potionInterface;
     private Camera _mainCamera;
-    // Dominique, Check if we're panning before pausing
+    // Dominique, Check if we're panning or there is dialogue open before pausing
     private CameraMove _cameraMove;
+    private DialogueManager _dialogueManager;
     #endregion
 
     [Header("Scripts References")]
@@ -46,6 +47,7 @@ public class PlayerInput : MonoBehaviour
        
         _mainCamera = Camera.main;
         _cameraMove = FindObjectOfType<CameraMove>().GetComponent<CameraMove>();
+        _dialogueManager = FindObjectOfType<DialogueManager>().GetComponent<DialogueManager>();
 
         #region New Input System Actions/Biddings setup (Will create a function to clean the code later)
         // Disable player interaction if pause is set
@@ -98,8 +100,8 @@ public class PlayerInput : MonoBehaviour
         // Re-enable player actions if pause is triggered in pause menu
         _playerActionsAsset.UI.Pause.performed += _ =>
         {
-            // Dominique, If the camera is panning or potion interface is open don't open the pause menu
-            if (!_cameraMove.IsPanning() && !_UIManager.IsPotionInterfaceOpen())
+            // Dominique, If the camera is panning, dialogue is active or potion interface is open don't open the pause menu
+            if (!_cameraMove.IsPanning() && !_UIManager.IsPotionInterfaceOpen() && _dialogueManager.ConversationIsEnded)
             {
                 _pauseMenuManager.TogglePauseState();
                 TogglePlayerInteraction(true);
@@ -107,8 +109,8 @@ public class PlayerInput : MonoBehaviour
         };
         _playerActionsAsset.UI.PotionInterface.performed += _ =>
         {
-            // Dominique, If the camera is panning or pause menu is open don't open the potion interface
-            if (!_cameraMove.IsPanning() && !PauseMenuManager.gameIsPaused)
+            // Dominique, If the camera is panning, dialogue is active or pause menu is open don't open the potion interface
+            if (!_cameraMove.IsPanning() && !PauseMenuManager.gameIsPaused && _dialogueManager.ConversationIsEnded)
             {
                 _UIManager.TogglePotionInterface();
                 TogglePlayerInteraction(true);
