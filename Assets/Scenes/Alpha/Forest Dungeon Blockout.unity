@@ -1818,6 +1818,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e3a7267ef25d464f9529e4f61b6a025, type: 3}
+--- !u!1 &62933225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 62933226}
+  - component: {fileID: 62933228}
+  - component: {fileID: 62933227}
+  m_Layer: 0
+  m_Name: BossDeadDialogue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &62933226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62933225}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -34.71, y: -23.83, z: 94.55}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 546400280}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &62933227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62933225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0554387b768ef94cae40645d15b2b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &62933228
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62933225}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 48.25511, y: 1, z: 43.499207}
+  m_Center: {x: -10.5241165, y: 0, z: -0.26254272}
 --- !u!1001 &63449346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2072,7 +2129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7836609602608423890, guid: f016281e9ed37cb40aa36959e1448904, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 241.89
+      value: 241.77
       objectReference: {fileID: 0}
     - target: {fileID: 7836609602608423890, guid: f016281e9ed37cb40aa36959e1448904, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2080,7 +2137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7836609602608423890, guid: f016281e9ed37cb40aa36959e1448904, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 176.35
+      value: 174.9
       objectReference: {fileID: 0}
     - target: {fileID: 7836609602608423890, guid: f016281e9ed37cb40aa36959e1448904, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3487,7 +3544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &123720531
 Transform:
   m_ObjectHideFlags: 0
@@ -3496,7 +3553,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 123720530}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -23.425797, y: -29.370066, z: -96.40921}
+  m_LocalPosition: {x: -23.425797, y: -29.370066, z: -94.32}
   m_LocalScale: {x: 0.9407617, y: 1.576, z: 1.576}
   m_Children: []
   m_Father: {fileID: 546400280}
@@ -4411,7 +4468,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh157688
+  m_Name: pb_Mesh328060
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5600,7 +5657,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 162.82835
+      value: 107.79892
       objectReference: {fileID: 0}
     - target: {fileID: 3054451402402017905, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.y
@@ -15812,7 +15869,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh156902
+  m_Name: pb_Mesh327268
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16255,6 +16312,7 @@ Transform:
   - {fileID: 1299967969}
   - {fileID: 1634121090}
   - {fileID: 1228451922}
+  - {fileID: 62933226}
   m_Father: {fileID: 1508043463}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -38530,7 +38588,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1299967968}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -24.41771, y: -29.200068, z: -64.311554}
+  m_LocalPosition: {x: -47.94, y: -24.69, z: 71.8}
   m_LocalScale: {x: 5.886455, y: 2.1023, z: 1}
   m_Children: []
   m_Father: {fileID: 546400280}
@@ -38547,8 +38605,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.7385695, y: 1, z: 1}
+  m_Center: {x: -0.26939622, y: 0, z: 0}
 --- !u!114 &1299967971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42003,84 +42061,93 @@ MonoBehaviour:
   - id: 4
   - id: 5
   - id: 6
+  - id: 7
   references:
     version: 1
     00000000:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 7
-        events:
         - id: 8
+        events:
+        - id: 9
         complete: 0
     00000001:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 9
-        events:
         - id: 10
+        events:
+        - id: 11
         complete: 0
     00000002:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 11
-        events:
         - id: 12
+        events:
+        - id: 13
         complete: 0
     00000003:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 13
-        events:
         - id: 14
+        events:
+        - id: 15
         complete: 0
     00000004:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 15
-        events:
         - id: 16
+        events:
+        - id: 17
         complete: 0
     00000005:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 17
-        events:
         - id: 18
+        events:
+        - id: 19
         complete: 0
     00000006:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 19
-        events:
         - id: 20
+        events:
         - id: 21
         - id: 22
+        - id: 23
         complete: 0
     00000007:
+      type: {class: EventAction, ns: , asm: Assembly-CSharp}
+      data:
+        conditions:
+        - id: 24
+        events:
+        - id: 25
+        complete: 0
+    00000008:
       type: {class: ObjectsActiveCondition, ns: , asm: Assembly-CSharp}
       data:
         _objectsToCheck:
         - {fileID: 65071000}
         checkObjectsAreActive: 1
-    00000008:
+    00000009:
       type: {class: QuestLogEntryEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         questLog: {fileID: 173283471}
         quest: {fileID: 11400000, guid: 7f54adf4fd2f6a648873343d901baf50, type: 2}
-    00000009:
+    0000000A:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 123720533}
-    0000000A:
+    0000000B:
       type: {class: PanCameraWithTargetVectorEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -42091,56 +42158,56 @@ MonoBehaviour:
         _cameraPanSpeed: 15
         _targetVector: {x: 233.98, y: 27.22, z: 212.96}
         _linger: 1
-    0000000B:
+    0000000C:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 449566162}
-    0000000C:
+    0000000D:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 449566163}
         dialogue: {fileID: 11400000, guid: 698fa4fcc86f5684bbcf532e08356de1, type: 2}
-    0000000D:
+    0000000E:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 1299967971}
-    0000000E:
+    0000000F:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 1299967970}
         dialogue: {fileID: 11400000, guid: f8ebb96b04c5ebc42b5dac061e00056b, type: 2}
-    0000000F:
+    00000010:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 1634121091}
-    00000010:
+    00000011:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 1634121092}
         dialogue: {fileID: 11400000, guid: 53ecc5153aec0164890967b817eeb913, type: 2}
-    00000011:
+    00000012:
       type: {class: EnemyDiedCondition, ns: , asm: Assembly-CSharp}
       data:
         enemyStats: {fileID: 769626161}
-    00000012:
+    00000013:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 769626162}
         dialogue: {fileID: 11400000, guid: 439b0e7a0a1f08148b1a52de9bc57daf, type: 2}
-    00000013:
+    00000014:
       type: {class: DialogueEndedCondition, ns: , asm: Assembly-CSharp}
       data:
         dialogue: {fileID: 11400000, guid: 439b0e7a0a1f08148b1a52de9bc57daf, type: 2}
         dlgManager: {fileID: 512148866}
-    00000014:
+    00000015:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -42148,19 +42215,31 @@ MonoBehaviour:
         _objectsToActivate:
         - {fileID: 1228451921}
         _activateObjects: 1
-    00000015:
+    00000016:
       type: {class: CompleteLevel, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         level: 1
-    00000016:
+    00000017:
       type: {class: QuestLogEntryEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         questLog: {fileID: 173283471}
         quest: {fileID: 11400000, guid: a81996c090b632848997c4235269fbe2, type: 2}
+    00000018:
+      type: {class: DialogueEndedCondition, ns: , asm: Assembly-CSharp}
+      data:
+        dialogue: {fileID: 11400000, guid: 439b0e7a0a1f08148b1a52de9bc57daf, type: 2}
+        dlgManager: {fileID: 512148866}
+    00000019:
+      type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
+      data:
+        IsComplete: 0
+        ReplayOnload: 0
+        convCollider: {fileID: 62933228}
+        dialogue: {fileID: 11400000, guid: c4d08f8a0a44f704988b57204f2ceb8b, type: 2}
 --- !u!114 &1435378992
 MonoBehaviour:
   m_ObjectHideFlags: 0
