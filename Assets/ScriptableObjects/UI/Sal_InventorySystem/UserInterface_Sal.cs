@@ -114,12 +114,6 @@ public abstract class UserInterface_Sal : MonoBehaviour
     {
         Destroy(MouseData.tempItemBeingDragged);
 
-        if (MouseData.interfaceMouseIsOver == null)//Remove item if dragged outside the interface
-        {
-            slotsOnInterface[obj].RemoveItem();
-            return;
-        }
-
         if (MouseData.slotHoveredOver)//If there is a slot hovering over, check if we can swap
         {
             InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
