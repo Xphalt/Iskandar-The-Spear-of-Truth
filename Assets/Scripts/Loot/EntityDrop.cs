@@ -30,7 +30,6 @@ public class EntityDrop : MonoBehaviour
 
         Vector3 playerToObjDir = transform.position - GameObject.FindObjectOfType<PlayerStats>().transform.position;
 
-        bool canIReset = false;
         for (int i = 0; i < chances.Count; i++)
         {
             if (chances[i])
@@ -51,8 +50,6 @@ public class EntityDrop : MonoBehaviour
                     obj.GetComponent<GroundItem>().spawn += ChestSpawn;
                 else
                     obj.GetComponent<GroundItem>().spawn += NormalSpawn;
-
-                canIReset = true;
             }
         }
         // Gem spawn
@@ -68,16 +65,10 @@ public class EntityDrop : MonoBehaviour
                 obj.GetComponent<GroundItem>().spawn += PotSpawn;
         }
 
-        /*if (canIReset)
-            //Reset tentatives to 1
-            DropSystem.Instance.ResetTentativeNum(type);
-        else
-            DropSystem.Instance.IncreaseTentatives(type);*/
-
         //Destroy
 
         if (type != EntityType.Chest && type != EntityType.Pot && disableOnDrop)
-            Destroy(gameObject, disableDelay); //GOING TO HANDLE THIS IN OTHER SCRIPTS
+            StartCoroutine(DisableObject());
     }
 
     public void CalculateDropProbability()
@@ -112,4 +103,9 @@ public class EntityDrop : MonoBehaviour
         GetComponent<ScrDestructablePot>().SetForces(obj);
     }
    
+    public IEnumerator DisableObject()
+    {
+        yield return new WaitForSeconds(disableDelay);
+        gameObject.SetActive(false);
+    }
 }
