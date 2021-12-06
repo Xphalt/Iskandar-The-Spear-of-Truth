@@ -135,6 +135,11 @@ public class PlayerAnimationManager : MonoBehaviour
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dead")) animator.SetTrigger("isDead"); 
     }
 
+    public void FakeDeath()
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("pitfallFakeDeathAnimation")) animator.Play("pitfallFakeDeathAnimation");
+    }
+
     private void UpdateAxisValues()
     {
         /*_____________________________________________
