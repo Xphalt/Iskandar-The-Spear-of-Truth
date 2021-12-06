@@ -23,6 +23,8 @@ public class ThrowSword_Jerzy : MonoBehaviour
     private const float DECELERATION_MULTIPLIER = 0.97f;
     private const float MAX_RETURNING_SPEED = 30;
 
+    public LayerMask throwLayer;
+
     float returningSpeed;
     [HideInInspector] public float throwSpeed;
 
@@ -62,11 +64,12 @@ public class ThrowSword_Jerzy : MonoBehaviour
             {
                 throwSpeed *= DECELERATION_MULTIPLIER;
                 swordRigidBody.velocity = transform.forward * throwSpeed;
-                RaycastHit hit;
-                if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 0.3f, -1))
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.3f))
                 {
+                    print(hit.transform.name);
                     returning = true;
                     throwSpeed = -returningSpeed;
+                    if (hit.transform.TryGetComponent(out LightSwitch ls)) ls.TurnOn();
                 }
             }
             // stage 2 : sword spins in place for some time
@@ -147,9 +150,4 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
         if (other.CompareTag("PuzzleTrigger")) puzzlesHit.Add(other);
     }
-
-
-
-
-
 }
