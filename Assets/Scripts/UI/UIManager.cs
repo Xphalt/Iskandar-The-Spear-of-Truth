@@ -191,7 +191,9 @@ public class UIManager : MonoBehaviour
     {
         potionInterfaceOpen = !potionInterfaceOpen;
         keyboardPotionInterface.SetActive(potionInterfaceOpen);
+        keyboardPotionInterface.GetComponent<PotionInterface>().SetAmounts();
         controllerPotionInterface.SetActive(potionInterfaceOpen);
+        controllerPotionInterface.GetComponent<PotionInterface>().SetAmounts();
     }
     #endregion // Potion Interface
 
