@@ -172,7 +172,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         poisonTicks = 0;
         isPoisoned = true;
     }
-
+    public void EndPoison()
+    {
+        isPoisoned = false;
+    }
 
     public void startChargingEffect()
     {
