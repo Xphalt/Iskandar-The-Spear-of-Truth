@@ -24,6 +24,8 @@ public class PauseMenuManager : MonoBehaviour
     public GameObject keyboardControls;
     public GameObject quttingConfirmation;
 
+    private GameObject playerLight;
+
     private int numberOfPages = 4;
 
     private int currentPage = 0;
@@ -34,6 +36,8 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Start()
     {
+        playerLight = GameObject.Find("Player Illumination");
+        playerLight.SetActive(false);
         Resume();    
     }
 
@@ -72,7 +76,8 @@ public class PauseMenuManager : MonoBehaviour
 
     void Resume()
     {
-        if(Time.timeScale < 1)
+        playerLight.SetActive(false);
+        if (Time.timeScale < 1)
             Time.timeScale = Mathf.Lerp(Time.timeScale, 1, LerpPauseSpeed);
         pauseMenuUI.SetActive(false);
         Debug.Log("Playing");
@@ -80,6 +85,7 @@ public class PauseMenuManager : MonoBehaviour
 
     void Pause()
     {
+        playerLight.SetActive(true);
         pauseMenuUI.SetActive(true);
         currentPage = 0;
 
