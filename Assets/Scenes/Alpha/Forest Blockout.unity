@@ -28375,11 +28375,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4234462567562958, guid: 5d42ad4d961622744969e55de6f5270b, type: 3}
   m_PrefabInstance: {fileID: 781162517}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &782562850 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4155667853997240532, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
-  m_PrefabInstance: {fileID: 1883877618}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &785875919
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48542,47 +48537,46 @@ MonoBehaviour:
         - id: 49
         events:
         - id: 50
-        - id: 51
         complete: 0
     0000000F:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 52
+        - id: 51
         events:
-        - id: 53
+        - id: 52
         complete: 0
     00000010:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 54
+        - id: 53
         events:
-        - id: 55
+        - id: 54
         complete: 0
     00000011:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 56
+        - id: 55
         events:
-        - id: 57
+        - id: 56
         complete: 0
     00000012:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 58
+        - id: 57
         events:
-        - id: 59
+        - id: 58
         complete: 0
     00000013:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 60
+        - id: 59
         events:
-        - id: 61
+        - id: 60
         complete: 0
     00000014:
       type: {class: ObjectsActiveCondition, ns: , asm: Assembly-CSharp}
@@ -48759,53 +48753,43 @@ MonoBehaviour:
         - {fileID: 690486703}
         _activateObjects: 1
     00000031:
-      type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
+      type: {class: DialogueEndedCondition, ns: , asm: Assembly-CSharp}
       data:
-        _oneTimeTrigger: {fileID: 1827450691}
+        dialogue: {fileID: 11400000, guid: 74a342d1b121fb143901733b49d1ba07, type: 2}
+        dlgManager: {fileID: 1883877619}
     00000032:
-      type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
+      type: {class: OpenShop, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
-        _objectsToActivate:
-        - {fileID: 782562850}
-        _activateObjects: 1
     00000033:
-      type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
-      data:
-        IsComplete: 0
-        ReplayOnload: 1
-        _objectsToActivate:
-        - {fileID: 1827450689}
-        _activateObjects: 0
-    00000034:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 1827450691}
-    00000035:
+    00000034:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 1827450692}
         dialogue: {fileID: 11400000, guid: aede842e0b815e446a35bed407fd0688, type: 2}
-    00000036:
+    00000035:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 1904125055}
-    00000037:
+    00000036:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 1904125056}
         dialogue: {fileID: 11400000, guid: 74a342d1b121fb143901733b49d1ba07, type: 2}
-    00000038:
+    00000037:
       type: {class: DialogueEndedCondition, ns: , asm: Assembly-CSharp}
       data:
         dialogue: {fileID: 11400000, guid: 74a342d1b121fb143901733b49d1ba07, type: 2}
         dlgManager: {fileID: 1883877619}
-    00000039:
+    00000038:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -48813,23 +48797,23 @@ MonoBehaviour:
         _objectsToActivate:
         - {fileID: 1827450689}
         _activateObjects: 1
-    0000003A:
+    00000039:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 2111555969}
-    0000003B:
+    0000003A:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 2111555970}
         dialogue: {fileID: 11400000, guid: 6927fffa0abbbe84a976a0cf5ad4e09f, type: 2}
-    0000003C:
+    0000003B:
       type: {class: DialogueEndedCondition, ns: , asm: Assembly-CSharp}
       data:
         dialogue: {fileID: 11400000, guid: 11252d7f4379ea44ba25427223104e6b, type: 2}
         dlgManager: {fileID: 1883877619}
-    0000003D:
+    0000003C:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0

@@ -323,6 +323,14 @@ public class EquipWeapon : Event
     [SerializeField] ItemObject_Sal itemToEquip;
 }
 
+public class OpenShop : Event
+{
+    public override void TriggerEvent()
+    {
+        GameObject.FindObjectOfType<ShopManager>().OpenShop();
+    }
+}
+
 public class RemoveItem : Event
 {
     public override void TriggerEvent()
