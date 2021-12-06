@@ -473,6 +473,8 @@ public class PlayerStats : StatsInterface
         {
             Debug.LogWarning("No Player Save Data exists for: " + SaveNum + ". Making a new one!");
             SaveStats();
+            // Dominique, Make sure to set player name so it still works in the first scene
+            playerName = SaveManager.LoadPlayerName(num);
         }
     }
 
