@@ -16,7 +16,7 @@ public class DialogueManager : MonoBehaviour
     {
         get => newConversation;
     }
-    private bool conversationIsEnded = false;
+    private bool conversationIsEnded = true;
     public bool ConversationIsEnded
     {
         get => conversationIsEnded;
