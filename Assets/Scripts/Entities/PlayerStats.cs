@@ -73,7 +73,7 @@ public class PlayerStats : StatsInterface
         playerTargeting = GetComponent<Player_Targeting_Jack>();
         psp = GetComponent<PlayerSFXPlayer>();
         SaveDataAssistant saveAssisstant = FindObjectOfType<SaveDataAssistant>();
-        if (saveAssisstant) SaveNum = saveAssisstant.currentSaveFileID;
+        if (saveAssisstant) SaveNum = saveAssisstant.currentSaveFileID; 
     }
 
     private void Start()
@@ -88,9 +88,7 @@ public class PlayerStats : StatsInterface
 
         //Adding callbacks for the inventory slot update (every time something happens)
         for (int i = 0; i < equipment.GetSlots.Length; i++)
-        {
-            equipment.GetSlots[i].OnBeforeUpdate = null;
-            equipment.GetSlots[i].OnAfterUpdate = null;
+        { 
             equipment.GetSlots[i].OnBeforeUpdate += OnBeforeSlotUpdate;
             equipment.GetSlots[i].OnAfterUpdate += OnAfterSlotUpdate;
         }

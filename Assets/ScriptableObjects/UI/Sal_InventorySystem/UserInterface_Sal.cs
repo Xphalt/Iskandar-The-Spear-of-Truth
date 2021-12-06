@@ -22,6 +22,9 @@ public abstract class UserInterface_Sal : MonoBehaviour
 
         for (int i = 0; i < inventory.GetSlots.Length; i++)
         {
+            inventory.GetSlots[i].OnBeforeUpdate = null;
+            inventory.GetSlots[i].OnAfterUpdate = null;
+
             if (inventory.GetSlots[i].parent == null)
                 inventory.GetSlots[i].parent = this;   //Sets the right interface parent to each slot (for dragging into another database)
             inventory.GetSlots[i].OnAfterUpdate += OnSlotUpdate;    //Setting delegate method to update the UI
