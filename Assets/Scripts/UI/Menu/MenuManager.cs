@@ -151,7 +151,7 @@ public class MenuManager : MonoBehaviour
             try
             {
                 currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
-                loadScene.Load(currentSaveFile.sceneEventIndex);
+                loadScene.Load(currentSaveFile.sceneEventIndex + 1);
             }
             catch (System.Exception)
             {
