@@ -278,11 +278,13 @@ public class ChangeSceneEvent : Event
     public override void TriggerEvent()
     {
         player.SaveStats();
-        SceneManager.LoadScene(sceneIndex);    
+        if (loadScript) loadScript.FadeOutOfScene(sceneIndex);
+        else SceneManager.LoadScene(sceneIndex);    
     }
 
     [SerializeField] private PlayerStats player;
     [SerializeField] private int sceneIndex;
+    [SerializeField] private BlackoutScript loadScript;
 }
 
 //Matt's changes
