@@ -28,6 +28,8 @@ public class MenuManager : MonoBehaviour
 
     public PlayerNameManager pnm;
 
+    private LoadScene loadScene;
+
     // Populate the locale dropdown
     IEnumerator Start()
     {
@@ -60,7 +62,6 @@ public class MenuManager : MonoBehaviour
     }
 
     public List<int> listOfNumsNotUsed = new List<int>();
-    //UnityEngine.SceneManagement.SceneManager.LoadScene(saveSelections.ElementAt(i).Value.scenename);
 
     public void UpdateSavePanel()
     {
@@ -139,17 +140,18 @@ public class MenuManager : MonoBehaviour
     public void StartGame()
     {
         FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
+        loadScene = FindObjectOfType<LoadScene>();
+
         try
         {
             currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
-            SceneManager.LoadScene(currentSaveFile.scenename);
+            loadScene.Load(currentSaveFile.sceneEventIndex+1);
         }
         catch (System.Exception)
         {
-            SceneManager.LoadScene(1);
+            loadScene.Load(1);
         }
     }
-
     public void GetSaveFiles()
     {
         for (int i = 0; i < 5; i++)
@@ -197,7 +199,6 @@ public class MenuManager : MonoBehaviour
             File.Delete(invPath);
         }
     }
-
     public void QuitGame()
     {
         Application.Quit();
