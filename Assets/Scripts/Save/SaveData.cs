@@ -88,12 +88,7 @@ public class SaveData
         //}
         EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
         for (int em = 0; em < managers.Length; em++)
-        {
-            for (int a = 0; a < managers[em].getamountofactions(); a++)
-            {
-                totallynotevents[sceneEventIndex].Add(managers[em].getCompleted(a));
-            }
-        }
+            for (int a = 0; a < managers[em].getamountofactions(); a++) totallynotevents[sceneEventIndex].Add(managers[em].getCompleted(a));
     }
 
     public SaveData()
