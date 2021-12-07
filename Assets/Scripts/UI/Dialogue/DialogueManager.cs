@@ -69,7 +69,15 @@ public class DialogueManager : MonoBehaviour
         AddCharactersToQueue(newConversation.ListOfCharacterExchanges);
         AddCharacterDialogueToQueue(_QueueOfCharacters);
         AddSentencesToQueue(_QueueOfStringArrays.Dequeue());
-        TextNPCName.text = _QueueOfCharacters.Dequeue().CharacterName;
+        string characterName = _QueueOfCharacters.Dequeue().CharacterName;
+        if (characterName.Equals("Son"))
+        {
+            TextNPCName.text = playerStats.playerName;
+        }
+        else
+        {
+            TextNPCName.text = characterName;
+        }
 
         DisplayNextExchange();
     }
