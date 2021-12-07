@@ -65,17 +65,17 @@ public class SaveData
 
         //list save enemies
         List<EnemyStats> enemies = GameObject.FindObjectsOfType<EnemyStats>(true).ToList();
-        enemies = enemies.OrderBy(e => e.transform.position.x).ThenBy(e => e.transform.position.y).ThenBy(e => e.transform.position.z).ThenBy(e => e.name).ToList();
+        enemies = enemies.OrderBy(e => e.name).ThenBy(e => e.transform.position.x).ThenBy(e => e.transform.position.y).ThenBy(e => e.transform.position.z).ToList();
         foreach (EnemyStats enemy in enemies) savedEnemies[sceneEventIndex].Add(enemy.isDead);
 
         //list save chests
         List<LootChest_Jerzy> chests = GameObject.FindObjectsOfType<LootChest_Jerzy>(true).ToList();
-        chests = chests.OrderBy(c => c.transform.position.x).ThenBy(c => c.transform.position.y).ThenBy(c => c.transform.position.z).ThenBy(c => c.name).ToList();
+        chests = chests.OrderBy(c => c.name).ThenBy(c => c.transform.position.x).ThenBy(c => c.transform.position.y).ThenBy(c => c.transform.position.z).ToList();
         foreach (LootChest_Jerzy chest in chests) savedChests[sceneEventIndex].Add(chest.isInteractable);
 
         //list save pots
         List<ScrDestructablePot> pots = GameObject.FindObjectsOfType<ScrDestructablePot>(true).ToList();
-        pots = pots.OrderBy(p => p.transform.position.x).ThenBy(p => p.transform.position.y).ThenBy(p => p.transform.position.z).ThenBy(p => p.name).ToList();
+        pots = pots.OrderBy(p => p.name).ThenBy(p => p.transform.position.x).ThenBy(p => p.transform.position.y).ThenBy(p => p.transform.position.z).ToList();
         foreach (ScrDestructablePot pot in pots) savedPots[sceneEventIndex].Add(pot.destroyed);
 
         //try
