@@ -9,19 +9,26 @@ public class BlackoutScript : MonoBehaviour
 
     private int sceneIndex;
 
-    private void Start()
+    private void Awake()
     {
         loadScene = GetComponent<LoadScene>();
         blackoutAnimator = GetComponent<Animator>();
     }
+
+    private void Start()
+    {
+        if (gameObject.activeSelf) gameObject.SetActive(false);
+    }
     public void FadeOutOfScene(int index)
     {
+        gameObject.SetActive(true);
         sceneIndex = index;
-        blackoutAnimator.SetTrigger("FadeBlack"); //Event within animation triggers GetLoadingScreen();
-    }   
+        blackoutAnimator.SetTrigger("FadeBlack"); 
+    }
 
     public void GetLoadingScreen()
     {
+        //Event within animation triggers GetLoadingScreen();
         loadScene.Load(sceneIndex);
     }
 }
