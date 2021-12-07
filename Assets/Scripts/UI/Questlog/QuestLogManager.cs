@@ -16,7 +16,10 @@ public class QuestLogManager : MonoBehaviour
     public void AddQuest(QuestObject quest)
     {
         QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = quest.QuestName.GetLocalisedString();
-        Instantiate(QuestButton, ButtonArea.transform).name = quest.QuestName.GetLocalisedString();
+        // Dominique, Ensure the quest is added to the top of the log instead of the bottom
+        Button newButton = Instantiate(QuestButton, ButtonArea.transform);
+        newButton.name = quest.QuestName.GetLocalisedString();
+        newButton.transform.SetAsFirstSibling();
     }
 
     /*_______________________________________Button_Functions______________________________________________*/
