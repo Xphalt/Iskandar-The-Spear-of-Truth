@@ -30,6 +30,8 @@ public class MenuManager : MonoBehaviour
 
     private LoadScene loadScene;
 
+    private bool validName;
+
     // Populate the locale dropdown
     IEnumerator Start()
     {
@@ -139,18 +141,22 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
-        loadScene = FindObjectOfType<LoadScene>();
+        if (validName)
+        {
+            FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
+            loadScene = FindObjectOfType<LoadScene>();
 
-        try
-        {
-            currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
-            loadScene.Load(currentSaveFile.sceneEventIndex+1);
+            try
+            {
+                currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
+                loadScene.Load(currentSaveFile.sceneEventIndex + 1);
+            }
+            catch (System.Exception)
+            {
+                loadScene.Load(1);
+            }
         }
-        catch (System.Exception)
-        {
-            loadScene.Load(1);
-        }
+        else Debug.LogWarning("Invalid Name");
     }
     public void GetSaveFiles()
     {
@@ -202,5 +208,22 @@ public class MenuManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
-    }  
+    }
+
+    public void ValidNameCheck(string name)
+    {
+        validName = true;
+        for (int i = 0; i < pnm.invalidCharacters.Length; i++)
+        {
+            if (name.Contains(pnm.invalidCharacters[i]))
+            {
+                validName = false;
+            }
+        }
+
+        if(name.Length <= 0)
+        {
+            validName = false;
+        }
+    }
 }
