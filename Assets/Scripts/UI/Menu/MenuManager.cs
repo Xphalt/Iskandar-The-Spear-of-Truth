@@ -28,6 +28,10 @@ public class MenuManager : MonoBehaviour
 
     public PlayerNameManager pnm;
 
+    private LoadScene loadScene;
+
+    private bool validName;
+
     // Populate the locale dropdown
     IEnumerator Start()
     {
@@ -62,7 +66,6 @@ public class MenuManager : MonoBehaviour
     }
 
     public List<int> listOfNumsNotUsed = new List<int>();
-    //UnityEngine.SceneManagement.SceneManager.LoadScene(saveSelections.ElementAt(i).Value.scenename);
 
     public void UpdateSavePanel()
     {
@@ -140,18 +143,23 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
-        try
+        if (validName)
         {
-            currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
-            SceneManager.LoadScene(currentSaveFile.scenename);
-        }
-        catch (System.Exception)
-        {
-            SceneManager.LoadScene(1);
-        }
-    }
+            FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
+            loadScene = FindObjectOfType<LoadScene>();
 
+            try
+            {
+                currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
+                loadScene.Load(currentSaveFile.sceneEventIndex + 1);
+            }
+            catch (System.Exception)
+            {
+                loadScene.Load(1);
+            }
+        }
+        else Debug.LogWarning("Invalid Name");
+    }
     public void GetSaveFiles()
     {
         for (int i = 0; i < 5; i++)
@@ -199,9 +207,25 @@ public class MenuManager : MonoBehaviour
             File.Delete(invPath);
         }
     }
-
     public void QuitGame()
     {
         Application.Quit();
-    }  
+    }
+
+    public void ValidNameCheck(string name)
+    {
+        validName = true;
+        for (int i = 0; i < pnm.invalidCharacters.Length; i++)
+        {
+            if (name.Contains(pnm.invalidCharacters[i]))
+            {
+                validName = false;
+            }
+        }
+
+        if(name.Length <= 0)
+        {
+            validName = false;
+        }
+    }
 }
