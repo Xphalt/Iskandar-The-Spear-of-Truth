@@ -50,6 +50,8 @@ public class MenuManager : MonoBehaviour
 
         dropdown.value = selected;
         dropdown.onValueChanged.AddListener(LocaleSelected);
+
+        GameObject.Find("Play").GetComponent<Button>().Select();
     }
 
 
