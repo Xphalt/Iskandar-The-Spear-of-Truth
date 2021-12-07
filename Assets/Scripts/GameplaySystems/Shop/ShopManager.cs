@@ -35,30 +35,36 @@ public class ShopManager : MonoBehaviour
 
     // Pass in an integer that corresponds to the SHOP_TYPE enum
     public void OpenShop()
-    {  
-        // Populate shop with goods
-        int numGoods = 0;
-        for (int i = 0; i < shop.Storage.Slots.Length; i++)
+    {
+        // Dominique, Make sure we don't add items more than once
+        if (!shopPanel.activeSelf)
         {
-            if (shop.Storage.Slots[i].item.id > -1)
+            // Dominique, Pause time when opening the shop
+            Time.timeScale = 0;
+            // Populate shop with goods
+            int numGoods = 0;
+            for (int i = 0; i < shop.Storage.Slots.Length; i++)
             {
-                //GoodData goodData = currentShop.goodDatas[i];
-                GameObject goodObject = Instantiate(goodPrefab, shopContentPanel.transform); 
+                if (shop.Storage.Slots[i].item.id > -1)
+                {
+                    //GoodData goodData = currentShop.goodDatas[i];
+                    GameObject goodObject = Instantiate(goodPrefab, shopContentPanel.transform);
 
-                goodObject.GetComponent<Good>().SetupGood(shop.database.ItemObjects[shop.Storage.Slots[i].item.id], shop);
-                ++numGoods;
+                    goodObject.GetComponent<Good>().SetupGood(shop.database.ItemObjects[shop.Storage.Slots[i].item.id], shop);
+                    ++numGoods;
+                }
             }
-        }
 
-        // Set the size of the content panel so it fits the number of goods available
-        shopPanel.SetActive(true);
-        RectTransform contentRect = shopContentPanel.GetComponent<RectTransform>();
-        
-        if (numGoods % goodsPerRow == 1)
-        {
-            numGoods++;
+            // Set the size of the content panel so it fits the number of goods available
+            shopPanel.SetActive(true);
+            RectTransform contentRect = shopContentPanel.GetComponent<RectTransform>();
+
+            if (numGoods % goodsPerRow == 1)
+            {
+                numGoods++;
+            }
+            contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, prefabHeight * (numGoods / goodsPerRow));
         }
-        contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, prefabHeight * (numGoods / goodsPerRow));
     }
 
     // Destroy the goods shown in the shop so they're not there when it opens again
@@ -71,6 +77,8 @@ public class ShopManager : MonoBehaviour
         }
 
         shopPanel.SetActive(false);
+        // Dominique, Start time up again when closing the shop
+        Time.timeScale = 1;
     }
 
     private void SetUpShop()
