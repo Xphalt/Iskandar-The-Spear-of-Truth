@@ -28,7 +28,7 @@ public class MenuManager : MonoBehaviour
 
     public PlayerNameManager pnm;
 
-    private LoadScene loadScene;
+    [SerializeField] private LoadScene loadScene;
 
     private bool validName;
 
@@ -146,7 +146,7 @@ public class MenuManager : MonoBehaviour
         if (validName)
         {
             FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
-            loadScene = FindObjectOfType<LoadScene>();
+            loadScene.gameObject.SetActive(true);
 
             try
             {

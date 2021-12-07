@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ShopManager : MonoBehaviour
 {
@@ -22,11 +23,13 @@ public class ShopManager : MonoBehaviour
     public float prefabHeight = 360f;
 
     GameObject shopPanel;
+    TextMeshProUGUI moneyValue;
     GameObject shopContentPanel; 
 
     private void Start()
     {
         shopPanel = GameObject.Find("ShopUI");
+        moneyValue = GameObject.Find("ShopMoney").GetComponentInChildren<TextMeshProUGUI>();
         shopContentPanel = GameObject.Find("ShopContentPanel");
         shopPanel.SetActive(false);
 
@@ -39,6 +42,9 @@ public class ShopManager : MonoBehaviour
         // Dominique, Make sure we don't add items more than once
         if (!shopPanel.activeSelf)
         {
+            // Set the money value to the number of gems the player has
+            moneyValue.text = FindObjectOfType<PlayerStats>().Gems.ToString();
+
             // Dominique, Pause time when opening the shop
             Time.timeScale = 0;
             // Populate shop with goods
