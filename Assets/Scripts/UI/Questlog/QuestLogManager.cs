@@ -13,6 +13,21 @@ public class QuestLogManager : MonoBehaviour
 
     [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
 
+    [SerializeField] private TextMeshProUGUI NoQuestsString;
+
+    // Dominique, If there are no quests show a string for that
+    private void OnEnable()
+    {
+        if (ListOfButtons.Count > 0)
+        {
+            NoQuestsString.gameObject.SetActive(false);
+        }
+        else
+        {
+            NoQuestsString.gameObject.SetActive(true);
+        }
+    }
+
     public void AddQuest(QuestObject quest)
     {
         QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = quest.QuestName.GetLocalisedString();
@@ -20,6 +35,7 @@ public class QuestLogManager : MonoBehaviour
         Button newButton = Instantiate(QuestButton, ButtonArea.transform);
         newButton.name = quest.QuestName.GetLocalisedString();
         newButton.transform.SetAsFirstSibling();
+        ListOfButtons.Add(newButton);
     }
 
     /*_______________________________________Button_Functions______________________________________________*/
