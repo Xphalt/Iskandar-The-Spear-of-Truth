@@ -35,6 +35,14 @@ public class QuestLogManager : MonoBehaviour
         Button newButton = Instantiate(QuestButton, ButtonArea.transform);
         newButton.name = quest.QuestName.GetLocalisedString();
         newButton.transform.SetAsFirstSibling();
+
+        // Go through all previous quests and set them to complete
+        for (int i = 0; i < ListOfButtons.Count; i++)
+        {
+            QuestStatus currentQuest = ListOfButtons[i].GetComponent<QuestStatus>();
+            currentQuest.SetComplete();
+        }
+
         ListOfButtons.Add(newButton);
     }
 
