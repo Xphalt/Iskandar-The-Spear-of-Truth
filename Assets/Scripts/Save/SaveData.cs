@@ -41,9 +41,6 @@ public class SaveData
         sceneEventIndex = m_Scene.buildIndex - 1; // -1 for menu scene
         scenename = m_Scene.name;
         health = playerstats.health;
-        xpos = playerstats.X;
-        ypos = playerstats.Y;
-        zpos = playerstats.Z;
         gemcount = playerstats.gems;
         LastFileSaved = playerstats.SaveNum;
         totallynotevents = playerstats.totallynotevents;
