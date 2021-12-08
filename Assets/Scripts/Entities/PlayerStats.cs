@@ -18,10 +18,10 @@ public class PlayerStats : StatsInterface
 
     public List<List<bool>> totallynotevents = new List<List<bool>>();
     public List<List<bool>> savedEnemies = new List<List<bool>>();
-    public List<List<bool>> savedPots= new List<List<bool>>();
-    public List<List<bool>> savedChests= new List<List<bool>>();
+    public List<List<bool>> savedPots = new List<List<bool>>();
+    public List<List<bool>> savedChests = new List<List<bool>>();
 
-    public Transform startPos;
+    public StartPosManager startPos;
 
     private PlayerSFXPlayer psp;
 
@@ -106,6 +106,8 @@ public class PlayerStats : StatsInterface
         VillageEventsManager villageEvents = FindObjectOfType<VillageEventsManager>();
         if (villageEvents) villageEvents.SetEvents();
         Debug.Log("Currently " + playerName + " is playing");
+
+        transform.position = startPos.transform.position;
     }
 
     private void Update()
@@ -178,7 +180,7 @@ public class PlayerStats : StatsInterface
     {
         health = MAX_HEALTH;
         UIManager.instance.SetHealthBar(health);
-        transform.position = startPos.position;
+        transform.position = startPos.t.position;
     }
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
@@ -353,16 +355,10 @@ public class PlayerStats : StatsInterface
     private int sceneEventIndex;
     string sceneName;
     internal int SaveNum;
-    internal float X;
-    internal float Y;
-    internal float Z;
     internal string playerName = "";
 
     public void SaveStats()
     {
-        X = transform.position.x;
-        Y = transform.position.y;
-        Z = transform.position.z;
         SaveData saveData = new SaveData(this);
         saveData.LastFileSaved = SaveNum;
         SaveManager.SavePlayerStats(saveData);
@@ -457,15 +453,8 @@ public class PlayerStats : StatsInterface
             for (int p = 0; p < pots.Count; p++)
                 pots[p].destroyed = saveData.savedPots[sceneEventIndex][p];
 
-            if (sceneName == saveData.scenename)
-            {
-                X = saveData.xpos;
-                Y = saveData.ypos;
-                Z = saveData.zpos;
-                transform.position = new Vector3(X, Y, Z);
-            }
-            else SaveStats();
-
+            startPos.SetPos(saveData.scenename);
+            if (sceneName != saveData.scenename) SaveStats();
         }
         else
         {
