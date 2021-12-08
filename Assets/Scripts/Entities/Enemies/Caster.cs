@@ -26,7 +26,8 @@ public class Caster : EnemyBase
     private bool pillarCast = false;
     private bool isSpectre = false;
     private float pillarTimer;
-    public float pillarFollowTime;
+    public float summonChannelTime;
+    public float pillarChannelTime;
     public float pillarActivateDelay;
     public float pillarActiveTime;
     public float pillarDmg;
@@ -37,6 +38,8 @@ public class Caster : EnemyBase
     public bool[] casterAvailableAttacks = new bool[(int)CasterAttacks.AttackTypesCount];
     [NamedArrayAttribute(new string[] { "SummonSpell", "Pillar" })]
     public float[] casterCooldowns = new float[(int)CasterAttacks.AttackTypesCount];
+    [NamedArrayAttribute(new string[] { "SummonSpell", "Pillar" })]
+    public float[] casterRecoveries = new float[(int)CasterAttacks.AttackTypesCount];
     private float[] casterTimers = new float[(int)CasterAttacks.AttackTypesCount];
     protected CasterAttacks casterAttack = CasterAttacks.AttackTypesCount;
 
@@ -113,9 +116,25 @@ public class Caster : EnemyBase
     private void SummonSpellCast()
     {
         casterAttack = CasterAttacks.SummonSpell;
+        StartCoroutine("SummonSpellChannel");
+    }
 
+    public IEnumerator SummonSpellChannel()
+    {
+        _myAnimator.SetBool("Channeling",true);
+        yield return new WaitForSeconds(summonChannelTime);
+        _myAnimator.SetBool("Channeling",false);
         _myAnimator.SetTrigger("CastSummon");
     }
+
+    public IEnumerator SummonSpellRecovery()
+    {
+        _myAnimator.SetBool("Recovering",true);
+        yield return new WaitForSeconds(casterRecoveries[(int)CasterAttacks.SummonSpell]);
+        _myAnimator.SetBool("Recovering",false);
+        AttackEnd();
+    }
+
     private void MagicPillarCast()
     {
         casterAttack = CasterAttacks.Pillar;
@@ -142,7 +161,7 @@ public class Caster : EnemyBase
         pillarBase.SetActive(true);
 
         pillarTimer += Time.deltaTime;
-        if (pillarTimer >= pillarFollowTime)
+        if (pillarTimer >= pillarChannelTime)
          StartCoroutine("PillarActivation");
         else
          pillarBase.transform.position = detector.GetCurTarget().position;
@@ -151,6 +170,7 @@ public class Caster : EnemyBase
     private IEnumerator PillarActivation()
     {
         _myAnimator.SetBool("Channeling", false);
+        _myAnimator.SetTrigger("CastPillar");
         yield return new WaitForSeconds(pillarActivateDelay);
         //pillar shoots out of the ground here
         curAttackDmg = pillarDmg;
@@ -160,6 +180,7 @@ public class Caster : EnemyBase
         pillarBase.SetActive(false);
         pillarCast = false;
         pillarTimer = 0;
+        yield return new WaitForSeconds(casterRecoveries[(int)CasterAttacks.Pillar]);
         AttackEnd();
     }
 

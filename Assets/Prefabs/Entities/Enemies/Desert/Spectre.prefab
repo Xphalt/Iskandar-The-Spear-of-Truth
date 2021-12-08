@@ -2406,7 +2406,8 @@ MonoBehaviour:
   - obj: {fileID: 724559345382510007, guid: 8ecabccfaeccb0349a31a09394d714c8, type: 3}
     howMany: 2
     ySpawnOffset: 0
-  pillarFollowTime: 3
+  summonChannelTime: 3
+  pillarChannelTime: 8
   pillarActivateDelay: 1
   pillarActiveTime: 1
   pillarDmg: 5
@@ -2414,8 +2415,11 @@ MonoBehaviour:
   pillarHitbox: {fileID: 6332077353926582314}
   casterAvailableAttacks: 0101
   casterCooldowns:
-  - 15
-  - 10
+  - 30
+  - 20
+  casterRecoveries:
+  - 2
+  - 4
 --- !u!65 &1208909074000575619
 BoxCollider:
   m_ObjectHideFlags: 0
