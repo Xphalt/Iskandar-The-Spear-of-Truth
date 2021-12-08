@@ -180,6 +180,15 @@ public class UIManager : MonoBehaviour
     }
     #endregion // Money Popup
 
+    #region Item Pickup Popup
+    [SerializeField] private ItemPickupPopup itemPickupPopup;
+    public void ShowItemPickupPopup(ItemObject_Sal item)
+    {
+        itemPickupPopup.SetItem(item);
+        itemPickupPopup.gameObject.SetActive(true);
+    }
+    #endregion // Item Pickup Popup
+
     #region Potion Interface
     [SerializeField] private GameObject openInterfaceInfo;
     [SerializeField] private GameObject keyboardPotionInterface;
