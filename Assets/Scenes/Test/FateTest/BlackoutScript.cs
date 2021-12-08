@@ -15,10 +15,6 @@ public class BlackoutScript : MonoBehaviour
         blackoutAnimator = GetComponent<Animator>();
     }
 
-    private void Start()
-    {
-        if (gameObject.activeSelf) gameObject.SetActive(false);
-    }
     public void FadeOutOfScene(int index)
     {
         gameObject.SetActive(true);
