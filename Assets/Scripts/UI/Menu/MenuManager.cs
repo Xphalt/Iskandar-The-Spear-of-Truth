@@ -143,7 +143,7 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (validName)
+        if (validName || saveDataName != "")
         {
             FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
             loadScene.gameObject.SetActive(true);
@@ -160,12 +160,13 @@ public class MenuManager : MonoBehaviour
         }
         else Debug.LogWarning("Invalid Name");
     }
+
+    private string saveDataName = "";
     public void GetSaveFiles()
     {
         for (int i = 0; i < 5; i++)
         {
             SaveData save;
-            string name;
 
             string saveDataPath = Application.persistentDataPath + "/Player_statsf" + i + ".txt";
             string namePath = Application.persistentDataPath + "/Player_name" + i + ".txt";
@@ -178,9 +179,9 @@ public class MenuManager : MonoBehaviour
                 fs.Close();
                 fs = new FileStream(namePath, FileMode.Open);
 
-                name = bf.Deserialize(fs) as string;
+                saveDataName = bf.Deserialize(fs) as string;
 
-                saveSelections.Add(name, save);
+                saveSelections.Add(saveDataName, save);
                 fs.Close();
             }       
         }               
