@@ -197,10 +197,17 @@ public class UIManager : MonoBehaviour
     }
     #endregion // Potion Interface
 
+    #region Blackout Screen
+    private BlackoutScript blackoutScript;
+    public BlackoutScript GetBlackoutScreen() { return blackoutScript; }
+    #endregion
+
     public static UIManager instance;
     private void Awake()
     {
         instance = this;
+
+        blackoutScript = FindObjectOfType<BlackoutScript>();
     }
 
     private void Start()
