@@ -13,13 +13,12 @@ public class PlayerAnimationManager : MonoBehaviour
     [HideInInspector] public bool isStrafing = false;
     [HideInInspector] public bool isSwordThrowing = false;
 
-    public RuntimeAnimatorController noSwordController, swordController;
-    
+    public RuntimeAnimatorController noSwordController, swordController; 
+
     private PlayerCombat_Jerzy playerCombat;
-    private PlayerMovement_Jerzy playerMovement;
     private AnimatorOverrideController overrideController;
 
-    private bool hasWeapon, justPickupUpStick = false;
+    private bool hasWeapon;
     private Vector2 input;
     private float time = 0; 
     #endregion
@@ -28,7 +27,6 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerCombat = GetComponent<PlayerCombat_Jerzy>();
-        playerMovement = GetComponent<PlayerMovement_Jerzy>();
 
         overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = overrideController;
@@ -43,14 +41,6 @@ public class PlayerAnimationManager : MonoBehaviour
 
         if (hasWeapon) animator.runtimeAnimatorController = swordController;
         else animator.runtimeAnimatorController = noSwordController;
-
-        #region Bug fix for animator controller changeover (with stick pick up)
-        if (hasWeapon && !justPickupUpStick)
-        {
-            justPickupUpStick = true;
-            playerMovement.LockPlayerMovement();
-        }
-        #endregion
     }
 
     public void Turning(float rotation)
@@ -58,7 +48,7 @@ public class PlayerAnimationManager : MonoBehaviour
         animator.SetFloat("isTurning", rotation);
     }
 
-    public void LongIdling(float playerVelocity)
+    public void LongIdling(float playerVelocity) //not working atm
     {
      /*_________________________________________________________________________
      * Player switches between idle states if player is stationary for too long

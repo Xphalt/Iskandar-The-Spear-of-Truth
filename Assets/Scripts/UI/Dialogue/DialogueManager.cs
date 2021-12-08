@@ -60,7 +60,10 @@ public class DialogueManager : MonoBehaviour
         currentCollider = newCollider;
         newConversation = newDialogue;
 
-        TextContinueDialogue.text = "Next";
+        LocalisationTableReference nextString;
+        nextString.entryReference = "Next";
+        nextString.tableReference = "ConstantStrings";
+        TextContinueDialogue.text = nextString.GetLocalisedString();
 
         _QueueOfCharacters.Clear();
         _QueueOfStringArrays.Clear();
@@ -119,7 +122,10 @@ public class DialogueManager : MonoBehaviour
 
             if (_QueueOfCharacters.Count == 0 && _QueueOfStringArrays.Count == 0 && _QueueOfStrings.Count == 0)
             {
-                TextContinueDialogue.text = "End";
+                LocalisationTableReference endString;
+                endString.entryReference = "End";
+                endString.tableReference = "ConstantStrings";
+                TextContinueDialogue.text = endString.GetLocalisedString();
             }
         }
     }
