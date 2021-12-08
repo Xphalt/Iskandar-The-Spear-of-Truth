@@ -55,7 +55,7 @@ public class PotionInterface : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    private void SetAmounts()
+    public void SetAmounts()
     {
         if (num_large_potion_button && num_medium_potion_button && num_small_potion_button)
         {

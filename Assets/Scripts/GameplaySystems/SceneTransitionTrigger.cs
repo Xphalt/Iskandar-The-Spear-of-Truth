@@ -7,13 +7,6 @@ public class SceneTransitionTrigger : MonoBehaviour
 {
     public int sceneIndex;
 
-    private BlackoutScript blackoutScreen;
-
-    private void Awake()
-    {
-        blackoutScreen = FindObjectOfType<BlackoutScript>();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out PlayerStats stats))
@@ -21,7 +14,8 @@ public class SceneTransitionTrigger : MonoBehaviour
             stats.SaveStats();
 
             // Dominique, Use fade to black screen
-            blackoutScreen.FadeOutOfScene(sceneIndex);
+            UIManager.instance.GetBlackoutScreen().gameObject.SetActive(true);
+            UIManager.instance.GetBlackoutScreen().FadeOutOfScene(sceneIndex);
         }
     }
 }

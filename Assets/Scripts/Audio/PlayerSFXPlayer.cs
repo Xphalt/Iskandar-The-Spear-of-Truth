@@ -10,7 +10,7 @@ public class PlayerSFXPlayer : MonoBehaviour
     internal AudioSource[] aSource;
     int aSourceCounter = 0;
 
-    public enum AudioType {footsteps, armourHit, swordSwing };
+    public enum AudioType {footsteps, armourHit, swordSwing, playerHit };
     public enum FootstepType {stone, defaultMass, wood, metal};
 
     public List<AudioClip> footstepsStone = new List<AudioClip>();
@@ -18,6 +18,7 @@ public class PlayerSFXPlayer : MonoBehaviour
     public List<AudioClip> footstepsWood = new List<AudioClip>();
     public List<AudioClip> footstepsMetal = new List<AudioClip>();
     public List<AudioClip> armourHit = new List<AudioClip>();
+    public List<AudioClip> playerHit = new List<AudioClip>();
     public List<AudioClip> swordSwing = new List<AudioClip>();
 
     internal Dictionary<AudioType, List<AudioClip>> playerSFXDictionary = new Dictionary<AudioType, List<AudioClip>>();
@@ -33,6 +34,7 @@ public class PlayerSFXPlayer : MonoBehaviour
 
         playerSFXDictionary.Add(AudioType.armourHit, armourHit);
         playerSFXDictionary.Add(AudioType.swordSwing, swordSwing);
+        playerSFXDictionary.Add(AudioType.playerHit, playerHit);
 
         playerFootstepDictionary.Add(FootstepType.stone, footstepsStone);
         playerFootstepDictionary.Add(FootstepType.defaultMass, footstepsDefault);
@@ -47,6 +49,9 @@ public class PlayerSFXPlayer : MonoBehaviour
             aSource[i].outputAudioMixerGroup = mixer.FindMatchingGroups("SFX")[0];
             aSource[i].loop = false;
             aSource[i].playOnAwake = false;
+            aSource[i].priority = 200;
+            aSource[i].spatialBlend = 1;
+            aSource[i].volume = 0.3f;
         }
     }
 

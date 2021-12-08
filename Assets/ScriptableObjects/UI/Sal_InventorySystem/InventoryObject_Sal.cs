@@ -114,14 +114,14 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     [ContextMenu("Load")]
     public void LoadStats(int num)
     {
-        SaveData saveData = SaveManager.LoadPlayerInventory(num);
+        SaveData saveData = SaveManager.LoadPlayerInventory(num, type.ToString());
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
         Inventory newStorage = (Inventory)saveData.Storage;
-        for (int i = 0; i < newStorage.Slots.Length; i++)
+        for (int i = 0; i < Storage.Slots.Length; i++)
         {
-            newStorage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
         }
     }
 
@@ -130,9 +130,6 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
     {
         Storage.Clear();
     }
-
-
-
     public void OnBeforeSerialize()
     {
         for (int i = 0; i < Storage.Slots.Length; i++)

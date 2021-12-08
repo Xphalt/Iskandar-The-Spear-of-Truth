@@ -1586,7 +1586,7 @@ Transform:
   m_GameObject: {fileID: 4543834885586516879}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4547601633987602297}
   - {fileID: 490203410}
@@ -1750,8 +1750,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad9e14063ca56249a6453efdc441719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_HEALTH: 10
-  health: 10
+  MAX_HEALTH: 30
+  health: 0
   vulnerable: 1
   deathTimer: 0
   despawnTime: 3.5
@@ -1799,8 +1799,8 @@ MonoBehaviour:
   findDelay: 0
   availableAttacks: 010100
   attackDamages:
+  - 1
   - 2
-  - 3
   - 0
   attackRanges:
   - 1.5
@@ -1824,7 +1824,7 @@ MonoBehaviour:
   isBoss: 0
   bleedDamage: 1
   maxBleedTicks: 3
-  bleedDelay: 0.5
+  bleedDelay: 1
   minBandaidRadius: 2
   maxBandaidRadius: 8
   knockBackSpeed: 5

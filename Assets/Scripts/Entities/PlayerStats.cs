@@ -17,8 +17,13 @@ public class PlayerStats : StatsInterface
     public ItemObject_Sal revivalGem;
 
     public List<List<bool>> totallynotevents = new List<List<bool>>();
+    public List<List<bool>> savedEnemies = new List<List<bool>>();
+    public List<List<bool>> savedPots = new List<List<bool>>();
+    public List<List<bool>> savedChests = new List<List<bool>>();
 
-    public Transform startPos;
+    public StartPosManager startPos;
+
+    private PlayerSFXPlayer psp;
 
     #region Weapon Model Variables
     private GameObject swordEmpty;
@@ -66,8 +71,11 @@ public class PlayerStats : StatsInterface
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         playerCombat = GetComponent<PlayerCombat_Jerzy>();
         playerTargeting = GetComponent<Player_Targeting_Jack>();
+        psp = GetComponent<PlayerSFXPlayer>();
         SaveDataAssistant saveAssisstant = FindObjectOfType<SaveDataAssistant>();
         if (saveAssisstant) SaveNum = saveAssisstant.currentSaveFileID;
+
+        if (!startPos) startPos = FindObjectOfType<StartPosManager>();
     }
 
     private void Start()
@@ -82,7 +90,7 @@ public class PlayerStats : StatsInterface
 
         //Adding callbacks for the inventory slot update (every time something happens)
         for (int i = 0; i < equipment.GetSlots.Length; i++)
-        {
+        { 
             equipment.GetSlots[i].OnBeforeUpdate += OnBeforeSlotUpdate;
             equipment.GetSlots[i].OnAfterUpdate += OnAfterSlotUpdate;
         }
@@ -100,6 +108,8 @@ public class PlayerStats : StatsInterface
         VillageEventsManager villageEvents = FindObjectOfType<VillageEventsManager>();
         if (villageEvents) villageEvents.SetEvents();
         Debug.Log("Currently " + playerName + " is playing");
+
+        transform.position = startPos.transform.position;
     }
 
     private void Update()
@@ -127,7 +137,12 @@ public class PlayerStats : StatsInterface
     {
         if (scriptedKill) amount = health - 1;
         health -= amount;
-        //sfx.PlayAudio();
+
+        PlayerSFXPlayer.AudioType prevAudioType = psp.audioType;
+        psp.audioType = PlayerSFXPlayer.AudioType.playerHit;
+        psp.PlayAudio();
+        psp.audioType = prevAudioType;
+
         UIManager.instance.UpdateHealthBar((int)-amount);
         
 
@@ -148,6 +163,8 @@ public class PlayerStats : StatsInterface
                 playerTargeting.UnTargetObject();
                 //gameObject.SetActive(false);
                 playerAnimation.Dead();
+                playerCombat.EndPoison();
+                bleeding = false;
             }
         }
     }
@@ -165,7 +182,7 @@ public class PlayerStats : StatsInterface
     {
         health = MAX_HEALTH;
         UIManager.instance.SetHealthBar(health);
-        transform.position = startPos.position;
+        transform.position = startPos.transform.position;
     }
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
@@ -340,16 +357,10 @@ public class PlayerStats : StatsInterface
     private int sceneEventIndex;
     string sceneName;
     internal int SaveNum;
-    internal float X;
-    internal float Y;
-    internal float Z;
     internal string playerName = "";
 
     public void SaveStats()
     {
-        X = transform.position.x;
-        Y = transform.position.y;
-        Z = transform.position.z;
         SaveData saveData = new SaveData(this);
         saveData.LastFileSaved = SaveNum;
         SaveManager.SavePlayerStats(saveData);
@@ -380,47 +391,21 @@ public class PlayerStats : StatsInterface
 
             gems = saveData.gemcount;
             totallynotevents = saveData.totallynotevents;
+            savedPots = saveData.savedPots;
+            savedChests = saveData.savedChests;
+            savedEnemies = saveData.savedEnemies;
             if (saveData.levelsComplete.Length == VillageEventsStaticVariables.levelsComplete.Length) 
                 VillageEventsStaticVariables.levelsComplete = saveData.levelsComplete;
             inventory.LoadStats(num);
             equipment.LoadStats(num);
 
+            for (int e = 0; e < equipment.GetSlots.Length; e++)
+            {
+                equipment.GetSlots[e].OnAfterUpdate.Invoke(equipment.GetSlots[e]);
+            }
+
             SaveNum = saveData.LastFileSaved;
             saveData.LastFileSaved = num;
-
-            EnemyStats[] dlist = FindObjectsOfType<EnemyStats>(true);
-            foreach (EnemyStats Enemy in dlist)
-            {
-                foreach (var ID in saveData.enemydeadlist)
-                {
-                    if (Enemy.gameObject.GetInstanceID() == ID)
-                        Destroy(Enemy.gameObject);
-                }
-            }
-
-            //saving chests
-            var colist = GameObject.FindGameObjectsWithTag("LootChest");
-            foreach (var Chest in colist)
-            {
-                foreach (var ID in saveData.chestopenedlist)
-                {
-                    if (Chest.GetInstanceID() == ID)
-                        Chest.GetComponent<LootChest_Jerzy>().isInteractable = false;
-                    print("LootChest is " + Chest.GetComponent<LootChest_Jerzy>().isInteractable);
-                }
-            }
-
-            //saving pots
-            var plist = GameObject.FindGameObjectsWithTag("Pot");
-            foreach (var Pot in plist)
-            {
-                foreach (var ID in saveData.potbrokenlist)
-                {
-                    if (Pot.GetInstanceID() == ID)
-                        Pot.GetComponent<ScrDestructablePot>().destroyed = true;
-                    print("LootChest is " + Pot.GetComponent<ScrDestructablePot>().destroyed);
-                }
-            }
 
             // shh
             if (totallynotevents.Count > sceneEventIndex)
@@ -441,6 +426,7 @@ public class PlayerStats : StatsInterface
                             {
                                 for (int ev = 0; ev < managers[em].actions[a].events.Count; ev++)
                                 {
+                                    if (managers[em].actions[a].events[ev] == null) continue;
                                     if (managers[em].actions[a].events[ev].ReplayOnload)
                                         managers[em].actions[a].events[ev].TriggerEvent();
                                 }
@@ -451,20 +437,33 @@ public class PlayerStats : StatsInterface
                 }
             }
 
-            if (sceneName == saveData.scenename)
+            List<EnemyStats> enemies = FindObjectsOfType<EnemyStats>(true).ToList();
+            enemies = enemies.OrderBy(e => e.name).ThenBy(e => e.transform.position.x).ThenBy(e => e.transform.position.y).ThenBy(e => e.transform.position.z).ToList();
+            for (int e = 0; e < enemies.Count; e++)
             {
-                X = saveData.xpos;
-                Y = saveData.ypos;
-                Z = saveData.zpos;
-                transform.position = new Vector3(X, Y, Z);
+                enemies[e].isDead = saveData.savedEnemies[sceneEventIndex][e];
+                enemies[e].gameObject.SetActive(!enemies[e].isDead && enemies[e].gameObject.activeSelf);
             }
-            else SaveStats();
+            
+            List<LootChest_Jerzy> chests = FindObjectsOfType<LootChest_Jerzy>(true).ToList();
+            chests = chests.OrderBy(c => c.name).ThenBy(c => c.transform.position.x).ThenBy(c => c.transform.position.y).ThenBy(c => c.transform.position.z).ToList();
+            for (int c = 0; c < chests.Count; c++)
+                chests[c].isInteractable = saveData.savedChests[sceneEventIndex][c];
 
+            List<ScrDestructablePot> pots = FindObjectsOfType<ScrDestructablePot>(true).ToList();
+            pots = pots.OrderBy(p => p.name).ThenBy(p => p.transform.position.x).ThenBy(p => p.transform.position.y).ThenBy(p => p.transform.position.z).ToList();
+            for (int p = 0; p < pots.Count; p++)
+                pots[p].destroyed = saveData.savedPots[sceneEventIndex][p];
+
+            startPos.SetPos(saveData.scenename);
+            if (sceneName != saveData.scenename) SaveStats();
         }
         else
         {
             Debug.LogWarning("No Player Save Data exists for: " + SaveNum + ". Making a new one!");
             SaveStats();
+            // Dominique, Make sure to set player name so it still works in the first scene
+            playerName = SaveManager.LoadPlayerName(num);
         }
     }
 

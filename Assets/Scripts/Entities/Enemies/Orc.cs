@@ -68,7 +68,7 @@ public class Orc : EnemyBase
 
     protected override void OnCollisionEnter(Collision collision)
     {
-        if (detector.GetCurTarget() != null && charging)
+        if (detector && detector.GetCurTarget() != null && charging)
         {
             if (collision.collider.transform == detector.GetCurTarget())
             {

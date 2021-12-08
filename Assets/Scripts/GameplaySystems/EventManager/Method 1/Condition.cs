@@ -133,6 +133,22 @@ public class ConditionCompleted : Condition
 	[SerializeField] public int conditionIndex;
 }
 
+[System.Serializable]
+public class AllConditionCompleted : Condition
+{
+	public override bool TestCondition()
+	{
+		for (int c = 0; c < EventManager.actions[ActionIndex].conditions.Count; c++)
+		{
+			if (!EventManager.actions[ActionIndex].conditions[c].TestCondition()) return false;
+		}
+		return true;
+	}
+
+	[SerializeField] public EventManager EventManager;
+	[SerializeField] public int ActionIndex;
+}
+
 public class ConditionsCompletedOR : Condition
 {
 	public override bool TestCondition()
@@ -146,7 +162,7 @@ public class ConditionsCompletedOR : Condition
 		return false;
 	}
 
-	[SerializeField] ConditionCompleted[] conds;
+	[SerializeField] AllConditionCompleted[] conds;
 }
 
 public class HealthIsLowCondition : Condition

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +12,7 @@ public class SaveData
     //PlayerStats Playerstats;
     Scene m_Scene;
     internal int sceneEventIndex;
-    
+
     public string scenename;
     public float health;
     public float xpos;
@@ -24,12 +25,9 @@ public class SaveData
 
     public Inventory Storage;
 
-    public List<int> enemylist = new List<int>();
-    public List<int> enemydeadlist = new List<int>();
-    public List<int> chestlist = new List<int>();
-    public List<int> chestopenedlist = new List<int>();
-    public List<int> potlist = new List<int>();
-    public List<int> potbrokenlist = new List<int>();
+    public List<List<bool>> savedEnemies = new List<List<bool>>();
+    public List<List<bool>> savedChests = new List<List<bool>>();
+    public List<List<bool>> savedPots = new List<List<bool>>();
     public List<List<bool>> totallynotevents = new List<List<bool>>();
     public bool[] levelsComplete;
 
@@ -43,63 +41,51 @@ public class SaveData
         sceneEventIndex = m_Scene.buildIndex - 1; // -1 for menu scene
         scenename = m_Scene.name;
         health = playerstats.health;
-        xpos = playerstats.X;
-        ypos = playerstats.Y;
-        zpos = playerstats.Z;
         gemcount = playerstats.gems;
         LastFileSaved = playerstats.SaveNum;
         totallynotevents = playerstats.totallynotevents;
+        savedPots = playerstats.savedPots;
+        savedChests = playerstats.savedChests;
+        savedEnemies = playerstats.savedEnemies;
         levelsComplete = VillageEventsStaticVariables.levelsComplete;
 
+        for (int i = totallynotevents.Count; i < sceneEventIndex + 1; i++) totallynotevents.Add(new List<bool>());
+        for (int i = savedPots.Count; i < sceneEventIndex + 1; i++) savedPots.Add(new List<bool>());
+        for (int i = savedEnemies.Count; i < sceneEventIndex + 1; i++) savedEnemies.Add(new List<bool>());
+        for (int i = savedChests.Count; i < sceneEventIndex + 1; i++) savedChests.Add(new List<bool>());
+
+        totallynotevents[sceneEventIndex].Clear();
+        savedPots[sceneEventIndex].Clear();
+        savedEnemies[sceneEventIndex].Clear();
+        savedChests[sceneEventIndex].Clear();
         //Debug.Log(GameObject.FindGameObjectsWithTag("Enemy").Length );
 
         //list save enemies
-        foreach (var enemy in GameObject.FindObjectsOfType<EnemyStats>())
-        {
-            enemylist.Add(enemy.gameObject.GetInstanceID());
-            if (enemy.isDead)
-            {
-                enemydeadlist.Add(enemy.gameObject.GetInstanceID());
-            }
-        }
+        List<EnemyStats> enemies = GameObject.FindObjectsOfType<EnemyStats>(true).ToList();
+        enemies = enemies.OrderBy(e => e.name).ThenBy(e => e.transform.position.x).ThenBy(e => e.transform.position.y).ThenBy(e => e.transform.position.z).ToList();
+        foreach (EnemyStats enemy in enemies) savedEnemies[sceneEventIndex].Add(enemy.isDead);
 
         //list save chests
-        foreach (var chest in GameObject.FindObjectsOfType<LootChest_Jerzy>())
-        {
-            chestlist.Add(chest.gameObject.GetInstanceID());
-            if (!chest.isInteractable)
-            {
-                chestopenedlist.Add(chest.gameObject.GetInstanceID());
-            }
-        }
+        List<LootChest_Jerzy> chests = GameObject.FindObjectsOfType<LootChest_Jerzy>(true).ToList();
+        chests = chests.OrderBy(c => c.name).ThenBy(c => c.transform.position.x).ThenBy(c => c.transform.position.y).ThenBy(c => c.transform.position.z).ToList();
+        foreach (LootChest_Jerzy chest in chests) savedChests[sceneEventIndex].Add(chest.isInteractable);
 
         //list save pots
-        foreach (var pot in GameObject.FindObjectsOfType<ScrDestructablePot>())
-        {
-            potlist.Add(pot.gameObject.GetInstanceID());
-            if (pot.destroyed)
-            {
-                potbrokenlist.Add(pot.gameObject.GetInstanceID());
-            }
-        }
+        List<ScrDestructablePot> pots = GameObject.FindObjectsOfType<ScrDestructablePot>(true).ToList();
+        pots = pots.OrderBy(p => p.name).ThenBy(p => p.transform.position.x).ThenBy(p => p.transform.position.y).ThenBy(p => p.transform.position.z).ToList();
+        foreach (ScrDestructablePot pot in pots) savedPots[sceneEventIndex].Add(pot.destroyed);
 
+        //try
+        //{
+        //    totallynotevents[sceneEventIndex].Clear();
+        //}
+        //catch  (System.Exception)  
+        //{
+        //    totallynotevents.Add(new List<bool>());
+        //}
         EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
-
-        try
-        {
-            totallynotevents[sceneEventIndex].Clear();
-        }
-        catch  (System.Exception)  
-        {
-            totallynotevents.Add(new List<bool>());
-        }
         for (int em = 0; em < managers.Length; em++)
-        {
-            for (int a = 0; a < managers[em].getamountofactions(); a++)
-            {
-                totallynotevents[sceneEventIndex].Add(managers[em].getCompleted(a));
-            }
-        }
+            for (int a = 0; a < managers[em].getamountofactions(); a++) totallynotevents[sceneEventIndex].Add(managers[em].getCompleted(a));
     }
 
     public SaveData()
@@ -130,68 +116,4 @@ public class SaveData
     {
         //EnemyisDead = enemy.isDead;
     }
-
-    // Morgan S
-    /*public void SaveEnemy(EnemyBase enemy)
-    {
-        EnemyData enemydata = new EnemyData();
-        enemydata.isDead = enemy.getIsDead();
-        // Get position of enemy and store it in enemyData
-        enemyDataList.Add(enemydata);
-    }
-
-    // Morgan S
-    public void SaveEnemies()
-    {
-        EnemyBase[] enemies = GameObject.FindObjectsOfType<EnemyBase>();
-
-        foreach (EnemyBase enemy in enemies)
-        {
-            SaveEnemy(enemy);
-        }
-
-    }
-
-    [System.Serializable]
-    public class EnemyData : SaveData
-    {
-        public bool isDead;
-        
-        // Declare new variables to hold position of enemy
-
-        /*
-        Then in the load code need to 
-        1. loop through all EnemyDataList entries
-        2. Get enemy at each position
-        3. Set isDead for that enemy
-        issue... enemies move...
-        
-    }*/
 }
-
-
-    /// extra functions needed to be added
-    //if chest open
-    //if pot destroyed
-    //quest log / progression
-    //check if text is done
-    //stop text from loading again if in a returning room
-
-
-    //if questname.IsQuestActive = true
-
-    /*public void SaveStats(int num)
-    {
-        if QuestName.IsQuestActive = true
-    {
-        
-    }
-    }
-
-
-    foreach ()
-    {
-
-    }
-    
-}*/

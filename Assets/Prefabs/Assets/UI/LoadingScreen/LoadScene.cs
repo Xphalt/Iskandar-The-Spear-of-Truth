@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 //This script was made by Fate, contact me if you need any help with it.
 
-//ASK LEWIS WHAT CHANGES HE MADE BEFORE COMMITTING, DON'T FORGET!
-
 public class LoadScene : MonoBehaviour
 {
     private GameObject loadingScreen;

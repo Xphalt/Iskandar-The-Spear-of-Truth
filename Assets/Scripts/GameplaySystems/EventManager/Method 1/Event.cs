@@ -278,11 +278,13 @@ public class ChangeSceneEvent : Event
     public override void TriggerEvent()
     {
         player.SaveStats();
-        SceneManager.LoadScene(sceneIndex);    
+        if (loadScript) loadScript.FadeOutOfScene(sceneIndex);
+        else SceneManager.LoadScene(sceneIndex);    
     }
 
     [SerializeField] private PlayerStats player;
     [SerializeField] private int sceneIndex;
+    [SerializeField] private BlackoutScript loadScript;
 }
 
 //Matt's changes
@@ -321,6 +323,14 @@ public class EquipWeapon : Event
     [SerializeField] InventoryObject_Sal equipment;
     [SerializeField] InventoryObject_Sal inventory;
     [SerializeField] ItemObject_Sal itemToEquip;
+}
+
+public class OpenShop : Event
+{
+    public override void TriggerEvent()
+    {
+        GameObject.FindObjectOfType<ShopManager>().OpenShop();
+    }
 }
 
 public class RemoveItem : Event

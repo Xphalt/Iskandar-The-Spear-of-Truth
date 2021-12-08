@@ -33,16 +33,21 @@ public class LightSwitch : MonoBehaviour
         on = false;
     }
 
+    public void TurnOn()
+    {
+        myMesh.material = onMat;
+        spotLight.SetActive(!startLight);
+        on = true;
+        manager.RegisterSwitch(this);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out ThrowSword_Jerzy sword) && !on)
+        if (other.attachedRigidbody.TryGetComponent(out ThrowSword_Jerzy sword) && !on)
         {
             if (!sword.PuzzleHit(puzzleCollider))
             {
-                myMesh.material = onMat;
-                spotLight.SetActive(!startLight);
-                on = true;
-                manager.RegisterSwitch(this);
+                TurnOn();
             }
         }
     }

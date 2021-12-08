@@ -70,8 +70,8 @@ public class Interactable_Object_Jack : MonoBehaviour
     private void OnMouseEnter()
     {
         //This function displays the tool tip on mouse hover.
-
-        if (toolTip && toolTip.inRange)
+        // Dominique, Don't show tooltip if intractability is disabled
+        if (enabled && toolTip && toolTip.inRange)
         {
             //Can't use above switch as images need to change on hover, not on click.
             switch (type)

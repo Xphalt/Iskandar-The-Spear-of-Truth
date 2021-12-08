@@ -15,6 +15,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public bool gettingConsumed = false;
     public bool usingWand = false;
 
+    public float lockedSpeedMultiplier;
+
     public Quaternion swordLookRotation;
 
     public bool canBeDamaged = true;
@@ -34,6 +36,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     private Player_Targeting_Jack _playerTargetingScript;
     private Transform _targetedTransform = null;
+
+    public float maxLockOnDistance = 5.0f;
 
     float lastMagnitudeFromTarget = 0;
 
@@ -313,27 +317,32 @@ public class PlayerMovement_Jerzy : MonoBehaviour
                 Vector3 playerToTargetVector = new Vector3(_targetedTransform.position.x - transform.position.x,
                                     0.0f,
                                     _targetedTransform.position.z - transform.position.z);
-
-                playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
-
-                Vector3 direction = playerModel.transform.TransformDirection(m_Input);
-
-                // this block of code ensures that the player does not spiral away from the targeted enemy
-                if (m_Input.x == 0)
+                if (playerToTargetVector.magnitude > maxLockOnDistance) _playerTargetingScript.UnTargetObject();
+                else
                 {
-                    lastMagnitudeFromTarget = playerToTargetVector.magnitude;
-                }
-                if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
-                {
-                    m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE);
+                    playerModel.transform.rotation = Quaternion.LookRotation(playerToTargetVector);
+
+                    Vector3 direction = playerModel.transform.TransformDirection(m_Input).normalized;
+
+                    // this block of code ensures that the player does not spiral away from the targeted enemy
+                    if (m_Input.x == 0)
+                    {
+                        lastMagnitudeFromTarget = playerToTargetVector.magnitude;
+                    }
+                    if (playerToTargetVector.magnitude > lastMagnitudeFromTarget)
+                    {
+                        m_Rigidbody.AddForce(playerModel.transform.forward * m_Speed * FIX_DISTANCE_FORCE);
+                    }
+
+                    m_Rigidbody.velocity = (direction * m_Speed * slowMult * lockedSpeedMultiplier);
+
+                    // this line fixes the thrown sword direction when locked onto an enemy
+                    swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
                 }
 
-                m_Rigidbody.velocity = (direction * m_Speed * slowMult);
 
-                // this line fixes the thrown sword direction when locked onto an enemy
-                swordLookRotation = Quaternion.LookRotation(playerToTargetVector);
             }
-            else
+            if (!_playerTargetingScript.IsTargeting())
             {
                 if (m_Input.magnitude > 0)
                 {
@@ -473,7 +482,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         respawnTime = time;
         LockPlayerMovement();
         SetRespawn();
-        playerAnimation.Dead();
+        playerAnimation.FakeDeath();
     }
 
     public void SetRespawn(int active = 1)
@@ -505,7 +514,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     {
         // Check for object type??
         if (knockedBack) EndKnockback(true);
+        GetComponent<Rigidbody>().useGravity = false;
     }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        GetComponent<Rigidbody>().useGravity = true;
+    }
+
+
 
     private void OnTriggerEnter(Collider other)
     {

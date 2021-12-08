@@ -23,8 +23,10 @@ public class ThrowSword_Jerzy : MonoBehaviour
     private const float DECELERATION_MULTIPLIER = 0.97f;
     private const float MAX_RETURNING_SPEED = 30;
 
+    public LayerMask throwLayer;
+
     float returningSpeed;
-    float throwSpeed;
+    [HideInInspector] public float throwSpeed;
 
     public List<Collider> puzzlesHit = new List<Collider>();
 
@@ -62,6 +64,16 @@ public class ThrowSword_Jerzy : MonoBehaviour
             {
                 throwSpeed *= DECELERATION_MULTIPLIER;
                 swordRigidBody.velocity = transform.forward * throwSpeed;
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.3f,1, QueryTriggerInteraction.Ignore))
+                {
+                    if(hit.transform.tag != "Enemy" && hit.transform.tag != "Pot" && hit.transform.tag != "PuzzleTrigger")
+                    {
+                        returning = true;
+                        throwSpeed = -throwSpeed;
+                        if (hit.transform.TryGetComponent(out LightSwitch ls)) ls.TurnOn();
+                    }
+
+                }
             }
             // stage 2 : sword spins in place for some time
             else if (throwSpeed >= 0)
@@ -80,13 +92,13 @@ public class ThrowSword_Jerzy : MonoBehaviour
             {
                 transform.LookAt(player.transform);
                 throwSpeed *= ACCELERATION_MULTIPLIER;
+                if (throwSpeed < -MAX_RETURNING_SPEED) throwSpeed = -MAX_RETURNING_SPEED;
                 swordRigidBody.velocity = -transform.forward * throwSpeed;
-                if (throwSpeed <= -MAX_RETURNING_SPEED) throwSpeed = -MAX_RETURNING_SPEED;
             }
         }
     }
 
-    public void ThrowSword(Quaternion targetRotation)
+    public void ThrowSword(Vector3 pos, Quaternion targetRotation)
     {
         throwSpeed = combatScript.throwSpeed;
         timeSpinningInPlace = 0;

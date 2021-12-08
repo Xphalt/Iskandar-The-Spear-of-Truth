@@ -99,12 +99,13 @@ public class EnemyBase : Patrol
     {
         base.Update();
 
-        if (stats.health <= 0)
+        if (stats.isDead)
         {
             if (!isDead)
             {
                 _myAnimator.SetTrigger("Dead");
                 _myCapsuleCol.enabled = false;
+                AttackEnd();
                 agent.enabled = false;
                 isDead = true;
                 MyRigid.velocity = Vector3.zero;
@@ -207,7 +208,7 @@ public class EnemyBase : Patrol
 
     public virtual void AttackEnd()
     {
-        curState = detector.GetCurTarget() ? EnemyStates.Aggro : EnemyStates.Patrolling;
+        curState = (detector && detector.GetCurTarget()) ? EnemyStates.Aggro : EnemyStates.Patrolling;
         attackEnded = true;
         SetWeaponActive(0);
     }
@@ -223,7 +224,7 @@ public class EnemyBase : Patrol
     protected virtual void EndCharge()
     {
         charging = false;
-        MyRigid.velocity = Vector3.zero;
+        if (MyRigid) MyRigid.velocity = Vector3.zero;
         AttackEnd();
     }
 
@@ -345,12 +346,12 @@ public class EnemyBase : Patrol
 
     public void SetWeaponActive(int active)
     {
-        hitCollider.enabled = active > 0;
+        if (hitCollider) hitCollider.enabled = active > 0;
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        if(charging)
+        if(charging && detector)
         {
             if (detector.IsTarget(collision.collider.transform))
             {
@@ -364,7 +365,7 @@ public class EnemyBase : Patrol
 
     protected virtual void OnTriggerEnter(Collider collider)
     {
-        if (detector.IsTarget(collider.transform))
+        if (detector && detector.IsTarget(collider.transform))
         {
             stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), curAttackDmg);
             hitCollider.enabled = false;
@@ -376,11 +377,17 @@ public class EnemyBase : Patrol
         if (charging)
             EndCharge();
 
-        _myAnimator.SetBool("IsAggroed", false);
-        _myAnimator.SetBool("IsPatrolling",false);
-        //_myAnimator.Play("Idle");
-        agent.speed = 0;
-        agent.enabled = false;
+        if (_myAnimator)
+        {
+            _myAnimator.SetBool("IsAggroed", false);
+            _myAnimator.SetBool("IsPatrolling", false);
+            //_myAnimator.Play("Idle");
+        }
+        if (agent)
+        {
+            agent.speed = 0;
+            agent.enabled = false;
+        }
     }
 
     //Morgan Save Edit

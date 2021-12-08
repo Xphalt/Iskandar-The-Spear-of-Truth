@@ -28,6 +28,10 @@ public class MenuManager : MonoBehaviour
 
     public PlayerNameManager pnm;
 
+    [SerializeField] private LoadScene loadScene;
+
+    private bool validName;
+
     // Populate the locale dropdown
     IEnumerator Start()
     {
@@ -50,6 +54,8 @@ public class MenuManager : MonoBehaviour
 
         dropdown.value = selected;
         dropdown.onValueChanged.AddListener(LocaleSelected);
+
+        GameObject.Find("Play").GetComponent<Button>().Select();
     }
 
 
@@ -60,7 +66,6 @@ public class MenuManager : MonoBehaviour
     }
 
     public List<int> listOfNumsNotUsed = new List<int>();
-    //UnityEngine.SceneManagement.SceneManager.LoadScene(saveSelections.ElementAt(i).Value.scenename);
 
     public void UpdateSavePanel()
     {
@@ -138,24 +143,30 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
-        try
+        if (validName || saveDataName != "")
         {
-            currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
-            SceneManager.LoadScene(currentSaveFile.scenename);
+            FindObjectOfType<SaveDataAssistant>().currentSaveFileID = pnm.currentSaveFile;
+            loadScene.gameObject.SetActive(true);
+
+            try
+            {
+                currentSaveFile = saveSelections.ElementAt(pnm.currentSaveFile).Value;
+                loadScene.Load(currentSaveFile.sceneEventIndex + 1);
+            }
+            catch (System.Exception)
+            {
+                loadScene.Load(1);
+            }
         }
-        catch (System.Exception)
-        {
-            SceneManager.LoadScene(1);
-        }
+        else Debug.LogWarning("Invalid Name");
     }
 
+    private string saveDataName = "";
     public void GetSaveFiles()
     {
         for (int i = 0; i < 5; i++)
         {
             SaveData save;
-            string name;
 
             string saveDataPath = Application.persistentDataPath + "/Player_statsf" + i + ".txt";
             string namePath = Application.persistentDataPath + "/Player_name" + i + ".txt";
@@ -168,9 +179,9 @@ public class MenuManager : MonoBehaviour
                 fs.Close();
                 fs = new FileStream(namePath, FileMode.Open);
 
-                name = bf.Deserialize(fs) as string;
+                saveDataName = bf.Deserialize(fs) as string;
 
-                saveSelections.Add(name, save);
+                saveSelections.Add(saveDataName, save);
                 fs.Close();
             }       
         }               
@@ -197,9 +208,25 @@ public class MenuManager : MonoBehaviour
             File.Delete(invPath);
         }
     }
-
     public void QuitGame()
     {
         Application.Quit();
-    }  
+    }
+
+    public void ValidNameCheck(string name)
+    {
+        validName = true;
+        for (int i = 0; i < pnm.invalidCharacters.Length; i++)
+        {
+            if (name.Contains(pnm.invalidCharacters[i]))
+            {
+                validName = false;
+            }
+        }
+
+        if(name.Length <= 0)
+        {
+            validName = false;
+        }
+    }
 }

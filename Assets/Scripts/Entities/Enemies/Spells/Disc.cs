@@ -8,7 +8,7 @@ public class Disc : MonoBehaviour
     private float _discSpeed, _discDamage, _discOffset;
 
     private int _numberOfBounces;
-    private int _maxNumberOfBounces;
+    public int _maxNumberOfBounces;
 
     private Rigidbody _myRigid;
 

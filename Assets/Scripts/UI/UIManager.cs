@@ -191,14 +191,23 @@ public class UIManager : MonoBehaviour
     {
         potionInterfaceOpen = !potionInterfaceOpen;
         keyboardPotionInterface.SetActive(potionInterfaceOpen);
+        keyboardPotionInterface.GetComponent<PotionInterface>().SetAmounts();
         controllerPotionInterface.SetActive(potionInterfaceOpen);
+        controllerPotionInterface.GetComponent<PotionInterface>().SetAmounts();
     }
     #endregion // Potion Interface
+
+    #region Blackout Screen
+    private BlackoutScript blackoutScript;
+    public BlackoutScript GetBlackoutScreen() { return blackoutScript; }
+    #endregion
 
     public static UIManager instance;
     private void Awake()
     {
         instance = this;
+
+        blackoutScript = FindObjectOfType<BlackoutScript>();
     }
 
     private void Start()
