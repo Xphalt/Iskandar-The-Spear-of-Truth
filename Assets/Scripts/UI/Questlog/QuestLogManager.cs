@@ -14,6 +14,7 @@ public class QuestLogManager : MonoBehaviour
     [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
 
     [SerializeField] private TextMeshProUGUI NoQuestsString;
+    [SerializeField] private GameObject questNotification;
 
     // Dominique, If there are no quests show a string for that
     private void OnEnable()
@@ -30,6 +31,9 @@ public class QuestLogManager : MonoBehaviour
 
     public void AddQuest(QuestObject quest)
     {
+        // Dominique, Show the player they have a new quest
+        questNotification.SetActive(true);
+
         QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = quest.QuestName.GetLocalisedString();
         // Dominique, Ensure the quest is added to the top of the log instead of the bottom
         Button newButton = Instantiate(QuestButton, ButtonArea.transform);
