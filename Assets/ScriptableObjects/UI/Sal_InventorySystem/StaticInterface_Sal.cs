@@ -15,13 +15,6 @@ public class StaticInterface_Sal : UserInterface_Sal
         {
             var obj = slots[i];
 
-            //Adds Events to each slot
-            AddEvent(obj, EventTriggerType.PointerEnter, delegate { OnEnter(obj); });
-            AddEvent(obj, EventTriggerType.PointerExit, delegate { OnExit(obj); });
-            AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj); });
-            AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
-            AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
-
             //Storing the GameObject in the slot
             inventory.GetSlots[i].slotDisplay = obj;
 

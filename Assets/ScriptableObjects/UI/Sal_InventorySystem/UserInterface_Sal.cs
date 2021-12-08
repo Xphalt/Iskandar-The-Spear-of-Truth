@@ -30,13 +30,6 @@ public abstract class UserInterface_Sal : MonoBehaviour
             inventory.GetSlots[i].OnAfterUpdate += OnSlotUpdate;    //Setting delegate method to update the UI
         }
         CreateSlots();
-
-        //Adds Events to check if the drag and drop is within the inventory area
-        if (gameObject.GetComponent<EventTrigger>())
-        {
-            AddEvent(this.gameObject, EventTriggerType.PointerEnter, delegate { OnEnterInterface(this.gameObject); });
-            AddEvent(this.gameObject, EventTriggerType.PointerExit, delegate { OnExitInterface(this.gameObject); });
-        }
     }
 
     private void OnSlotUpdate(InventorySlot slot)
@@ -63,65 +56,6 @@ public abstract class UserInterface_Sal : MonoBehaviour
         eventTrigger.eventID = type;
         eventTrigger.callback.AddListener(action);
         trigger.triggers.Add(eventTrigger);
-    }
-
-    //Actions
-    private void OnEnterInterface(GameObject obj)
-    {
-        MouseData.interfaceMouseIsOver = obj.GetComponent<UserInterface_Sal>();
-    }
-
-    private void OnExitInterface(GameObject obj)
-    {
-        MouseData.interfaceMouseIsOver = null;
-    }
-
-    public void OnEnter(GameObject obj)
-    {
-        MouseData.slotHoveredOver = obj;
-    }
-
-    public void OnExit(GameObject obj)
-    {
-        MouseData.slotHoveredOver = null;
-    }
-
-    public void OnDragStart(GameObject obj)
-    {
-        //Instantiate an empty gameobject and adding components to it
-        GameObject tempItem = null;
-        if (slotsOnInterface[obj].item.id >= 0) //only if there is an item in the slot
-        {
-            tempItem = new GameObject();
-            var rt = tempItem.AddComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(50, 50); //Same size of the UIdisplay
-            rt.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            tempItem.transform.SetParent(transform.parent);  //set parent to the canvas 
-
-            var img = tempItem.AddComponent<Image>();
-            img.sprite = slotsOnInterface[obj].ItemObject.uiDisplay;
-            img.raycastTarget = false;
-        }
-
-        MouseData.tempItemBeingDragged = tempItem;
-    }
-    public void OnDrag(GameObject obj)
-    {
-        //Update the position of the item dragged
-        if (MouseData.tempItemBeingDragged != null)
-            MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = Mouse.current.position.ReadValue();
-
-    }
-
-    public void OnDragEnd(GameObject obj)
-    {
-        Destroy(MouseData.tempItemBeingDragged);
-
-        if (MouseData.slotHoveredOver)//If there is a slot hovering over, check if we can swap
-        {
-            InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
-            inventory.SwapItem(slotsOnInterface[obj], mouseHoverSlotData);
-        }
     }
 }
 
