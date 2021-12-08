@@ -73,7 +73,9 @@ public class PlayerStats : StatsInterface
         playerTargeting = GetComponent<Player_Targeting_Jack>();
         psp = GetComponent<PlayerSFXPlayer>();
         SaveDataAssistant saveAssisstant = FindObjectOfType<SaveDataAssistant>();
-        if (saveAssisstant) SaveNum = saveAssisstant.currentSaveFileID; 
+        if (saveAssisstant) SaveNum = saveAssisstant.currentSaveFileID;
+
+        if (!startPos) startPos = FindObjectOfType<StartPosManager>();
     }
 
     private void Start()
@@ -180,7 +182,7 @@ public class PlayerStats : StatsInterface
     {
         health = MAX_HEALTH;
         UIManager.instance.SetHealthBar(health);
-        transform.position = startPos.t.position;
+        transform.position = startPos.transform.position;
     }
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
