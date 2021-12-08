@@ -127,8 +127,8 @@ public class PauseMenuManager : MonoBehaviour
         Time.timeScale = 1f;
         gameIsPaused = false;
         Debug.Log("Fading Out");
-        GameObject.FindObjectOfType<BlackoutScript>().FadeOutOfScene(0);
-        GameObject.FindObjectOfType<BlackoutScript>().GetLoadingScreen();
+        UIManager.instance.GetBlackoutScreen().FadeOutOfScene(0);
+        UIManager.instance.GetBlackoutScreen().GetLoadingScreen();
     }
 
     public void QuitGame()
