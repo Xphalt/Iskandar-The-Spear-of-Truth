@@ -181,8 +181,12 @@ public class UIManager : MonoBehaviour
     #endregion // Money Popup
 
     #region Potion Interface
+    [SerializeField] private GameObject openInterfaceInfo;
     [SerializeField] private GameObject keyboardPotionInterface;
     [SerializeField] private GameObject controllerPotionInterface;
+
+    [SerializeField] private InventoryObject_Sal inventory;
+    [SerializeField] private ItemObject_Sal smallPotion, mediumPotion, largePotion;
 
     private bool potionInterfaceOpen = false;
     public bool IsPotionInterfaceOpen() { return potionInterfaceOpen;  }
@@ -194,6 +198,24 @@ public class UIManager : MonoBehaviour
         keyboardPotionInterface.GetComponent<PotionInterface>().SetAmounts();
         controllerPotionInterface.SetActive(potionInterfaceOpen);
         controllerPotionInterface.GetComponent<PotionInterface>().SetAmounts();
+    }
+
+    // Only show the 'ctrl' for potions info if we have a potion in our inventory
+    private void CheckPotions()
+    {
+        bool gotPotions = false;
+        InventorySlot large = inventory.FindItemOnInventory(largePotion.data);
+        InventorySlot medium = inventory.FindItemOnInventory(mediumPotion.data);
+        InventorySlot small = inventory.FindItemOnInventory(smallPotion.data);
+        gotPotions = (large != null && large.amount > 0) || (medium != null && medium.amount > 0) || (small != null && small.amount > 0);
+        if (gotPotions)
+        {
+            openInterfaceInfo.SetActive(true);
+        }
+        else
+        {
+            openInterfaceInfo.SetActive(false);
+        }
     }
     #endregion // Potion Interface
 
@@ -225,6 +247,11 @@ public class UIManager : MonoBehaviour
 #else
         SetUIForInput(INPUT_OPTIONS.KEYBOAD_AND_MOUSE);
 #endif
+    }
+
+    private void Update()
+    {
+        CheckPotions();
     }
 
 #if DEBUG // Dominique 07-10-2021, Use to test enemy health bar (make sure to SetupEnemyHealthBar first)
