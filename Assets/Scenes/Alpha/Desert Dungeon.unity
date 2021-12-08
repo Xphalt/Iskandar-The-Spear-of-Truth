@@ -11167,6 +11167,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 475118, guid: ff5c549bd91cb7c43ba46386303671e8, type: 3}
   m_PrefabInstance: {fileID: 1952049884}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &447940030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 447940031}
+  - component: {fileID: 447940033}
+  - component: {fileID: 447940032}
+  m_Layer: 0
+  m_Name: DefeatPestilentCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &447940031
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447940030}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -50.01, y: -17.67, z: 128.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 570406774}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &447940032
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447940030}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 54.102142, y: 1, z: 49.24507}
+  m_Center: {x: 5.775833, y: 0, z: 6.948723}
+--- !u!114 &447940033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447940030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0554387b768ef94cae40645d15b2b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &448822894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15469,6 +15526,7 @@ Transform:
   - {fileID: 898586075}
   - {fileID: 957191293}
   - {fileID: 1284190770}
+  - {fileID: 447940031}
   m_Father: {fileID: 460121114}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28518,7 +28576,7 @@ MonoBehaviour:
       data:
         IsComplete: 0
         ReplayOnload: 0
-        convCollider: {fileID: 1108058754}
+        convCollider: {fileID: 447940032}
         dialogue: {fileID: 11400000, guid: 6ba48af139a3a0e458b2da7fcaf96c31, type: 2}
     00000013:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
