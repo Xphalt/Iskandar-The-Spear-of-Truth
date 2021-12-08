@@ -322,7 +322,10 @@ public class PlayerStats : StatsInterface
                 Destroy(other.gameObject);
             }
             else if (inventory.AddItem(new Item(item.itemobj), 1))
+            {
+                UIManager.instance.ShowItemPickupPopup(item.itemobj);
                 Destroy(other.gameObject);  //Only if the item is picked up
+            }
         }
         else if (item) //It's a resource
         {
@@ -333,7 +336,10 @@ public class PlayerStats : StatsInterface
                 else
                 {
                     if (inventory.AddItem(new Item(item.itemobj), 1))
+                    {
+                        UIManager.instance.ShowItemPickupPopup(item.itemobj);
                         Destroy(other.gameObject);
+                    }
                 }
             }
             else if ((((ResourceObject)(item.itemobj)).resourceType == ResourceType.Gems))
@@ -347,7 +353,10 @@ public class PlayerStats : StatsInterface
             else
             {
                 if (inventory.AddItem(new Item(item.itemobj), 1))
+                {
+                    UIManager.instance.ShowItemPickupPopup(item.itemobj);
                     Destroy(other.gameObject);  //Only if the item is picked up
+                }
             }
         }
     }
