@@ -39,12 +39,14 @@ public abstract class UserInterface_Sal : MonoBehaviour
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.ItemObjects[slot.item.id].uiDisplay;
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>(true).text = slot.amount == 1 ? "" : slot.amount.ToString("n0");
+            slot.slotDisplay.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>(true).text = inventory.database.ItemObjects[slot.item.id].name;
         }
         else //No item
         {
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = uiMask;
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = "";
+            slot.slotDisplay.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>(true).text = "";
         } 
     }  
 
