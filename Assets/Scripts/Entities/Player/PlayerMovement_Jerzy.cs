@@ -502,7 +502,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         playerAnimation.Falling();
         //GetComponent<CapsuleCollider>().enabled = false;
         if (FadeUI) FadeUI.FadeOut();
-        //LockPlayerMovement();
+        LockPlayerMovement();
     }
 
     public void Launch(float yVel)
