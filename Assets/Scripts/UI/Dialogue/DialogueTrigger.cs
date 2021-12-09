@@ -9,6 +9,8 @@ public class DialogueTrigger : MonoBehaviour
     private Queue<NewConversation> QueueOfNewConversations = new Queue<NewConversation>();
     private Collider col;
 
+    public bool replayable = false;
+
     private void Start()
     {
         foreach (NewConversation item in ListOfConversations)
@@ -28,8 +30,11 @@ public class DialogueTrigger : MonoBehaviour
         DialogueManager_.DialoguePanel.SetActive(true);
         DialogueManager_.StartDialogue(col, Conversation);
         // Dominique, Dialogues don't need to be repeated and this way we can stop them from triggering during combat
-        GetComponent<Interactable_Object_Jack>().enabled = false;
-        gameObject.layer = 0;
+        if (!replayable)
+        {
+            GetComponent<Interactable_Object_Jack>().enabled = false;
+            gameObject.layer = 0;
+        }
 
         GameEvents.current.StopAttacking();
     }
