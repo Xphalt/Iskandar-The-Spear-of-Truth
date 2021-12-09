@@ -103,10 +103,11 @@ public class EnemyBase : Patrol
         {
             if (!isDead)
             {
+                agent.enabled = false;
+                MyRigid.velocity = Vector3.zero;
                 _myAnimator.SetTrigger("Dead");
                 _myCapsuleCol.enabled = false;
                 AttackEnd();
-                agent.enabled = false;
                 isDead = true;
                 MyRigid.velocity = Vector3.zero;
             }
