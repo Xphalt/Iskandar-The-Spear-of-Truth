@@ -38,13 +38,26 @@ public abstract class UserInterface_Sal : MonoBehaviour
         {
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.ItemObjects[slot.item.id].uiDisplay;
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-            slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount == 1 ? "" : slot.amount.ToString("n0");
+            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>(true).text = slot.amount == 1 ? "" : slot.amount.ToString("n0");
+            LocalisationTableReference nameString;
+            nameString.tableReference = "InventoryStrings";
+            nameString.entryReference = inventory.database.ItemObjects[slot.item.id].name;
+            // Dominique, If this is an inventory slot also set the tooltip
+            if (slot.slotDisplay.transform.childCount > 1)
+            {
+                slot.slotDisplay.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>(true).text = nameString.GetLocalisedString();
+            }
         }
         else //No item
         {
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = uiMask;
             slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-            slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = "";
+            slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = "";
+            // Dominique, If this is an inventory slot also set the tooltip
+            if (slot.slotDisplay.transform.childCount > 1)
+            {
+                slot.slotDisplay.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>(true).text = "";
+            }
         } 
     }  
 

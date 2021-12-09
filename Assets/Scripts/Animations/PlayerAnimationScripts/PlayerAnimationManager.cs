@@ -13,20 +13,22 @@ public class PlayerAnimationManager : MonoBehaviour
     [HideInInspector] public bool isStrafing = false;
     [HideInInspector] public bool isSwordThrowing = false;
 
-    public RuntimeAnimatorController noSwordController, swordController; 
+    public RuntimeAnimatorController noSwordController, swordController;
 
     private PlayerCombat_Jerzy playerCombat;
+    private PlayerMovement_Jerzy playerMovement;
     private AnimatorOverrideController overrideController;
 
-    private bool hasWeapon;
+    private bool hasWeapon, justPickupUpStick = false;
     private Vector2 input;
-    private float time = 0; 
+    private float time = 0;
     #endregion
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         playerCombat = GetComponent<PlayerCombat_Jerzy>();
+        playerMovement = GetComponent<PlayerMovement_Jerzy>();
 
         overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = overrideController;
@@ -41,6 +43,14 @@ public class PlayerAnimationManager : MonoBehaviour
 
         if (hasWeapon) animator.runtimeAnimatorController = swordController;
         else animator.runtimeAnimatorController = noSwordController;
+
+        #region Bug fix for animator controller changeover (with stick pick up)
+        if (hasWeapon && !justPickupUpStick)
+        {
+            justPickupUpStick = true;
+            playerMovement.LockPlayerMovement();
+        }
+        #endregion
     }
 
     public void Turning(float rotation)
@@ -48,11 +58,11 @@ public class PlayerAnimationManager : MonoBehaviour
         animator.SetFloat("isTurning", rotation);
     }
 
-    public void LongIdling(float playerVelocity) //not working atm
+    public void LongIdling(float playerVelocity)
     {
-     /*_________________________________________________________________________
-     * Player switches between idle states if player is stationary for too long
-     * ________________________________________________________________________*/
+        /*_________________________________________________________________________
+        * Player switches between idle states if player is stationary for too long
+        * ________________________________________________________________________*/
         float waitDuration = 4;
 
         while ((time < waitDuration) && !isLongIdling)
@@ -73,7 +83,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     }
 
-    public void Running(float speed) 
+    public void Running(float speed)
     {
         if (speed < 0.1f)
         {
@@ -92,12 +102,12 @@ public class PlayerAnimationManager : MonoBehaviour
                 animator.SetTrigger("isIdling");
                 animator.SetBool("isStrafing", true);
             }
-            else 
+            else
                 animator.SetBool("isStrafing", false);
         }
     }
 
-    public void SimpleAttack() 
+    public void SimpleAttack()
     {
         if (hasWeapon)
         {
@@ -106,7 +116,7 @@ public class PlayerAnimationManager : MonoBehaviour
         }
     }
 
-    public void SwordThrowAttack() 
+    public void SwordThrowAttack()
     {
         if (hasWeapon)
         {
@@ -115,24 +125,24 @@ public class PlayerAnimationManager : MonoBehaviour
         }
     }
 
-    public void Dodging() 
+    public void Dodging()
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge")) animator.SetTrigger("isDodging"); 
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge")) animator.SetTrigger("isDodging");
     }
 
-    public void Falling() 
-    { 
+    public void Falling()
+    {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Fall")) animator.SetTrigger("isFalling");
     }
 
-    public void Landing() 
+    public void Landing()
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Land")) animator.SetTrigger("isLanding");
     }
 
-    public void Dead() 
+    public void Dead()
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dead")) animator.SetTrigger("isDead"); 
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dead")) animator.SetTrigger("isDead");
     }
 
     public void FakeDeath()
