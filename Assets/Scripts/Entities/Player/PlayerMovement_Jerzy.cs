@@ -500,7 +500,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         consumeMoveAmount = moveAmt;
         gettingConsumed = true;
         playerAnimation.Falling();
-        GetComponent<CapsuleCollider>().enabled = false;
+        //GetComponent<CapsuleCollider>().enabled = false;
         if (FadeUI) FadeUI.FadeOut();
         LockPlayerMovement();
     }
