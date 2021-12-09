@@ -9,7 +9,7 @@ public class DialogueTrigger : MonoBehaviour
     private Queue<NewConversation> QueueOfNewConversations = new Queue<NewConversation>();
     private Collider col;
 
-    public bool replayable = false;
+    public bool replayable = false, hasPlayed = false;
 
     private void Start()
     {
@@ -34,6 +34,7 @@ public class DialogueTrigger : MonoBehaviour
         {
             GetComponent<Interactable_Object_Jack>().enabled = false;
             gameObject.layer = 0;
+            hasPlayed = true;
         }
 
         GameEvents.current.StopAttacking();

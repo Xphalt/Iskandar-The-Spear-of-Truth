@@ -24,10 +24,12 @@ public class SaveData
     public string playerName = "";
 
     public Inventory Storage;
+    public List<QuestSave> Quests = new List<QuestSave>();
 
     public List<List<bool>> savedEnemies = new List<List<bool>>();
     public List<List<bool>> savedChests = new List<List<bool>>();
     public List<List<bool>> savedPots = new List<List<bool>>();
+    public List<List<bool>> savedDialogue = new List<List<bool>>();
     public List<List<bool>> totallynotevents = new List<List<bool>>();
     public bool[] levelsComplete;
 
@@ -47,6 +49,7 @@ public class SaveData
         savedPots = playerstats.savedPots;
         savedChests = playerstats.savedChests;
         savedEnemies = playerstats.savedEnemies;
+        savedDialogue = playerstats.savedDialogue;
         levelsComplete = VillageEventsStaticVariables.levelsComplete;
 
         for (int i = totallynotevents.Count; i < sceneEventIndex + 1; i++) totallynotevents.Add(new List<bool>());
@@ -75,14 +78,10 @@ public class SaveData
         pots = pots.OrderBy(p => p.name).ThenBy(p => p.transform.position.x).ThenBy(p => p.transform.position.y).ThenBy(p => p.transform.position.z).ToList();
         foreach (ScrDestructablePot pot in pots) savedPots[sceneEventIndex].Add(pot.destroyed);
 
-        //try
-        //{
-        //    totallynotevents[sceneEventIndex].Clear();
-        //}
-        //catch  (System.Exception)  
-        //{
-        //    totallynotevents.Add(new List<bool>());
-        //}
+        List<DialogueTrigger> dialogues = GameObject.FindObjectsOfType<DialogueTrigger>(true).ToList();
+        dialogues = dialogues.OrderBy(d => d.name).ThenBy(d => d.transform.position.x).ThenBy(d => d.transform.position.y).ThenBy(d => d.transform.position.z).ToList();
+        for (int d = 0; d < dialogues.Count; d++) savedDialogue[sceneEventIndex].Add(dialogues[d].hasPlayed);
+
         EventManager[] managers = GameObject.FindObjectsOfType<EventManager>(true);
         for (int em = 0; em < managers.Length; em++)
             for (int a = 0; a < managers[em].getamountofactions(); a++) totallynotevents[sceneEventIndex].Add(managers[em].getCompleted(a));
@@ -109,7 +108,13 @@ public class SaveData
 
     public SaveData(QuestLogManager QL)
     {
-        //QL.allquests;
+        for (int q = 0; q < QL.StartedQuests.Count; q++)
+        {
+            Quests.Add(new QuestSave());
+            Quests[q].IsQuestActive = QL.StartedQuests[q].IsQuestActive;
+            Quests[q].QuestName = QL.StartedQuests[q].QuestName;
+            Quests[q].QuestDescription= QL.StartedQuests[q].QuestDescription;
+        }
     }
 
     public SaveData(EnemyStats enemy)
