@@ -13,12 +13,7 @@ public class Poison : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out PlayerCombat_Jerzy combat))
-        {
-            combat.Poison(this);
-            if (destroyOnContact) Destroy(gameObject);
-        }
-
+        if (other.TryGetComponent(out PlayerCombat_Jerzy combat)) combat.Poison(this);
+        if (destroyOnContact) Destroy(gameObject);
     }
-
 }

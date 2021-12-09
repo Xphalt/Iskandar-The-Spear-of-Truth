@@ -56,6 +56,7 @@ public class SaveData
         for (int i = savedPots.Count; i < sceneEventIndex + 1; i++) savedPots.Add(new List<bool>());
         for (int i = savedEnemies.Count; i < sceneEventIndex + 1; i++) savedEnemies.Add(new List<bool>());
         for (int i = savedChests.Count; i < sceneEventIndex + 1; i++) savedChests.Add(new List<bool>());
+        for (int i = savedDialogue.Count; i < sceneEventIndex + 1; i++) savedDialogue.Add(new List<bool>());
 
         totallynotevents[sceneEventIndex].Clear();
         savedPots[sceneEventIndex].Clear();
