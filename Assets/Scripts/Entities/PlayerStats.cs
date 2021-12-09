@@ -20,6 +20,7 @@ public class PlayerStats : StatsInterface
     public List<List<bool>> savedEnemies = new List<List<bool>>();
     public List<List<bool>> savedPots = new List<List<bool>>();
     public List<List<bool>> savedChests = new List<List<bool>>();
+    public List<List<bool>> savedDialogue= new List<List<bool>>();
 
     public StartPosManager startPos;
 
@@ -161,7 +162,6 @@ public class PlayerStats : StatsInterface
             }
             else
             {
-
                 playerTargeting.UnTargetObject();
                 //gameObject.SetActive(false);
                 playerAnimation.Dead();
@@ -377,6 +377,7 @@ public class PlayerStats : StatsInterface
         SaveManager.SavePlayerStats(saveData);
         inventory.SaveStats(SaveNum);
         equipment.SaveStats(SaveNum);
+        FindObjectOfType<QuestLogManager>(true).SaveQuests(SaveNum);
         sceneName = m_Scene.name;
         totallynotevents = saveData.totallynotevents;
     }
@@ -405,15 +406,15 @@ public class PlayerStats : StatsInterface
             savedPots = saveData.savedPots;
             savedChests = saveData.savedChests;
             savedEnemies = saveData.savedEnemies;
+            savedDialogue = saveData.savedDialogue;
             if (saveData.levelsComplete.Length == VillageEventsStaticVariables.levelsComplete.Length) 
                 VillageEventsStaticVariables.levelsComplete = saveData.levelsComplete;
             inventory.LoadStats(num);
             equipment.LoadStats(num);
+            FindObjectOfType<QuestLogManager>(true).LoadQuests(num);
 
             for (int e = 0; e < equipment.GetSlots.Length; e++)
-            {
                 equipment.GetSlots[e].OnAfterUpdate.Invoke(equipment.GetSlots[e]);
-            }
 
             SaveNum = saveData.LastFileSaved;
             saveData.LastFileSaved = num;
@@ -463,6 +464,14 @@ public class PlayerStats : StatsInterface
                 pots = pots.OrderBy(p => p.name).ThenBy(p => p.transform.position.x).ThenBy(p => p.transform.position.y).ThenBy(p => p.transform.position.z).ToList();
                 for (int p = 0; p < pots.Count; p++)
                     pots[p].destroyed = saveData.savedPots[sceneEventIndex][p];
+
+                List<DialogueTrigger> dialogues = FindObjectsOfType<DialogueTrigger>(true).ToList();
+                dialogues = dialogues.OrderBy(d => d.name).ThenBy(d => d.transform.position.x).ThenBy(d => d.transform.position.y).ThenBy(d => d.transform.position.z).ToList();
+                for (int d = 0; d < dialogues.Count; d++)
+                {
+                    dialogues[d].hasPlayed = saveData.savedDialogue[sceneEventIndex][d];
+                    if (dialogues[d].hasPlayed) dialogues[d].GetComponent<Interactable_Object_Jack>().enabled = false;
+                }
             }
 
 

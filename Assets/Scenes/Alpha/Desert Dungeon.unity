@@ -12401,7 +12401,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 128.80084
+      value: 128.94281
       objectReference: {fileID: 0}
     - target: {fileID: 3054451402402017905, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.y
@@ -13089,6 +13089,7 @@ Transform:
   - {fileID: 570406774}
   - {fileID: 1476502554}
   - {fileID: 1376762727}
+  - {fileID: 1366606831}
   m_Father: {fileID: 142919583}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -29584,24 +29585,25 @@ MonoBehaviour:
         - id: 14
         - id: 15
         - id: 16
+        - id: 17
         complete: 0
     00000003:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 17
-        events:
         - id: 18
+        events:
         - id: 19
         - id: 20
+        - id: 21
         complete: 0
     00000004:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 21
-        events:
         - id: 22
+        events:
+        - id: 23
         complete: 0
     00000005:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
@@ -29680,17 +29682,24 @@ MonoBehaviour:
         - {fileID: 1284190769}
         _activateObjects: 1
     00000011:
+      type: {class: TeleportObjectEvent, ns: , asm: Assembly-CSharp}
+      data:
+        IsComplete: 0
+        ReplayOnload: 0
+        objectToTeleport: {fileID: 1984591573}
+        teleportPos: {fileID: 1366606831}
+    00000012:
       type: {class: EnemyDiedCondition, ns: , asm: Assembly-CSharp}
       data:
         enemyStats: {fileID: 1271645497}
-    00000012:
+    00000013:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 447940032}
         dialogue: {fileID: 11400000, guid: 6ba48af139a3a0e458b2da7fcaf96c31, type: 2}
-    00000013:
+    00000014:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -29698,7 +29707,7 @@ MonoBehaviour:
         _objectsToActivate:
         - {fileID: 957191292}
         _activateObjects: 1
-    00000014:
+    00000015:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -29706,12 +29715,12 @@ MonoBehaviour:
         _objectsToActivate:
         - {fileID: 1284190769}
         _activateObjects: 0
-    00000015:
+    00000016:
       type: {class: DialogueEndedCondition, ns: , asm: Assembly-CSharp}
       data:
         dialogue: {fileID: 11400000, guid: 6ba48af139a3a0e458b2da7fcaf96c31, type: 2}
         dlgManager: {fileID: 457033590}
-    00000016:
+    00000017:
       type: {class: CompleteLevel, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -37370,6 +37379,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4283461243174910, guid: 3c3791d604bc6104fa09b77432654cb6, type: 3}
   m_PrefabInstance: {fileID: 1366064205}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1366606830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1366606831}
+  m_Layer: 0
+  m_Name: PestilentFightSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1366606831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366606830}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -59.26, y: -18.849998, z: 106.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 460121114}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1366877527
 PrefabInstance:
   m_ObjectHideFlags: 0

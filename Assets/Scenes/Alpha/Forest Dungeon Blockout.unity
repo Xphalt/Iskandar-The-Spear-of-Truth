@@ -1850,7 +1850,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 546400280}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &62933227
 MonoBehaviour:
@@ -5668,7 +5668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 98.741196
+      value: 128.94281
       objectReference: {fileID: 0}
     - target: {fileID: 3054451402402017905, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.y
@@ -16477,10 +16477,10 @@ Transform:
   m_Children:
   - {fileID: 123720531}
   - {fileID: 449566161}
-  - {fileID: 1299967969}
   - {fileID: 1634121090}
   - {fileID: 1228451922}
   - {fileID: 62933226}
+  - {fileID: 1299967969}
   m_Father: {fileID: 1508043463}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -36267,7 +36267,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 546400280}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1228451923
 MonoBehaviour:
@@ -39045,11 +39045,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1299967968}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -47.94, y: -24.69, z: 71.8}
+  m_LocalPosition: {x: -47.940002, y: -24.69, z: 71.79999}
   m_LocalScale: {x: 5.886455, y: 2.1023, z: 1}
   m_Children: []
   m_Father: {fileID: 546400280}
-  m_RootOrder: 2
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1299967970
 BoxCollider:
@@ -42553,40 +42553,41 @@ MonoBehaviour:
         - id: 14
         events:
         - id: 15
+        - id: 16
         complete: 0
     00000004:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 16
-        events:
         - id: 17
+        events:
+        - id: 18
         complete: 0
     00000005:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 18
-        events:
         - id: 19
+        events:
+        - id: 20
         complete: 0
     00000006:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 20
-        events:
         - id: 21
+        events:
         - id: 22
         - id: 23
+        - id: 24
         complete: 0
     00000007:
       type: {class: EventAction, ns: , asm: Assembly-CSharp}
       data:
         conditions:
-        - id: 24
-        events:
         - id: 25
+        events:
+        - id: 26
         complete: 0
     00000008:
       type: {class: ObjectsActiveCondition, ns: , asm: Assembly-CSharp}
@@ -42639,33 +42640,40 @@ MonoBehaviour:
         convCollider: {fileID: 1299967970}
         dialogue: {fileID: 11400000, guid: f8ebb96b04c5ebc42b5dac061e00056b, type: 2}
     00000010:
+      type: {class: TeleportObjectEvent, ns: , asm: Assembly-CSharp}
+      data:
+        IsComplete: 0
+        ReplayOnload: 0
+        objectToTeleport: {fileID: 864524009}
+        teleportPos: {fileID: 1493115877}
+    00000011:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
       data:
         _oneTimeTrigger: {fileID: 1634121091}
-    00000011:
+    00000012:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 1634121092}
         dialogue: {fileID: 11400000, guid: 53ecc5153aec0164890967b817eeb913, type: 2}
-    00000012:
+    00000013:
       type: {class: EnemyDiedCondition, ns: , asm: Assembly-CSharp}
       data:
         enemyStats: {fileID: 769626161}
-    00000013:
+    00000014:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         convCollider: {fileID: 769626162}
         dialogue: {fileID: 11400000, guid: 439b0e7a0a1f08148b1a52de9bc57daf, type: 2}
-    00000014:
+    00000015:
       type: {class: DialogueEndedCondition, ns: , asm: Assembly-CSharp}
       data:
         dialogue: {fileID: 11400000, guid: 439b0e7a0a1f08148b1a52de9bc57daf, type: 2}
         dlgManager: {fileID: 512148866}
-    00000015:
+    00000016:
       type: {class: SpawnEntityEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -42673,25 +42681,25 @@ MonoBehaviour:
         _objectsToActivate:
         - {fileID: 1228451921}
         _activateObjects: 1
-    00000016:
+    00000017:
       type: {class: CompleteLevel, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         level: 1
-    00000017:
+    00000018:
       type: {class: QuestLogEntryEvent, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
         ReplayOnload: 0
         questLog: {fileID: 173283471}
         quest: {fileID: 11400000, guid: a81996c090b632848997c4235269fbe2, type: 2}
-    00000018:
+    00000019:
       type: {class: DialogueEndedCondition, ns: , asm: Assembly-CSharp}
       data:
         dialogue: {fileID: 11400000, guid: 439b0e7a0a1f08148b1a52de9bc57daf, type: 2}
         dlgManager: {fileID: 512148866}
-    00000019:
+    0000001A:
       type: {class: StartDialogue, ns: , asm: Assembly-CSharp}
       data:
         IsComplete: 0
@@ -44615,6 +44623,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 456254, guid: f65b497ff807d95439b38e7da2fab667, type: 3}
   m_PrefabInstance: {fileID: 915899300}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1493115876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1493115877}
+  m_Layer: 0
+  m_Name: WarchiefFightSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1493115877
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493115876}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 214.5, y: 6.960066, z: 330.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1508043463}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1494683574
 GameObject:
   m_ObjectHideFlags: 0
@@ -45166,6 +45204,7 @@ Transform:
   - {fileID: 769626160}
   - {fileID: 99574241}
   - {fileID: 546400280}
+  - {fileID: 1493115877}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48641,7 +48680,7 @@ Transform:
   m_LocalScale: {x: 37.34053, y: 3.4485, z: 1}
   m_Children: []
   m_Father: {fileID: 546400280}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 18.136, z: 0}
 --- !u!114 &1634121091
 MonoBehaviour:
