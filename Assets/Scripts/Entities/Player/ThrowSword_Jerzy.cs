@@ -19,14 +19,14 @@ public class ThrowSword_Jerzy : MonoBehaviour
     float throwTimeSpinningInPlace;
     float timeSpinningInPlace;
 
-    private const float ACCELERATION_MULTIPLIER = 1.03f;
-    private const float DECELERATION_MULTIPLIER = 0.97f;
+    public float ACCELERATION_MULTIPLIER = 1.03f;
+    public float DECELERATION_MULTIPLIER = 0.97f;
     private const float MAX_RETURNING_SPEED = 30;
 
     public LayerMask throwLayer;
 
     float returningSpeed;
-    [HideInInspector] public float throwSpeed;
+    public float throwSpeed;
 
     public List<Collider> puzzlesHit = new List<Collider>();
 

@@ -3124,9 +3124,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 7836609601897569369}
-  throwTimeSpinningInPlace: 0.5
+  throwTimeSpinningInPlace: 0.1
   throwSpeed: 18
-  throwReturnSpeed: 1
+  throwReturnSpeed: 10
   attackOffCooldown: 1
   canAttack: 1
   timeToThrowSword: 1
@@ -3459,6 +3459,8 @@ MonoBehaviour:
   thrown: 0
   returning: 0
   swordModel: {fileID: 6917620529337182812}
+  ACCELERATION_MULTIPLIER: 1.1
+  DECELERATION_MULTIPLIER: 0.965
   throwLayer:
     serializedVersion: 2
     m_Bits: 0

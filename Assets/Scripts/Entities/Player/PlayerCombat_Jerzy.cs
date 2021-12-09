@@ -9,7 +9,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     
     public float throwTimeSpinningInPlace;
     public float throwSpeed;
-    [HideInInspector] public float throwReturnSpeed = 5;
+    public float throwReturnSpeed = 5;
     public bool attackOffCooldown = true;
     public bool canAttack = true;
     Quaternion swordLookRotation;
