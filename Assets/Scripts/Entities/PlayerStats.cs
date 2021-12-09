@@ -104,6 +104,7 @@ public class PlayerStats : StatsInterface
 
         m_Scene = SceneManager.GetActiveScene();
         sceneEventIndex = m_Scene.buildIndex - 1;
+        sceneName = m_Scene.name;
         TrueLoadStats(SaveNum);
         VillageEventsManager villageEvents = FindObjectOfType<VillageEventsManager>();
         if (villageEvents) villageEvents.SetEvents();
@@ -444,25 +445,25 @@ public class PlayerStats : StatsInterface
                         totalEvents += managers[em].getamountofactions();
                     }
                 }
-            }
-
-            List<EnemyStats> enemies = FindObjectsOfType<EnemyStats>(true).ToList();
-            enemies = enemies.OrderBy(e => e.name).ThenBy(e => e.transform.position.x).ThenBy(e => e.transform.position.y).ThenBy(e => e.transform.position.z).ToList();
-            for (int e = 0; e < enemies.Count; e++)
-            {
-                enemies[e].isDead = saveData.savedEnemies[sceneEventIndex][e];
-                enemies[e].gameObject.SetActive(!enemies[e].isDead && enemies[e].gameObject.activeSelf);
-            }
+                List<EnemyStats> enemies = FindObjectsOfType<EnemyStats>(true).ToList();
+                enemies = enemies.OrderBy(e => e.name).ThenBy(e => e.transform.position.x).ThenBy(e => e.transform.position.y).ThenBy(e => e.transform.position.z).ToList();
+                for (int e = 0; e < enemies.Count; e++)
+                {
+                    enemies[e].isDead = saveData.savedEnemies[sceneEventIndex][e];
+                    enemies[e].gameObject.SetActive(!enemies[e].isDead && enemies[e].gameObject.activeSelf);
+                }
             
-            List<LootChest_Jerzy> chests = FindObjectsOfType<LootChest_Jerzy>(true).ToList();
-            chests = chests.OrderBy(c => c.name).ThenBy(c => c.transform.position.x).ThenBy(c => c.transform.position.y).ThenBy(c => c.transform.position.z).ToList();
-            for (int c = 0; c < chests.Count; c++)
-                chests[c].isInteractable = saveData.savedChests[sceneEventIndex][c];
+                List<LootChest_Jerzy> chests = FindObjectsOfType<LootChest_Jerzy>(true).ToList();
+                chests = chests.OrderBy(c => c.name).ThenBy(c => c.transform.position.x).ThenBy(c => c.transform.position.y).ThenBy(c => c.transform.position.z).ToList();
+                for (int c = 0; c < chests.Count; c++)
+                    chests[c].isInteractable = saveData.savedChests[sceneEventIndex][c];
 
-            List<ScrDestructablePot> pots = FindObjectsOfType<ScrDestructablePot>(true).ToList();
-            pots = pots.OrderBy(p => p.name).ThenBy(p => p.transform.position.x).ThenBy(p => p.transform.position.y).ThenBy(p => p.transform.position.z).ToList();
-            for (int p = 0; p < pots.Count; p++)
-                pots[p].destroyed = saveData.savedPots[sceneEventIndex][p];
+                List<ScrDestructablePot> pots = FindObjectsOfType<ScrDestructablePot>(true).ToList();
+                pots = pots.OrderBy(p => p.name).ThenBy(p => p.transform.position.x).ThenBy(p => p.transform.position.y).ThenBy(p => p.transform.position.z).ToList();
+                for (int p = 0; p < pots.Count; p++)
+                    pots[p].destroyed = saveData.savedPots[sceneEventIndex][p];
+            }
+
 
             startPos.SetPos(saveData.scenename);
             if (sceneName != saveData.scenename) SaveStats();
