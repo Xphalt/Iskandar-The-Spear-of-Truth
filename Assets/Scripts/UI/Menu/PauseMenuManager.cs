@@ -34,10 +34,13 @@ public class PauseMenuManager : MonoBehaviour
 
     [SerializeField] private MoneyPopup equipmentMoney;
 
+    private PlayerStats player;
+
     private void Start()
     {
         playerLight = GameObject.Find("Player Illumination");
         playerLight.SetActive(false);
+        player = FindObjectOfType<PlayerStats>();
         Resume();    
     }
 
@@ -124,6 +127,7 @@ public class PauseMenuManager : MonoBehaviour
 
     public void LoadMenu()
     {
+        if(player) player.SaveStats();
         Time.timeScale = 1f;
         gameIsPaused = false;
         Debug.Log("Fading Out");

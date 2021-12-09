@@ -10,6 +10,7 @@ public class QuestLogManager : MonoBehaviour
     public Button QuestButton;
 
     public List<QuestObject> ListOfQuests = new List<QuestObject>();
+    internal List<QuestObject> StartedQuests = new List<QuestObject>();
 
     [HideInInspector] public List<Button> ListOfButtons = new List<Button>();
 
@@ -29,10 +30,13 @@ public class QuestLogManager : MonoBehaviour
         }
     }
 
-    public void AddQuest(QuestObject quest)
+    public void AddQuest(QuestObject quest, bool notify = true)
     {
+        // Daniel - Won't notify on load
         // Dominique, Show the player they have a new quest
-        questNotification.SetActive(true);
+        questNotification.SetActive(notify);
+
+        StartedQuests.Add(quest); // For saving/loading
 
         QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = quest.QuestName.GetLocalisedString();
         // Dominique, Ensure the quest is added to the top of the log instead of the bottom
@@ -60,4 +64,25 @@ public class QuestLogManager : MonoBehaviour
         GameObject.Find("TextQuestDescription").GetComponent<TextMeshProUGUI>().text = questString;
     }
     /*_____________________________________________________________________________________________________*/
+
+
+    //Saving/Loading - Daniel
+    public void SaveQuests(int num)
+    {
+        SaveManager.SaveQuests(this, num);
+    }
+
+    public void LoadQuests(int num)
+    {
+        SaveData saveData = SaveManager.LoadQuests(num);
+
+        for (int q = 0; q < saveData.Quests.Count; q++)
+        {
+            QuestObject nq = new QuestObject();
+            nq.IsQuestActive = saveData.Quests[q].IsQuestActive;
+            nq.QuestName = saveData.Quests[q].QuestName;
+            nq.QuestDescription = saveData.Quests[q].QuestDescription;
+            AddQuest(nq, false);
+        }
+    }
 }

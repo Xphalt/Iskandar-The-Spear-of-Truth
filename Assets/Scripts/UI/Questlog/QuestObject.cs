@@ -20,6 +20,14 @@ public class QuestObject : ScriptableObject
 
     [Space(10)]
     [Tooltip("The rewards given to the player once the quest is completed.")]
+    [System.NonSerialized]
     public ItemObj[] QuestReward;
+}
 
+[System.Serializable]
+public class QuestSave
+{
+    public bool IsQuestActive;
+    public LocalisationTableReference QuestName;
+    public LocalisationTableReference QuestDescription;
 }

@@ -33,6 +33,19 @@ public static class SaveManager
         fs.Close();
     }
 
+    public static void SaveQuests(QuestLogManager quests, int num)
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+
+        string filePath = Application.persistentDataPath + "/Player_Questsf" + num + ".txt";
+        FileStream fs = new FileStream(filePath, FileMode.Create);
+
+        SaveData saveData = new SaveData(quests);
+
+        bf.Serialize(fs, saveData);
+        fs.Close();
+    }
+
     public static SaveData LoadPlayerStats(int num)
     {
         string filePath = Application.persistentDataPath + "/Player_statsf" + num + ".txt";
@@ -90,4 +103,22 @@ public static class SaveManager
         }
     }
 
+    public static SaveData LoadQuests(int num)
+    {
+        string filePath = Application.persistentDataPath + "/Player_Questsf" + num + ".txt";
+        if (File.Exists(filePath))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fs = new FileStream(filePath, FileMode.Open);
+
+            SaveData saveData = bf.Deserialize(fs) as SaveData;
+            fs.Close();
+
+            return saveData;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
