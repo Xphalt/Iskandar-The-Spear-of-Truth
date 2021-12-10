@@ -451,7 +451,7 @@ public class PlayerStats : StatsInterface
                 enemies = enemies.OrderBy(e => e.name).ThenBy(e => e.transform.position.x).ThenBy(e => e.transform.position.y).ThenBy(e => e.transform.position.z).ToList();
                 for (int e = 0; e < enemies.Count; e++)
                 {
-                    enemies[e].isDead = saveData.savedEnemies[sceneEventIndex][e];
+                    enemies[e].isDead = !enemies[e].reviveOnLoad && saveData.savedEnemies[sceneEventIndex][e];
                     enemies[e].gameObject.SetActive(!enemies[e].isDead && enemies[e].gameObject.activeSelf);
                 }
             
