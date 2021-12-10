@@ -11,15 +11,9 @@ public class Poison : MonoBehaviour
 
     public bool destroyOnContact = true;
 
-    private Collider shooter;
-    public void SetShooter(Collider _shooter)
+    private void OnCollisionEnter(Collision other)
     {
-        shooter = _shooter;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out PlayerCombat_Jerzy combat)) combat.Poison(this);
-        if (destroyOnContact && other != shooter) Destroy(gameObject);
+        if (other.transform.TryGetComponent(out PlayerCombat_Jerzy combat)) combat.Poison(this);
+        if (destroyOnContact) Destroy(gameObject);
     }
 }
