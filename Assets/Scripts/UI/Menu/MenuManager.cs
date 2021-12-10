@@ -194,6 +194,9 @@ public class MenuManager : MonoBehaviour
         string saveDataPath = Application.persistentDataPath + "/Player_statsf" + i + ".txt";
         string namePath = Application.persistentDataPath + "/Player_name" + i + ".txt";
         string invPath = Application.persistentDataPath + "/Player_Inventoryf" + i + ".txt";
+        string questsPath = Application.persistentDataPath + "/Player_Questsf" + i + ".txt";
+        string invEquiPath = Application.persistentDataPath + "/Player_Inventoryf" + i + "Equipment.txt";
+        string invInvPath = Application.persistentDataPath + "/Player_Inventoryf" + i + "Inventory.txt";
 
         if (File.Exists(saveDataPath))
         {
@@ -206,6 +209,18 @@ public class MenuManager : MonoBehaviour
         if (File.Exists(invPath))
         {
             File.Delete(invPath);
+        }
+        if (File.Exists(questsPath))
+        {
+            File.Delete(questsPath);
+        }
+        if (File.Exists(invEquiPath))
+        {
+            File.Delete(invEquiPath);
+        }
+        if (File.Exists(invInvPath))
+        {
+            File.Delete(invInvPath);
         }
     }
     public void QuitGame()
