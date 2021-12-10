@@ -125,6 +125,9 @@ public class SwapActiveCameraAfterPanObject : MonoBehaviour
 
         GameEvents.current.EnableUI();
         GameEvents.current.UnLockPlayerInputs();
+
+        // Dominique, Resume time after camera pan
+        Time.timeScale = 1.0f;
     }
 }
 
