@@ -48,6 +48,7 @@ public class LightSwitch : MonoBehaviour
             if (!sword.PuzzleHit(puzzleCollider))
             {
                 TurnOn();
+                sword.HitPuzzle(puzzleCollider);
             }
         }
     }

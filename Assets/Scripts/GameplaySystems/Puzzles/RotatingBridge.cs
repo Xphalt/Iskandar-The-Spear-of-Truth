@@ -35,7 +35,11 @@ public class RotatingBridge : MonoBehaviour
     {
         if (other.attachedRigidbody.TryGetComponent(out ThrowSword_Jerzy sword))
         {
-            if (!sword.PuzzleHit(puzzleCollider)) angleRotated = 0;
+            if (!sword.PuzzleHit(puzzleCollider))
+            {
+                angleRotated = 0;
+                sword.HitPuzzle(puzzleCollider);
+            }
         }
     }
 }

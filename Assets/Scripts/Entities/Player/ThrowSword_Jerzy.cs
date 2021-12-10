@@ -64,15 +64,18 @@ public class ThrowSword_Jerzy : MonoBehaviour
             {
                 throwSpeed *= DECELERATION_MULTIPLIER;
                 swordRigidBody.velocity = transform.forward * throwSpeed;
-                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.3f,1, QueryTriggerInteraction.Ignore))
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.3f, 1, QueryTriggerInteraction.Ignore))
                 {
-                    if(hit.transform.tag != "Enemy" && hit.transform.tag != "Pot" && hit.transform.tag != "PuzzleTrigger")
+                    if (hit.transform.tag != "Enemy" && hit.transform.tag != "Pot" && hit.transform.tag != "PuzzleTrigger")
                     {
                         returning = true;
                         throwSpeed = -throwSpeed;
-                        if (hit.transform.TryGetComponent(out LightSwitch ls)) ls.TurnOn();
+                        if (hit.transform.TryGetComponent(out LightSwitch ls) && !PuzzleHit(hit.collider))
+                        {
+                            ls.TurnOn();
+                            HitPuzzle(hit.collider);
+                        }
                     }
-
                 }
             }
             // stage 2 : sword spins in place for some time
@@ -133,6 +136,11 @@ public class ThrowSword_Jerzy : MonoBehaviour
         }
     }
 
+    public void HitPuzzle(Collider puzzle)
+    {
+        puzzlesHit.Add(puzzle);
+    }
+
     public bool PuzzleHit(Collider puzzle)
     {
         return puzzlesHit.Contains(puzzle);
@@ -146,11 +154,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // when the sword returns to the player
-        if (other.TryGetComponent(out EnemyStats statsInterface))
-        {
-            playerStats.DealDamage(statsInterface, swordDamage);
-        }
-
-        if (other.CompareTag("PuzzleTrigger")) puzzlesHit.Add(other);
+        if (other.TryGetComponent(out EnemyStats statsInterface)) playerStats.DealDamage(statsInterface, swordDamage);
     }
 }

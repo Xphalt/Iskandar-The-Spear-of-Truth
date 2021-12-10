@@ -33,8 +33,7 @@ public class TargetPad_Jack : MonoBehaviour
     // When hit by the player all attached walls will alternate between being risen & fallen
 	private void OnTriggerEnter(Collider other)
 	{
-        if (other.attachedRigidbody.TryGetComponent(out ThrowSword_Jerzy sword)
-            && _timeSinceLastTriggered > _wallAnimation.length)
+        if (other.attachedRigidbody.TryGetComponent(out ThrowSword_Jerzy sword) && _timeSinceLastTriggered > _wallAnimation.length)
         {
             if (!sword.PuzzleHit(puzzleCollider))
             {
@@ -43,6 +42,7 @@ public class TargetPad_Jack : MonoBehaviour
                     wallAnimator.SetTrigger(_changeStateTrigger);
                     _timeSinceLastTriggered = 0.0f;
                 }
+                sword.HitPuzzle(puzzleCollider);
             }
         }
 	}
