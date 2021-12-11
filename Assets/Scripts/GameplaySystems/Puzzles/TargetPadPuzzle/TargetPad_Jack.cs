@@ -5,20 +5,16 @@ using UnityEngine;
 // Detects and handles the player hitting the target pad
 public class TargetPad_Jack : MonoBehaviour
 {
-    [SerializeField]
-    private List<Animator> _attachedWalls;
-
-    [SerializeField]
-    private AnimationClip _wallAnimation;
-
-    private string _playerSwordTag = "playerSword";
-    private string _changeStateTrigger = "Change State";
-
-    private float _timeSinceLastTriggered = 0.0f;
+    [SerializeField] private List<Animator> _attachedWalls;
+    [SerializeField] private AnimationClip _wallAnimation;
 
     private Collider puzzleCollider;
+    private string _playerSwordTag = "playerSword";
+    private string _changeStateTrigger = "Change State";
+    private float _timeSinceLastTriggered = 0.0f;
 
-    // Start is called before the first frame update
+    public bool hasTriggered;   
+
     void Start()
     {
         _timeSinceLastTriggered = _wallAnimation.length;
@@ -28,7 +24,13 @@ public class TargetPad_Jack : MonoBehaviour
 	private void Update()
 	{
         _timeSinceLastTriggered += Time.deltaTime;
-	}
+
+        //Do click count odd even for toggle
+        if (hasTriggered) hasTriggered = false;
+
+        print("triggered" + hasTriggered);
+    }
+
 
     // When hit by the player all attached walls will alternate between being risen & fallen
 	private void OnTriggerEnter(Collider other)
