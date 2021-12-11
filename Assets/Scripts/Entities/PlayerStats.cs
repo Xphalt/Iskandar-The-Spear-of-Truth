@@ -318,6 +318,20 @@ public class PlayerStats : StatsInterface
         var item = other.GetComponent<GroundItem>();
         if (item && item.itemobj.objType != ObjectType.Resource)
         {
+            if(item.itemobj.objType == ObjectType.Item) //health drop
+            {
+                try
+                {
+                    var healthDrop = ((ItemOBJECT)(item.itemobj));
+                    health += healthDrop.healingValue;
+                    health = Mathf.Clamp(health, 0.0f, MAX_HEALTH);
+                    //Update UI
+                    UIManager.instance.SetHealthBar((int)health);
+                    Destroy(other.gameObject);
+                    return;
+                }
+                catch { }
+            }
             if (equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
             {
                 equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
