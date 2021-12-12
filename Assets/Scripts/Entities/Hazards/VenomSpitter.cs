@@ -12,13 +12,6 @@ public class VenomSpitter : MonoBehaviour
     private float timeSinceLastShot;
     private Animator anim;
 
-    private Collider myCollider;
-
-    private void Start()
-    {
-        myCollider = GetComponent<Collider>();
-    }
-
     void Update()
     {
         timeSinceLastShot += Time.deltaTime;
@@ -36,7 +29,7 @@ public class VenomSpitter : MonoBehaviour
             //playerPos.y = transform.y;
             Vector3 direction = (playerPos - transform.position).normalized;
             venomShot.GetComponent<VenomShot>().SetDirection(direction,venomSpeed,playerPos);
-            venomShot.GetComponent<Poison>().SetShooter(myCollider);
+            Physics.IgnoreCollision(GetComponent<Collider>(), venomShot.GetComponent<Collider>());
         }
     }
 }

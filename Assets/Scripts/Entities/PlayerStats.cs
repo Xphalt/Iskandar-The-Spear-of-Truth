@@ -318,6 +318,20 @@ public class PlayerStats : StatsInterface
         var item = other.GetComponent<GroundItem>();
         if (item && item.itemobj.objType != ObjectType.Resource)
         {
+            if(item.itemobj.objType == ObjectType.Item) //health drop
+            {
+                try
+                {
+                    var healthDrop = ((ItemOBJECT)(item.itemobj));
+                    health += healthDrop.healingValue;
+                    health = Mathf.Clamp(health, 0.0f, MAX_HEALTH);
+                    //Update UI
+                    UIManager.instance.SetHealthBar((int)health);
+                    Destroy(other.gameObject);
+                    return;
+                }
+                catch { }
+            }
             if (equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
             {
                 equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
@@ -451,7 +465,7 @@ public class PlayerStats : StatsInterface
                 enemies = enemies.OrderBy(e => e.name).ThenBy(e => e.transform.position.x).ThenBy(e => e.transform.position.y).ThenBy(e => e.transform.position.z).ToList();
                 for (int e = 0; e < enemies.Count; e++)
                 {
-                    enemies[e].isDead = saveData.savedEnemies[sceneEventIndex][e];
+                    enemies[e].isDead = !enemies[e].reviveOnLoad && saveData.savedEnemies[sceneEventIndex][e];
                     enemies[e].gameObject.SetActive(!enemies[e].isDead && enemies[e].gameObject.activeSelf);
                 }
             

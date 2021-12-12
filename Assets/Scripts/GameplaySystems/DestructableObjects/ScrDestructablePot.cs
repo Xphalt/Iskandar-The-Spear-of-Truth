@@ -22,9 +22,9 @@ public class ScrDestructablePot : MonoBehaviour
         drop = GetComponent<EntityDrop>();
     }
 
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("playerSword"))
+        if (other.CompareTag("playerSword"))
         {
             destroyed = true;
             drop.SpawnLoot();
