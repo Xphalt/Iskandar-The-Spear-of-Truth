@@ -8,7 +8,9 @@ public class TargetPad_Jack : MonoBehaviour
     [SerializeField] private List<Animator> _attachedWalls;
     [SerializeField] private AnimationClip _wallAnimation;
 
+    private Light pointLight;
     private Collider puzzleCollider;
+    
     private string _playerSwordTag = "playerSword";
     private string _changeStateTrigger = "Change State";
     private float _timeSinceLastTriggered = 0.0f;
@@ -18,6 +20,7 @@ public class TargetPad_Jack : MonoBehaviour
     void Start()
     {
         _timeSinceLastTriggered = _wallAnimation.length;
+        pointLight = GetComponent<Light>();
         puzzleCollider = GetComponent<Collider>();
     }
 
@@ -25,10 +28,14 @@ public class TargetPad_Jack : MonoBehaviour
 	{
         _timeSinceLastTriggered += Time.deltaTime;
 
-        //Do click count odd even for toggle
-        if (hasTriggered) hasTriggered = false;
+        if (hasTriggered)
+        {
+            pointLight.enabled = true; 
+         
+        }
+        else pointLight.enabled = false;
 
-        print("triggered" + hasTriggered);
+        print("triggered: " + pointLight.enabled);
     }
 
 
@@ -40,6 +47,8 @@ public class TargetPad_Jack : MonoBehaviour
         {
             if (!sword.PuzzleHit(puzzleCollider))
             {
+                hasTriggered = hasTriggered ? false : true;
+
                 foreach (Animator wallAnimator in _attachedWalls)
                 {
                     wallAnimator.SetTrigger(_changeStateTrigger);
