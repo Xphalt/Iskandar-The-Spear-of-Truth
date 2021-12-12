@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5705940927762455067}
   - component: {fileID: 5705940927762455066}
   - component: {fileID: 5705940927762455065}
-  - component: {fileID: 1586414903563158421}
+  - component: {fileID: 3396145531617231811}
   m_Layer: 0
   m_Name: TargetPad
   m_TagString: PuzzleTrigger
@@ -122,9 +122,16 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  _attachedLights:
+  - {fileID: 3396145531617231811}
+  - {fileID: 3396145531617231811}
+  - {fileID: 3396145531617231811}
+  - {fileID: 3396145531617231811}
+  - {fileID: 3396145531617231811}
   _wallAnimation: {fileID: 7400000, guid: 4f6ad1def0c1651408af96c7b87b6782, type: 2}
+  toggleLightsScript: {fileID: 0}
   hasTriggered: 0
---- !u!108 &1586414903563158421
+--- !u!108 &3396145531617231811
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,8 +143,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.4339623, g: 0.01842292, b: 0.01842292, a: 1}
-  m_Intensity: 10
-  m_Range: 5
+  m_Intensity: 15
+  m_Range: 8
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
