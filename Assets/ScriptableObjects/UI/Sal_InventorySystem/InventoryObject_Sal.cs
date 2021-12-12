@@ -106,23 +106,28 @@ public class InventoryObject_Sal : ScriptableObject, ISerializationCallbackRecei
 
     /////////////////////////////////////////////////////// MORGAN'S SAVE CHANGES ///////////////////////////////////////////////////
     [ContextMenu("Save")]
-    public void SaveStats(int num)
+    public void SaveStats(int num, int sceneIndex = -1)
     {
-        SaveManager.SavePlayerInventory(this, num);
+        SaveManager.SavePlayerInventory(this, num, sceneIndex);
     }
 
     [ContextMenu("Load")]
-    public void LoadStats(int num)
+    public void LoadStats(int num, int sceneIndex = -1)
     {
-        SaveData saveData = SaveManager.LoadPlayerInventory(num, type.ToString());
+        SaveData saveData = SaveManager.LoadPlayerInventory(num, type.ToString(), sceneIndex);
 
         //Inventory newStorage = (Inventory)formatter.Deserialize(stream);
 
-        Inventory newStorage = (Inventory)saveData.Storage;
-        for (int i = 0; i < Storage.Slots.Length; i++)
+        if (saveData != null)
         {
-            Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+            Storage.Clear();
+            Inventory newStorage = (Inventory)saveData.Storage;
+            for (int i = 0; i < Storage.Slots.Length; i++)
+            {
+                Storage.Slots[i].UpdateSlot(newStorage.Slots[i].item, newStorage.Slots[i].amount);
+            }
         }
+        else SaveStats(num, sceneIndex);
     }
 
     [ContextMenu("Clear")]

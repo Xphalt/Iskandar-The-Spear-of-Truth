@@ -392,6 +392,7 @@ public class PlayerStats : StatsInterface
         inventory.SaveStats(SaveNum);
         equipment.SaveStats(SaveNum);
         FindObjectOfType<QuestLogManager>(true).SaveQuests(SaveNum);
+        FindObjectOfType<ShopManager>().SaveShop(SaveNum, sceneEventIndex);
         sceneName = m_Scene.name;
         totallynotevents = saveData.totallynotevents;
     }
@@ -426,6 +427,7 @@ public class PlayerStats : StatsInterface
             inventory.LoadStats(num);
             equipment.LoadStats(num);
             FindObjectOfType<QuestLogManager>(true).LoadQuests(num);
+            FindObjectOfType<ShopManager>().LoadShop(num, sceneEventIndex);
 
             for (int e = 0; e < equipment.GetSlots.Length; e++)
                 equipment.GetSlots[e].OnAfterUpdate.Invoke(equipment.GetSlots[e]);

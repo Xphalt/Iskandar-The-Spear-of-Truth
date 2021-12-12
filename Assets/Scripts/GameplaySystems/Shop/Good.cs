@@ -14,11 +14,12 @@ public class Good : MonoBehaviour
 
     public Image image;
     public TextMeshProUGUI displayName;
+    public TextMeshProUGUI displayMoney;
     public TextMeshProUGUI buyValue; private int buyVl;
     public TextMeshProUGUI sellValue; private int sellVl;
     public TextMeshProUGUI amount; private int howMany;
 
-    public void SetupGood(ItemObject_Sal item, InventoryObject_Sal inv)
+    public void SetupGood(ItemObject_Sal item, InventoryObject_Sal inv, TextMeshProUGUI money)
     { 
         objHolder = item;
 
@@ -33,6 +34,8 @@ public class Good : MonoBehaviour
 
         amount.text = inv.FindItemOnInventory(item.data).amount.ToString();
         howMany = int.Parse(amount.text.ToString());
+
+        displayMoney = money;
     }
 
     public void BuyGood(InventoryObject_Sal destinationInvenotory)
@@ -47,8 +50,8 @@ public class Good : MonoBehaviour
                 amount.text = (--howMany).ToString();
 
                 //pay
-                playerstats.Gems -= buyVl; 
-                Debug.Log(playerstats.Gems);
+                playerstats.Gems -= buyVl;
+                displayMoney.text = playerstats.Gems.ToString();
             }
         }
     }
@@ -74,7 +77,7 @@ public class Good : MonoBehaviour
              
             //pay
             playerstats.Gems += sellVl;
-            Debug.Log(playerstats.Gems);
+            displayMoney.text = playerstats.Gems.ToString();
         } 
     }
 } 

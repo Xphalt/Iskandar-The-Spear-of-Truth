@@ -24,7 +24,12 @@ public class ShopManager : MonoBehaviour
 
     GameObject shopPanel;
     TextMeshProUGUI moneyValue;
-    GameObject shopContentPanel; 
+    GameObject shopContentPanel;
+
+    private void Awake()
+    {
+        SetUpShop();
+    }
 
     private void Start()
     {
@@ -32,8 +37,6 @@ public class ShopManager : MonoBehaviour
         moneyValue = GameObject.Find("ShopMoney").GetComponentInChildren<TextMeshProUGUI>();
         shopContentPanel = GameObject.Find("ShopContentPanel");
         shopPanel.SetActive(false);
-
-        SetUpShop(); 
     } 
 
     // Pass in an integer that corresponds to the SHOP_TYPE enum
@@ -56,7 +59,7 @@ public class ShopManager : MonoBehaviour
                     //GoodData goodData = currentShop.goodDatas[i];
                     GameObject goodObject = Instantiate(goodPrefab, shopContentPanel.transform);
 
-                    goodObject.GetComponent<Good>().SetupGood(shop.database.ItemObjects[shop.Storage.Slots[i].item.id], shop);
+                    goodObject.GetComponent<Good>().SetupGood(shop.database.ItemObjects[shop.Storage.Slots[i].item.id], shop, moneyValue);
                     ++numGoods;
                 }
             }
@@ -94,6 +97,15 @@ public class ShopManager : MonoBehaviour
         {
             shop.AddItem(items[i].data, amounts[i]);
         }
+    }
+
+    public void SaveShop(int num, int sceneIndex)
+    {
+        shop.SaveStats(num, sceneIndex);
+    }
+    public void LoadShop(int num, int sceneIndex)
+    {
+        shop.LoadStats(num, sceneIndex);
     }
 
     private void OnApplicationQuit()

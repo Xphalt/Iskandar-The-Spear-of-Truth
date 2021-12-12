@@ -20,11 +20,13 @@ public static class SaveManager
         fs.Close();
     }
 
-    public static void SavePlayerInventory(InventoryObject_Sal playerInventory, int num)
+    public static void SavePlayerInventory(InventoryObject_Sal playerInventory, int num, int sceneIndex = -1)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + playerInventory.type.ToString() + ".txt";
+        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + playerInventory.type + 
+            ((sceneIndex >= 0) ? sceneIndex.ToString() : "") + ".txt";      
+        
         FileStream fs = new FileStream(filePath, FileMode.Create);
 
         SaveData saveData = new SaveData(playerInventory);
@@ -65,9 +67,10 @@ public static class SaveManager
         }
     }
 
-    public static SaveData LoadPlayerInventory(int num, string inventoryType)
+    public static SaveData LoadPlayerInventory(int num, string inventoryType, int sceneIndex = -1)
     {
-        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + inventoryType + ".txt";
+        string filePath = Application.persistentDataPath + "/Player_Inventoryf" + num + inventoryType + 
+            ((sceneIndex >= 0) ? sceneIndex.ToString() : "") + ".txt";
         if (File.Exists(filePath))
         {
             BinaryFormatter bf = new BinaryFormatter();
