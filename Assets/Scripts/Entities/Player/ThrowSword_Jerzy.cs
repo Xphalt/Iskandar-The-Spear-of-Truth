@@ -135,6 +135,12 @@ public class ThrowSword_Jerzy : MonoBehaviour
         }
     }
 
+    public void RecallSword()
+    {
+        throwSpeed = -5;
+        returning = true;
+    }
+
     public void HitPuzzle(Collider puzzle)
     {
         puzzlesHit.Add(puzzle);

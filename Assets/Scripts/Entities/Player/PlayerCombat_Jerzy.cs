@@ -113,6 +113,14 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         {
             playerStats.Accessory.UseCurrent();    //Teleport
         }
+        else
+        {
+            if (throwSword.thrown && throwSword.returning != true)
+            {
+                throwSword.RecallSword();
+            }
+        }
+        
         if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
         {
             //swordCollider.enabled = true;
@@ -120,7 +128,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             timeSinceLastAttack = 0;
             playerMovement.LockPlayerMovement();
         }
-
+        
     }
 
     public void SetSwordCollider(int active)
