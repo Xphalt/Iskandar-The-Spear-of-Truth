@@ -7,9 +7,13 @@ public class CreditsScroll : MonoBehaviour
 {
     // Public vars
     [Tooltip("Seconds to wait before scrolling begins")]
-    public float InitialWaitTime = 2;
-    [Tooltip("Speed to scroll credits in units/second")]
-    public float scrollSpeed = 1;
+    public float initialWaitTime = 2;
+    [Tooltip("Seconds to wait after scrolling ends")]
+    public float endWaitTime = 3;
+    [Tooltip("Duration of credits, including start and end wait time")]
+    public float creditsDuration = 80;
+    [Tooltip("Animation curve of credits scroll speed")]
+    public AnimationCurve accelerationCurve;
 
     public Transform screenTop, screenBottom, namesParent, creditsBottom;
 
@@ -18,31 +22,30 @@ public class CreditsScroll : MonoBehaviour
         // Set initial positions
         transform.localPosition = Vector3.zero;
         namesParent.position = screenBottom.position;
+
         StartCoroutine(Sequence());
     }
 
     IEnumerator Sequence()
     {
-        yield return new WaitForSeconds(InitialWaitTime);
+        yield return new WaitForSeconds(initialWaitTime);
 
-        // Move credits text up at scrollSpeed
-        float currentScrollSpeed = 0;
-        float acceleration = 0;
-        float secondsToAccelerate = 1;
-        while (creditsBottom.position.y <= screenTop.position.y)
+        // smoothly scroll from beginning to end of credits in the given time
+        Vector3 startPos = transform.position;
+        float scrollDistance = Vector3.Distance(creditsBottom.position, startPos);
+        float scrollDuration = creditsDuration - (initialWaitTime + endWaitTime);
+        for (float t = 0; t < scrollDuration; t += Time.deltaTime)
         {
-            // Initial acceleration
             yield return null;
-            if(acceleration < 1)
-            {
-                acceleration += Time.deltaTime * secondsToAccelerate;
-                currentScrollSpeed = Mathf.SmoothStep(0, scrollSpeed, acceleration);
-            }
 
-            transform.Translate(Vector3.up * currentScrollSpeed * Time.deltaTime);
+            float value = accelerationCurve.Evaluate(t / scrollDuration);
+            float newYPos = Mathf.Lerp(startPos.y, startPos.y + scrollDistance, value);
+
+            //float newYPos = Mathf.SmoothStep(startPos.y, startPos.y + scrollDistance, t / scrollDuration);
+            transform.position = new Vector3(transform.position.x, newYPos, transform.position.z);
         }
 
-        // When credits have scrolled off screen, go to main menu
+        yield return new WaitForSeconds(endWaitTime);
         SceneManager.LoadScene(0);
     }
 }
