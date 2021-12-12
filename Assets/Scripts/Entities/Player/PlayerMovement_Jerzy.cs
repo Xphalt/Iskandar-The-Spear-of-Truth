@@ -257,6 +257,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             {
                 m_Rigidbody.AddForce(SavedMaxMovement.normalized * dashForce * 7);
                 Rotation(SavedMaxMovement);
+                combatScript.SetSwordCollider(0);
             }
             combatScript.isDashing = true;
             //m_Rigidbody.AddForce (dashDirection * dashForce );

@@ -41,7 +41,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     void Start()
     {
-
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
         returningSpeed = combatScript.throwReturnSpeed;
         throwSpeed = combatScript.throwSpeed;
