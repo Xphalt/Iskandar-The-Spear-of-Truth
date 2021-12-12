@@ -103,6 +103,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         {
             playerStats.Accessory.UseCurrent();    //Teleport
         }
+        else
+        {
+            throwSword.RecallSword();
+        }
         if (attackOffCooldown && canAttack)
         {
             //swordCollider.enabled = true;
