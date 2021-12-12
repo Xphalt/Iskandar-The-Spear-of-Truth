@@ -111,7 +111,7 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         if (hasWeapon)
         {
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack"))
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack") || (animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.55))
                 animator.SetTrigger("isSimpleAttacking");
         }
     }

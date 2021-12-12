@@ -103,7 +103,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         {
             playerStats.Accessory.UseCurrent();    //Teleport
         }
-        if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
+        if (attackOffCooldown && canAttack)
         {
             //swordCollider.enabled = true;
             playerAnimation.SimpleAttack();
