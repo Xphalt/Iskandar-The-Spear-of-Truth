@@ -23,6 +23,9 @@ public class EnemyStats : StatsInterface
 
     EntityDrop drops;
 
+    const float takeDamageCooldown = 1.0f;
+    float timeSinceDamageTaken;
+
     private void Start()
     {
         health = MAX_HEALTH;
@@ -34,6 +37,7 @@ public class EnemyStats : StatsInterface
 
     private void Update()
     {
+        timeSinceDamageTaken += Time.deltaTime;
         if(health <= 0)
         {
             isDead = true;
@@ -63,16 +67,21 @@ public class EnemyStats : StatsInterface
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
     {
-        if (!vulnerable) return;
-        health -= amount;
+        if(timeSinceDamageTaken >= takeDamageCooldown)
+        {
+            if (!vulnerable) return;
+            health -= amount;
 
-         StartCoroutine(EDamageFlash());
+            StartCoroutine(EDamageFlash());
+
+        }
 
         // anything that happens when taking damage happens 
         if (health <= 0)
         {
             isDead = true;
         }
+        timeSinceDamageTaken = 0;
     }
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)

@@ -26,7 +26,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public float dashForce;
     public float dashAnalogueReq;
     private Vector3 dashDirection;
-    private Vector3 SavedMaxMovement;
 
     public float timeSinceLastDash = 0;
 
@@ -106,7 +105,10 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float slowTimer = 0;
     private bool slowed = false;
 
-    PlayerCombat_Jerzy combatScript;
+    float inAntlionTimer;
+    const float maxInAntlionTime = 5.0f;
+    public bool canBeConsumed = true;
+    bool inAntlion = false;
 
     private void Awake()
     {
@@ -120,8 +122,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
 
         swordLookRotation = playerModel.transform.rotation;
-
-        combatScript = GetComponent<PlayerCombat_Jerzy>();
     }
 
     private void Update()
@@ -244,26 +244,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             timeSinceRespawnStarted = 0;
 
 
-        if (falling || respawning || gettingConsumed) {
+        if (falling || respawning || gettingConsumed)
             timeSinceLastDash = dashDuration;
-
-        }
-           
 
         if (timeSinceLastDash < dashDuration && !falling)
         {
             // DO IT LATER TIAGO 
-            if (m_Rigidbody.velocity.x <= 12 && m_Rigidbody.velocity.x >= -12 && m_Rigidbody.velocity.z <= 12 && m_Rigidbody.velocity.z >= -12)
-            {
-                m_Rigidbody.AddForce(SavedMaxMovement.normalized * dashForce * 7);
-                Rotation(SavedMaxMovement);
-                combatScript.SetSwordCollider(0);
-            }
-            combatScript.isDashing = true;
-            //m_Rigidbody.AddForce (dashDirection * dashForce );
+            m_Rigidbody.AddForce ( dashDirection * dashForce );
         }
-        else combatScript.isDashing = false;
-        //print("player is dashing : " + combatScript.isDashing);
+
         if (timeKnockedBack < knockBackDuration && knockedBack)
         {
             timeKnockedBack += Time.deltaTime;
@@ -277,6 +266,15 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             EndKnockback();
         }
 
+        if (inAntlion) inAntlionTimer += Time.deltaTime;
+        else inAntlionTimer -= Time.deltaTime;
+        if (inAntlionTimer < 0) inAntlionTimer = 0;
+        if (inAntlionTimer >= maxInAntlionTime) inAntlionTimer = maxInAntlionTime;
+        if (inAntlionTimer >= maxInAntlionTime)
+        {
+            canBeConsumed = true;
+        }
+        else canBeConsumed = false;
 
     }
 
@@ -299,7 +297,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             timeSinceLastDash = 0;
             dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
             playerAnimation.Dodging();
-
         }
     }
 
@@ -316,12 +313,6 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             gradualSpeedMultiplier *= SPEED_MULTI_CHANGE_DECREASE;
             if (gradualSpeedMultiplier <= MIN_SPEED_MULTIPLIER) gradualSpeedMultiplier = MIN_SPEED_MULTIPLIER;
             m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x * gradualSpeedMultiplier, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z * gradualSpeedMultiplier);
-        }
-
-        if ((m_Input.x >= 0.4 || m_Input.x <= -0.4 || m_Input.z >= 0.4 || m_Input.z <= -0.4) && timeSinceLastDash >= dashDuration) //  && timeSinceLastDash >= dashDuration
-        {
-            SavedMaxMovement = m_Input;
-            Debug.Log(SavedMaxMovement);
         }
 
 
@@ -493,7 +484,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public void Slide(bool online)
     {
         isSliding = online;
-        if (!isSliding) 
+        if (!isSliding)
             LockPlayerMovement();
     }
 
@@ -544,8 +535,18 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         GetComponent<Rigidbody>().useGravity = true;
+        if (collision.gameObject.tag == "Antlion")
+            inAntlion = false;
     }
 
+    private void OnCollisionStay(Collision collision)
+    {
+        if(collision.gameObject.tag == "Antlion")
+        {
+            inAntlion = true;
+        }
+  
+    }
 
 
     private void OnTriggerEnter(Collider other)

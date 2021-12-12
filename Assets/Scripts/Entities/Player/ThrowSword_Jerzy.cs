@@ -159,6 +159,9 @@ public class ThrowSword_Jerzy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // when the sword returns to the player
-        if (other.TryGetComponent(out EnemyStats statsInterface)) playerStats.DealDamage(statsInterface, swordDamage);
+        if (other.TryGetComponent(out EnemyStats statsInterface)) {
+            playerStats.DealDamage(statsInterface, swordDamage);
+        }
+
     }
 }
