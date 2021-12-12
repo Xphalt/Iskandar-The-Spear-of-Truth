@@ -23,6 +23,7 @@ public class PauseMenuManager : MonoBehaviour
     public GameObject graphicsSettings;
     public GameObject keyboardControls;
     public GameObject quttingConfirmation;
+    public GameObject weaponPannel, armourPannel;
 
     private GameObject playerLight;
 
@@ -101,6 +102,9 @@ public class PauseMenuManager : MonoBehaviour
         quttingConfirmation.SetActive(false);
         graphicsSettings.SetActive(false);
         audioSettings.SetActive(false);
+
+        weaponPannel.SetActive(false); weaponPannel.GetComponent<EquipPanel>().ClearObjects();
+        armourPannel.SetActive(false); armourPannel.GetComponent<EquipPanel>().ClearObjects();
 
         equipmentMenu.SetActive(true);
 
