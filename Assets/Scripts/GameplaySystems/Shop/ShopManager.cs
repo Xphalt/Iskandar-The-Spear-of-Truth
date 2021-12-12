@@ -88,7 +88,8 @@ public class ShopManager : MonoBehaviour
     }
 
     private void SetUpShop()
-    { 
+    {
+        shop.Storage.Clear();
         for (int i = 0; i < items.Count; i++)
         {
             shop.AddItem(items[i].data, amounts[i]);
