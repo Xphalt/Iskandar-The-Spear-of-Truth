@@ -65,7 +65,11 @@ public class EquipPanel : MonoBehaviour
         //UIDesc positioning 
         Vector3 cellPosition = obj.GetComponentInParent<GridLayoutGroup>().transform.position;
         UIDescHolder = Instantiate(UIDescription, new Vector3(obj.transform.GetChild(1).position.x + UIDescription.GetComponent<RectTransform>().sizeDelta.x / 2, cellPosition.y, .0f), Quaternion.identity, parent.parent);
-         
+        UIDescHolder.transform.parent = obj.transform;
+        UIDescHolder.GetComponent<RectTransform>().anchorMin = new Vector2(0.0f, 1.0f);
+        UIDescHolder.GetComponent<RectTransform>().anchorMax = new Vector2(0.0f, 1.0f);
+        UIDescHolder.GetComponent<RectTransform>().pivot = new Vector2(0.0f, 1.0f);
+        UIDescHolder.GetComponent<RectTransform>().anchoredPosition = new Vector3(obj.GetComponent<RectTransform>().sizeDelta.x, 0.0f,8.0f);
         //Stats
         string values = string.Empty; 
         switch(inventory.database.ItemObjects[slotItem[obj].id].objType)
@@ -117,15 +121,15 @@ public class EquipPanel : MonoBehaviour
         {
             inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.SwordSlot], inventory.FindItemOnInventory(slotItem[obj]));   //Weapon
 
-            ClearObjects();
-            SpawnPanel();
+            ClearObjects();  
+            gameObject.SetActive(false);
         }
         else if (inventory.database.ItemObjects[slotItem[obj].id].objType == ObjectType.Armor)
         {
             inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.ArmorSlot], inventory.FindItemOnInventory(slotItem[obj]));   //Armor
 
-            ClearObjects();
-            SpawnPanel();
+            ClearObjects(); 
+            gameObject.SetActive(false);
         }
         else 
         {
@@ -135,8 +139,8 @@ public class EquipPanel : MonoBehaviour
 
             inventory.SwapItem(equipment.Storage.Slots[(int)EquipSlot.AccessorySlot], inventory.FindItemOnInventory(slotItem[obj]));   //Accessories
             
-            ClearObjects();
-            SpawnPanel();
+            ClearObjects(); 
+            gameObject.SetActive(false);
         }
     } 
 
