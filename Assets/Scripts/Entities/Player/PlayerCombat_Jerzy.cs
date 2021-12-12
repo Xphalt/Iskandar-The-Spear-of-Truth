@@ -67,6 +67,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
  
         if (swordObject.activeInHierarchy)
         {
+            if (timeSinceLastAttack < attackCooldown)
+            {
+                playerMovement.LockPlayerMovement();
+            }
             timeSinceLastPoisonDamage += Time.deltaTime;
             timeSinceLastAttack += Time.deltaTime;
             swordLookRotation = playerMovement.swordLookRotation;
@@ -102,6 +106,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         if (throwSword.thrown && playerStats.Accessory && playerStats.Accessory.accessory == AccessoryType.BraceletOfScouting)
         {
             playerStats.Accessory.UseCurrent();    //Teleport
+        }
+        else
+        {
+            throwSword.RecallSword();
         }
         if (attackOffCooldown && canAttack)
         {
