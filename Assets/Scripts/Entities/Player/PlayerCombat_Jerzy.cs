@@ -67,6 +67,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
  
         if (swordObject.activeInHierarchy)
         {
+            if (timeSinceLastAttack < attackCooldown)
+            {
+                playerMovement.LockPlayerMovement();
+            }
             timeSinceLastPoisonDamage += Time.deltaTime;
             timeSinceLastAttack += Time.deltaTime;
             swordLookRotation = playerMovement.swordLookRotation;

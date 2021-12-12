@@ -205,6 +205,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         //{
         //    m_Rigidbody.velocity = new Vector3(0, verticalVelocity, 0);
         //}
+
+        if (SavedMaxMovement == new Vector3(0, 0, 0) && timeSinceLastDash >= 1)
+        {
+            SavedMaxMovement = new Vector3(0, 0, 1);
+        }
+        Debug.Log(SavedMaxMovement);
     }
 
     private void FixedUpdate()
