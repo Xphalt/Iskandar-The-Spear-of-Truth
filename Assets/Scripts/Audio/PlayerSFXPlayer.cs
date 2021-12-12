@@ -10,8 +10,9 @@ public class PlayerSFXPlayer : MonoBehaviour
     internal AudioSource[] aSource;
     int aSourceCounter = 0;
 
-    public enum AudioType {footsteps, armourHit, swordSwing, playerHit };
+    public enum AudioType {footsteps, armourHit, swordSwing, playerHit, playerCollection };
     public enum FootstepType {stone, defaultMass, wood, metal};
+    public enum CollectionType { item, gem };
 
     public List<AudioClip> footstepsStone = new List<AudioClip>();
     public List<AudioClip> footstepsDefault = new List<AudioClip>();
@@ -20,12 +21,16 @@ public class PlayerSFXPlayer : MonoBehaviour
     public List<AudioClip> armourHit = new List<AudioClip>();
     public List<AudioClip> playerHit = new List<AudioClip>();
     public List<AudioClip> swordSwing = new List<AudioClip>();
+    public List<AudioClip> playerCollectionItem = new List<AudioClip>();
+    public List<AudioClip> playerCollectionGem = new List<AudioClip>();
 
     internal Dictionary<AudioType, List<AudioClip>> playerSFXDictionary = new Dictionary<AudioType, List<AudioClip>>();
     internal Dictionary<FootstepType, List<AudioClip>> playerFootstepDictionary = new Dictionary<FootstepType, List<AudioClip>>();
+    internal Dictionary<CollectionType, List<AudioClip>> playerCollectionDictionary = new Dictionary<CollectionType, List<AudioClip>>();
 
     public AudioType audioType;
     public FootstepType footstepType;
+    public CollectionType collectionType;
 
 
     private void Start()
@@ -35,6 +40,9 @@ public class PlayerSFXPlayer : MonoBehaviour
         playerSFXDictionary.Add(AudioType.armourHit, armourHit);
         playerSFXDictionary.Add(AudioType.swordSwing, swordSwing);
         playerSFXDictionary.Add(AudioType.playerHit, playerHit);
+
+        playerCollectionDictionary.Add(CollectionType.item, playerCollectionItem);
+        playerCollectionDictionary.Add(CollectionType.gem, playerCollectionGem);
 
         playerFootstepDictionary.Add(FootstepType.stone, footstepsStone);
         playerFootstepDictionary.Add(FootstepType.defaultMass, footstepsDefault);
@@ -64,6 +72,9 @@ public class PlayerSFXPlayer : MonoBehaviour
     {      
         if(audioType == AudioType.footsteps)
             aSource[aSourceCounter].clip = playerFootstepDictionary[footstepType][Random.Range(0, playerFootstepDictionary[footstepType].Count)];
+
+        else if(audioType == AudioType.playerCollection)
+            aSource[aSourceCounter].clip = playerCollectionDictionary[collectionType][Random.Range(0, playerCollectionDictionary[collectionType].Count)];
 
         else aSource[aSourceCounter].clip = playerSFXDictionary[audioType][Random.Range(0, playerSFXDictionary[audioType].Count)];
 

@@ -60,17 +60,22 @@ public class SettingsOptions : MonoBehaviour
         QualitySettings.SetQualityLevel(qualityIndex);
         qualityDropDown.value = qualityIndex;
         qualityDropDown.RefreshShownValue();
+        Debug.Log("Setting Quality to " + QualitySettings.GetQualityLevel() + " " + qualityIndex);
     }
 
     public void SetMusicVolume(float volume)
     {
-        masterMixer.SetFloat("musicVol", volume);
+        if(volume < -70)
+        masterMixer.SetFloat("musicVol", 0);
+        else masterMixer.SetFloat("musicVol", volume/2);
         sda.MusicVol = volume;
     }
 
     public void SetSFXVolume(float volume)
     {
-        masterMixer.SetFloat("sfxVol", volume);
+        if (volume < -70)
+            masterMixer.SetFloat("sfxVol", 0);
+        else masterMixer.SetFloat("sfxVol", volume/2);
         sda.SFXVol = volume;
     }
 }
