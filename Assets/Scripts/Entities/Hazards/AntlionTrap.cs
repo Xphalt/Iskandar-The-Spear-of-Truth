@@ -24,7 +24,7 @@ public class AntlionTrap : MonoBehaviour
     {
         if (other.TryGetComponent(out PlayerMovement_Jerzy move) && other.TryGetComponent(out PlayerStats stats))
         {
-            if (!stats.desertProtection) move.GetConsumed(respawnPosition,0,damage,consumeDuration, consumeMoveAmt);
+            if (!stats.desertProtection || move.canBeConsumed) move.GetConsumed(respawnPosition,0,damage,consumeDuration, consumeMoveAmt);
         }
     }
 }

@@ -105,6 +105,11 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float slowTimer = 0;
     private bool slowed = false;
 
+    float inAntlionTimer;
+    const float maxInAntlionTime = 5.0f;
+    public bool canBeConsumed = true;
+    bool inAntlion = false;
+
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
@@ -260,6 +265,16 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             EndKnockback();
         }
+
+        if (inAntlion) inAntlionTimer += Time.deltaTime;
+        else inAntlionTimer -= Time.deltaTime;
+        if (inAntlionTimer < 0) inAntlionTimer = 0;
+        if (inAntlionTimer >= maxInAntlionTime) inAntlionTimer = maxInAntlionTime;
+        if (inAntlionTimer >= maxInAntlionTime)
+        {
+            canBeConsumed = true;
+        }
+        else canBeConsumed = false;
 
     }
 
@@ -520,8 +535,18 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         GetComponent<Rigidbody>().useGravity = true;
+        if (collision.gameObject.tag == "Antlion")
+            inAntlion = false;
     }
 
+    private void OnCollisionStay(Collision collision)
+    {
+        if(collision.gameObject.tag == "Antlion")
+        {
+            inAntlion = true;
+        }
+  
+    }
 
 
     private void OnTriggerEnter(Collider other)
