@@ -105,6 +105,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private float slowTimer = 0;
     private bool slowed = false;
 
+    PlayerCombat_Jerzy combatScript;
+
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
@@ -117,6 +119,8 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
 
         swordLookRotation = playerModel.transform.rotation;
+
+        combatScript = GetComponent<PlayerCombat_Jerzy>();
     }
 
     private void Update()
@@ -239,15 +243,20 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             timeSinceRespawnStarted = 0;
 
 
-        if (falling || respawning || gettingConsumed)
+        if (falling || respawning || gettingConsumed) {
             timeSinceLastDash = dashDuration;
+
+        }
+           
 
         if (timeSinceLastDash < dashDuration && !falling)
         {
             // DO IT LATER TIAGO 
             m_Rigidbody.AddForce ( dashDirection * dashForce );
+            combatScript.isDashing = true;
         }
-
+        else combatScript.isDashing = false;
+        print("player is dashing : " + combatScript.isDashing);
         if (timeKnockedBack < knockBackDuration && knockedBack)
         {
             timeKnockedBack += Time.deltaTime;
@@ -260,6 +269,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             EndKnockback();
         }
+
 
     }
 
@@ -282,6 +292,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             timeSinceLastDash = 0;
             dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
             playerAnimation.Dodging();
+            
         }
     }
 

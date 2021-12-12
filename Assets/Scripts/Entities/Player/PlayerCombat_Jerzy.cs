@@ -52,6 +52,8 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     ParticleSystem throwPowerUpElectricParticle;
 
     bool chargeReady = false;
+    public bool isDashing;
+
 
     void Start()
     {
@@ -68,9 +70,10 @@ public class PlayerCombat_Jerzy : MonoBehaviour
  
         if (swordObject.activeInHierarchy)
         {
-            if (timeSinceLastAttack < attackCooldown)
+            if (timeSinceLastAttack < attackCooldown && !isDashing)
             {
-                playerMovement.LockPlayerMovement();
+               // playerMovement.LockPlayerMovement();
+
             }
 
             timeSinceLastPoisonDamage += Time.deltaTime;

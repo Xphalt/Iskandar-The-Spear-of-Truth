@@ -156,10 +156,10 @@ public class PlayerInput : MonoBehaviour
 
     private void Dash()
     {
-        if (_playerRigidbody.velocity != Vector3.zero)
-        {
+        //if (_playerRigidbody.velocity != Vector3.zero)
+        //{
             _playerMovement_Jerzy.Dash(_playerRigidbody.velocity.normalized);
-        }
+        //}
     }
 
     private void StartTouchPrimary(InputAction.CallbackContext ctx)
