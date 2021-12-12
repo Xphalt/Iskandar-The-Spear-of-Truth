@@ -51,6 +51,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     ParticleSystem throwReadyParticle;
     ParticleSystem throwPowerUpElectricParticle;
 
+    bool chargeReady = false;
 
     void Start()
     {
@@ -122,7 +123,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     {
         if (swordObject.activeInHierarchy)
         {
-            if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack)
+            if (timeSinceLastAttack >= attackCooldown && attackOffCooldown && canAttack && chargeReady)
             {
                 if (!Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out RaycastHit hit, 1.3f, 1, QueryTriggerInteraction.Ignore))
                 {
@@ -142,12 +143,13 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     void ThrowAction()
     {
 
-        attackOffCooldown = false;
-        //StartCoroutine(PauseForThrow());
-        playerAnimation.SwordThrowAttack();
+            attackOffCooldown = false;
+            //StartCoroutine(PauseForThrow());
+            playerAnimation.SwordThrowAttack();
 
-        playerMovement.LockPlayerMovement();
-        isThrowing = true;
+            playerMovement.LockPlayerMovement();
+            isThrowing = true;
+
     }
 
     public void ReleaseSword()
@@ -160,6 +162,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             timeSinceLastAttack = 0;
             chargeFinishedParticle.GetComponent<ParticleSystem>().Stop();
             electricParticle.GetComponent<ParticleSystem>().Stop();
+            chargeReady = false;
         } 
     }
 
@@ -204,11 +207,13 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         chargeParticle.GetComponent<ParticleSystem>().Stop();
         chargeFinishedParticle.GetComponent<ParticleSystem>().Play();
         electricParticle.GetComponent<ParticleSystem>().Play();
+        chargeReady = true;
     }
 
     public void cancelChargedAttack()
     {
         chargeParticle.GetComponent<ParticleSystem>().Stop();
         electricParticle.GetComponent<ParticleSystem>().Stop();
+        chargeReady = false;
     }
 }
