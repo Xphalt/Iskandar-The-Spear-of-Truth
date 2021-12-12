@@ -41,7 +41,6 @@ public class ThrowSword_Jerzy : MonoBehaviour
 
     void Start()
     {
-
         throwTimeSpinningInPlace = combatScript.throwTimeSpinningInPlace;
         returningSpeed = combatScript.throwReturnSpeed;
         throwSpeed = combatScript.throwSpeed;
@@ -134,6 +133,12 @@ public class ThrowSword_Jerzy : MonoBehaviour
             puzzlesHit.Clear();
             //timeTravelling = 0;
         }
+    }
+
+    public void RecallSword()
+    {
+        throwSpeed = -5;
+        returning = true;
     }
 
     public void HitPuzzle(Collider puzzle)
