@@ -34,4 +34,13 @@ public class VenomShot : MonoBehaviour
         projectileSpeed = speed;
         transform.LookAt(pos);
     }
+
+    //morgan edit
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag.Contains("MagneticObj"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
