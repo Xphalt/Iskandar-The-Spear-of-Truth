@@ -26,6 +26,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public float dashForce;
     public float dashAnalogueReq;
     private Vector3 dashDirection;
+    private Vector3 SavedMaxMovement;
 
     public float timeSinceLastDash = 0;
 
@@ -252,11 +253,16 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         if (timeSinceLastDash < dashDuration && !falling)
         {
             // DO IT LATER TIAGO 
-            m_Rigidbody.AddForce ( dashDirection * dashForce );
+            if (m_Rigidbody.velocity.x <= 12 && m_Rigidbody.velocity.x >= -12 && m_Rigidbody.velocity.z <= 12 && m_Rigidbody.velocity.z >= -12)
+            {
+                m_Rigidbody.AddForce(SavedMaxMovement.normalized * dashForce * 7);
+                Rotation(SavedMaxMovement);
+            }
             combatScript.isDashing = true;
+            //m_Rigidbody.AddForce (dashDirection * dashForce );
         }
         else combatScript.isDashing = false;
-        print("player is dashing : " + combatScript.isDashing);
+        //print("player is dashing : " + combatScript.isDashing);
         if (timeKnockedBack < knockBackDuration && knockedBack)
         {
             timeKnockedBack += Time.deltaTime;
@@ -292,7 +298,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             timeSinceLastDash = 0;
             dashSpeedMultiplier = STARTING_DASH_MULTIPLIER;
             playerAnimation.Dodging();
-            
+
         }
     }
 
@@ -309,6 +315,12 @@ public class PlayerMovement_Jerzy : MonoBehaviour
             gradualSpeedMultiplier *= SPEED_MULTI_CHANGE_DECREASE;
             if (gradualSpeedMultiplier <= MIN_SPEED_MULTIPLIER) gradualSpeedMultiplier = MIN_SPEED_MULTIPLIER;
             m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x * gradualSpeedMultiplier, m_Rigidbody.velocity.y, m_Rigidbody.velocity.z * gradualSpeedMultiplier);
+        }
+
+        if ((m_Input.x >= 0.4 || m_Input.x <= -0.4 || m_Input.z >= 0.4 || m_Input.z <= -0.4) && timeSinceLastDash >= dashDuration) //  && timeSinceLastDash >= dashDuration
+        {
+            SavedMaxMovement = m_Input;
+            Debug.Log(SavedMaxMovement);
         }
 
 
@@ -480,7 +492,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     public void Slide(bool online)
     {
         isSliding = online;
-        if (!isSliding)
+        if (!isSliding) 
             LockPlayerMovement();
     }
 

@@ -72,7 +72,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         {
             if (timeSinceLastAttack < attackCooldown && !isDashing)
             {
-               // playerMovement.LockPlayerMovement();
+                playerMovement.LockPlayerMovement();
 
             }
 
