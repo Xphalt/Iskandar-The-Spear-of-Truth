@@ -46,12 +46,15 @@ public class Good : MonoBehaviour
             if (destinationInvenotory.AddItem(destinationInvenotory.database.ItemObjects[objHolder.data.id].data, 1))
             {
                 //Reduce amount in the shop
-                GameObject.FindObjectOfType<ShopManager>().shop.FindItemOnInventory(objHolder.data).AddAmount(-1);
+                ShopManager shopManager = FindObjectOfType<ShopManager>();
+                shopManager.shop.FindItemOnInventory(objHolder.data).AddAmount(-1);
                 amount.text = (--howMany).ToString();
 
                 //pay
                 playerstats.Gems -= buyVl;
                 displayMoney.text = playerstats.Gems.ToString();
+
+                shopManager.UpdateMoney();
             }
         }
     }
@@ -72,12 +75,15 @@ public class Good : MonoBehaviour
                 obj.AddAmount(-1);
 
             //Add amount to the shop
-            GameObject.FindObjectOfType<ShopManager>().shop.FindItemOnInventory(objHolder.data).AddAmount(1);
+            ShopManager shopManager = FindObjectOfType<ShopManager>();
+            shopManager.shop.FindItemOnInventory(objHolder.data).AddAmount(1);
             amount.text = (++howMany).ToString();
              
             //pay
             playerstats.Gems += sellVl;
             displayMoney.text = playerstats.Gems.ToString();
+
+            shopManager.UpdateMoney();
         } 
     }
 } 

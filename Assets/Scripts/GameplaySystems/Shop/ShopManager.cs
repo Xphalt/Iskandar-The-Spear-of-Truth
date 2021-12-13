@@ -39,14 +39,19 @@ public class ShopManager : MonoBehaviour
         shopPanel.SetActive(false);
     } 
 
+    public void UpdateMoney()
+    {
+        // Set the money value to the number of gems the player has
+        moneyValue.text = FindObjectOfType<PlayerStats>().Gems.ToString();
+    }
+
     // Pass in an integer that corresponds to the SHOP_TYPE enum
     public void OpenShop()
     {
         // Dominique, Make sure we don't add items more than once
         if (!shopPanel.activeSelf)
         {
-            // Set the money value to the number of gems the player has
-            moneyValue.text = FindObjectOfType<PlayerStats>().Gems.ToString();
+            UpdateMoney();
 
             // Dominique, Pause time when opening the shop
             Time.timeScale = 0;
