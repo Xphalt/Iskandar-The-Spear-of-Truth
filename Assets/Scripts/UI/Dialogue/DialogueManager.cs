@@ -24,6 +24,7 @@ public class DialogueManager : MonoBehaviour
 
     public GameObject DialoguePanel;
     public Button ButtonContinue;
+    public Button ButtonSkip;
     public TextMeshProUGUI TextNPCName;
     public TextMeshProUGUI TextDialogueBox;
     public TextMeshProUGUI TextContinueDialogue;
@@ -90,7 +91,6 @@ public class DialogueManager : MonoBehaviour
         if (_QueueOfCharacters.Count == 0 && _QueueOfStrings.Count == 0)
         {
             EndDialogue();
-            conversationIsEnded = true;
         }
         else
         {
@@ -141,8 +141,18 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    public void SkipDialogue()
+    {
+        _QueueOfCharacters.Clear();
+        _QueueOfStringArrays.Clear();
+        _QueueOfStrings.Clear();
+
+        EndDialogue();
+    }
+
     private void EndDialogue()
     {
+        conversationIsEnded = true;
         playerInput.enabled = true;
         playerInput.TogglePlayerInteraction(true);
         // Re-enable the collider of the GO we're speaking to when ending the dialogue
