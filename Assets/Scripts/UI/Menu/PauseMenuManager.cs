@@ -19,7 +19,6 @@ public class PauseMenuManager : MonoBehaviour
     public GameObject settingsMenu;
 
     public GameObject audioSettings;
-    public GameObject gameplaySettings;
     public GameObject graphicsSettings;
     public GameObject keyboardControls;
     public GameObject quttingConfirmation;
@@ -96,7 +95,6 @@ public class PauseMenuManager : MonoBehaviour
         inventoryMenu.SetActive(false);
         questsMenu.SetActive(false);
 
-        gameplaySettings.SetActive(false);
         keyboardControls.SetActive(false);
         quttingConfirmation.SetActive(false);
         graphicsSettings.SetActive(false);
@@ -166,7 +164,6 @@ public class PauseMenuManager : MonoBehaviour
         questsMenu.SetActive(false);
         equipmentMenu.SetActive(false);
 
-        gameplaySettings.SetActive(false);
         keyboardControls.SetActive(false);
         quttingConfirmation.SetActive(false);
         graphicsSettings.SetActive(false);
