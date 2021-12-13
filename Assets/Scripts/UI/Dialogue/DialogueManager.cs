@@ -91,7 +91,6 @@ public class DialogueManager : MonoBehaviour
         if (_QueueOfCharacters.Count == 0 && _QueueOfStrings.Count == 0)
         {
             EndDialogue();
-            conversationIsEnded = true;
         }
         else
         {
@@ -153,6 +152,7 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        conversationIsEnded = true;
         playerInput.enabled = true;
         playerInput.TogglePlayerInteraction(true);
         // Re-enable the collider of the GO we're speaking to when ending the dialogue
