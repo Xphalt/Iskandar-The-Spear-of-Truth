@@ -16,7 +16,7 @@ public class TargetPad_Jack : MonoBehaviour
     private string _changeStateTrigger = "Change State";
     private float _timeSinceLastTriggered = 0.0f;
 
-    public bool hasTriggered;   
+ //   public bool hasTriggered;   
 
     void Start()
     {
@@ -42,12 +42,8 @@ public class TargetPad_Jack : MonoBehaviour
                     wallAnimator.SetTrigger(_changeStateTrigger);
                     _timeSinceLastTriggered = 0.0f;
                 }
-                if (true)
-                {
-
-                }
-                //foreach (Light pointLight in _attachedLights)
-                //    pointLight.enabled = !pointLight.enabled;
+                foreach (Light pointLight in _attachedLights)
+                    pointLight.enabled = !pointLight.enabled;
             }
         }
 	}
