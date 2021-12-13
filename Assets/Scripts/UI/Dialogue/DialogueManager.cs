@@ -24,6 +24,7 @@ public class DialogueManager : MonoBehaviour
 
     public GameObject DialoguePanel;
     public Button ButtonContinue;
+    public Button ButtonSkip;
     public TextMeshProUGUI TextNPCName;
     public TextMeshProUGUI TextDialogueBox;
     public TextMeshProUGUI TextContinueDialogue;
@@ -139,6 +140,15 @@ public class DialogueManager : MonoBehaviour
             TextDialogueBox.text += letter;
             yield return null;
         }
+    }
+
+    public void SkipDialogue()
+    {
+        _QueueOfCharacters.Clear();
+        _QueueOfStringArrays.Clear();
+        _QueueOfStrings.Clear();
+
+        EndDialogue();
     }
 
     private void EndDialogue()
