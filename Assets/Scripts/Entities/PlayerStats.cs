@@ -145,7 +145,7 @@ public class PlayerStats : StatsInterface
         psp.PlayAudio();
         psp.audioType = prevAudioType;
 
-        UIManager.instance.UpdateHealthBar((int)-amount);
+        UIManager.instance.SetHealthBar(health);
         
 
         StartCoroutine(EDamageFlash());
