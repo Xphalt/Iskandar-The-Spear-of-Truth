@@ -135,8 +135,11 @@ public class PauseMenuManager : MonoBehaviour
         {
             if (item.itemobj.objType != ObjectType.Resource)
             {
-                if (item.itemobj.data.name.entryReference == "Health Drop") 
-                    Destroy(item.gameObject); 
+                if (item.itemobj.data.name.entryReference == "Health Drop")
+                {
+                    Destroy(item.gameObject);
+                    continue;
+                }
                 if (player.equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
                 {
                     stats.equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
