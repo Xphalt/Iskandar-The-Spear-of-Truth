@@ -322,13 +322,16 @@ public class PlayerStats : StatsInterface
             {
                 try
                 {
-                    var healthDrop = ((ItemOBJECT)(item.itemobj));
-                    health += healthDrop.healingValue;
-                    health = Mathf.Clamp(health, 0.0f, MAX_HEALTH);
-                    //Update UI
-                    UIManager.instance.SetHealthBar((int)health);
-                    Destroy(other.gameObject);
-                    return;
+                    if (item.itemobj.data.name.entryReference == "Health Drop")
+                    {
+                        var healthDrop = ((ItemOBJECT)(item.itemobj));
+                        health += healthDrop.healingValue;
+                        health = Mathf.Clamp(health, 0.0f, MAX_HEALTH);
+                        //Update UI
+                        UIManager.instance.SetHealthBar((int)health);
+                        Destroy(other.gameObject);
+                        return;
+                    }
                 }
                 catch { }
             }

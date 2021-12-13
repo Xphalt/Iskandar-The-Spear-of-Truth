@@ -11,6 +11,35 @@ public class SceneTransitionTrigger : MonoBehaviour
     {
         if (other.TryGetComponent(out PlayerStats stats))
         {
+            GroundItem[] groundObjs = FindObjectsOfType<GroundItem>();
+            foreach (GroundItem item in groundObjs)
+            {
+                if (item.itemobj.objType != ObjectType.Resource)
+                {
+                    if(item.itemobj.data.name.entryReference == "Health Drop") 
+                        Destroy(other.gameObject);    
+                    if (stats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
+                    {
+                        stats.equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
+                        Destroy(item.gameObject);
+                    }
+                    else if (stats.inventory.AddItem(new Item(item.itemobj), 1)) 
+                        Destroy(item.gameObject);  //Only if the item is picked up 
+                }
+                else //It's a resource
+                {
+                    if (((ResourceObject)(item.itemobj)).resourceType == ResourceType.RevivalGem)
+                    {
+                        if (stats.inventory.FindItemOnInventory(item.itemobj.data) != null)
+                        { }
+                        else if (stats.inventory.AddItem(new Item(item.itemobj), 1)) 
+                            Destroy(item.gameObject); 
+                    } 
+                    else if (stats.inventory.AddItem(new Item(item.itemobj), 1)) 
+                        Destroy(item.gameObject);  //Only if the item is picked up 
+                }
+            } 
+
             stats.SaveStats();
 
             // Dominique, Use fade to black screen
