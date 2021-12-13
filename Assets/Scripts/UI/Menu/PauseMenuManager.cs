@@ -84,7 +84,6 @@ public class PauseMenuManager : MonoBehaviour
         if (Time.timeScale < 1)
             Time.timeScale = Mathf.Lerp(Time.timeScale, 1, LerpPauseSpeed);
         pauseMenuUI.SetActive(false);
-        Debug.Log("Playing");
     }
 
     void Pause()

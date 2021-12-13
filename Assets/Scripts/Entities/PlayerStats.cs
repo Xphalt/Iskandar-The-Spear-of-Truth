@@ -334,7 +334,7 @@ public class PlayerStats : StatsInterface
             }
             if (equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == item.itemobj.data.id)
             {
-                equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
+                equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);                
                 Destroy(other.gameObject);
             }
             else if (inventory.AddItem(new Item(item.itemobj), 1))
@@ -342,6 +342,10 @@ public class PlayerStats : StatsInterface
                 UIManager.instance.ShowItemPickupPopup(item.itemobj);
                 Destroy(other.gameObject);  //Only if the item is picked up
             }
+
+            psp.SetAudioType(PlayerSFXPlayer.AudioType.playerCollection);
+            psp.collectionType = PlayerSFXPlayer.CollectionType.item;
+            psp.PlayAudio();
         }
         else if (item) //It's a resource
         {
@@ -354,6 +358,9 @@ public class PlayerStats : StatsInterface
                     if (inventory.AddItem(new Item(item.itemobj), 1))
                     {
                         UIManager.instance.ShowItemPickupPopup(item.itemobj);
+                        psp.SetAudioType(PlayerSFXPlayer.AudioType.playerCollection);
+                        psp.collectionType = PlayerSFXPlayer.CollectionType.gem;
+                        psp.PlayAudio();
                         Destroy(other.gameObject);
                     }
                 }
@@ -365,12 +372,18 @@ public class PlayerStats : StatsInterface
                     ((ResourceObject)(item.itemobj)).UseCurrent();
                 UIManager.instance.ShowMoneyPopup();
                 Destroy(other.gameObject);
+                psp.SetAudioType(PlayerSFXPlayer.AudioType.playerCollection);
+                psp.collectionType = PlayerSFXPlayer.CollectionType.gem;
+                psp.PlayAudio();
             }
             else
             {
                 if (inventory.AddItem(new Item(item.itemobj), 1))
                 {
                     UIManager.instance.ShowItemPickupPopup(item.itemobj);
+                    psp.SetAudioType(PlayerSFXPlayer.AudioType.playerCollection);
+                    psp.collectionType = PlayerSFXPlayer.CollectionType.item;
+                    psp.PlayAudio();
                     Destroy(other.gameObject);  //Only if the item is picked up
                 }
             }
