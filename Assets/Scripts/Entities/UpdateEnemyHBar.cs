@@ -18,10 +18,10 @@ public class UpdateEnemyHBar : MonoBehaviour
         
     }
 
-    void Update()
+    void FixedUpdate()
     {
         transform.LookAt(Camera.main.transform);
-        transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, 0, 0));
+        transform.rotation = Quaternion.Euler(new Vector3(-transform.eulerAngles.x, 0, 0));
 
         healthBar.GetComponent<Image>().fillAmount = enemy.GetComponent<EnemyStats>().health/enemy.GetComponent<EnemyStats>().MAX_HEALTH;
         impactTarget = enemy.GetComponent<EnemyStats>().health;
