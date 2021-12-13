@@ -23,7 +23,7 @@ public class EnemyStats : StatsInterface
 
     EntityDrop drops;
 
-    const float takeDamageCooldown = 1.0f;
+    const float takeDamageCooldown = 0.5f;
     float timeSinceDamageTaken;
 
     private void Start()
@@ -74,6 +74,7 @@ public class EnemyStats : StatsInterface
 
             StartCoroutine(EDamageFlash());
 
+            timeSinceDamageTaken = 0;
         }
 
         // anything that happens when taking damage happens 
@@ -81,7 +82,6 @@ public class EnemyStats : StatsInterface
         {
             isDead = true;
         }
-        timeSinceDamageTaken = 0;
     }
 
     public override void DealDamage(StatsInterface target, float amount, bool scriptedKill = false)
