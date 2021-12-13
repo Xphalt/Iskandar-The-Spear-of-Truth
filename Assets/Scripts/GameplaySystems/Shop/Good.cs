@@ -38,52 +38,65 @@ public class Good : MonoBehaviour
         displayMoney = money;
     }
 
-    public void BuyGood(InventoryObject_Sal destinationInvenotory)
-    { 
+    public void BuyGood()
+    {
         var playerstats = FindObjectOfType<PlayerStats>();
-        if (howMany > 0 && playerstats.Gems >= buyVl)
-        {
-            if (destinationInvenotory.AddItem(destinationInvenotory.database.ItemObjects[objHolder.data.id].data, 1))
-            {
-                //Reduce amount in the shop
-                ShopManager shopManager = FindObjectOfType<ShopManager>();
-                shopManager.shop.FindItemOnInventory(objHolder.data).AddAmount(-1);
-                amount.text = (--howMany).ToString();
+        if (howMany > 0 && playerstats.Gems >= buyVl) 
+        {  
+            //Add item in either equipment or inventory
+            ItemOBJECT item = ((ItemOBJECT)(objHolder));
+            if(playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == -1 && item != null && item.itemType == ItemType.Item)
+                playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].UpdateSlot(objHolder.data, 1);
+            else if (playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].item.id == objHolder.data.id)
+                playerstats.equipment.GetSlots[(int)EquipSlot.ItemSlot].AddAmount(1);
+            else 
+                playerstats.inventory.AddItem(playerstats.equipment.database.ItemObjects[objHolder.data.id].data, 1);
 
-                //pay
-                playerstats.Gems -= buyVl;
-                displayMoney.text = playerstats.Gems.ToString();
+            //Reduce amount in the shop
+            ShopManager shopManager = FindObjectOfType<ShopManager>();
+            shopManager.shop.FindItemOnInventory(objHolder.data).AddAmount(-1);
+            amount.text = (--howMany).ToString();
 
-                shopManager.UpdateMoney();
-            }
+            //pay
+            playerstats.Gems -= buyVl;
+            displayMoney.text = playerstats.Gems.ToString();
+
+            shopManager.UpdateMoney();  
         }
     }
 
-    public void SellGood(InventoryObject_Sal destinationInvenotory)
+    public void SellGood()
     {
         var playerstats = FindObjectOfType<PlayerStats>();
 
-        InventorySlot obj = destinationInvenotory.FindItemOnInventory(objHolder.data);
-        
-        if (obj == null) //No item in the inventory
-            return;
-        if (obj.amount > 0) //Player has item
-        {
-            if (obj.amount == 1) //Remove item if all amount is sold
-                destinationInvenotory.RemoveItem(objHolder.data);
-            else //Remove 1 from player inventory
-                obj.AddAmount(-1);
+        InventorySlot objInv = playerstats.inventory.FindItemOnInventory(objHolder.data);
+        InventorySlot objEq = playerstats.equipment.FindItemOnInventory(objHolder.data);
 
-            //Add amount to the shop
-            ShopManager shopManager = FindObjectOfType<ShopManager>();
-            shopManager.shop.FindItemOnInventory(objHolder.data).AddAmount(1);
-            amount.text = (++howMany).ToString();
-             
-            //pay
-            playerstats.Gems += sellVl;
-            displayMoney.text = playerstats.Gems.ToString();
+        if (objInv == null && objEq == null) //No item in the inventory
+            return; 
 
-            shopManager.UpdateMoney();
-        } 
+        if (objInv != null && objInv.amount > 0) //Player has item in inventory
+            sell(playerstats.inventory, objInv, playerstats);
+        else if (objEq != null && objEq.amount > 0) //Player has item in the equipment 
+            sell(playerstats.equipment, objEq, playerstats); 
+    }
+
+    private void sell(InventoryObject_Sal destination, InventorySlot obj, PlayerStats stats)
+    {
+        if (obj.amount == 1) //Remove item if all amount is sold
+            destination.RemoveItem(objHolder.data);
+        else //Remove 1 from storage
+            obj.AddAmount(-1);
+
+        //Add amount to the shop
+        ShopManager shopManager = FindObjectOfType<ShopManager>();
+        shopManager.shop.FindItemOnInventory(objHolder.data).AddAmount(1);
+        amount.text = (++howMany).ToString();
+
+        //pay
+        stats.Gems += sellVl;
+        displayMoney.text = stats.Gems.ToString();
+
+        shopManager.UpdateMoney(); 
     }
 } 
