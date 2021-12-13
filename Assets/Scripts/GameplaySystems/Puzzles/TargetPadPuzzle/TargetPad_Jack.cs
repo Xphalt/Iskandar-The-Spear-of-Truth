@@ -22,6 +22,13 @@ public class TargetPad_Jack : MonoBehaviour
     {
         _timeSinceLastTriggered = _wallAnimation.length;
         puzzleCollider = GetComponent<Collider>();
+
+        _attachedLights[0].enabled = true;
+        _attachedLights[1].enabled = false;
+        _attachedLights[2].enabled = false;
+        _attachedLights[3].enabled = true;
+        _attachedLights[4].enabled = false;
+        _attachedLights[5].enabled = true;
     }
 
 	private void Update()
