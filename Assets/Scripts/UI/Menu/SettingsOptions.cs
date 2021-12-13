@@ -26,8 +26,10 @@ public class SettingsOptions : MonoBehaviour
         sda = GameObject.FindObjectOfType<SaveDataAssistant>();
         SetMusicVolume(sda.MusicVol);
         SetSFXVolume(sda.SFXVol);
+        SetAmbienceVolume(sda.AmbienceVol);
         transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Slider>().value = sda.MusicVol;
         transform.GetChild(0).GetChild(0).GetChild(3).GetComponent<Slider>().value = sda.SFXVol;
+        transform.GetChild(0).GetChild(0).GetChild(5).GetComponent<Slider>().value = sda.AmbienceVol;
     }
 
     // Dominique 08-10-2021, When the pause button is pressed the pause menu opens and the quality settings are populated with options taken from the current locale
@@ -66,15 +68,23 @@ public class SettingsOptions : MonoBehaviour
     public void SetMusicVolume(float volume)
     {
         if(volume < -70)
-        masterMixer.SetFloat("musicVol", 0);
+        masterMixer.SetFloat("musicVol", -80);
         else masterMixer.SetFloat("musicVol", volume/2);
         sda.MusicVol = volume;
+    }
+
+    public void SetAmbienceVolume(float volume)
+    {
+        if (volume < -70)
+            masterMixer.SetFloat("ambienceVol", -80);
+        else masterMixer.SetFloat("ambienceVol", volume / 2);
+        sda.AmbienceVol = volume;
     }
 
     public void SetSFXVolume(float volume)
     {
         if (volume < -70)
-            masterMixer.SetFloat("sfxVol", 0);
+            masterMixer.SetFloat("sfxVol", -80);
         else masterMixer.SetFloat("sfxVol", volume/2);
         sda.SFXVol = volume;
     }
