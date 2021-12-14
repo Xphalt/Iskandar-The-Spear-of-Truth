@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.Localization;
 
 public class QuestLogManager : MonoBehaviour
 {
@@ -41,7 +42,8 @@ public class QuestLogManager : MonoBehaviour
         QuestButton.GetComponentInChildren<TextMeshProUGUI>().text = quest.QuestName.GetLocalisedString();
         // Dominique, Ensure the quest is added to the top of the log instead of the bottom
         Button newButton = Instantiate(QuestButton, ButtonArea.transform);
-        newButton.name = quest.QuestName.GetLocalisedString();
+        // Dominique, Button name is always in English as it needs to match the scriptable object to get the description
+        newButton.name = quest.name;
         newButton.transform.SetAsFirstSibling();
 
         // Go through all previous quests and set them to complete
