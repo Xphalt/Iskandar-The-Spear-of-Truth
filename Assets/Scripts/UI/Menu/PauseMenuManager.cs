@@ -46,17 +46,13 @@ public class PauseMenuManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (gameIsPaused && Time.timeScale > 0)
+        if (gameIsPaused)
         {
-            //Time.timeScale -=LerpPauseSpeed; //To Lerp
             Time.timeScale = 0f; //To have no Lerp
         }
         else if (!gameIsPaused && Time.timeScale < 1)
         {
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 1, LerpPauseSpeed);
-
-            if (Time.timeScale > 0.98f)
-                Time.timeScale = 1f;
+            Time.timeScale = 1;
         }
     }
 
@@ -80,8 +76,7 @@ public class PauseMenuManager : MonoBehaviour
     void Resume()
     {
         playerLight.SetActive(false);
-        if (Time.timeScale < 1)
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 1, LerpPauseSpeed);
+        Time.timeScale = 1;
         pauseMenuUI.SetActive(false);
     }
 
