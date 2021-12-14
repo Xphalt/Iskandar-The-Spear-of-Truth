@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCombat_Jerzy : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public float TIME_BEFORE_DISABLING_COLLIDER = 0.6f; // May need to change for target pads
 
     private float poisonDamage;
+    public GameObject poisonHealthColour;
     private float maxPoisonTicks;
     private float poisonTicks;
     private float poisonDelay;
@@ -96,7 +98,8 @@ public class PlayerCombat_Jerzy : MonoBehaviour
             }
             else if (isPoisoned && poisonTicks >= maxPoisonTicks)
             {
-                isPoisoned = false;
+                //isPoisoned = false;
+                EndPoison();
             }
         }
     }
@@ -188,7 +191,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public void Poison(Poison poisoner)
     {
         if (playerStats.poisonProtection) return;
-
+        poisonHealthColour.gameObject.GetComponent<Image>().color = Color.green;
         playerStats.TakeDamage(poisoner.damage);
         poisonDamage = poisoner.poisonDamage;
         poisonDelay = poisoner.poisonDelay;
@@ -200,6 +203,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     public void EndPoison()
     {
         isPoisoned = false;
+        poisonHealthColour.gameObject.GetComponent<Image>().color = new Color32(156, 8, 8, 255);
     }
 
     public void startChargingEffect()
