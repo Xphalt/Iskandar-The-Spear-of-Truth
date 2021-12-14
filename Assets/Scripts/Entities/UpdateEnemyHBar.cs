@@ -36,5 +36,16 @@ public class UpdateEnemyHBar : MonoBehaviour
         }
 
         //impactBar.GetComponent<Image>().fillAmount = 0;
+
+        float dist = Vector3.Distance(this.transform.position, GameObject.Find("Player").transform.position);
+
+        if (dist < 5)
+        {
+            this.gameObject.SetActive(true);
+        }
+        else
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 }
