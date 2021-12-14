@@ -46,8 +46,8 @@ public class PotionInterface : MonoBehaviour
     }
 
     private void OnEnable()
-    {
-        Time.timeScale = 0;
+    { 
+        if (UIManager.instance.GetCurrentInput() != UIManager.INPUT_OPTIONS.MOBILE) Time.timeScale = 0;
     }
 
     private void OnDisable()
