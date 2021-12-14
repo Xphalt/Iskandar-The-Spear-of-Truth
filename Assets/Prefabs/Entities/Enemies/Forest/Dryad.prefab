@@ -608,6 +608,7 @@ MonoBehaviour:
   MAX_HEALTH: 20
   health: 0
   vulnerable: 1
+  reviveOnLoad: 0
   deathTimer: 0
   despawnTime: 3.5
   isDead: 0
@@ -632,7 +633,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   viewAngle: 360
-  detectionRadius: 8
+  detectionRadius: 10
 --- !u!114 &3062150495361277104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,9 +734,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.36805278
-  m_Height: 2.2179065
+  m_Height: 2.2363
   m_Direction: 1
-  m_Center: {x: -0.02, y: 1.19, z: -0.01}
+  m_Center: {x: -0.02, y: 1.1808034, z: -0.010000014}
 --- !u!54 &7651512043078706410
 Rigidbody:
   m_ObjectHideFlags: 0
