@@ -52,6 +52,12 @@ public class EnemyStats : StatsInterface
                 FinalBurst explosion = transform.GetComponentInChildren<FinalBurst>(true);
                 if (explosion) explosion.Burst();
             }
+
+            if (GetComponent<VenomSpitter>() != null)
+            {
+                Debug.Log("this is an enemy spitter");
+                GetComponentInChildren<Animator>().Play("VenomSpitterDie");
+            }
         }
     }
 

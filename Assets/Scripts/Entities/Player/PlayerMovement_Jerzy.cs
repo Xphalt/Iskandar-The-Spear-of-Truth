@@ -210,7 +210,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
         {
             SavedMaxMovement = new Vector3(0, 0, 1);
         }
-        Debug.Log(SavedMaxMovement);
+
     }
 
     private void FixedUpdate()
