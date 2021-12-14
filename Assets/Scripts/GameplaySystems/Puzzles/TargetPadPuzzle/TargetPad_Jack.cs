@@ -5,35 +5,42 @@ using UnityEngine;
 // Detects and handles the player hitting the target pad
 public class TargetPad_Jack : MonoBehaviour
 {
-    [SerializeField]
-    private List<Animator> _attachedWalls;
+    [SerializeField] private List<Animator> _attachedWalls;
+    [SerializeField] private List<Light> _attachedLights;
+    [SerializeField] private AnimationClip _wallAnimation;
 
-    [SerializeField]
-    private AnimationClip _wallAnimation;
-
+    //public TogglePointLight toggleLightsScript;
+    private Collider puzzleCollider;
+    
     private string _playerSwordTag = "playerSword";
     private string _changeStateTrigger = "Change State";
-
     private float _timeSinceLastTriggered = 0.0f;
 
-    private Collider puzzleCollider;
+ //   public bool hasTriggered;   
 
-    // Start is called before the first frame update
     void Start()
     {
         _timeSinceLastTriggered = _wallAnimation.length;
         puzzleCollider = GetComponent<Collider>();
+
+        _attachedLights[0].enabled = true;
+        _attachedLights[1].enabled = false;
+        _attachedLights[2].enabled = false;
+        _attachedLights[3].enabled = true;
+        _attachedLights[4].enabled = false;
+        _attachedLights[5].enabled = true;
     }
 
 	private void Update()
 	{
         _timeSinceLastTriggered += Time.deltaTime;
-	}
+    }
 
     // When hit by the player all attached walls will alternate between being risen & fallen
 	private void OnTriggerEnter(Collider other)
 	{
-        if (other.attachedRigidbody.TryGetComponent(out ThrowSword_Jerzy sword) && _timeSinceLastTriggered > _wallAnimation.length)
+        if (other.attachedRigidbody.TryGetComponent(out ThrowSword_Jerzy sword)
+            && _timeSinceLastTriggered > _wallAnimation.length)
         {
             if (!sword.PuzzleHit(puzzleCollider))
             {
@@ -42,7 +49,8 @@ public class TargetPad_Jack : MonoBehaviour
                     wallAnimator.SetTrigger(_changeStateTrigger);
                     _timeSinceLastTriggered = 0.0f;
                 }
-                sword.HitPuzzle(puzzleCollider);
+                foreach (Light pointLight in _attachedLights)
+                    pointLight.enabled = !pointLight.enabled;
             }
         }
 	}
