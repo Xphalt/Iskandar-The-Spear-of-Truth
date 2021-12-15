@@ -28,7 +28,8 @@ public class Spirit : EnemyBase
 
     protected override void OnTriggerEnter(Collider collider)
     {
-        if (detector.IsTarget(collider.transform) && isDead && (pStats.spiritualDamage <= 0.0f))
+        if (!isDead) base.OnTriggerEnter(collider);
+        else if (detector.IsTarget(collider.transform) && (pStats.spiritualDamage <= 0.0f))
         {
             move.KnockBack(transform.position, knockbackForce, knockbackDuration);
         }
