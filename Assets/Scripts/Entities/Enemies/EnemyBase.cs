@@ -77,9 +77,11 @@ public class EnemyBase : Patrol
 
     public float minChaseRadius;
 
+
     public bool PatrolAvailable => agent.enabled && ListOfNodes.Length > 0;
 
     public bool isBoss = false;
+
 
     public override void Start()
     {
@@ -92,7 +94,7 @@ public class EnemyBase : Patrol
         hitCollider = GetComponent<BoxCollider>();
 
         StartCoroutine("FindTargetsWithDelay", findDelay);
-        for (int t = 0; t < attackTimers.Length; t++) attackTimers[t] = attackCooldowns[t];
+        for (int t = 0; t < attackTimers.Length; t++) attackTimers[t] = attackCooldowns[t];        
     }
 
     public override void Update()
@@ -358,7 +360,7 @@ public class EnemyBase : Patrol
             {
                 stats.DealDamage(detector.GetCurTarget().GetComponent<StatsInterface>(), curAttackDmg);
             }
-            else stats.TakeDamage(chargeSelfDamage);
+            else { stats.TakeDamage(chargeSelfDamage); stats.PlayAudio(); }
 
             EndCharge();
         }
