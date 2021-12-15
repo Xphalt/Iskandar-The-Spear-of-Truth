@@ -49,10 +49,17 @@ public class Caster : EnemyBase
     public override void Start()
     {
         base.Start();
-        for(int i=0; i < casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
+        for (int i = 0; i < casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
 
-        if(casterAvailableAttacks[(int)CasterAttacks.Pillar])
-            isSpectre=true;
+        if (casterAvailableAttacks[(int)CasterAttacks.Pillar])
+            isSpectre = true;
+
+        if (pillarBase.TryGetComponent(out ParticleSystem ps))
+        {
+            ParticleSystem.MainModule psm = ps.main;
+            psm.simulationSpace = ParticleSystemSimulationSpace.Local;
+            //ps.main.simulationSpace = ParticleSystemSimulationSpace.World;
+        }
     }
 
     public override void Update()
