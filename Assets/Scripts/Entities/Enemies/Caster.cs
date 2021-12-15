@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Caster : EnemyBase
 {
@@ -49,10 +50,17 @@ public class Caster : EnemyBase
     public override void Start()
     {
         base.Start();
-        for(int i=0; i < casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
+        for (int i = 0; i < casterCooldowns.Length; i++) casterTimers[i] = casterCooldowns[i];
 
-        if(casterAvailableAttacks[(int)CasterAttacks.Pillar])
-            isSpectre=true;
+        if (casterAvailableAttacks[(int)CasterAttacks.Pillar])
+            isSpectre = true;
+
+        if (pillarBase.TryGetComponent(out ParticleSystem ps))
+        {
+            ParticleSystem.MainModule psm = ps.main;
+            psm.simulationSpace = ParticleSystemSimulationSpace.Local;
+            //ps.main.simulationSpace = ParticleSystemSimulationSpace.World;
+        }
     }
 
     public override void Update()
@@ -151,6 +159,11 @@ public class Caster : EnemyBase
             {
                 GameObject newSpawn = Instantiate(prefabsToSpawn[obj].obj);
                 newSpawn.transform.position = transform.RandomRadiusPoint(minSpawnRadius, maxSpawnRadius)+Vector3.up * prefabsToSpawn[obj].ySpawnOffset;
+                if (newSpawn.TryGetComponent(out NavMeshAgent newAgent))
+                {
+                    NavMesh.SamplePosition(newSpawn.transform.position, out NavMeshHit hit, 100.0f, NavMesh.AllAreas);
+                    newAgent.Warp(hit.position);
+                }
             }
         }
     }
