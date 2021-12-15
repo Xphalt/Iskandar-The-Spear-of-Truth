@@ -14,6 +14,7 @@ public class Butcher : EnemyBase
     public int maxBleedTicks;
     public float bleedDelay;
     public float minBandaidRadius, maxBandaidRadius;
+    public float bandAidYOffset;
 
     public float knockBackSpeed;
     public float knockBackDuration;
@@ -133,7 +134,7 @@ public class Butcher : EnemyBase
             if(slashing)
             {
                 other.GetComponent<PlayerStats>().SetBleed(bleedDamage,maxBleedTicks,bleedDelay);
-                bandaid.transform.position = transform.RandomRadiusPoint(minBandaidRadius, maxBandaidRadius);
+                bandaid.transform.position = transform.RandomRadiusPoint(minBandaidRadius, maxBandaidRadius) + bandAidYOffset * Vector3.up;
                 bandaid.SetActive(true);
             }
             hitCollider.enabled = false;
