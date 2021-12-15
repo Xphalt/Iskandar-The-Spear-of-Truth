@@ -98,9 +98,4 @@ public class DarkEffigy : EnemyBase
         curAttack = AttackTypes.Shoot;
         MyRigid.velocity = Vector3.zero;
     }
-
-    protected override void OnTriggerEnter(Collider collider)
-    {
-        base.OnTriggerEnter(collider);
-    }
 }
