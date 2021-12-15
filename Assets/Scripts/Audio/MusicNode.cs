@@ -28,7 +28,7 @@ public class MusicNode : MonoBehaviour
     public bool isLoopingManually = true;
     public bool isPlaying = false;
     internal float timeTillNextClip = 0f;
-    internal int currentClip = 0;
+    public int currentClip = 0;
 
     private void Start()
     {
@@ -99,7 +99,7 @@ public class MusicNode : MonoBehaviour
 
                 if (currentClip >= audioClips.Length)
                     currentClip = audioClips.Length-amountToLoop;
-
+                music.Stop();
                 music.PlayOneShot(audioClips[currentClip]);
                 //Debug.Log("Playing: " + audioClips[currentClip]);
             }
