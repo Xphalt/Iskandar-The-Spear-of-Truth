@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 /*__________________________________________________________________________________
  * This script reveals an iteractable object's tool tip and changes it according to 
@@ -9,27 +10,25 @@ using UnityEngine;
 public class ToolTip : MonoBehaviour
 {
     #region Variables
-    private SpriteRenderer SR;
     private Transform player;
     private GamepadTip gamepadTip;
     private int fadeInCounter, fadeOutCounter;
-    [HideInInspector] public bool isTalkType = false;//, isReadType;
+    [HideInInspector] public bool isTalkType = false;
 
-    public Sprite lookSprite, useSprite, talkSprite;
+    public GameObject questionmarkParticles;
     public float nearRadius, farRadius;
     [HideInInspector] public bool inRange;
     #endregion
 
     private void Awake()
     {
-        SR = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         gamepadTip = FindObjectOfType<GamepadTip>();
     }
 
     private void Start() 
-    { 
-        SR.enabled = false;
+    {
+        questionmarkParticles.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()
@@ -45,8 +44,6 @@ public class ToolTip : MonoBehaviour
     private void Update()
     {
         CheckInRange();
-        //Sprite always faces camera
-        transform.LookAt(Camera.main.transform.position, Vector3.up);
     }
 
     public void CheckInRange()
@@ -60,16 +57,6 @@ public class ToolTip : MonoBehaviour
              * This is for keyboard and mouse UI tips.
              * ________________________________________________________________________*/
             inRange = true;
-
-            if (toolTipRange > nearRadius)
-            {
-                SR.color = Color.gray;
-            }
-            else if (toolTipRange <= nearRadius)
-            {
-                SR.color = Color.white;
-            }
-
             /*_________________________________________________________________________
             * This is for game pad UI tips.
             * ________________________________________________________________________*/
@@ -88,7 +75,7 @@ public class ToolTip : MonoBehaviour
                     gamepadTip.FadeIn();
             }
         }
-        else if(gamepadInUse)
+        else if (gamepadInUse)
         {
             inRange = false;
 
@@ -99,23 +86,7 @@ public class ToolTip : MonoBehaviour
         }
     }
 
-    public void SetImage(string type)
-    {
-        switch(type)
-        {
-            case "Look":
-                SR.sprite = lookSprite;
-                break;
-            case "Use":
-                SR.sprite = useSprite;
-                break;
-            case "Talk":
-                SR.sprite = talkSprite;
-                break;
-        }
-    }
+    public void Show() { questionmarkParticles.SetActive(true); }
 
-    public void Show() { SR.enabled = true; }
-
-    public void Hide() { SR.enabled = false; }
+    public void Hide() { questionmarkParticles.SetActive(false); }
 }
