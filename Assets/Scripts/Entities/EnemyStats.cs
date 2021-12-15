@@ -16,7 +16,8 @@ public class EnemyStats : StatsInterface
 
     
     /*______________________________Damage_Flash_Variables_______________________________*/
-    public SkinnedMeshRenderer MeshRenderer;
+    private SkinnedMeshRenderer SkinMesh;
+    private MeshRenderer Mesh;
     private Color Origin;
     public float FlashTime;
     /*___________________________________________________________________________________*/
@@ -30,9 +31,14 @@ public class EnemyStats : StatsInterface
     {
         health = MAX_HEALTH;
         drops = GetComponent<EntityDrop>();
-        MeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        SkinMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+        if (SkinMesh) Origin = SkinMesh.material.color;
+        else
+        {
+            Mesh = GetComponentInChildren<MeshRenderer>();
+            Origin = Mesh.material.color;
+        }
         FlashTime = 0.5f;
-        Origin = MeshRenderer.material.color;
     }
 
     private void Update()
@@ -53,23 +59,20 @@ public class EnemyStats : StatsInterface
                 if (explosion) explosion.Burst();
             }
 
-            if (GetComponent<VenomSpitter>() != null)
-            {
-                Debug.Log("this is an enemy spitter");
-                GetComponentInChildren<Animator>().Play("VenomSpitterDie");
-            }
+            if (GetComponent<VenomSpitter>() != null)  GetComponentInChildren<Animator>().Play("VenomSpitterDie");
         }
     }
 
     /*______________________________Damage_Flash_________________________________________*/
     private IEnumerator EDamageFlash()
     {
-        MeshRenderer.material.color = Color.HSVToRGB(0.08f,1,1);
+        if (SkinMesh) SkinMesh.material.color = Color.HSVToRGB(0.08f,1,1);
+        else Mesh.material.color = Color.HSVToRGB(0.08f, 1, 1);
         yield return new WaitForSeconds(FlashTime);
-        MeshRenderer.material.color = Origin;
+        if (SkinMesh) SkinMesh.material.color = Origin;
+        if (Mesh) Mesh.material.color = Origin;
     }
     /*___________________________________________________________________________________*/
-
 
     public override void TakeDamage(float amount, bool scriptedKill = false)
     {
@@ -78,7 +81,7 @@ public class EnemyStats : StatsInterface
             if (!vulnerable) return;
             health -= amount;
 
-            if (MeshRenderer) StartCoroutine(EDamageFlash());
+            if (SkinMesh || Mesh) StartCoroutine(EDamageFlash());
 
             timeSinceDamageTaken = 0;
         }
