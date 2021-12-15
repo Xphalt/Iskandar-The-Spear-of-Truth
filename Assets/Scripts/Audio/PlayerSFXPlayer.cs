@@ -61,6 +61,8 @@ public class PlayerSFXPlayer : MonoBehaviour
             aSource[i].spatialBlend = 1;
             aSource[i].volume = 0.3f;
         }
+
+        cmc = transform.GetChild(0).GetComponent<CombatMusicChanger>();
     }
 
     public void SetAudioType(AudioType at)
@@ -84,4 +86,13 @@ public class PlayerSFXPlayer : MonoBehaviour
         if (aSourceCounter >= aSource.Length)
             aSourceCounter = 0;
     }
+
+    public CombatMusicChanger cmc;
+
+    public void ChangeMusic(int n)
+    {
+        FindObjectOfType<MusicPlayerLocation>().nodes[n-1].GetComponent<MusicNode>().Stop();
+        FindObjectOfType<MusicPlayerLocation>().nodes[n].GetComponent<MusicNode>().Play();
+        cmc.currentlyPlayingPlaylist = n;
+    }    
 }

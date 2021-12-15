@@ -58,7 +58,7 @@ public class EnemyBase : Patrol
         Aggro,
         Attacking
     };
-    protected EnemyStates curState = EnemyStates.Patrolling;
+    internal EnemyStates curState = EnemyStates.Patrolling;
     protected bool charging = false;
     protected bool attackUsed = false;
     protected bool targeting = false;

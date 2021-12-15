@@ -37,6 +37,14 @@ public class MusicNode : MonoBehaviour
         //music.rolloffMode = AudioRolloffMode.Linear;
         //music.minDistance = 500f;
         music.priority = music.priority--;
+
+        fadeIn = gameObject.AddComponent<AudioSource>();
+        fadeIn.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade In")[0];
+        fadeIn.loop = true;
+
+        fadeOut = gameObject.AddComponent<AudioSource>();
+        fadeOut.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade Out")[0];
+        fadeOut.loop = true;
     }
 
 
@@ -70,8 +78,8 @@ public class MusicNode : MonoBehaviour
                     music.Play();
                     fadeIn.Stop();
 
-                    Destroy(fadeIn);
-                    Destroy(fadeOut);
+                    //Destroy(fadeIn);
+                    //Destroy(fadeOut);
 
                     fadingMusicStage = 0;
                     fadingInMusic = false;
@@ -100,18 +108,8 @@ public class MusicNode : MonoBehaviour
         }
     }
     public void FadeInMusic()
-    {
-        Debug.Log("Fading in music");
-
-        fadeIn = gameObject.AddComponent<AudioSource>();
-        fadeIn.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade In")[0];
-        fadeIn.loop = true;
-
-        fadeIn.clip = audioClips[0];
-
-        fadeOut = gameObject.AddComponent<AudioSource>();
-        fadeOut.outputAudioMixerGroup = mixer.FindMatchingGroups("Fade Out")[0];
-        fadeOut.loop = true;
+    {        
+        fadeIn.clip = audioClips[0];        
 
         fadeIn.volume = 0f;
 
@@ -145,6 +143,17 @@ public class MusicNode : MonoBehaviour
     }
 
     public void ChangeToNextMusic()
+    {
+        FadeInMusic();
+    }
+
+    public void Stop()
+    {
+        music.Stop();
+        isPlaying = false;
+    }
+
+    public void Play()
     {
         FadeInMusic();
     }
