@@ -21,7 +21,7 @@ public class CombatMusicChanger : MonoBehaviour
     {
         if (enemiesInRange.Count > 0)
         {
-            if (5 <= timeTillNextCheck)
+            if (0.5f <= timeTillNextCheck)
             {
                 timeTillNextCheck = 0f;
                 changeMusicCooldown = 0f;
@@ -31,7 +31,7 @@ public class CombatMusicChanger : MonoBehaviour
         }
         else if (currentlyPlayingPlaylist == 1)
         {
-            if (5 <= changeMusicCooldown)
+            if (0.5f <= changeMusicCooldown)
             {
                 changeMusicCooldown = 0f;
                 timeTillNextCheck = 0f;
