@@ -44,8 +44,6 @@ public class ToolTip : MonoBehaviour
     private void Update()
     {
         CheckInRange();
-        //Sprite always faces camera
-        //transform.LookAt(Camera.main.transform.position, Vector3.up);
     }
 
     public void CheckInRange()
@@ -59,16 +57,6 @@ public class ToolTip : MonoBehaviour
              * This is for keyboard and mouse UI tips.
              * ________________________________________________________________________*/
             inRange = true;
-
-            //if (toolTipRange > nearRadius)
-            //{
-            //    SR.color = Color.gray;
-            //}
-            //else if (toolTipRange <= nearRadius)
-            //{
-            //    SR.color = Color.white;
-            //}
-
             /*_________________________________________________________________________
             * This is for game pad UI tips.
             * ________________________________________________________________________*/
@@ -97,22 +85,6 @@ public class ToolTip : MonoBehaviour
                 gamepadTip.FadeOut();
         }
     }
-
-    //public void SetImage(string type)
-    //{
-    //    switch(type)
-    //    {
-    //        case "Look":
-    //            MR. = lookParticles;
-    //            break;
-    //        case "Use":
-    //            SR.sprite = useParticles;
-    //            break;
-    //        case "Talk":
-    //            SR.sprite = talkParticles;
-    //            break;
-    //    }
-    //}
 
     public void Show() { questionmarkParticles.SetActive(true); }
 
