@@ -12,6 +12,10 @@ public class SwitchManager : MonoBehaviour
 
     private bool complete = false;
 
+    private AudioSource puzzleSFX;
+    public AudioClip success;
+    public AudioClip fail;
+
     public void RegisterSwitch(LightSwitch newSwitch)
     {
         if (complete) return;
@@ -22,6 +26,8 @@ public class SwitchManager : MonoBehaviour
             if (CheckComplete()) EndPuzzle();
             else ResetSwitches();
         }
+
+        puzzleSFX = GetComponent<AudioSource>();
     }
 
     public bool CheckComplete()
@@ -32,6 +38,8 @@ public class SwitchManager : MonoBehaviour
             if (switchInputs[s] != switchOrder[s]) return false;
 
         complete = true;
+        puzzleSFX.clip = success;
+        puzzleSFX.Play();
         return true;
     }
 
@@ -43,6 +51,8 @@ public class SwitchManager : MonoBehaviour
     
     public void ResetSwitches()
     {
+        puzzleSFX.clip = fail;
+        puzzleSFX.Play();
         switchInputs.Clear();
         foreach (LightSwitch ls in switchOrder) ls.TurnOff();
     }

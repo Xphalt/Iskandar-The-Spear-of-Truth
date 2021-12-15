@@ -14,6 +14,8 @@ public class LightSwitch : MonoBehaviour
     public bool startLight = false;
     private bool on = false;
 
+    private AudioSource hitSFX;
+
     //private bool activated = false;
 
     private void Start()
@@ -24,6 +26,7 @@ public class LightSwitch : MonoBehaviour
         myMesh = GetComponent<MeshRenderer>();
         puzzleCollider = GetComponent<Collider>();
         TurnOff();
+        //hitSFX = GetComponent<AudioSource>();
     }
 
     public void TurnOff()
@@ -48,6 +51,7 @@ public class LightSwitch : MonoBehaviour
             if (!sword.PuzzleHit(puzzleCollider))
             {
                 TurnOn();
+                //hitSFX.Play();
                 sword.HitPuzzle(puzzleCollider);
             }
         }
