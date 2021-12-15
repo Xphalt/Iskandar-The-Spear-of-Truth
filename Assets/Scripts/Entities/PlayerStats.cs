@@ -9,6 +9,7 @@ public class PlayerStats : StatsInterface
     private PlayerAnimationManager playerAnimation;
     private PlayerCombat_Jerzy playerCombat;
     private Player_Targeting_Jack playerTargeting;
+    private PlayerMovement_Jerzy playerMovement;
     public InventoryObject_Sal inventory;
     public InventoryObject_Sal equipment;
     public GameObject listOfObjs;
@@ -72,6 +73,7 @@ public class PlayerStats : StatsInterface
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         playerCombat = GetComponent<PlayerCombat_Jerzy>();
         playerTargeting = GetComponent<Player_Targeting_Jack>();
+        playerMovement = GetComponent<PlayerMovement_Jerzy>();
         psp = GetComponent<PlayerSFXPlayer>();
         SaveDataAssistant saveAssisstant = FindObjectOfType<SaveDataAssistant>();
         if (saveAssisstant) SaveNum = saveAssisstant.currentSaveFileID;
@@ -163,6 +165,7 @@ public class PlayerStats : StatsInterface
             else
             {
                 //gameObject.SetActive(false);
+                playerMovement.LockPlayerMovement();
                 playerAnimation.Dead();
                 playerCombat.EndPoison();
                 bleeding = false;
