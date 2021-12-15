@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class EnemyStats : StatsInterface
 {
@@ -14,7 +15,12 @@ public class EnemyStats : StatsInterface
     public bool isDead = false;
     public bool IsDead() { return isDead; }
 
-    
+
+    internal AudioSource audioSource;
+    public List<AudioClip> damageClips = new List<AudioClip>();
+
+    internal AudioMixer mixer;
+
     /*______________________________Damage_Flash_Variables_______________________________*/
     private SkinnedMeshRenderer SkinMesh;
     private MeshRenderer Mesh;
@@ -39,6 +45,10 @@ public class EnemyStats : StatsInterface
             Origin = Mesh.material.color;
         }
         FlashTime = 0.5f;
+
+        mixer = Resources.Load("Master") as AudioMixer;
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = mixer.FindMatchingGroups("SFX")[0];
     }
 
     private void Update()
@@ -80,7 +90,7 @@ public class EnemyStats : StatsInterface
         {
             if (!vulnerable) return;
             health -= amount;
-
+            PlayAudio();
             if (SkinMesh || Mesh) StartCoroutine(EDamageFlash());
 
             timeSinceDamageTaken = 0;
@@ -100,4 +110,11 @@ public class EnemyStats : StatsInterface
             target.TakeDamage(amount, scriptedKill);
         }
     }
+
+    public void PlayAudio()
+    {
+        audioSource.clip = damageClips[Random.Range(0, damageClips.Count)];
+        audioSource.Play();
+    }
+
 }
