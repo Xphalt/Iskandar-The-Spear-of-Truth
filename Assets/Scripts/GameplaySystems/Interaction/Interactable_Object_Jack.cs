@@ -72,7 +72,6 @@ public class Interactable_Object_Jack : MonoBehaviour
     {
         if (enabled && toolTip && toolTip.inRange)
         {
-            //Can't use above switch as images need to change on hover, not on click.
             switch (type)
             {
                 case InteractableType.NPC_Dialogue:
