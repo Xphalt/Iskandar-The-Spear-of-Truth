@@ -169,7 +169,7 @@ public class HealthIsLowCondition : Condition
 {
     public override bool TestCondition()
     {
-		if (stats.health < value)
+		if (stats.health <= value)
 			return true;
 
 		return false;
