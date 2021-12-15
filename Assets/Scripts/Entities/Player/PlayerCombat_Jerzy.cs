@@ -38,6 +38,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     private float poisonDamage;
     public GameObject poisonHealthColour;
+    public GameObject playerPoisionEffect;
     private float maxPoisonTicks;
     private float poisonTicks;
     private float poisonDelay;
@@ -62,6 +63,12 @@ public class PlayerCombat_Jerzy : MonoBehaviour
         playerStats = FindObjectOfType<PlayerStats>();
         throwSword = swordEmpty.GetComponent<ThrowSword_Jerzy>();
         swordCollider = swordObject.GetComponent<Collider>();
+
+        if (playerPoisionEffect.TryGetComponent(out ParticleSystem ps))
+        {
+            ParticleSystem.MainModule psm = ps.main;
+            psm.simulationSpace = ParticleSystemSimulationSpace.Local;
+        }
     }
 
     void FixedUpdate()
@@ -192,6 +199,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     {
         if (playerStats.poisonProtection) return;
         poisonHealthColour.gameObject.GetComponent<Image>().color = Color.green;
+        playerPoisionEffect.SetActive(true);
         playerStats.TakeDamage(poisoner.damage);
         poisonDamage = poisoner.poisonDamage;
         poisonDelay = poisoner.poisonDelay;
@@ -204,6 +212,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
     {
         isPoisoned = false;
         poisonHealthColour.gameObject.GetComponent<Image>().color = new Color32(156, 8, 8, 255);
+        playerPoisionEffect.SetActive(false);
     }
 
     public void startChargingEffect()

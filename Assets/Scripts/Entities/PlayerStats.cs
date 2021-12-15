@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using UnityEngine.UI;
 
 public class PlayerStats : StatsInterface
 {
@@ -62,6 +63,8 @@ public class PlayerStats : StatsInterface
     private float bleedDelay;
     private float timeSinceLastBleedDamage;
     public bool bleeding;
+    public GameObject playerBleedEffect;
+    public GameObject bleedHealthColour;
     public bool poisonProtection = false;
     public bool desertProtection = false;
     public bool snowProtection = false;
@@ -69,6 +72,7 @@ public class PlayerStats : StatsInterface
 
     private void Awake()
     {
+        bleedHealthColour = GameObject.Find("HealthBarFill");
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
         playerCombat = GetComponent<PlayerCombat_Jerzy>();
         playerTargeting = GetComponent<Player_Targeting_Jack>();
@@ -112,6 +116,13 @@ public class PlayerStats : StatsInterface
         Debug.Log("Currently " + playerName + " is playing");
 
         transform.position = startPos.transform.position;
+
+        if (playerBleedEffect.TryGetComponent(out ParticleSystem ps))
+        {
+            ParticleSystem.MainModule psm = ps.main;
+            psm.simulationSpace = ParticleSystemSimulationSpace.Local;
+        }
+
     }
 
     private void Update()
@@ -166,6 +177,7 @@ public class PlayerStats : StatsInterface
                 playerAnimation.Dead();
                 playerCombat.EndPoison();
                 bleeding = false;
+                playerBleedEffect.SetActive(false);
                 playerTargeting.UnTargetObject();
             }
         }
@@ -203,6 +215,8 @@ public class PlayerStats : StatsInterface
         timeSinceLastBleedDamage = 0;
         bleedTicks = 0;
         bleeding = true;
+        bleedHealthColour.gameObject.GetComponent<Image>().color = new Color32(80, 0, 0, 255);
+        playerBleedEffect.SetActive(true);
     }
 
     private void Bleed()
@@ -216,6 +230,8 @@ public class PlayerStats : StatsInterface
         }
         else if (bleeding && bleedTicks >= maxBleedTicks)
         {
+            playerBleedEffect.SetActive(false);
+            bleedHealthColour.gameObject.GetComponent<Image>().color = new Color32(156, 8, 8, 255);
             bleeding = false;
         }
     }

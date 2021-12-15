@@ -59,7 +59,6 @@ public class Caster : EnemyBase
         {
             ParticleSystem.MainModule psm = ps.main;
             psm.simulationSpace = ParticleSystemSimulationSpace.Local;
-            //ps.main.simulationSpace = ParticleSystemSimulationSpace.World;
         }
     }
 
