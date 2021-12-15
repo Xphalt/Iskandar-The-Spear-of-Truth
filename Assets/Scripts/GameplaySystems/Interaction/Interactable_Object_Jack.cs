@@ -34,6 +34,7 @@ public class Interactable_Object_Jack : MonoBehaviour
     private void Update()
     {
         DisplayGamepadUi();
+        ShowQuestionmark();
     }
 
     // Runs the logic corresponding with the InteractableType of the object
@@ -67,33 +68,25 @@ public class Interactable_Object_Jack : MonoBehaviour
 		}
 	}
 
-    private void OnMouseEnter()
+    private void ShowQuestionmark()
     {
-        //This function displays the tool tip on mouse hover.
-        // Dominique, Don't show tooltip if intractability is disabled
         if (enabled && toolTip && toolTip.inRange)
         {
             //Can't use above switch as images need to change on hover, not on click.
             switch (type)
             {
                 case InteractableType.NPC_Dialogue:
-                    toolTip.SetImage("Talk");
+                    toolTip.Show();
                     break;
                 case InteractableType.Seller:
-                    toolTip.SetImage("Talk");
-                    break;
-                case InteractableType.LootChest:
-                    toolTip.SetImage("Look");
-                    break;
-                case InteractableType.Item:
-                    toolTip.SetImage("Use");
+                    toolTip.Show();
                     break;
                 default:
                     print("No tool tip image found");
                     break;
             }
-            toolTip.Show();
         }
+        else toolTip.Hide();
     }
 
     private void DisplayGamepadUi()
