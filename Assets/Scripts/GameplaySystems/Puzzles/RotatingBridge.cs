@@ -33,6 +33,8 @@ public class RotatingBridge : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.attachedRigidbody) return;
+
         if (other.attachedRigidbody.TryGetComponent(out ThrowSword_Jerzy sword))
         {
             if (!sword.PuzzleHit(puzzleCollider))

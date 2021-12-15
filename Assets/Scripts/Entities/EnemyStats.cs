@@ -78,7 +78,7 @@ public class EnemyStats : StatsInterface
             if (!vulnerable) return;
             health -= amount;
 
-            StartCoroutine(EDamageFlash());
+            if (MeshRenderer) StartCoroutine(EDamageFlash());
 
             timeSinceDamageTaken = 0;
         }

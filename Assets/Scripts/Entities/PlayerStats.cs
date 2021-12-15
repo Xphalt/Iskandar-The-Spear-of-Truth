@@ -162,11 +162,11 @@ public class PlayerStats : StatsInterface
             }
             else
             {
-                playerTargeting.UnTargetObject();
                 //gameObject.SetActive(false);
                 playerAnimation.Dead();
                 playerCombat.EndPoison();
                 bleeding = false;
+                playerTargeting.UnTargetObject();
             }
         }
     }

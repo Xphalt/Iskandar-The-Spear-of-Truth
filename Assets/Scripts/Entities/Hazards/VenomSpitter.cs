@@ -8,28 +8,37 @@ public class VenomSpitter : MonoBehaviour
 {
     public float shootDelay;
     public float venomSpeed;
+    public float range;
     public GameObject VenomBulletPrefab;
     private float timeSinceLastShot;
     private Animator anim;
+    private void Start()
+    {
+        anim = GetComponentInChildren<Animator>();
+    }
 
     void Update()
     {
         timeSinceLastShot += Time.deltaTime;
-        anim = GetComponentInChildren<Animator>();
-    }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player") && timeSinceLastShot >= shootDelay)
+        if (timeSinceLastShot >= shootDelay)
         {
-            anim.Play("VenomSpitter");
-            timeSinceLastShot = 0;
-            GameObject venomShot = Instantiate(VenomBulletPrefab, transform.position, Quaternion.identity);
-            Vector3 playerPos = new Vector3(other.gameObject.transform.position.x,transform.position.y,other.gameObject.transform.position.z);
-            //playerPos.y = transform.y;
-            Vector3 direction = (playerPos - transform.position).normalized;
-            venomShot.GetComponent<VenomShot>().SetDirection(direction,venomSpeed,playerPos);
-            Physics.IgnoreCollision(GetComponent<Collider>(), venomShot.GetComponent<Collider>());
+            foreach (Collider hit in Physics.OverlapSphere(transform.position, range))
+            {
+                if (hit.CompareTag("Player"))
+                {
+                    anim.Play("VenomSpitter");
+                    timeSinceLastShot = 0;
+                    GameObject venomShot = Instantiate(VenomBulletPrefab, transform.position, Quaternion.identity);
+                    Vector3 playerPos = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
+                    //playerPos.y = transform.y;
+                    Vector3 direction = (playerPos - transform.position).normalized;
+                    venomShot.GetComponent<VenomShot>().SetDirection(direction, venomSpeed, playerPos);
+                    Physics.IgnoreCollision(GetComponent<Collider>(), venomShot.GetComponent<Collider>());
+
+                    break;
+                }
+            }
         }
     }
 }
