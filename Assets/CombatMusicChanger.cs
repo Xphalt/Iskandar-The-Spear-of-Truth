@@ -12,6 +12,9 @@ public class CombatMusicChanger : MonoBehaviour
     internal float timeTillNextCheck = 0f;
     internal float changeMusicCooldown = 0f;
 
+    public float musicRange;
+    public List<EnemyBase> enemiesInRange = new List<EnemyBase>();
+
     private void Start()
     {
         psp = transform.parent.GetComponent<PlayerSFXPlayer>();
@@ -25,7 +28,7 @@ public class CombatMusicChanger : MonoBehaviour
             {
                 timeTillNextCheck = 0f;
                 changeMusicCooldown = 0f;
-                enemiesInRange = enemiesInRange.Where(item => item.gameObject != isActiveAndEnabled).ToList();
+                enemiesInRange = enemiesInRange.Where(item => item.gameObject.activeInHierarchy && item.curState != EnemyBase.EnemyStates.Patrolling).ToList();
             }
             timeTillNextCheck += Time.deltaTime;
         }
@@ -42,24 +45,21 @@ public class CombatMusicChanger : MonoBehaviour
             }
             changeMusicCooldown += Time.deltaTime;
         }
-    }
 
-    public List<EnemyBase> enemiesInRange = new List<EnemyBase>();
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.GetComponent<EnemyBase>())
+        foreach (Collider other in Physics.OverlapSphere(transform.position, musicRange))
         {
-            if (!enemiesInRange.Contains(other.GetComponent<EnemyBase>()))
+            if (other.TryGetComponent(out EnemyBase enemy))
             {
-                enemiesInRange.Add(other.GetComponent<EnemyBase>());
-            }
-
-            if (other.GetComponent<EnemyBase>().curState == EnemyBase.EnemyStates.Aggro && currentlyPlayingPlaylist != 1)
-            {
-                psp.ChangeMusic(1); // Combat Music;
-                hasPlayedCombatMusic = true;
+                if (!enemiesInRange.Contains(enemy) && enemy.curState != EnemyBase.EnemyStates.Patrolling)
+                    enemiesInRange.Add(enemy);
             }
         }
+
+        if (enemiesInRange.Count > 0 && currentlyPlayingPlaylist != 1)
+        {
+            psp.ChangeMusic(1); // Combat Music;
+            hasPlayedCombatMusic = true;
+        }
     }
+
 }
