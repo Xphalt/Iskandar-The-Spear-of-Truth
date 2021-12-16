@@ -36,6 +36,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private const float KNOCKBACK_DENOMINATOR_ADDITION = 0.5f;
 
     private Player_Targeting_Jack _playerTargetingScript;
+    private PlayerStats _playerStats;
     private Transform _targetedTransform = null;
 
     public float maxLockOnDistance = 5.0f;
@@ -114,13 +115,14 @@ public class PlayerMovement_Jerzy : MonoBehaviour
     private void Awake()
     {
         playerAnimation = FindObjectOfType<PlayerAnimationManager>();
+        _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
+        _playerStats = GetComponent<PlayerStats>();
         FadeUI = FindObjectOfType<Fading>();
     }
 
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-        _playerTargetingScript = GetComponent<Player_Targeting_Jack>();
 
         swordLookRotation = playerModel.transform.rotation;
     }
@@ -301,7 +303,7 @@ public class PlayerMovement_Jerzy : MonoBehaviour
 
     public void Dash(Vector3 _dashDirection)
     {
-        if (timeSinceLastDash >= dashCooldown && !knockedBack)
+        if (timeSinceLastDash >= dashCooldown && !knockedBack && !_playerStats.HasBeenDefeated)
         {
             canBeDamaged = false;
             dashDirection = _dashDirection.normalized;

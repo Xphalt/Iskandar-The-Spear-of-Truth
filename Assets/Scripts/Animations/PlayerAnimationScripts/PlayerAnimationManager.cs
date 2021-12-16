@@ -17,6 +17,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private PlayerCombat_Jerzy playerCombat;
     private PlayerMovement_Jerzy playerMovement;
+    private PlayerStats playerStats;
     private AnimatorOverrideController overrideController;
 
     private bool hasWeapon, justPickupUpStick = false;
@@ -29,6 +30,7 @@ public class PlayerAnimationManager : MonoBehaviour
         animator = GetComponent<Animator>();
         playerCombat = GetComponent<PlayerCombat_Jerzy>();
         playerMovement = GetComponent<PlayerMovement_Jerzy>();
+        playerStats = GetComponent<PlayerStats>();
 
         overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = overrideController;
@@ -95,7 +97,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void Strafing()
     {
-        if (hasWeapon)
+        if (hasWeapon && !playerStats.HasBeenDefeated)
         {
             if (isStrafing)
             {
@@ -109,7 +111,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void SimpleAttack()
     {
-        if (hasWeapon)
+        if (hasWeapon && !playerStats.HasBeenDefeated)
         {
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack") || (animator.GetCurrentAnimatorStateInfo(0).IsName("Simple Attack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.55))
                 animator.SetTrigger("isSimpleAttacking");
@@ -118,7 +120,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void SwordThrowAttack()
     {
-        if (hasWeapon)
+        if (hasWeapon && !playerStats.HasBeenDefeated)
         {
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Throw"))
                 animator.SetTrigger("isSwordThrowing");
@@ -127,12 +129,12 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void Dodging()
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge")) animator.SetTrigger("isDodging");
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge") && !playerStats.HasBeenDefeated) animator.SetTrigger("isDodging");
     }
 
     public void Falling()
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Fall")) animator.SetTrigger("isFalling");
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Fall") && !playerStats.HasBeenDefeated) animator.SetTrigger("isFalling");
     }
 
     public void Landing()
