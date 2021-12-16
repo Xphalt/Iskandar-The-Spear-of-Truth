@@ -70,7 +70,8 @@ public class Interactable_Object_Jack : MonoBehaviour
 
     private void ShowQuestionmark()
     {
-        if (enabled && toolTip && toolTip.inRange)
+        if (!toolTip) return;
+        if (enabled && toolTip.inRange)
         {
             switch (type)
             {
