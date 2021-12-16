@@ -261,12 +261,12 @@ public class PlayerStats : StatsInterface
                 switch (p_slot.ItemObject.objType)
                 {
                     case ObjectType.Weapon:
-                        damage -= ((WeaponObject_Sal)(temp)).damage;
-                        spiritualDamage -= ((WeaponObject_Sal)(temp)).spiritualDamage;
+                        damage = ((WeaponObject_Sal)(temp)).damage;
+                        spiritualDamage = ((WeaponObject_Sal)(temp)).spiritualDamage;
                         GetComponent<PlayerMovement_Jerzy>().m_Speed -= ((WeaponObject_Sal)(temp)).speedBoost;
                         break;
                     case ObjectType.Armor:
-                        defence -= ((ArmorObject_Sal)(temp)).defValues.physicalDef;
+                        defence = ((ArmorObject_Sal)(temp)).defValues.physicalDef;
                         poisonProtection = false;
                         desertProtection = false;
                         snowProtection = false;
@@ -297,8 +297,8 @@ public class PlayerStats : StatsInterface
                     switch (p_slot.ItemObject.objType)
                     {
                         case ObjectType.Weapon:
-                            damage += ((WeaponObject_Sal)(temp)).damage;
-                            spiritualDamage += ((WeaponObject_Sal)(temp)).spiritualDamage;
+                            damage = ((WeaponObject_Sal)(temp)).damage;
+                            spiritualDamage = ((WeaponObject_Sal)(temp)).spiritualDamage;
                             GetComponent<PlayerMovement_Jerzy>().m_Speed += ((WeaponObject_Sal)(temp)).speedBoost;
                             #region Update Weapon on Player
                             if (equipment.GetSlots[(int)EquipSlot.SwordSlot].item.id > -1)
@@ -318,7 +318,7 @@ public class PlayerStats : StatsInterface
                             #endregion
                             break;
                         case ObjectType.Armor:
-                            defence += ((ArmorObject_Sal)(temp)).defValues.physicalDef;
+                            defence = ((ArmorObject_Sal)(temp)).defValues.physicalDef;
                             poisonProtection = ((ArmorObject_Sal)(temp)).defValues.poisonProtection;
                             desertProtection = ((ArmorObject_Sal)(temp)).defValues.desertProtection;
                             snowProtection = ((ArmorObject_Sal)(temp)).defValues.snowProtection;
