@@ -197,7 +197,7 @@ public class PlayerCombat_Jerzy : MonoBehaviour
 
     public void Poison(Poison poisoner)
     {
-        if (playerStats.poisonProtection) return;
+        if (playerStats.poisonProtection || playerStats.HasBeenDefeated) return;
         poisonHealthColour.gameObject.GetComponent<Image>().color = Color.green;
         playerPoisionEffect.SetActive(true);
         playerStats.TakeDamage(poisoner.damage);
