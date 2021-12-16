@@ -449,7 +449,7 @@ public class @PlayerActionsAsset : IInputActionCollection, IDisposable
                     ""path"": ""<Touchscreen>/primaryTouch/press"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard & mouse"",
+                    ""groups"": """",
                     ""action"": ""PrimaryContact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
