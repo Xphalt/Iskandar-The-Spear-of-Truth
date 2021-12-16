@@ -3873,7 +3873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &142919583
 Transform:
   m_ObjectHideFlags: 0
@@ -12943,7 +12943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3051482909399566742, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 128.9659
+      value: 128.90955
       objectReference: {fileID: 0}
     - target: {fileID: 3054451402402017905, guid: 1142beb68d16ceb4ab20064c51425984, type: 3}
       propertyPath: m_AnchorMax.y
@@ -21810,7 +21810,7 @@ Transform:
   m_LocalScale: {x: 4.171383, y: 1, z: 4.6433325}
   m_Children: []
   m_Father: {fileID: 1108120701}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 6.756, z: 0}
 --- !u!1001 &711314131
 PrefabInstance:
@@ -31639,6 +31639,7 @@ MonoBehaviour:
         - id: 22
         events:
         - id: 23
+        - id: 24
         complete: 0
     00000005:
       type: {class: TriggerColliderCondition, ns: , asm: Assembly-CSharp}
@@ -31761,6 +31762,13 @@ MonoBehaviour:
         IsComplete: 0
         ReplayOnload: 0
         level: 3
+    00000018:
+      type: {class: QuestLogEntryEvent, ns: , asm: Assembly-CSharp}
+      data:
+        IsComplete: 0
+        ReplayOnload: 0
+        questLog: {fileID: 457033596}
+        quest: {fileID: 11400000, guid: a629ee08b78f47841abc8cbbb902c130, type: 2}
 --- !u!114 &1054983767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33377,9 +33385,9 @@ Transform:
   - {fileID: 287255674}
   - {fileID: 863991445}
   - {fileID: 982428900}
+  - {fileID: 710033931}
   - {fileID: 1461141435}
   - {fileID: 954393116}
-  - {fileID: 710033931}
   - {fileID: 178495366}
   - {fileID: 456818454}
   - {fileID: 360997144}
