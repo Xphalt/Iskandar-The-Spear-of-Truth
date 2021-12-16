@@ -125,6 +125,10 @@ public class PlayerStats : StatsInterface
             psm.simulationSpace = ParticleSystemSimulationSpace.Local;
         }
 
+        OnAfterSlotUpdate(equipment.GetSlots[(int)EquipSlot.SwordSlot]);
+        OnAfterSlotUpdate(equipment.GetSlots[(int)EquipSlot.ArmorSlot]);
+        OnBeforeSlotUpdate(equipment.GetSlots[(int)EquipSlot.SwordSlot]);
+        OnBeforeSlotUpdate(equipment.GetSlots[(int)EquipSlot.ArmorSlot]);  
     }
 
     private void Update()
