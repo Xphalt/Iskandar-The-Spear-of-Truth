@@ -50,8 +50,7 @@ public class CombatMusicChanger : MonoBehaviour
         {
             if (other.TryGetComponent(out EnemyBase enemy))
             {
-                if (!enemiesInRange.Contains(enemy) && enemy.curState != EnemyBase.EnemyStates.Patrolling)
-                    enemiesInRange.Add(enemy);
+                if (!enemiesInRange.Contains(enemy) && enemy.curState != EnemyBase.EnemyStates.Patrolling) enemiesInRange.Add(enemy);
             }
         }
 

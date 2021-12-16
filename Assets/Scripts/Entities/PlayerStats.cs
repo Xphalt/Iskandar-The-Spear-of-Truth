@@ -141,6 +141,8 @@ public class PlayerStats : StatsInterface
             Accessory.UseCurrent(); //Use either ring or goggles  
         }
 
+        if (HasBeenDefeated) playerMovement.LockPlayerMovement();
+
         Bleed();
 
         //This ensures that the gameobjects are controlled by Sword Empty GO
