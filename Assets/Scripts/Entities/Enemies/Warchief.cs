@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Warchief : EnemyBase
 {
@@ -130,6 +131,11 @@ public class Warchief : EnemyBase
         {
             GameObject newOrc = Instantiate(orcPrefabs[Random.Range(0, orcPrefabs.Count)]);
             newOrc.transform.position = transform.RandomRadiusPoint(minSpawnRadius, maxSpawnRadius);
+            if (newOrc.TryGetComponent(out NavMeshAgent newAgent))
+            {
+                NavMesh.SamplePosition(newOrc.transform.position, out NavMeshHit hit, 100.0f, NavMesh.AllAreas);
+                newAgent.Warp(hit.position);
+            }
 
             minions.Add(newOrc.GetComponent<Orc>());
         }
