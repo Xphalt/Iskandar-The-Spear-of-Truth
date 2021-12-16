@@ -25,8 +25,10 @@ public class VenomSpitter : MonoBehaviour
         {
             foreach (Collider hit in Physics.OverlapSphere(transform.position, range))
             {
-                if (hit.CompareTag("Player"))
+                if (hit.TryGetComponent(out PlayerStats player))
                 {
+                    if (player.HasBeenDefeated) break;
+
                     anim.Play("VenomSpitter");
                     timeSinceLastShot = 0;
                     GameObject venomShot = Instantiate(VenomBulletPrefab, transform.position, Quaternion.identity);

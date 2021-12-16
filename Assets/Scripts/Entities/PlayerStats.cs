@@ -212,6 +212,8 @@ public class PlayerStats : StatsInterface
 
     public void SetBleed(float _bleedDamage, float _maxBleedTicks, float _bleedDelay)
     {
+        if (HasBeenDefeated) return;
+
         bleedDamage = _bleedDamage;
         maxBleedTicks = _maxBleedTicks;
         bleedDelay = _bleedDelay;
