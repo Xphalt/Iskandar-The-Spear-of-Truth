@@ -274,11 +274,7 @@ public class PlayerStats : StatsInterface
                         poisonProtection = false;
                         desertProtection = false;
                         snowProtection = false;
-                        break;
-                    default:
-                        damage = BASE_DAMAGE;
-                        defence = BASE_DEFENCE;
-                        break;
+                        break; 
                 }
                 break;
             default:
@@ -326,11 +322,7 @@ public class PlayerStats : StatsInterface
                             poisonProtection = ((ArmorObject_Sal)(temp)).defValues.poisonProtection;
                             desertProtection = ((ArmorObject_Sal)(temp)).defValues.desertProtection;
                             snowProtection = ((ArmorObject_Sal)(temp)).defValues.snowProtection;
-                            break;
-                        default:
-                            damage = BASE_DAMAGE;
-                            defence = BASE_DEFENCE;
-                            break;
+                            break; 
                     }
                 }
                 break;
